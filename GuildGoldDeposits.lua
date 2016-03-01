@@ -5,9 +5,13 @@ GuildGoldDeposits.name = "GuildGoldDeposits"
 GuildGoldDeposits.version = 1
 GuildGoldDeposits.default = {
       enable_guild  = { true, true, true, true, true }
-    , duration_days = 7
 }
 GuildGoldDeposits.max_guild_ct = 5
+GuildGoldDeposits.event_list = {} -- event_list[guild_index] = { list of event strings }
+GuildGoldDeposits.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guild"
+GuildGoldDeposits.retry_ct   = { 0, 0, 0, 0, 0 } -- retry_ct[guild_index] = how many retries after
+                                  -- distrusting "nah, no more history"
+GuildGoldDeposits.max_retry_ct = 3
 
 -- Init ----------------------------------------------------------------------
 
@@ -19,7 +23,7 @@ function GuildGoldDeposits.OnAddOnLoaded(event, addonName)
 end
 
 function GuildGoldDeposits:Initialize()
-    self.savedVariables = ZO_SavedVars:New(
+    self.savedVariables = ZO_SavedVars:NewAccountWide(
                               "GuildGoldDepositsVars"
                             , self.version
                             , nil
@@ -31,12 +35,12 @@ end
 
 -- UI ------------------------------------------------------------------------
 
-function GuildGoldDeposits.ref_cb(i)
-    return "GuildGoldDeposits_cbg" .. i
+function GuildGoldDeposits.ref_cb(guild_index)
+    return "GuildGoldDeposits_cbg" .. guild_index
 end
 
-function GuildGoldDeposits.ref_desc(i)
-    return "GuildGoldDeposits_desc" .. i
+function GuildGoldDeposits.ref_desc(guild_index)
+    return "GuildGoldDeposits_desc" .. guild_index
 end
 
 function GuildGoldDeposits:CreateSettingsWindow()
@@ -60,32 +64,23 @@ function GuildGoldDeposits:CreateSettingsWindow()
         , func      = function() self:SaveNow() end
         },
         { type      = "header"
-        , name      = "Duration"
-        },
-        { type      = "slider"
-        , name      = "Days to save"
-        , tooltip   = "How many days' data to save?"
-        , min       = 1
-        , max       = 21
-        , step      = 1
-        , getFunc   = function() return self.savedVariables.duration_days end
-        , setFunc   = function(value) self.savedVariables.duration_days = value end
-        },
-        { type      = "header"
         , name      = "Guilds"
         },
     }
 
-    for i = 1, self.max_guild_ct do
+    for guild_index = 1, self.max_guild_ct do
         table.insert(optionsData,
             { type      = "checkbox"
-            , name      = "(guild " .. i .. ")"
-            , tooltip   = "Save data for guild " .. i .. "?"
-            , getFunc   = function() return self.savedVariables.enable_guild[i] end
-            , setFunc   = function(e) self.savedVariables.enable_guild[i] = e end
-            , reference = self.ref_cb(i)
+            , name      = "(guild " .. guild_index .. ")"
+            , tooltip   = "Save data for guild " .. guild_index .. "?"
+            , getFunc   = function()
+                            return self.savedVariables.enable_guild[guild_index]
+                          end
+            , setFunc   = function(e)
+                            self.savedVariables.enable_guild[guild_index] = e
+                          end
+            , reference = self.ref_cb(guild_index)
             })
-
                         -- HACK: for some reason, I cannot get "description"
                         -- items to dynamically update their text. Color and
                         -- hidden, yes, but text? Nope, it never changes. So
@@ -94,8 +89,8 @@ function GuildGoldDeposits:CreateSettingsWindow()
                         -- hack. Sorry.
         table.insert(optionsData,
             { type      = "checkbox"
-            , name      = "(desc " .. i .. ")"
-            , reference = self.ref_desc(i)
+            , name      = "(desc " .. guild_index .. ")"
+            , reference = self.ref_desc(guild_index)
             , getFunc   = function() return false end
             , setFunc   = function() end
             })
@@ -111,20 +106,21 @@ end
 function GuildGoldDeposits.OnPanelControlsCreated(panel)
     self = GuildGoldDeposits
     guild_ct = GetNumGuilds()
-    for i = 1,self.max_guild_ct do
-        cb = _G[self.ref_cb(i)]
-        if i <= guild_ct then
-            guildId   = GetGuildId(i)
+    for guild_index = 1,self.max_guild_ct do
+        cb = _G[self.ref_cb(guild_index)]
+        if guild_index <= guild_ct then
+            guildId   = GetGuildId(guild_index)
             guildName = GetGuildName(guildId)
             cb.label:SetText(guildName)
             cb:SetHidden(false)
+            self.guild_name[guild_index] = guildName
         else
                         -- If no guild #N, hide and disable it.
             cb:SetHidden(true)
-            self.savedVariables.enable_guild[i] = false
+            self.savedVariables.enable_guild[guild_index] = false
         end
 
-        desc = _G[self.ref_desc(i)]
+        desc = _G[self.ref_desc(guild_index)]
         self.ConvertCheckboxToText(desc)
     end
 end
@@ -146,50 +142,111 @@ end
 -- Saving Guild Data ---------------------------------------------------------
 
 function GuildGoldDeposits:SaveNow()
-    -- self:DumpSettings()
-    for i = 1, self.max_guild_ct do
-        self:SaveGuildIndex(i)
+    self.savedVariables.history = {}
+    self.event_list = {}
+    for guild_index = 1, self.max_guild_ct do
+        if self.savedVariables.enable_guild[guild_index] then
+            self:SaveGuildIndex(guild_index)
+        else
+            self:SkipGuildIndex(guild_index)
+        end
     end
 end
 
-function GuildGoldDeposits:SaveGuildIndex(i)
-    guildId = GetGuildId(i)
-    desc = _G[GuildGoldDeposits.ref_desc(i)].label
-    if self.savedVariables.enable_guild[i] then
-        color = ZO_DEFAULT_ENABLED_COLOR
-        text  = "gonna do something"
+-- Update the per-guild text label with what's going on with that guild data.
+function GuildGoldDeposits:SetStatus(guild_index, msg)
+    desc = _G[self.ref_desc(guild_index)].label
+    desc:SetText("  " .. msg)
+end
+
+-- User doesn't want this guild. Respond with "okay, skipping"
+function GuildGoldDeposits:SkipGuildIndex(guild_index)
+    self:SetStatus(guild_index, "skipped")
+end
+
+-- Download one guild's history
+function GuildGoldDeposits:SaveGuildIndex(guild_index)
+    guildId = GetGuildId(guild_index)
+    self:SetStatus(guild_index, "downloading history...")
+    event_ct = 0
+    found_ct = 0
+    loop_ct = 0
+    loop_max = 100
+    RequestGuildHistoryCategoryNewest(guildId, GUILD_HISTORY_BANK)
+
+                        -- Start an asynchronous callback chain to slowly
+                        -- poll ESO servers for all history. Chain will
+                        -- callback itself until done, then callback
+                        -- into the actual processing of that data.
+    self:ServerDataPoll(guild_index)
+end
+
+-- Async poll to fetch ALL guild bank history data from the ESO server
+-- Calls ServerDataComplete() once all data is loaded.
+function GuildGoldDeposits:ServerDataPoll(guild_index)
+    guildId = GetGuildId(guild_index)
+    more = DoesGuildHistoryCategoryHaveMoreEvents(guildId, GUILD_HISTORY_BANK)
+    event_ct = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
+    self:SetStatus(guild_index, "fetching events: " .. event_ct .. " ...")
+    can_retry =    (not self.retry_ct[guild_index])
+                or (self.retry_ct[guild_index] < self.max_retry_ct)
+    if more or can_retry then
+        RequestGuildHistoryCategoryOlder(guildId, GUILD_HISTORY_BANK)
+        delay_ms = 0.5 * 1000
+        zo_callLater(function() self:ServerDataPoll(guild_index) end, delay_ms)
+        if not more then
+            self.retry_ct[guild_index] = 1 + self.retry_ct[guild_index]
+        end
     else
-        color = ZO_DEFAULT_DISABLED_COLOR
-        text  = "not doing nothing"
-    end
-    desc:SetText(text)
-end
-
-function GuildGoldDeposits:DumpSettings()
-    d("sv.days " .. self.savedVariables.duration_days)
-    for i = 1, self.max_guild_ct do
-        d("sv.eg[" .. i .. "] = "
-          .. tostring(self.savedVariables.enable_guild[i]))
+        self:ServerDataComplete(guild_index)
     end
 end
 
--- GetGuildEventInfo(3, GUILD_HISTORY_BANK_DEPOSITS, 2)
--- 21 1656 @J-man8898 5000 nil nil nil nil
--- 2016-02-29 14:45:37 -0700 ziggr: "@J-man8898 deposited 5,000g 27 minutes ago
--- 21 1741 @J-man8898 5000 nil nil nil nil
--- 2016-02-29 14:46:44 -0700 ziggr:  "@J-man8898 deposited 5,000g 27 minutes ago
--- So field 2 is RELATIVE TIME AGO and likeluy SECONDS ago
+-- Now that all data from the ESO server is loaded into the ESO client,
+-- extract gold deposits and write to savedVars.
+function GuildGoldDeposits:ServerDataComplete(guild_index)
+    guildId = GetGuildId(guild_index)
+    guild_name = self.guild_name[guild_index]
+    event_ct = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
+    --self:SetStatus(guild_index, "scanning events: " .. event_ct .. " ...")
+    for i = 1, event_ct do
+        t, s, u, a = GetGuildEventInfo(guildId, GUILD_HISTORY_BANK, i)
+        if t == GUILD_EVENT_BANKGOLD_ADDED then
+            event = { type = t
+                    , time = GetTimeStamp() - s
+                    , user = u
+                    , amount = a
+                    }
+            self:RecordEvent(guild_index, event)
+        end
+    end
+    found_ct = 0
+    if self.event_list[guild_index] then
+        found_ct = #self.event_list[guild_index]
+    end
+    self:SetStatus(guild_index, "scanned events: " .. event_ct
+                   .. "  gold deposits: " .. found_ct)
+    self.savedVariables.history[guild_name] = self.event_list[guild_index]
+end
 
--- GetGuildEventInfo(3, GUILD_HISTORY_BANK_DEPOSITS, 2)
--- 0/nil at first, until I opened the Guild history.
--- So there must be an open/init sequence.
+function GuildGoldDeposits:RecordEvent(guild_index, event)
+    if not self.event_list[guild_index] then
+        self.event_list[guild_index] = {}
+    end
+    t = self.event_list[guild_index]
+    table.insert(t, self:EventToString(event))
+end
 
--- GetTimeStamp() returns seconds since the epoch. That, minus above, is
--- seconds-since-the-epoch of the item/event.
-
-
-
-
+-- Convert an event to a compact string that a line-parser can easily consume.
+function GuildGoldDeposits:EventToString(event)
+                        -- tab-delimited fields
+                        -- date     seconds since the epoch
+                        -- amount
+                        -- user     unquoted, can contain all sorts of
+                        --          noise but unlikely to contian a
+                        --          tab character.
+    return string.format("%d\t%d\t%s", event.time, event.amount, event.user)
+end
 
 -- Postamble -----------------------------------------------------------------
 
