@@ -1,5 +1,5 @@
 ## Title: Guild Gold Deposits
-## Description: Guild Gold Deposits version 2.2.1
+## Description: Guild Gold Deposits version 2.2.4.1
 ## APIVersion: 100013
 ## SavedVariables: GuildGoldDepositsVars
 ## OptionalDependsOn: LibAddonMenu-2.0

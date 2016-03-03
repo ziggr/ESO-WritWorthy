@@ -2,16 +2,19 @@ local LAM2 = LibStub("LibAddonMenu-2.0")
 
 local GuildGoldDeposits = {}
 GuildGoldDeposits.name = "GuildGoldDeposits"
-GuildGoldDeposits.version = 1
+GuildGoldDeposits.version = 224.1
 GuildGoldDeposits.default = {
       enable_guild  = { true, true, true, true, true }
 }
 GuildGoldDeposits.max_guild_ct = 5
 GuildGoldDeposits.event_list = {} -- event_list[guild_index] = { list of event strings }
 GuildGoldDeposits.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guild"
-GuildGoldDeposits.retry_ct   = { 0, 0, 0, 0, 0 } -- retry_ct[guild_index] = how many retries after
+
+                                  -- retry_ct[guild_index] = how many retries after
                                   -- distrusting "nah, no more history"
+GuildGoldDeposits.retry_ct   = { 0, 0, 0, 0, 0 }
 GuildGoldDeposits.max_retry_ct = 3
+GuildGoldDeposits.max_day_ct = 30 -- how many days to store in SavedVariables
 
 -- Init ----------------------------------------------------------------------
 
@@ -122,6 +125,7 @@ function GuildGoldDeposits.OnPanelControlsCreated(panel)
 
         desc = _G[self.ref_desc(guild_index)]
         self.ConvertCheckboxToText(desc)
+        self:SetStatusNewest(guild_index)
     end
 end
 
@@ -139,6 +143,54 @@ function GuildGoldDeposits.ConvertCheckboxToText(cb)
     desc.checkbox:SetHidden(true)
 end
 
+-- Displaying Status ---------------------------------------------------------
+
+-- Update the per-guild text label with what's going on with that guild data.
+function GuildGoldDeposits:SetStatus(guild_index, msg)
+    desc = _G[self.ref_desc(guild_index)].label
+    desc:SetText("  " .. msg)
+end
+
+-- Set status to "Newest: @user 100,000g"
+function GuildGoldDeposits:SetStatusNewest(guild_index)
+    line = self:HistoryNewest(guild_index)
+    if not line then return end
+    event_ts, amt, user = self:split(line)
+    now_ts = GetTimeStamp()
+    ago_secs = GetDiffBetweenTimeStamps(now_ts, event_ts)
+    ago_str  = FormatTimeSeconds(ago_secs
+                    , TIME_FORMAT_STYLE_SHOW_LARGEST_UNIT_DESCRIPTIVE        -- "22 hours"
+                    , TIME_FORMAT_PRECISION_SECONDS
+                    , TIME_FORMAT_DIRECTION_DESCENDING
+                    )
+
+    self:SetStatus(guild_index, "Newest deposit: " .. user
+                     .. " " .. amt .. "g  " .. ago_str .. " ago")
+end
+
+-- Parsing/Formatting SavedVariables history ---------------------------------
+
+-- Lua lacks a split() function. Here's a cheesy hardwired one that works
+-- for our specific need.
+function GuildGoldDeposits:split(str)
+    t1 = string.find(str, '\t')
+    t2 = string.find(str, '\t', 1 + t1)
+    return   string.sub(str, 1,      t1 - 1)
+           , string.sub(str, 1 + t1, t2 - 1)
+           , string.sub(str, 1 + t2)
+end
+
+-- Return the one newest history line, if any. Return nil if not.
+function GuildGoldDeposits:HistoryNewest(guild_index)
+    guildName = GetGuildName(guildId)
+    if not self.savedVariables then return nil end
+    if not self.savedVariables.history then return nil end
+    history = self.savedVariables.history[guildName]
+    if not history then return nil end
+    if not (1 <= #history) then return nil end
+    return history[1]
+end
+
 -- Saving Guild Data ---------------------------------------------------------
 
 function GuildGoldDeposits:SaveNow()
@@ -151,12 +203,6 @@ function GuildGoldDeposits:SaveNow()
             self:SkipGuildIndex(guild_index)
         end
     end
-end
-
--- Update the per-guild text label with what's going on with that guild data.
-function GuildGoldDeposits:SetStatus(guild_index, msg)
-    desc = _G[self.ref_desc(guild_index)].label
-    desc:SetText("  " .. msg)
 end
 
 -- User doesn't want this guild. Respond with "okay, skipping"
