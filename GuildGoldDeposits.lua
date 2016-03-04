@@ -21,12 +21,79 @@ GuildGoldDeposits.retry_ct   = { 0, 0, 0, 0, 0 }
 GuildGoldDeposits.max_retry_ct = 3
 GuildGoldDeposits.max_day_ct = 30 -- how many days to store in SavedVariables
 
+                        -- Latches true when responding to the very first
+                        -- "Save Data Now" event so that we don't spin forever.
+GuildGoldDeposits.debug_brakes = false
+
 local TIMESTAMPS_CLOSE_SECS = 10
 
 -- Indices into the 3-element "event" split.
 local I_TIMESTAMP = 1
 local I_AMOUNT    = 2
 local I_USER      = 3
+
+-- Event ---------------------------------------------------------------------
+-- One row in our savedVariables history
+--
+-- Knows how to convert to/from string
+-- Knows how to convert from GetGuildEventInfo().
+-- Named fields instead of table indices.
+--
+local Event = {}
+
+-- If this is a gold deposit, return a row. If not, return nil.
+function Event:FromInfo(event_type, since_secs, user, amount)
+    if event_type ~= GUILD_EVENT_BANKGOLD_ADDED then return nil end
+    o = { time   = GetTimeStamp() - since_secs
+        , user   = user
+        , amount = amount
+        }
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function Event:FromString(str)
+    ts, amt, user = GuildGoldDeposits:split(str)
+    o = { time   = ts
+        , amount = amt
+        , user   = user
+        }
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function Event:ToString()
+                        -- tab-delimited fields
+                        -- date     seconds since the epoch
+                        -- amount
+                        -- user     unquoted, can contain all sorts of
+                        --          noise but unlikely to contian a
+                        --          tab character.
+                        --
+                        -- using tostring() here so that this function can work
+                        -- when debugging nil event elements.
+    return tostring(self.time)
+            .. '\t' .. tostring(self.amount)
+            .. '\t' .. tostring(self.user)
+end
+
+-- Do these events "match"?
+--
+-- User and amount must be exact.
+-- Time must be within N seconds.
+function Event.Match(a, b)
+    -- d("em f=" .. a:ToString())
+    -- d("em s=" .. b:ToString())
+                        -- ### Eventually this needs to short-circuit
+                        -- ### Leaving it inefficient for now nur zum Debuggen.
+    m1 =  math.abs(a.time - b.time) < TIMESTAMPS_CLOSE_SECS
+    m2 = a.amount == b.amount
+    m3 = a.user   == b.user
+    -- d("em m=" .. tostring(m1) .. " " .. tostring(m2) .. " " .. tostring(m3))
+    return m1 and m2 and m3
+end
 
 -- Init ----------------------------------------------------------------------
 
@@ -46,6 +113,17 @@ function GuildGoldDeposits:Initialize()
                             )
     self:CreateSettingsWindow()
     EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
+end
+
+-- Return false only once.
+-- Avoids infinite invocations.
+function GuildGoldDeposits:BrakesOn()
+    if self.debug_brakes then
+        return true
+    else
+        self.debug_brakes = true
+        return false
+    end
 end
 
 -- UI ------------------------------------------------------------------------
@@ -294,18 +372,16 @@ end
 -- Now that all data from the ESO server is loaded into the ESO client,
 -- extract gold deposits and write to savedVars.
 function GuildGoldDeposits:ServerDataComplete(guild_index)
+    if self:BrakesOn() then return end
+
     guildId = GetGuildId(guild_index)
     guild_name = self.guild_name[guild_index]
     event_ct = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
     --self:SetStatus(guild_index, "scanning events: " .. event_ct .. " ...")
     for i = 1, event_ct do
         t, s, u, a = GetGuildEventInfo(guildId, GUILD_HISTORY_BANK, i)
-        if t == GUILD_EVENT_BANKGOLD_ADDED then
-            event = { type = t
-                    , time = GetTimeStamp() - s
-                    , user = u
-                    , amount = a
-                    }
+        event = Event:FromInfo(t, s, u, a)
+        if event then
             self:RecordEvent(guild_index, event)
         end
     end
@@ -316,8 +392,8 @@ function GuildGoldDeposits:ServerDataComplete(guild_index)
     self:SetStatus(guild_index, "scanned events: " .. event_ct
                    .. "  gold deposits: " .. found_ct)
     self.savedVariables.history[guild_name]
-        = self:MergeHistories( self.event_list[guild_index]
-                             , self.savedVariables.history[guild_name])
+         = self:MergeHistories( self.event_list[guild_index]
+                              , self.savedVariables.history[guild_name])
 end
 
 function GuildGoldDeposits:RecordEvent(guild_index, event)
@@ -325,7 +401,7 @@ function GuildGoldDeposits:RecordEvent(guild_index, event)
         self.event_list[guild_index] = {}
     end
     t = self.event_list[guild_index]
-    table.insert(t, self:EventToString(event))
+    table.insert(t, event:ToString())
 end
 
 -- Merging saved and fetched history -----------------------------------------
@@ -336,24 +412,24 @@ function GuildGoldDeposits:MergeHistories(fetched, saved)
     -- Where in "saved" does "fetch" end?
 
                         -- No saved events? Just use whatever we fecthed.
-    if 0 == #saved then
-        return fetched
-    end
+                        -- If we fetched nothing at all, retain saved
+                        -- unchanged. If nothing saved, return fetch unchanged.
+                        -- Don't even bother to strip older events. Something's
+                        -- probably gone wrong (or the guild has gone very,
+                        -- very, quiet).
+    if 0 == #fetched  then return saved end
+    if 0 == #saved    then return fetched end
+
                         -- Create a short list of the last few fetched events.
                         -- We'll scan saved for these events to match up the
                         -- two lists.
     last_rows = self:LastRows(fetched, 5)
     f_events = {}
     for i,f_row in ipairs(last_rows) do
-        f_event = self:StringToEvent(f_row)
+        f_event = Event:FromString(f_row)
         table.insert(f_events, f_event)
-        d("f_event["..#f_events.."]: " .. f_row)
+        --d("mh f_event["..#f_events.."]: " .. f_event:ToString())
     end
-                        -- If we fetched nothing at all, retain saved
-                        -- unchanged. Don't even bother to strip older events.
-                        -- Something's probably gone wrong (or the guild has
-                        -- gone very, very, quiet).
-    if 0 == #f_events then return fetched end
 
     s_i_found = self:Find(f_events, saved)
     if not s_i_found then
@@ -373,8 +449,7 @@ end
 -- Return nil if not found.
 function GuildGoldDeposits:Find(f_events, saved)
     if (0 == #f_events) or (0 == #saved) then return nil end
-    --for i = 1,#saved
-    do
+    for i = 1,#saved do
         i=#saved
         if self:PatternMatch(i, f_events, saved) then
             return i - #f_events + 1
@@ -391,13 +466,13 @@ function GuildGoldDeposits:PatternMatch(s_i, f_events, saved)
         s_ii    = s_i - i
         f_ii    = #f_events - i
         s_row   = saved[s_ii]
-        s_event = self:StringToEvent(saved[s_i - i])
+        s_event = Event:FromString(saved[s_i - i])
         f_event = f_events[f_ii]
-        match   = self:EventsMatch(f_event, s_event)
+        match   = Event.Match(f_event, s_event)
         d("pm " ..tostring(match)
             .. " s_i:" .. s_i
             .." i:"..i
-            .." f_ii:"..f_ii.." "..self:EventToString(f_event)
+            .." f_ii:"..f_ii.." "..f_event:ToString()
             .." s_ii:"..s_ii.." "..s_row
             )
         if not match then return false end
@@ -411,24 +486,9 @@ function GuildGoldDeposits:LastRows(list, ct)
     r = {}
     for i = math.min(ct, #list),1,-1 do
         list_i = #list-i+1
-        d("lr list[" .. list_i .."] " ..tostring(list[list_i]))
         table.insert(r, list[list_i])
     end
     return r
-end
-
--- Do these rows "match"?
---
--- User and amount must be exact.
--- Time must be within N seconds.
-function GuildGoldDeposits:EventsMatch(f_event, s_event)
-    d("f=" .. self:EventToString(f_event))
-    d("s=" .. self:EventToString(s_event))
-    m1 =  math.abs(f_event.time - s_event.time) < TIMESTAMPS_CLOSE_SECS
-    m2 = f_event.amount == s_event.amount
-    m3 = f_event.user   == s_event.user
-    d("m=" .. tostring(m1) .. " " .. tostring(m2) .. " " .. tostring(m3))
-    return m1 and m2 and m3
 end
 
 -- Postamble -----------------------------------------------------------------
