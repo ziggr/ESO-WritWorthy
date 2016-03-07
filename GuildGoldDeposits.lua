@@ -2,7 +2,7 @@ local LAM2 = LibStub("LibAddonMenu-2.0")
 
 local GuildGoldDeposits = {}
 GuildGoldDeposits.name = "GuildGoldDeposits"
-GuildGoldDeposits.version = 224.1
+GuildGoldDeposits.version = 235.1
 GuildGoldDeposits.default = {
       enable_guild  = { true, true, true, true, true }
 }
@@ -118,12 +118,13 @@ end
 -- Return false only once.
 -- Avoids infinite invocations.
 function GuildGoldDeposits:BrakesOn()
-    if self.debug_brakes then
-        return true
-    else
-        self.debug_brakes = true
-        return false
-    end
+    return false
+    -- if self.debug_brakes then
+    --     return true
+    -- else
+    --     self.debug_brakes = true
+    --     return false
+    -- end
 end
 
 -- UI ------------------------------------------------------------------------
@@ -410,6 +411,7 @@ end
 -- "saved" that comes after "fetched", but not older than max_day_ct
 function GuildGoldDeposits:MergeHistories(fetched, saved)
     -- Where in "saved" does "fetch" end?
+    d("mh f=" .. tostring(fetched) .. " s=" .. tostring(saved))
 
                         -- No saved events? Just use whatever we fecthed.
                         -- If we fetched nothing at all, retain saved
@@ -433,11 +435,11 @@ function GuildGoldDeposits:MergeHistories(fetched, saved)
 
     s_i_found = self:Find(f_events, saved)
     if not s_i_found then
-        d("Not Found, retaining all of saved")
+        d("mh Not Found, retaining all of saved")
         s_overlap_end_i = 0
     else
         s_overlap_end_i = s_i_found + #f_events - 1
-        d("Found, ending in s_i:"..s_overlap_end_i)
+        d("mh Found, ending in s_i:"..s_overlap_end_i)
     end
     for s_i = s_overlap_end_i + 1,#saved do
         table.insert(fetched, saved[s_i])
@@ -450,7 +452,6 @@ end
 function GuildGoldDeposits:Find(f_events, saved)
     if (0 == #f_events) or (0 == #saved) then return nil end
     for i = 1,#saved do
-        i=#saved
         if self:PatternMatch(i, f_events, saved) then
             return i - #f_events + 1
         end
@@ -469,12 +470,12 @@ function GuildGoldDeposits:PatternMatch(s_i, f_events, saved)
         s_event = Event:FromString(saved[s_i - i])
         f_event = f_events[f_ii]
         match   = Event.Match(f_event, s_event)
-        d("pm " ..tostring(match)
-            .. " s_i:" .. s_i
-            .." i:"..i
-            .." f_ii:"..f_ii.." "..f_event:ToString()
-            .." s_ii:"..s_ii.." "..s_row
-            )
+        -- d("pm " ..tostring(match)
+        --     .. " s_i:" .. s_i
+        --     .." i:"..i
+        --     .." f_ii:"..f_ii.." "..f_event:ToString()
+        --     .." s_ii:"..s_ii.." "..s_row
+        --     )
         if not match then return false end
     end
     return true
