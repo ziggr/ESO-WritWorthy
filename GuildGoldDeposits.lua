@@ -5,6 +5,7 @@ GuildGoldDeposits.name = "GuildGoldDeposits"
 GuildGoldDeposits.version = 235.1
 GuildGoldDeposits.default = {
       enable_guild  = { true, true, true, true, true }
+    , history = {}
 }
 GuildGoldDeposits.max_guild_ct = 5
 
@@ -112,7 +113,7 @@ function GuildGoldDeposits:Initialize()
                             , self.default
                             )
     self:CreateSettingsWindow()
-    EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
+    --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
 
 -- Return false only once.
@@ -392,9 +393,16 @@ function GuildGoldDeposits:ServerDataComplete(guild_index)
     end
     self:SetStatus(guild_index, "scanned events: " .. event_ct
                    .. "  gold deposits: " .. found_ct)
+    saved_history = {}
+    if self.savedVariables.history
+        and self.savedVariables.history[guild_name] then
+        saved_history = self.savedVariables.history[guild_name]
+    else
+        self.savedVariables.history = {}
+    end
     self.savedVariables.history[guild_name]
          = self:MergeHistories( self.event_list[guild_index]
-                              , self.savedVariables.history[guild_name])
+                              , saved_history )
 end
 
 function GuildGoldDeposits:RecordEvent(guild_index, event)
