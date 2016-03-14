@@ -1,8 +1,9 @@
 local LAM2 = LibStub("LibAddonMenu-2.0")
 
 local GuildGoldDeposits = {}
-GuildGoldDeposits.name = "GuildGoldDeposits"
-GuildGoldDeposits.version = 235.1
+GuildGoldDeposits.name            = "GuildGoldDeposits"
+GuildGoldDeposits.version         = "2.3.5.1"
+GuildGoldDeposits.savedVarVersion = 2
 GuildGoldDeposits.default = {
       enable_guild  = { true, true, true, true, true }
     , history = {}
@@ -20,7 +21,11 @@ GuildGoldDeposits.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guil
                         -- distrusting "nah, no more history"
 GuildGoldDeposits.retry_ct   = { 0, 0, 0, 0, 0 }
 GuildGoldDeposits.max_retry_ct = 3
-GuildGoldDeposits.max_day_ct = 30 -- how many days to store in SavedVariables
+
+
+                        -- how many days to store in SavedVariables
+                        -- (not yet implemented)
+GuildGoldDeposits.max_day_ct = 30
 
                         -- Latches true when responding to the very first
                         -- "Save Data Now" event so that we don't spin forever.
@@ -108,7 +113,7 @@ end
 function GuildGoldDeposits:Initialize()
     self.savedVariables = ZO_SavedVars:NewAccountWide(
                               "GuildGoldDepositsVars"
-                            , self.version
+                            , self.savedVarVersion
                             , nil
                             , self.default
                             )
@@ -241,6 +246,7 @@ end
 function GuildGoldDeposits:SetStatus(guild_index, msg)
     desc = _G[self.ref_desc(guild_index)].label
     desc:SetText("  " .. msg)
+    d("status " .. tostring(guild_index) .. ":" .. tostring(msg))
 end
 
 -- Set status to "Newest: @user 100,000g  11 hours ago"
@@ -394,15 +400,21 @@ function GuildGoldDeposits:ServerDataComplete(guild_index)
     self:SetStatus(guild_index, "scanned events: " .. event_ct
                    .. "  gold deposits: " .. found_ct)
     saved_history = {}
-    if self.savedVariables.history
-        and self.savedVariables.history[guild_name] then
-        saved_history = self.savedVariables.history[guild_name]
-    else
+    if not self.savedVariables.history then
         self.savedVariables.history = {}
     end
-    self.savedVariables.history[guild_name]
-         = self:MergeHistories( self.event_list[guild_index]
-                              , saved_history )
+    if self.savedVariables.history[guild_name] then
+        saved_history = self.savedVariables.history[guild_name]
+        if 0 < #saved_history and not saved_history[1] then
+            d("sdc ### Just loaded the badness")
+        end
+    end
+    r = self:MergeHistories( self.event_list[guild_index]
+                           , saved_history
+                           , guild_index )
+    self.savedVariables.history[guild_name] = r
+    d("sdc "..tostring(guild_index).."[\""..tostring(guild_name).."\"]"
+      .." = "..tostring(#r) .. " events")
 end
 
 function GuildGoldDeposits:RecordEvent(guild_index, event)
@@ -417,9 +429,8 @@ end
 
 -- Return a new list composed of all of "fetched", and the latter portion of
 -- "saved" that comes after "fetched", but not older than max_day_ct
-function GuildGoldDeposits:MergeHistories(fetched, saved)
+function GuildGoldDeposits:MergeHistories(fetched, saved, guild_index)
     -- Where in "saved" does "fetch" end?
-    d("mh f=" .. tostring(fetched) .. " s=" .. tostring(saved))
 
                         -- No saved events? Just use whatever we fecthed.
                         -- If we fetched nothing at all, retain saved
@@ -427,32 +438,40 @@ function GuildGoldDeposits:MergeHistories(fetched, saved)
                         -- Don't even bother to strip older events. Something's
                         -- probably gone wrong (or the guild has gone very,
                         -- very, quiet).
-    if 0 == #fetched  then return saved end
-    if 0 == #saved    then return fetched end
+    if 0 == #fetched  then
+        self:SetStatus(guild_index, "no new events")
+        if 0 < #saved and not saved[1] then
+            d("mh ### just returned the badness")
+        end
+        return saved
+    end
+    if 0 == #saved then
+        self:SetStatus(guild_index, #fetched .. " all new event(s)")
+        return fetched
+    end
 
-                        -- Create a short list of the last few fetched events.
-                        -- We'll scan saved for these events to match up the
+                        -- Create a short list of the most recent saved events.
+                        -- We'll scan fetched for these events to match up the
                         -- two lists.
-    last_rows = self:LastRows(fetched, 5)
-    f_events = {}
-    for i,f_row in ipairs(last_rows) do
-        f_event = Event:FromString(f_row)
-        table.insert(f_events, f_event)
+    first_rows = self:FirstRows(saved, 5)
+    s_events = {}
+    for i,s_row in ipairs(first_rows) do
+        s_event = Event:FromString(s_row)
+        table.insert(s_events, s_event)
         --d("mh f_event["..#f_events.."]: " .. f_event:ToString())
     end
 
-    s_i_found = self:Find(f_events, saved)
-    if not s_i_found then
-        d("mh Not Found, retaining all of saved")
-        s_overlap_end_i = 0
+    f_i_found = self:Find(s_events, fetched)
+    if not f_i_found then
+        f_i_found = 1
+        self:SetStatus(guild_index, #fetched .. " new event(s), might have dropped some")
     else
-        s_overlap_end_i = s_i_found + #f_events - 1
-        d("mh Found, ending in s_i:"..s_overlap_end_i)
+        self:SetStatus(guild_index, (f_i_found - 1) .. " new event(s)")
     end
-    for s_i = s_overlap_end_i + 1,#saved do
-        table.insert(fetched, saved[s_i])
+    for f_i = 1,f_i_found - 1 do
+        table.insert(saved, f_i, fetched[i])
     end
-    return fetched
+    return saved
 end
 
 -- Return the index into saved that matches f_events.
@@ -489,13 +508,12 @@ function GuildGoldDeposits:PatternMatch(s_i, f_events, saved)
     return true
 end
 
--- Return the last "ct" rows from "list".
+-- Return the first "ct" rows from "list".
 -- Or fewer if list doesn't have that many rows.
-function GuildGoldDeposits:LastRows(list, ct)
+function GuildGoldDeposits:FirstRows(list, ct)
     r = {}
-    for i = math.min(ct, #list),1,-1 do
-        list_i = #list-i+1
-        table.insert(r, list[list_i])
+    for i = 1, math.min(ct, #list) do
+        table.insert(r, list[i])
     end
     return r
 end
