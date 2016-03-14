@@ -18,13 +18,23 @@ end
 
 -- Parse the ["history'] table
 function TableHistory(history)
-    for k,v in pairs(history) do
-        guild_name = k
+    for _, guild_name in pairs(sorted_keys(history)) do
+        v = history[guild_name]
         for _,line in pairs(v) do
             time_secs, amount, user = split(line)
             WriteLine(guild_name, time_secs, amount, user)
         end
     end
+end
+
+-- Return table keys, sorted, as an array
+function sorted_keys(tabl)
+    keys = {}
+    for k in pairs(tabl) do
+        table.insert(keys, k)
+    end
+    table.sort(keys)
+    return keys
 end
 
 function enquote(s)
