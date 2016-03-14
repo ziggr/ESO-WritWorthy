@@ -1,14 +1,14 @@
 GuildGoldDepositsVars =
 {
-    ["Default"] = 
+    ["Default"] =
     {
-        ["@ziggr"] = 
+        ["@ziggr"] =
         {
-            ["$AccountWide"] = 
+            ["$AccountWide"] =
             {
-                ["history"] = 
+                ["history"] =
                 {
-                    ["Eastmarch Trade Company"] = 
+                    ["Eastmarch Trade Company"] =
                     {
                         [1] = "1457910551\t5000\t@Wicked_Mae",
                         [2] = "1457909777\t5000\t@Winter_Night",
@@ -229,7 +229,7 @@ GuildGoldDepositsVars =
                         [217] = "1456562016\t5000\t@AtreyoVitorixPrime",
                         [218] = "1456552181\t30000\t@Rawearth75",
                     },
-                    ["Windhelm Trade Company"] = 
+                    ["Windhelm Trade Company"] =
                     {
                         [1] = "1457884372\t10000\t@sneakyriley",
                         [2] = "1457850642\t5000\t@Tarttt",
@@ -285,7 +285,7 @@ GuildGoldDepositsVars =
                         [52] = "1456564519\t500\t@Tarttt",
                     },
                 },
-                ["enable_guild"] = 
+                ["enable_guild"] =
                 {
                     [1] = false,
                     [2] = false,
@@ -293,7 +293,7 @@ GuildGoldDepositsVars =
                     [4] = false,
                     [5] = true,
                 },
-                ["version"] = 235.1000000000,
+                ["version"] = 2,
             },
         },
     },
