@@ -207,23 +207,36 @@ function GuildGoldDeposits.OnPanelControlsCreated(panel)
     self = GuildGoldDeposits
     guild_ct = GetNumGuilds()
     for guild_index = 1,self.max_guild_ct do
-        cb = _G[self.ref_cb(guild_index)]
-        if guild_index <= guild_ct then
-            guildId   = GetGuildId(guild_index)
-            guildName = GetGuildName(guildId)
-            cb.label:SetText(guildName)
-            cb:SetHidden(false)
-            self.guild_name[guild_index] = guildName
-        else
-                        -- If no guild #N, hide and disable it.
-            cb:SetHidden(true)
-            self.savedVariables.enable_guild[guild_index] = false
-        end
-
-        desc = _G[self.ref_desc(guild_index)]
-        self.ConvertCheckboxToText(desc)
-        self:SetStatusNewest(guild_index)
+        exists = guild_index <= guild_ct
+        self:InitGuildSettings(guild_index, exists)
+        self:InitGuildControls(guild_index, exists)
     end
+end
+
+-- Data portion of init UI
+function GuildGoldDeposits:InitGuildSettings(guild_index, exists)
+    if exists then
+        guildId   = GetGuildId(guild_index)
+        guildName = GetGuildName(guildId)
+        self.guild_name[guild_index] = guildName
+    else
+        self.savedVariables.enable_guild[guild_index] = false
+    end
+end
+
+-- UI portion of init UI
+function GuildGoldDeposits:InitGuildControls(guild_index, exists)
+    cb = _G[self.ref_cb(guild_index)]
+    if exists and cb and cb.label then
+        cb.label:SetText(self.guild_name[guild_index])
+    end
+    if cb then
+        cb:SetHidden(not exists)
+    end
+
+    desc = _G[self.ref_desc(guild_index)]
+    self.ConvertCheckboxToText(desc)
+    self:SetStatusNewest(guild_index)
 end
 
 -- Coerce a checkbox to act like a text label.
@@ -231,7 +244,8 @@ end
 -- I cannot get LibAddonMenu-2.0 "description" items to dynamically update
 -- their text. SetText() has no effect. But SetText() works on "checkbox"
 -- items, so beat those into a text-like UI element.
-function GuildGoldDeposits.ConvertCheckboxToText(cb)
+function GuildGoldDeposits.ConvertCheckboxToText(desc)
+    if not desc then return end
     desc:SetHandler("OnMouseEnter", nil)
     desc:SetHandler("OnMouseExit",  nil)
     desc:SetHandler("OnMouseUp",    nil)
@@ -244,9 +258,11 @@ end
 
 -- Update the per-guild text label with what's going on with that guild data.
 function GuildGoldDeposits:SetStatus(guild_index, msg)
-    desc = _G[self.ref_desc(guild_index)].label
-    desc:SetText("  " .. msg)
     d("status " .. tostring(guild_index) .. ":" .. tostring(msg))
+    x = _G[self.ref_desc(guild_index)]
+    if not x then return end
+    desc = x.label
+    desc:SetText("  " .. msg)
 end
 
 -- Set status to "Newest: @user 100,000g  11 hours ago"
