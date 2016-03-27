@@ -2,7 +2,7 @@ local LAM2 = LibStub("LibAddonMenu-2.0")
 
 local GuildGoldDeposits = {}
 GuildGoldDeposits.name            = "GuildGoldDeposits"
-GuildGoldDeposits.version         = "2.3.5.1"
+GuildGoldDeposits.version         = "2.3.7.2"
 GuildGoldDeposits.savedVarVersion = 2
 GuildGoldDeposits.default = {
       enable_guild  = { true, true, true, true, true }
@@ -456,9 +456,6 @@ function GuildGoldDeposits:MergeHistories(fetched, saved, guild_index)
                         -- very, quiet).
     if 0 == #fetched  then
         self:SetStatus(guild_index, "no new events")
-        if 0 < #saved and not saved[1] then
-            d("mh ### just returned the badness")
-        end
         return saved
     end
     if 0 == #saved then
