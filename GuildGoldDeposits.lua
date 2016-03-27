@@ -118,7 +118,7 @@ function GuildGoldDeposits:CreateSettingsWindow()
         displayName         = "Guild Gold Deposits",
         author              = "ziggr",
         version             = self.version,
-        slashCommand        = "/gg",
+        --slashCommand        = "/gg",
         registerForRefresh  = true,
         registerForDefaults = false,
     }
