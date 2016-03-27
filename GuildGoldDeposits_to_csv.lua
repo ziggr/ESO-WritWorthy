@@ -18,8 +18,15 @@ end
 
 -- Parse the ["history'] table
 function TableHistory(history)
+                        -- Sort by guild name to avoid Lua table's tendency
+                        -- to flip keys around randomly. Keep the file stable
+                        -- for diffing and human sanity.
     for _, guild_name in pairs(sorted_keys(history)) do
         v = history[guild_name]
+                        -- reverse alpha sort ISO 8601 dates will correctly
+                        -- put most recent history to top and oldest history
+                        -- to bottom of file.
+        table.sort(v, function(a,b) return b < a end )
         for _,line in pairs(v) do
             time_secs, amount, user = split(line)
             WriteLine(guild_name, time_secs, amount, user)
