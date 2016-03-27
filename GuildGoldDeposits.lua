@@ -81,22 +81,6 @@ function Event:ToString()
             .. '\t' .. tostring(self.user)
 end
 
--- Do these events "match"?
---
--- User and amount must be exact.
--- Time must be within N seconds.
-function Event.Match(a, b)
-    -- d("em f=" .. a:ToString())
-    -- d("em s=" .. b:ToString())
-                        -- ### Eventually this needs to short-circuit
-                        -- ### Leaving it inefficient for now nur zum Debuggen.
-    m1 =  math.abs(a.time - b.time) < TIMESTAMPS_CLOSE_SECS
-    m2 = a.amount == b.amount
-    m3 = a.user   == b.user
-    -- d("em m=" .. tostring(m1) .. " " .. tostring(m2) .. " " .. tostring(m3))
-    return m1 and m2 and m3
-end
-
 -- Init ----------------------------------------------------------------------
 
 function GuildGoldDeposits.OnAddOnLoaded(event, addonName)
@@ -242,7 +226,7 @@ end
 
 -- Update the per-guild text label with what's going on with that guild data.
 function GuildGoldDeposits:SetStatus(guild_index, msg)
-    d("status " .. tostring(guild_index) .. ":" .. tostring(msg))
+    --d("status " .. tostring(guild_index) .. ":" .. tostring(msg))
     x = _G[self.ref_desc(guild_index)]
     if not x then return end
     desc = x.label
