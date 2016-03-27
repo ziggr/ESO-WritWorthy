@@ -3,8 +3,6 @@ Using that information to drive a weekly guild raffle?
 
 This add-on scans guild bank history, then saves all gold deposits to a SavedVariables file. It can then convert that SavedVariables file to a CSV comma-separated-value file suitable for import into a spreadsheet.
 
-Version 2.3.5.1 now retains history longer than the ESO Server. (In a month or two I'll add code to start forgetting after 30 days.)
-
 [LIST=1]
 [*]Click "Save Data Now" button. Add-on will fetch Guild Bank history from ESO's server and note all gold deposits.
 [*]Log out (or relog). ESO will then save data, writing SavedVariables/GuildGoldDeposits.lua.
