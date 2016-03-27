@@ -9,12 +9,12 @@ GuildGoldDeposits.default = {
     , history = {}
 }
 GuildGoldDeposits.max_guild_ct = 5
+GuildGoldDeposits.fetching = { false, false, false, false, false }
 
-                        -- event_list[guild_index] = { list of event strings }
+
+                        -- fetched_str_list[guild_index] = { list of event strings }
                         -- loaded from the current "Save Now" run.
-                        -- Eventually these become the front part of
-                        -- savedVariables.guild_history[guildName]
-GuildGoldDeposits.event_list = {}
+GuildGoldDeposits.fetched_str_list = {}
 GuildGoldDeposits.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guild"
 
                         -- retry_ct[guild_index] = how many retries after
@@ -26,10 +26,6 @@ GuildGoldDeposits.max_retry_ct = 3
                         -- how many days to store in SavedVariables
                         -- (not yet implemented)
 GuildGoldDeposits.max_day_ct = 30
-
-                        -- Latches true when responding to the very first
-                        -- "Save Data Now" event so that we don't spin forever.
-GuildGoldDeposits.debug_brakes = false
 
 local TIMESTAMPS_CLOSE_SECS = 10
 
@@ -119,18 +115,6 @@ function GuildGoldDeposits:Initialize()
                             )
     self:CreateSettingsWindow()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
-end
-
--- Return false only once.
--- Avoids infinite invocations.
-function GuildGoldDeposits:BrakesOn()
-    return false
-    -- if self.debug_brakes then
-    --     return true
-    -- else
-    --     self.debug_brakes = true
-    --     return false
-    -- end
 end
 
 -- UI ------------------------------------------------------------------------
@@ -236,7 +220,7 @@ function GuildGoldDeposits:InitGuildControls(guild_index, exists)
 
     desc = _G[self.ref_desc(guild_index)]
     self.ConvertCheckboxToText(desc)
-    self:SetStatusNewest(guild_index)
+    self:SetStatusNewestSaved(guild_index)
 end
 
 -- Coerce a checkbox to act like a text label.
@@ -266,10 +250,19 @@ function GuildGoldDeposits:SetStatus(guild_index, msg)
 end
 
 -- Set status to "Newest: @user 100,000g  11 hours ago"
-function GuildGoldDeposits:SetStatusNewest(guild_index)
-    line = self:SavedHistoryNewest(guild_index)
-    if not line then return end
-    event = self:StringToEvent(line)
+function GuildGoldDeposits:SetStatusNewestSaved(guild_index)
+    event = self:SavedHistoryNewest(guild_index)
+    self:SetStatusNewest(guild_index, event)
+end
+
+function GuildGoldDeposits:SetStatusNewestFetched(guild_index)
+    event = self:FetchedNewest(guild_index)
+    self:SetStatusNewest(guild_index, event)
+end
+
+function GuildGoldDeposits:SetStatusNewest(guild_index, event)
+    if not event then return end
+
     now_ts = GetTimeStamp()
     ago_secs = GetDiffBetweenTimeStamps(now_ts, event.time)
     ago_str  = FormatTimeSeconds(ago_secs
@@ -278,7 +271,7 @@ function GuildGoldDeposits:SetStatusNewest(guild_index)
                     , TIME_FORMAT_DIRECTION_DESCENDING
                     )
 
-    self:SetStatus(guild_index, "Newest deposit: " .. event.user
+    self:SetStatus(guild_index, "Newest: " .. event.user
                      .. " " .. event.amount .. "g  " .. ago_str .. " ago")
 end
 
@@ -318,16 +311,28 @@ function GuildGoldDeposits:StringToEvent(str)
            }
 end
 
--- Return the one newest history line, if any, from our previous save.
+-- Return the one newest event, if any, from our previous save.
 -- Return nil if not.
 function GuildGoldDeposits:SavedHistoryNewest(guild_index)
     guildName = GetGuildName(guildId)
     if not self.savedVariables then return nil end
     if not self.savedVariables.history then return nil end
-    history = self.savedVariables.history[guildName]
-    if not history then return nil end
-    if not (1 <= #history) then return nil end
-    return history[1]
+    return self:Newest(self.savedVariables.history[guildName])
+end
+
+-- Return the Event of the most recent event string from
+-- a list of event strings.
+function GuildGoldDeposits:Newest(str_list)
+    if not str_list then return nil end
+    if not (1 <= #str_list) then return nil end
+    newest_event = self:StringToEvent(str_list[1])
+    for _,line in ipairs(str_list) do
+        e = self:StringToEvent(line)
+        if newest_event.time < e.time then
+            newest_event = e
+        end
+    end
+    return newest_event
 end
 
 -- Fetch Guild Data from the server ------------------------------------------
@@ -340,7 +345,7 @@ end
 -- to _what_?
 
 function GuildGoldDeposits:SaveNow()
-    self.event_list = {}
+    self.fetched_str_list = {}
     for guild_index = 1, self.max_guild_ct do
         if self.savedVariables.enable_guild[guild_index] then
             self:SaveGuildIndex(guild_index)
@@ -358,11 +363,8 @@ end
 -- Download one guild's history
 function GuildGoldDeposits:SaveGuildIndex(guild_index)
     guildId = GetGuildId(guild_index)
+    self.fetching[guild_index] = true
     self:SetStatus(guild_index, "downloading history...")
-    event_ct = 0
-    found_ct = 0
-    loop_ct = 0
-    loop_max = 100
     RequestGuildHistoryCategoryNewest(guildId, GUILD_HISTORY_BANK)
 
                         -- Start an asynchronous callback chain to slowly
@@ -396,7 +398,16 @@ end
 -- Now that all data from the ESO server is loaded into the ESO client,
 -- extract gold deposits and write to savedVars.
 function GuildGoldDeposits:ServerDataComplete(guild_index)
-    if self:BrakesOn() then return end
+                        -- Avoid infinite noise if a Lua error in here
+                        -- causes a repeated callback. Mostly useful when
+                        -- debugging, shouldn't be an issue when we're
+                        -- not buggy.
+    if not self.fetching[guild_index] then return end
+
+                        -- Latch false (until next time user clicks "Save Now")
+                        -- so that we know not to re-complete this guild.
+                        -- And so we know when all guilds are complete.
+    self.fetching[guild_index] = false
 
     guildId = GetGuildId(guild_index)
     guild_name = self.guild_name[guild_index]
@@ -410,125 +421,50 @@ function GuildGoldDeposits:ServerDataComplete(guild_index)
         end
     end
     found_ct = 0
-    if self.event_list[guild_index] then
-        found_ct = #self.event_list[guild_index]
+    if self.fetched_str_list[guild_index] then
+        found_ct = #self.fetched_str_list[guild_index]
     end
-    self:SetStatus(guild_index, "scanned events: " .. event_ct
-                   .. "  gold deposits: " .. found_ct)
-    saved_history = {}
-    if not self.savedVariables.history then
-        self.savedVariables.history = {}
+    self.savedVariables.history[guild_name] = self.fetched_str_list[guild_index]
+    self:SetStatusNewestFetched(guild_index)
+
+                        -- I got sick of forgetting to relog, and I _wrote_
+                        -- this thing. I can only imagine how many poor
+                        -- unsuspecting users will get caught by "Oh, forgot to
+                        -- relog!" if I don't add a reminder.
+    if not self:StillFetchingAny() then
+        ct = self:FetchedEventCt()
+        d(self.name .. ": saved " ..tostring(ct).. " deposit record(s)." )
+        d(self.name .. ": Log out or Quit to write file.")
     end
-    if self.savedVariables.history[guild_name] then
-        saved_history = self.savedVariables.history[guild_name]
-        if 0 < #saved_history and not saved_history[1] then
-            d("sdc ### Just loaded the badness")
+end
+
+function GuildGoldDeposits:FetchedEventCt()
+    total_ct = 0
+    for _,fetched_str_list in pairs(self.fetched_str_list) do
+        if fetched_str_list then
+            total_ct = total_ct + #fetched_str_list
         end
     end
-    r = self:MergeHistories( self.event_list[guild_index]
-                           , saved_history
-                           , guild_index )
-    self.savedVariables.history[guild_name] = r
-    d("sdc "..tostring(guild_index).."[\""..tostring(guild_name).."\"]"
-      .." = "..tostring(#r) .. " events")
+    return total_ct
+end
+
+function GuildGoldDeposits:StillFetchingAny()
+    for _,v in pairs(self.fetching) do
+        if v then return true end
+    end
+    return false
 end
 
 function GuildGoldDeposits:RecordEvent(guild_index, event)
-    if not self.event_list[guild_index] then
-        self.event_list[guild_index] = {}
+    if not self.fetched_str_list[guild_index] then
+        self.fetched_str_list[guild_index] = {}
     end
-    t = self.event_list[guild_index]
+    t = self.fetched_str_list[guild_index]
     table.insert(t, event:ToString())
 end
 
--- Merging saved and fetched history -----------------------------------------
-
--- Return a new list composed of all of "fetched", and the latter portion of
--- "saved" that comes after "fetched", but not older than max_day_ct
-function GuildGoldDeposits:MergeHistories(fetched, saved, guild_index)
-    -- Where in "saved" does "fetch" end?
-
-                        -- No saved events? Just use whatever we fecthed.
-                        -- If we fetched nothing at all, retain saved
-                        -- unchanged. If nothing saved, return fetch unchanged.
-                        -- Don't even bother to strip older events. Something's
-                        -- probably gone wrong (or the guild has gone very,
-                        -- very, quiet).
-    if 0 == #fetched  then
-        self:SetStatus(guild_index, "no new events")
-        return saved
-    end
-    if 0 == #saved then
-        self:SetStatus(guild_index, #fetched .. " all new event(s)")
-        return fetched
-    end
-
-                        -- Create a short list of the most recent saved events.
-                        -- We'll scan fetched for these events to match up the
-                        -- two lists.
-    first_rows = self:FirstRows(saved, 5)
-    s_events = {}
-    for i,s_row in ipairs(first_rows) do
-        s_event = Event:FromString(s_row)
-        table.insert(s_events, s_event)
-        --d("mh f_event["..#f_events.."]: " .. f_event:ToString())
-    end
-
-    f_i_found = self:Find(s_events, fetched)
-    if not f_i_found then
-        f_i_found = 1
-        self:SetStatus(guild_index, #fetched .. " new event(s), might have dropped some")
-    else
-        self:SetStatus(guild_index, (f_i_found - 1) .. " new event(s)")
-    end
-    for f_i = 1,f_i_found - 1 do
-        table.insert(saved, f_i, fetched[i])
-    end
-    return saved
-end
-
--- Return the index into saved that matches f_events.
--- Return nil if not found.
-function GuildGoldDeposits:Find(f_events, saved)
-    if (0 == #f_events) or (0 == #saved) then return nil end
-    for i = 1,#saved do
-        if self:PatternMatch(i, f_events, saved) then
-            return i - #f_events + 1
-        end
-    end
-    return nil
-end
-
--- If saved[s_i] and its precursors match f_events, return true.
--- If not, return false.
-function GuildGoldDeposits:PatternMatch(s_i, f_events, saved)
-    s_event = {}
-    for i = 0, math.min(s_i, #f_events) - 1 do
-        s_ii    = s_i - i
-        f_ii    = #f_events - i
-        s_row   = saved[s_ii]
-        s_event = Event:FromString(saved[s_i - i])
-        f_event = f_events[f_ii]
-        match   = Event.Match(f_event, s_event)
-        -- d("pm " ..tostring(match)
-        --     .. " s_i:" .. s_i
-        --     .." i:"..i
-        --     .." f_ii:"..f_ii.." "..f_event:ToString()
-        --     .." s_ii:"..s_ii.." "..s_row
-        --     )
-        if not match then return false end
-    end
-    return true
-end
-
--- Return the first "ct" rows from "list".
--- Or fewer if list doesn't have that many rows.
-function GuildGoldDeposits:FirstRows(list, ct)
-    r = {}
-    for i = 1, math.min(ct, #list) do
-        table.insert(r, list[i])
-    end
-    return r
+function GuildGoldDeposits:FetchedNewest(guild_index)
+    return self:Newest(self.fetched_str_list[guild_index])
 end
 
 -- Postamble -----------------------------------------------------------------
