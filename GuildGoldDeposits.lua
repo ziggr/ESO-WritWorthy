@@ -2,7 +2,7 @@ local LAM2 = LibStub("LibAddonMenu-2.0")
 
 local GuildGoldDeposits = {}
 GuildGoldDeposits.name            = "GuildGoldDeposits"
-GuildGoldDeposits.version         = "2.3.7.2"
+GuildGoldDeposits.version         = "2.4.1"
 GuildGoldDeposits.savedVarVersion = 2
 GuildGoldDeposits.default = {
       enable_guild  = { true, true, true, true, true }
