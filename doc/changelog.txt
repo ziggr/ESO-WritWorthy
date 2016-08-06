@@ -1,3 +1,8 @@
+[B]2.5.1 2016-08-06[/B]
+[LIST]
+[*]Increment API version for ESO 2.5 (Shadows of the Hist). No other changes.
+[/LIST]
+
 [B]2.4.1 2016-05-31[/B]
 [LIST]
 [*]Increment API version for ESO 2.4 (Dark Brotherhood). No other changes.
