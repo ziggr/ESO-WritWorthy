@@ -22,6 +22,17 @@ GuildBankLedger.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guild"
 GuildBankLedger.retry_ct   = { 0, 0, 0, 0, 0 }
 GuildBankLedger.max_retry_ct = 3
 
+                        -- ESO API feeds us the same bank event over and over.
+                        -- If the current event is within this many seconds of
+                        -- the previous event, and the other fields all match,
+                        -- then ignore it as a duplicate.
+GuildBankLedger.TS_CLOSE_SECS = 2
+
+GuildBankLedger.ET_DEPOSIT_GOLD  = "dep_gold"
+GuildBankLedger.ET_DEPOSIT_ITEM  = "dep_item"
+GuildBankLedger.ET_WITHDRAW_GOLD = "wd_gold"
+GuildBankLedger.ET_WITHDRAW_ITEM = "wd_item"
+
 -- Event ---------------------------------------------------------------------
 -- One row in our savedVariables history
 --
@@ -31,48 +42,85 @@ GuildBankLedger.max_retry_ct = 3
 --
 local Event = {}
 
--- If this is a gold deposit, return a row. If not, return nil.
+function bs(x,c,a,o)
+    if x then
+        return string.upper(c) .. ":" .. tostring(a) .. "==" .. tostring(o)
+    else
+        return string.lower(c) .. ":" .. tostring(a) .. "!=" .. tostring(o)
+    end
+end
+function bbss(t1,a1,o1
+             ,t2,a2,o2
+             ,t3,a3,o3
+             ,t4,a4,o4
+             ,t5,a5,o5
+             ,t6,a6,o6
+             ,t7,a7,o7
+             ,t8,a8,o8
+             )
+    d(  bs(t1," t",a1,o1)
+      ..bs(t2," u",a2,o2)
+      ..bs(t3," g",a3,o3)
+      ..bs(t4," y",a4,o4)
+      ..bs(t5," c",a5,o5)
+      ..bs(t6," n",a6,o6)
+      ..bs(t7," l",a7,o7)
+      ..bs(t8," m",a8,o8)
+      )
+end
+function Event:Matches(other, ts_close_sec)
+    if not (other and other.time and self.time and ts_close_sec) then return false end
+    t1 = math.abs(other.time - self.time) <= ts_close_sec
+    t2 = self.user       == other.user
+    t3 = self.gold_ct    == other.gold_ct
+    t4 = self.trans_type == other.trans_type
+    t5 = self.item_ct    == other.item_ct
+    t6 = self.item_name  == other.item_name
+    t7 = self.item_link  == other.item_link
+    t8 = self.item_mm    == other.item_mm
+    d(bbss(t1, self.time      , other.time
+          ,t2, self.user      , other.user
+          ,t3, self.gold_ct   , other.gold_ct
+          ,t4, self.trans_type, other.trans_typ
+          ,t5, self.item_ct   , other.item_ct
+          ,t6, self.item_name , other.item_name
+          ,t7, self.item_link , other.item_link
+          ,t8, self.item_mm   , other.item_mm
+        ))
+    return t1 and t2 and t3 and t4 and t5 and t6 and t7 and t8
+end
+
+-- If this is a deposit or withdrawal that we understand, return an Event with
+-- its data. If not, return nil.
 function Event:FromInfo(event_type, since_secs, p1, p2, p3, p4, p5, p6)
+    local o = { time       = GetTimeStamp() - since_secs
+              , user       = nil
+              , gold_ct    = nil
+              , trans_type = nil
+              , item_ct    = nil
+              , item_name  = nil
+              , item_link  = nil
+              , item_mm    = nil
+              }
+
     if event_type == GUILD_EVENT_BANKGOLD_ADDED then
-        local o = { time       = GetTimeStamp() - since_secs
-                  , user       = p1
-                  , gold_ct    = p2
-                  , trans_type = "dep_gold"
-                  , item_ct    = nil
-                  , item_name  = nil
-                  , item_link  = nil
-                  , item_mm    = nil
-                  }
+        o.user       = p1
+        o.gold_ct    = p2
+        o.trans_type = GuildBankLedger.ET_DEPOSIT_GOLD
     elseif event_type == GUILD_EVENT_BANKGOLD_REMOVED then
-              o = { time       = GetTimeStamp() - since_secs
-                  , user       = p1
-                  , gold_ct    = p2
-                  , trans_type = "wd_gold"
-                  , item_ct    = nil
-                  , item_name  = nil
-                  , item_link  = nil
-                  , item_mm    = nil
-                  }
+        o.user       = p1
+        o.gold_ct    = p2
+        o.trans_type = GuildBankLedger.ET_WITHDRAW_GOLD
     elseif event_type == GUILD_EVENT_BANKITEM_ADDED then
-              o = { time       = GetTimeStamp() - since_secs
-                  , user       = p1
-                  , gold_ct    = nil
-                  , trans_type = "dep_item"
-                  , item_ct    = p2
-                  , item_name  = nil
-                  , item_link  = p3
-                  , item_mm    = nil
-                  }
+        o.user       = p1
+        o.trans_type = GuildBankLedger.ET_DEPOSIT_ITEM
+        o.item_ct    = p2
+        o.item_link  = p3
     elseif event_type == GUILD_EVENT_BANKITEM_REMOVED then
-              o = { time       = GetTimeStamp() - since_secs
-                  , user       = p1
-                  , gold_ct    = nil
-                  , trans_type = "wd_item"
-                  , item_ct    = p2
-                  , item_name  = nil
-                  , item_link  = p3
-                  , item_mm    = nil
-                  }
+        o.user       = p1
+        o.trans_type = GuildBankLedger.ET_WITHDRAW_ITEM
+        o.item_ct    = p2
+        o.item_link  = p3
     else
        return nil
     end
@@ -95,7 +143,7 @@ function Event:HeaderList()
     return o
 end
 
-function Event.ToNumber(str)
+function Event.tonum(str)
     if str == "nil" or str == "" then
         return nil
     else
@@ -103,7 +151,7 @@ function Event.ToNumber(str)
     end
 end
 
-function Event.ToString(str)
+function Event.tostr(str)
     if str == "nil" or str == "" then
         return nil
     else
@@ -113,14 +161,18 @@ end
 
 function Event:FromString(str)
     local s1, s2, s3, s4, s5, s6, s7, s8 = GuildBankLedger:split(str)
-    local o = { time       = tonumber(s1)
+    local t = tonumber(s1)
+    if not (t and s2 and s3) then
+        return nil
+    end
+    local o = { time       = t
               , user       = s2
               , trans_type = s3
-              , gold_ct    = Event.ToNumber(s4)
-              , item_ct    = Event.ToNumber(s5)
-              , item_name  = Event.ToString(s6)
-              , item_link  = Event.ToString(s7)
-              , item_mm    = Event.ToNumber(s8)
+              , gold_ct    = Event.tonum(s4)
+              , item_ct    = Event.tonum(s5)
+              , item_name  = Event.tostr(s6)
+              , item_link  = Event.tostr(s7)
+              , item_mm    = Event.tonum(s8)
               }
 
     setmetatable(o, self)
@@ -147,6 +199,31 @@ function Event:ToString()
             .. '\t' .. tostring(self.item_link  )
             .. '\t' .. tostring(self.item_mm    )
 end
+
+function Event:ToDisplayText()
+    if self.trans_type == GuildBankLedger.ET_DEPOSIT_GOLD
+    or self.trans_type == GuildBankLedger.ET_WITHDRAW_GOLD then
+        return tostring(self.time)
+                .. " " .. self.user
+                .. " " .. self.trans_type
+                .. " " .. self.gold_ct
+                .. "g"
+
+    elseif self.trans_type == GuildBankLedger.ET_DEPOSIT_ITEM
+    or     self.trans_type == GuildBankLedger.ET_WITHDRAW_ITEM then
+        return tostring(self.time)
+                .. " "  .. self.user
+                .. " "  .. self.trans_type
+                .. " "  .. self.item_ct
+                .. "x " .. self.item_link
+
+    else
+        return "Event:time=" .. tostring(self.time)
+                .. " user=" .. tostring(self.user)
+                .. " type=" .. tostring(self.trans_type)
+    end
+end
+
 
 -- Init ----------------------------------------------------------------------
 
@@ -374,8 +451,10 @@ function GuildBankLedger:Newest(str_list)
     local newest_event = Event:FromString(str_list[1])
     for _,line in ipairs(str_list) do
         local e = Event:FromString(line)
-        if newest_event.time < e.time then
-            newest_event = e
+        if e then
+            if (not newest_event) or newest_event.time < e.time then
+                newest_event = e
+            end
         end
     end
     return newest_event
@@ -425,10 +504,6 @@ end
 function GuildBankLedger:ServerDataPoll(guild_index)
     local guildId = GetGuildId(guild_index)
     local more = DoesGuildHistoryCategoryHaveMoreEvents(guildId, GUILD_HISTORY_BANK)
-    -- LOOP LIMITER WHILE DEVELOPING
-    if self:FetchedEventCt() > 10 then
-        more = false
-    end
     local event_ct = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
     self:SetStatus(guild_index, "fetching events: " .. event_ct .. " ...")
     local can_retry =    (not self.retry_ct[guild_index])
@@ -459,15 +534,18 @@ function GuildBankLedger:ServerDataComplete(guild_index)
                         -- And so we know when all guilds are complete.
     self.fetching[guild_index] = false
 
-    local guildId = GetGuildId(guild_index)
+    local guildId    = GetGuildId(guild_index)
     local guild_name = self.guild_name[guild_index]
-    local event_ct = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
-    --self:SetStatus(guild_index, "scanning events: " .. event_ct .. " ...")
+    local event_ct   = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
+    self:SetStatus(guild_index, "scanning events: " .. event_ct .. " ...")
+    local prev_event = nil  -- To detect and ignore duplicate reports of same event.
     for i = 1, event_ct do
         local event_type, secs_ago, p1, p2, p3, p4, p5, p6 = GetGuildEventInfo(guildId, GUILD_HISTORY_BANK, i)
         local event = Event:FromInfo(event_type, secs_ago, p1, p2, p3, p4, p5, p6)
         if event then
+            -- d("record  : " .. event:ToDisplayText())
             self:RecordEvent(guild_index, event)
+            prev_event = event
         end
     end
     local found_ct = 0
