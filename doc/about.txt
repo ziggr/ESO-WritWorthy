@@ -1,18 +1,18 @@
 Want to know which guild members donated gold to the guild this week?
-Using that information to drive a weekly guild raffle?
+Who deposited all those crafting materials? Who withdrew them?
 
-This add-on scans guild bank history, then saves all gold deposits to a SavedVariables file. It can then convert that SavedVariables file to a CSV comma-separated-value file suitable for import into a spreadsheet.
+This add-on scans guild bank history, then saves all deposits and withdrawals to a SavedVariables file. It can then convert that SavedVariables file to a CSV comma-separated-value file suitable for import into a spreadsheet.
 
 [LIST=1]
 [*]Click "Save Data Now" button. Add-on will fetch Guild Bank history from ESO's server and note all gold deposits.
-[*]Log out (or relog). ESO will then save data, writing SavedVariables/GuildGoldDeposits.lua.
+[*]Log out (or relog). ESO will then save data, writing SavedVariables/GuildBankLedger.lua.
 [*]From a terminal window, run
-[FONT="Courier New"]% cd ~/Documents/Elder Scrolls Online/live/AddOns/GuildGoldDeposits
-% lua GuildGoldDeposits_to_csv.lua
-[/FONT]This creates SavedVariables/GuildGoldDeposits.csv
-[*]Import GuildGoldDeposits.csv into a spreadsheet.
+[FONT="Courier New"]% cd ~/Documents/Elder Scrolls Online/live/AddOns/GuildBankLedger
+% lua GuildBankLedger_to_csv.lua
+[/FONT]This creates SavedVariables/GuildBankLedger.csv
+[*]Import GuildBankLedger.csv into a spreadsheet.
 [/LIST]
 
-[FONT="Courier New"]GuildGoldDeposits_to_csv.lua[/FONT] requires that you have downloaded and installed a standalone Lua interpreter, presumably from [URL="http://www.lua.org/"]lua.org[/URL].
+[FONT="Courier New"]GuildBankLedger_to_csv.lua[/FONT] requires that you have downloaded and installed a standalone Lua interpreter, presumably from [URL="http://www.lua.org/"]lua.org[/URL].
 
 --Z

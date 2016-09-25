@@ -1,22 +1,5 @@
-[B]2.5.1 2016-08-06[/B]
+[B]2.5.2 2016-09-25[/B]
 [LIST]
-[*]Increment API version for ESO 2.5 (Shadows of the Hist). No other changes.
+[*]Create new project, based on GuildGoldDeposits 2.5.1.
 [/LIST]
 
-[B]2.4.1 2016-05-31[/B]
-[LIST]
-[*]Increment API version for ESO 2.4 (Dark Brotherhood). No other changes.
-[/LIST]
-
-[B]2.3.7.2 2016-03-27[/B]
-[LIST]
-[*]No longer retain older history even after the ESO server forgets it. This never worked well and would too often mysteriously not save recent history.
-[*]After done fetching from server, display in UI most recent deposits, then write "relog to write file" in chat window. I kept forgetting to relog and then wondered why no new data was showing up.
-[/LIST]
-
-
-[B]2.3.5.1 2016-03-13[/B]
-[LIST]
-[*]Update ESO API to latest version.
-[*]Retain older history even after the ESO server forgets it.
-[/LIST]

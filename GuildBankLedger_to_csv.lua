@@ -1,8 +1,8 @@
--- Read the SavedVariables file that GuildGoldDeposits creates  and convert
+-- Read the SavedVariables file that GuildBankLedger creates  and convert
 -- that to a spreadsheet-compabitle CSV (comma-separated value) file.
 
-IN_FILE_PATH  = "../../SavedVariables/GuildGoldDeposits.lua"
-OUT_FILE_PATH = "../../SavedVariables/GuildGoldDeposits.csv"
+IN_FILE_PATH  = "../../SavedVariables/GuildBankLedger.lua"
+OUT_FILE_PATH = "../../SavedVariables/GuildBankLedger.csv"
 dofile(IN_FILE_PATH)
 OUT_FILE = assert(io.open(OUT_FILE_PATH, "w"))
 
@@ -74,10 +74,10 @@ end
 
 
 -- For each account
-for k, v in pairs(GuildGoldDepositsVars["Default"]) do
-    if (    GuildGoldDepositsVars["Default"][k]["$AccountWide"]
-        and GuildGoldDepositsVars["Default"][k]["$AccountWide"]["history"]) then
-        TableHistory(GuildGoldDepositsVars["Default"][k]["$AccountWide"]["history"])
+for k, v in pairs(GuildBankLedgerVars["Default"]) do
+    if (    GuildBankLedgerVars["Default"][k]["$AccountWide"]
+        and GuildBankLedgerVars["Default"][k]["$AccountWide"]["history"]) then
+        TableHistory(GuildBankLedgerVars["Default"][k]["$AccountWide"]["history"])
     end
 end
 OUT_FILE:close()
