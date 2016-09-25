@@ -2,20 +2,20 @@
 
 put:
 	git commit -am auto
-	cp -f ./GuildGoldDeposits.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/GuildGoldDeposits/
+	cp -f ./GuildBankLedger.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/GuildBankLedger/
 
 get:
-	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/GuildGoldDeposits.lua ../../SavedVariables/
-	cp -f ../../SavedVariables/GuildGoldDeposits.lua data/
+	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/GuildBankLedger.lua ../../SavedVariables/
+	cp -f ../../SavedVariables/GuildBankLedger.lua data/
 
-csv: ../../SavedVariables/GuildGoldDeposits.lua
-	lua GuildGoldDeposits_to_csv.lua
-	cp -f ../../SavedVariables/GuildGoldDeposits.csv data/
+csv: ../../SavedVariables/GuildBankLedger.lua
+	lua GuildBankLedger.lua
+	cp -f ../../SavedVariables/GuildBankLedger.csv data/
 
 zip:
-	-rm -rf published/GuildGoldDeposits published/GuildGoldDeposits\ x.x.x.x.zip
-	mkdir -p published/GuildGoldDeposits
-	cp -R Libs published/GuildGoldDeposits/Libs
-	cp ./GuildGoldDeposits* published/GuildGoldDeposits/
-	cd published; zip -r GuildGoldDeposits\ x.x.x.x.zip GuildGoldDeposits
+	-rm -rf published/GuildBankLedger published/GuildBankLedger\ x.x.x.x.zip
+	mkdir -p published/GuildBankLedger
+	cp -R Libs published/GuildBankLedger/Libs
+	cp ./GuildBankLedger* published/GuildBankLedger/
+	cd published; zip -r GuildBankLedger\ x.x.x.x.zip GuildBankLedger
 

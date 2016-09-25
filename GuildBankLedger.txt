@@ -1,5 +1,5 @@
-## Title: Guild Gold Deposits
-## Description: Guild Gold Deposits version 2.5.1
+## Title: Guild Bank Ledger
+## Description: Guild Bank Ledger version 2.5.2
 ## Author: ziggr
 ## APIVersion: 100016
 ## SavedVariables: GuildBankLedgerVars
