@@ -9,7 +9,7 @@ get:
 	cp -f ../../SavedVariables/GuildBankLedger.lua data/
 
 csv: ../../SavedVariables/GuildBankLedger.lua
-	lua GuildBankLedger.lua
+	lua GuildBankLedger_to_csv.lua
 	cp -f ../../SavedVariables/GuildBankLedger.csv data/
 
 zip:
