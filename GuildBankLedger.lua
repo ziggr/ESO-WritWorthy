@@ -22,12 +22,6 @@ GuildBankLedger.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guild"
 GuildBankLedger.retry_ct   = { 0, 0, 0, 0, 0 }
 GuildBankLedger.max_retry_ct = 3
 
-                        -- ESO API feeds us the same bank event over and over.
-                        -- If the current event is within this many seconds of
-                        -- the previous event, and the other fields all match,
-                        -- then ignore it as a duplicate.
-GuildBankLedger.TS_CLOSE_SECS = 2
-
 GuildBankLedger.ET_DEPOSIT_GOLD  = "dep_gold"
 GuildBankLedger.ET_DEPOSIT_ITEM  = "dep_item"
 GuildBankLedger.ET_WITHDRAW_GOLD = "wd_gold"
@@ -41,54 +35,6 @@ GuildBankLedger.ET_WITHDRAW_ITEM = "wd_item"
 -- Named fields instead of table indices.
 --
 local Event = {}
-
-function bs(x,c,a,o)
-    if x then
-        return string.upper(c) .. ":" .. tostring(a) .. "==" .. tostring(o)
-    else
-        return string.lower(c) .. ":" .. tostring(a) .. "!=" .. tostring(o)
-    end
-end
-function bbss(t1,a1,o1
-             ,t2,a2,o2
-             ,t3,a3,o3
-             ,t4,a4,o4
-             ,t5,a5,o5
-             ,t6,a6,o6
-             ,t7,a7,o7
-             ,t8,a8,o8
-             )
-    d(  bs(t1," t",a1,o1)
-      ..bs(t2," u",a2,o2)
-      ..bs(t3," g",a3,o3)
-      ..bs(t4," y",a4,o4)
-      ..bs(t5," c",a5,o5)
-      ..bs(t6," n",a6,o6)
-      ..bs(t7," l",a7,o7)
-      ..bs(t8," m",a8,o8)
-      )
-end
-function Event:Matches(other, ts_close_sec)
-    if not (other and other.time and self.time and ts_close_sec) then return false end
-    t1 = math.abs(other.time - self.time) <= ts_close_sec
-    t2 = self.user       == other.user
-    t3 = self.gold_ct    == other.gold_ct
-    t4 = self.trans_type == other.trans_type
-    t5 = self.item_ct    == other.item_ct
-    t6 = self.item_name  == other.item_name
-    t7 = self.item_link  == other.item_link
-    t8 = self.item_mm    == other.item_mm
-    d(bbss(t1, self.time      , other.time
-          ,t2, self.user      , other.user
-          ,t3, self.gold_ct   , other.gold_ct
-          ,t4, self.trans_type, other.trans_typ
-          ,t5, self.item_ct   , other.item_ct
-          ,t6, self.item_name , other.item_name
-          ,t7, self.item_link , other.item_link
-          ,t8, self.item_mm   , other.item_mm
-        ))
-    return t1 and t2 and t3 and t4 and t5 and t6 and t7 and t8
-end
 
 -- If this is a deposit or withdrawal that we understand, return an Event with
 -- its data. If not, return nil.
@@ -442,14 +388,6 @@ function GuildBankLedger:split(str)
            , string.sub(str, 1 + t7)
 end
 
-function GuildBankLedger:StringToEvent(str)
-    local ts, amt, user = self:split(str)
-    return { time   = ts
-           , amount = amt
-           , user   = user
-           }
-end
-
 -- Return the one newest event, if any, from our previous save.
 -- Return nil if not.
 function GuildBankLedger:SavedHistoryNewest(guild_index)
@@ -554,14 +492,14 @@ function GuildBankLedger:ServerDataComplete(guild_index)
     local guild_name = self.guild_name[guild_index]
     local event_ct   = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
     self:SetStatus(guild_index, "scanning events: " .. event_ct .. " ...")
-    local prev_event = nil  -- To detect and ignore duplicate reports of same event.
     for i = 1, event_ct do
-        local event_type, secs_ago, p1, p2, p3, p4, p5, p6 = GetGuildEventInfo(guildId, GUILD_HISTORY_BANK, i)
-        local event = Event:FromInfo(event_type, secs_ago, p1, p2, p3, p4, p5, p6)
+        local event_type, secs_ago, p1, p2, p3, p4, p5, p6
+            = GetGuildEventInfo(guildId, GUILD_HISTORY_BANK, i)
+        local event = Event:FromInfo( event_type, secs_ago
+                                    , p1, p2, p3, p4, p5, p6)
         if event then
             -- d("record  : " .. event:ToDisplayText())
             self:RecordEvent(guild_index, event)
-            prev_event = event
         end
     end
     local found_ct = 0
