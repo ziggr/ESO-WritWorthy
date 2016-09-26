@@ -1,5 +1,5 @@
 [B]2.5.2 2016-09-25[/B]
 [LIST]
-[*]Create new project, based on GuildGoldDeposits 2.5.1.
+[*]Create new add-on, based on GuildGoldDeposits 2.5.1.
 [/LIST]
 

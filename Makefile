@@ -13,9 +13,9 @@ csv: ../../SavedVariables/GuildBankLedger.lua
 	cp -f ../../SavedVariables/GuildBankLedger.csv data/
 
 zip:
-	-rm -rf published/GuildBankLedger published/GuildBankLedger\ x.x.x.x.zip
+	-rm -rf published/GuildBankLedger published/GuildBankLedger\ x.x.x.zip
 	mkdir -p published/GuildBankLedger
 	cp -R Libs published/GuildBankLedger/Libs
 	cp ./GuildBankLedger* published/GuildBankLedger/
-	cd published; zip -r GuildBankLedger\ x.x.x.x.zip GuildBankLedger
+	cd published; zip -r GuildBankLedger\ x.x.x.zip GuildBankLedger
 
