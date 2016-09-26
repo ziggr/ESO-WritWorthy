@@ -107,20 +107,28 @@ function Event:FromInfo(event_type, since_secs, p1, p2, p3, p4, p5, p6)
         o.user       = p1
         o.gold_ct    = p2
         o.trans_type = GuildBankLedger.ET_DEPOSIT_GOLD
+
     elseif event_type == GUILD_EVENT_BANKGOLD_REMOVED then
         o.user       = p1
         o.gold_ct    = p2
         o.trans_type = GuildBankLedger.ET_WITHDRAW_GOLD
+
     elseif event_type == GUILD_EVENT_BANKITEM_ADDED then
         o.user       = p1
         o.trans_type = GuildBankLedger.ET_DEPOSIT_ITEM
         o.item_ct    = p2
         o.item_link  = p3
+        o.item_mm    = Event.MMPrice(o.item_link)
+        o.item_name  = GetItemLinkName(o.item_link)
+
     elseif event_type == GUILD_EVENT_BANKITEM_REMOVED then
         o.user       = p1
         o.trans_type = GuildBankLedger.ET_WITHDRAW_ITEM
         o.item_ct    = p2
         o.item_link  = p3
+        o.item_mm    = Event.MMPrice(o.item_link)
+        o.item_name  = GetItemLinkName(o.item_link)
+
     else
        return nil
     end
@@ -224,6 +232,14 @@ function Event:ToDisplayText()
     end
 end
 
+function Event.MMPrice(link)
+    if not MasterMerchant then return nil end
+    if not link then return nil end
+    mm = MasterMerchant:itemStats(link, false)
+    if not mm then return nil end
+    --d("MM for link: "..tostring(link).." "..tostring(mm.avgPrice))
+    return mm.avgPrice
+end
 
 -- Init ----------------------------------------------------------------------
 
