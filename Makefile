@@ -2,20 +2,20 @@
 
 put:
 	git commit -am auto
-	cp -f ./GuildBankLedger.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/GuildBankLedger/
+	cp -f ./NetWorth.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/NetWorth/
 
 get:
-	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/GuildBankLedger.lua ../../SavedVariables/
-	cp -f ../../SavedVariables/GuildBankLedger.lua data/
+	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/NetWorth.lua ../../SavedVariables/
+	cp -f ../../SavedVariables/NetWorth.lua data/
 
-csv: ../../SavedVariables/GuildBankLedger.lua
-	lua GuildBankLedger_to_csv.lua
-	cp -f ../../SavedVariables/GuildBankLedger.csv data/
+csv: ../../SavedVariables/NetWorth.lua
+	lua NetWorth_to_csv.lua
+	cp -f ../../SavedVariables/NetWorth.csv data/
 
 zip:
-	-rm -rf published/GuildBankLedger published/GuildBankLedger\ x.x.x.zip
-	mkdir -p published/GuildBankLedger
-	cp -R Libs published/GuildBankLedger/Libs
-	cp ./GuildBankLedger* published/GuildBankLedger/
-	cd published; zip -r GuildBankLedger\ x.x.x.zip GuildBankLedger
+	-rm -rf published/NetWorth published/NetWorth\ x.x.x.zip
+	mkdir -p published/NetWorth
+	cp -R Libs published/NetWorth/Libs
+	cp ./NetWorth* published/NetWorth/
+	cd published; zip -r NetWorth\ x.x.x.zip NetWorth
 

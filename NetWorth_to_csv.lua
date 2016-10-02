@@ -1,8 +1,8 @@
--- Read the SavedVariables file that GuildBankLedger creates  and convert
+-- Read the SavedVariables file that NetWorth creates  and convert
 -- that to a spreadsheet-compabitle CSV (comma-separated value) file.
 
-IN_FILE_PATH  = "../../SavedVariables/GuildBankLedger.lua"
-OUT_FILE_PATH = "../../SavedVariables/GuildBankLedger.csv"
+IN_FILE_PATH  = "../../SavedVariables/NetWorth.lua"
+OUT_FILE_PATH = "../../SavedVariables/NetWorth.csv"
 dofile(IN_FILE_PATH)
 OUT_FILE = assert(io.open(OUT_FILE_PATH, "w"))
 
@@ -118,10 +118,10 @@ OUT_FILE:write(
           .. '\n'
           )
 -- For each account
-for k, v in pairs(GuildBankLedgerVars["Default"]) do
-    if (    GuildBankLedgerVars["Default"][k]["$AccountWide"]
-        and GuildBankLedgerVars["Default"][k]["$AccountWide"]["history"]) then
-        TableHistory(GuildBankLedgerVars["Default"][k]["$AccountWide"]["history"])
+for k, v in pairs(NetWorthVars["Default"]) do
+    if (    NetWorthVars["Default"][k]["$AccountWide"]
+        and NetWorthVars["Default"][k]["$AccountWide"]["history"]) then
+        TableHistory(NetWorthVars["Default"][k]["$AccountWide"]["history"])
     end
 end
 OUT_FILE:close()

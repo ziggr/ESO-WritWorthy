@@ -1,5 +1,5 @@
-[B]2.5.2 2016-09-25[/B]
+[B]2.5.2 2016-10-01[/B]
 [LIST]
-[*]Create new add-on, based on GuildGoldDeposits 2.5.1.
+[*]Create new add-on, based on GuildBankLedger 2.5.2.
 [/LIST]
 

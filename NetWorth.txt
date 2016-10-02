@@ -1,8 +1,8 @@
-## Title: Guild Bank Ledger
-## Description: Guild Bank Ledger version 2.5.2
+## Title: Net Worth
+## Description: Guild Bank Ledger version 2.5.1
 ## Author: ziggr
 ## APIVersion: 100016
-## SavedVariables: GuildBankLedgerVars
+## SavedVariables: NetWorthVars
 ## OptionalDependsOn: LibAddonMenu-2.0
 
 Libs/LibStub/LibStub.lua
@@ -21,4 +21,4 @@ Libs/LibAddonMenu-2.0/controls/slider.lua
 Libs/LibAddonMenu-2.0/controls/texture.lua
 Libs/LibAddonMenu-2.0/controls/iconpicker.lua
 
-GuildBankLedger.lua
+NetWorth.lua

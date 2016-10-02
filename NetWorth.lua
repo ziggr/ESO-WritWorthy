@@ -1,31 +1,31 @@
 local LAM2 = LibStub("LibAddonMenu-2.0")
 
-local GuildBankLedger = {}
-GuildBankLedger.name            = "GuildBankLedger"
-GuildBankLedger.version         = "2.5.2"
-GuildBankLedger.savedVarVersion = 2
-GuildBankLedger.default = {
+local NetWorth = {}
+NetWorth.name            = "NetWorth"
+NetWorth.version         = "2.5.1"
+NetWorth.savedVarVersion = 2
+NetWorth.default = {
       enable_guild  = { true, true, true, true, true }
     , history = {}
 }
-GuildBankLedger.max_guild_ct = 5
-GuildBankLedger.fetching = { false, false, false, false, false }
+NetWorth.max_guild_ct = 5
+NetWorth.fetching = { false, false, false, false, false }
 
 
                         -- fetched_str_list[guild_index] = { list of event strings }
                         -- loaded from the current "Save Now" run.
-GuildBankLedger.fetched_str_list = {}
-GuildBankLedger.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guild"
+NetWorth.fetched_str_list = {}
+NetWorth.guild_name = {} -- guild_name[guild_index] = "My Aweseome Guild"
 
                         -- retry_ct[guild_index] = how many retries after
                         -- distrusting "nah, no more history"
-GuildBankLedger.retry_ct   = { 0, 0, 0, 0, 0 }
-GuildBankLedger.max_retry_ct = 3
+NetWorth.retry_ct   = { 0, 0, 0, 0, 0 }
+NetWorth.max_retry_ct = 3
 
-GuildBankLedger.ET_DEPOSIT_GOLD  = "dep_gold"
-GuildBankLedger.ET_DEPOSIT_ITEM  = "dep_item"
-GuildBankLedger.ET_WITHDRAW_GOLD = "wd_gold"
-GuildBankLedger.ET_WITHDRAW_ITEM = "wd_item"
+NetWorth.ET_DEPOSIT_GOLD  = "dep_gold"
+NetWorth.ET_DEPOSIT_ITEM  = "dep_item"
+NetWorth.ET_WITHDRAW_GOLD = "wd_gold"
+NetWorth.ET_WITHDRAW_ITEM = "wd_item"
 
 -- Event ---------------------------------------------------------------------
 -- One row in our savedVariables history
@@ -52,16 +52,16 @@ function Event:FromInfo(event_type, since_secs, p1, p2, p3, p4, p5, p6)
     if event_type == GUILD_EVENT_BANKGOLD_ADDED then
         o.user       = p1
         o.gold_ct    = p2
-        o.trans_type = GuildBankLedger.ET_DEPOSIT_GOLD
+        o.trans_type = NetWorth.ET_DEPOSIT_GOLD
 
     elseif event_type == GUILD_EVENT_BANKGOLD_REMOVED then
         o.user       = p1
         o.gold_ct    = p2
-        o.trans_type = GuildBankLedger.ET_WITHDRAW_GOLD
+        o.trans_type = NetWorth.ET_WITHDRAW_GOLD
 
     elseif event_type == GUILD_EVENT_BANKITEM_ADDED then
         o.user       = p1
-        o.trans_type = GuildBankLedger.ET_DEPOSIT_ITEM
+        o.trans_type = NetWorth.ET_DEPOSIT_ITEM
         o.item_ct    = p2
         o.item_link  = p3
         o.item_mm    = Event.MMPrice(o.item_link)
@@ -69,7 +69,7 @@ function Event:FromInfo(event_type, since_secs, p1, p2, p3, p4, p5, p6)
 
     elseif event_type == GUILD_EVENT_BANKITEM_REMOVED then
         o.user       = p1
-        o.trans_type = GuildBankLedger.ET_WITHDRAW_ITEM
+        o.trans_type = NetWorth.ET_WITHDRAW_ITEM
         o.item_ct    = p2
         o.item_link  = p3
         o.item_mm    = Event.MMPrice(o.item_link)
@@ -114,7 +114,7 @@ function Event.tostr(str)
 end
 
 function Event:FromString(str)
-    local s1, s2, s3, s4, s5, s6, s7, s8 = GuildBankLedger:split(str)
+    local s1, s2, s3, s4, s5, s6, s7, s8 = NetWorth:split(str)
     local t = tonumber(s1)
     if not (t and s2 and s3) then
         return nil
@@ -155,16 +155,16 @@ function Event:ToString()
 end
 
 function Event:ToDisplayText()
-    if self.trans_type == GuildBankLedger.ET_DEPOSIT_GOLD
-    or self.trans_type == GuildBankLedger.ET_WITHDRAW_GOLD then
+    if self.trans_type == NetWorth.ET_DEPOSIT_GOLD
+    or self.trans_type == NetWorth.ET_WITHDRAW_GOLD then
         return tostring(self.time)
                 .. " " .. self.user
                 .. " " .. self.trans_type
                 .. " " .. self.gold_ct
                 .. "g"
 
-    elseif self.trans_type == GuildBankLedger.ET_DEPOSIT_ITEM
-    or     self.trans_type == GuildBankLedger.ET_WITHDRAW_ITEM then
+    elseif self.trans_type == NetWorth.ET_DEPOSIT_ITEM
+    or     self.trans_type == NetWorth.ET_WITHDRAW_ITEM then
         return tostring(self.time)
                 .. " "  .. self.user
                 .. " "  .. self.trans_type
@@ -189,16 +189,16 @@ end
 
 -- Init ----------------------------------------------------------------------
 
-function GuildBankLedger.OnAddOnLoaded(event, addonName)
-    if addonName ~= GuildBankLedger.name then return end
-    if not GuildBankLedger.version then return end
-    if not GuildBankLedger.default then return end
-    GuildBankLedger:Initialize()
+function NetWorth.OnAddOnLoaded(event, addonName)
+    if addonName ~= NetWorth.name then return end
+    if not NetWorth.version then return end
+    if not NetWorth.default then return end
+    NetWorth:Initialize()
 end
 
-function GuildBankLedger:Initialize()
+function NetWorth:Initialize()
     self.savedVariables = ZO_SavedVars:NewAccountWide(
-                              "GuildBankLedgerVars"
+                              "NetWorthVars"
                             , self.savedVarVersion
                             , nil
                             , self.default
@@ -209,15 +209,15 @@ end
 
 -- UI ------------------------------------------------------------------------
 
-function GuildBankLedger.ref_cb(guild_index)
-    return "GuildBankLedger_cbg" .. guild_index
+function NetWorth.ref_cb(guild_index)
+    return "NetWorth_cbg" .. guild_index
 end
 
-function GuildBankLedger.ref_desc(guild_index)
-    return "GuildBankLedger_desc" .. guild_index
+function NetWorth.ref_desc(guild_index)
+    return "NetWorth_desc" .. guild_index
 end
 
-function GuildBankLedger:CreateSettingsWindow()
+function NetWorth:CreateSettingsWindow()
     local panelData = {
         type                = "panel",
         name                = "Guild Bank Ledger",
@@ -270,15 +270,15 @@ function GuildBankLedger:CreateSettingsWindow()
             })
     end
 
-    LAM2:RegisterOptionControls("GuildBankLedger", optionsData)
+    LAM2:RegisterOptionControls("NetWorth", optionsData)
     CALLBACK_MANAGER:RegisterCallback("LAM-PanelControlsCreated"
             , self.OnPanelControlsCreated)
 end
 
 -- Delay initialization of options panel: don't waste time fetching
 -- guild names until a human actually opens our panel.
-function GuildBankLedger.OnPanelControlsCreated(panel)
-    self = GuildBankLedger
+function NetWorth.OnPanelControlsCreated(panel)
+    self = NetWorth
     local guild_ct = GetNumGuilds()
     for guild_index = 1,self.max_guild_ct do
         exists = guild_index <= guild_ct
@@ -288,7 +288,7 @@ function GuildBankLedger.OnPanelControlsCreated(panel)
 end
 
 -- Data portion of init UI
-function GuildBankLedger:InitGuildSettings(guild_index, exists)
+function NetWorth:InitGuildSettings(guild_index, exists)
     if exists then
         local guildId   = GetGuildId(guild_index)
         local guildName = GetGuildName(guildId)
@@ -299,7 +299,7 @@ function GuildBankLedger:InitGuildSettings(guild_index, exists)
 end
 
 -- UI portion of init UI
-function GuildBankLedger:InitGuildControls(guild_index, exists)
+function NetWorth:InitGuildControls(guild_index, exists)
     local cb = _G[self.ref_cb(guild_index)]
     if exists and cb and cb.label then
         cb.label:SetText(self.guild_name[guild_index])
@@ -318,7 +318,7 @@ end
 -- I cannot get LibAddonMenu-2.0 "description" items to dynamically update
 -- their text. SetText() has no effect. But SetText() works on "checkbox"
 -- items, so beat those into a text-like UI element.
-function GuildBankLedger.ConvertCheckboxToText(desc)
+function NetWorth.ConvertCheckboxToText(desc)
     if not desc then return end
     desc:SetHandler("OnMouseEnter", nil)
     desc:SetHandler("OnMouseExit",  nil)
@@ -331,7 +331,7 @@ end
 -- Display Status ------------------------------------------------------------
 
 -- Update the per-guild text label with what's going on with that guild data.
-function GuildBankLedger:SetStatus(guild_index, msg)
+function NetWorth:SetStatus(guild_index, msg)
     --d("status " .. tostring(guild_index) .. ":" .. tostring(msg))
     local x = _G[self.ref_desc(guild_index)]
     if not x then return end
@@ -340,17 +340,17 @@ function GuildBankLedger:SetStatus(guild_index, msg)
 end
 
 -- Set status to "Newest: @user 100,000g  11 hours ago"
-function GuildBankLedger:SetStatusNewestSaved(guild_index)
+function NetWorth:SetStatusNewestSaved(guild_index)
     local event = self:SavedHistoryNewest(guild_index)
     self:SetStatusNewest(guild_index, event)
 end
 
-function GuildBankLedger:SetStatusNewestFetched(guild_index)
+function NetWorth:SetStatusNewestFetched(guild_index)
     local event = self:FetchedNewest(guild_index)
     self:SetStatusNewest(guild_index, event)
 end
 
-function GuildBankLedger:SetStatusNewest(guild_index, event)
+function NetWorth:SetStatusNewest(guild_index, event)
     if not event then return end
 
     local now_ts   = GetTimeStamp()
@@ -369,7 +369,7 @@ end
 
 -- Lua lacks a split() function. Here's a cheesy hardwired one that works
 -- for our specific need.
-function GuildBankLedger:split(str)
+function NetWorth:split(str)
     local t1 = string.find(str, '\t')
     local t2 = string.find(str, '\t', 1 + t1)
     local t3 = string.find(str, '\t', 1 + t2)
@@ -390,7 +390,7 @@ end
 
 -- Return the one newest event, if any, from our previous save.
 -- Return nil if not.
-function GuildBankLedger:SavedHistoryNewest(guild_index)
+function NetWorth:SavedHistoryNewest(guild_index)
     local guildName = GetGuildName(guildId)
     if not self.savedVariables then return nil end
     if not self.savedVariables.history then return nil end
@@ -399,7 +399,7 @@ end
 
 -- Return the Event of the most recent event string from
 -- a list of event strings.
-function GuildBankLedger:Newest(str_list)
+function NetWorth:Newest(str_list)
     if not str_list then return nil end
     if not (1 <= #str_list) then return nil end
     local newest_event = Event:FromString(str_list[1])
@@ -423,7 +423,7 @@ end
 -- the clock skew caused by the items using relative time, but relative
 -- to _what_?
 
-function GuildBankLedger:SaveNow()
+function NetWorth:SaveNow()
     self.fetched_str_list = {}
     for guild_index = 1, self.max_guild_ct do
         if self.savedVariables.enable_guild[guild_index] then
@@ -435,12 +435,12 @@ function GuildBankLedger:SaveNow()
 end
 
 -- User doesn't want this guild. Respond with "okay, skipping"
-function GuildBankLedger:SkipGuildIndex(guild_index)
+function NetWorth:SkipGuildIndex(guild_index)
     self:SetStatus(guild_index, "skipped")
 end
 
 -- Download one guild's history
-function GuildBankLedger:SaveGuildIndex(guild_index)
+function NetWorth:SaveGuildIndex(guild_index)
     local guildId = GetGuildId(guild_index)
     self.fetching[guild_index] = true
     self:SetStatus(guild_index, "downloading history...")
@@ -455,7 +455,7 @@ end
 
 -- Async poll to fetch ALL guild bank history data from the ESO server
 -- Calls ServerDataComplete() once all data is loaded.
-function GuildBankLedger:ServerDataPoll(guild_index)
+function NetWorth:ServerDataPoll(guild_index)
     local guildId = GetGuildId(guild_index)
     local more = DoesGuildHistoryCategoryHaveMoreEvents(guildId, GUILD_HISTORY_BANK)
     local event_ct = GetNumGuildEvents(guildId, GUILD_HISTORY_BANK)
@@ -476,7 +476,7 @@ end
 
 -- Now that all data from the ESO server is loaded into the ESO client,
 -- extract gold deposits and write to savedVars.
-function GuildBankLedger:ServerDataComplete(guild_index)
+function NetWorth:ServerDataComplete(guild_index)
                         -- Avoid infinite noise if a Lua error in here
                         -- causes a repeated callback. Mostly useful when
                         -- debugging, shouldn't be an issue when we're
@@ -520,7 +520,7 @@ function GuildBankLedger:ServerDataComplete(guild_index)
     end
 end
 
-function GuildBankLedger:FetchedEventCt()
+function NetWorth:FetchedEventCt()
     local total_ct = 0
     for _,fetched_str_list in pairs(self.fetched_str_list) do
         if fetched_str_list then
@@ -530,14 +530,14 @@ function GuildBankLedger:FetchedEventCt()
     return total_ct
 end
 
-function GuildBankLedger:StillFetchingAny()
+function NetWorth:StillFetchingAny()
     for _,v in pairs(self.fetching) do
         if v then return true end
     end
     return false
 end
 
-function GuildBankLedger:RecordEvent(guild_index, event)
+function NetWorth:RecordEvent(guild_index, event)
     if not self.fetched_str_list[guild_index] then
         self.fetched_str_list[guild_index] = {}
     end
@@ -545,13 +545,13 @@ function GuildBankLedger:RecordEvent(guild_index, event)
     table.insert(t, event:ToString())
 end
 
-function GuildBankLedger:FetchedNewest(guild_index)
+function NetWorth:FetchedNewest(guild_index)
     return self:Newest(self.fetched_str_list[guild_index])
 end
 
 -- Postamble -----------------------------------------------------------------
 
-EVENT_MANAGER:RegisterForEvent( GuildBankLedger.name
+EVENT_MANAGER:RegisterForEvent( NetWorth.name
                               , EVENT_ADD_ON_LOADED
-                              , GuildBankLedger.OnAddOnLoaded
+                              , NetWorth.OnAddOnLoaded
                               )

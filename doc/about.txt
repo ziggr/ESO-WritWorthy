@@ -1,24 +1,24 @@
-Want to know which guild members donated gold to the guild this week?
-Who deposited all those crafting materials? Who withdrew them?
+Want to know how all your inventory is worth?
 
-This add-on scans guild bank history, then saves all deposits and withdrawals
-to a SavedVariables file. It can then convert that SavedVariables file to a
-CSV comma-separated-value file suitable for import into a spreadsheet.
+This add on scans all your inventories:
+[list]
+[*]characters
+[*]bank
+[*]craft bag
+[/list]
 
-If you have
+It then adds up the value of all your items and gold and reports a total.
+
+If you have [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] installed, it uses Master Merchant averages instead of the game's own NPC vendor price, when M.M. has a price.
 
 [LIST=1]
-[*]Click "Save Data Now" button. Add-on will fetch Guild Bank history from ESO's server and note all gold deposits.
-[*]Log out (or relog). ESO will then save data, writing SavedVariables/GuildBankLedger.lua.
-[*]From a terminal window, run
-[FONT="Courier New"]% cd ~/Documents/Elder Scrolls Online/live/AddOns/GuildBankLedger
-% lua GuildBankLedger_to_csv.lua
-[/FONT]This creates SavedVariables/GuildBankLedger.csv
-[*]Import GuildBankLedger.csv into a spreadsheet.
+[*]Log into a character.
+[*]Click "Save Data Now" button. Add-on will scan bag, bank, and craft bag contents.
+[*]Log into another character
+[*]Click "Save Data Now".
+[*]Repeat for each character.
 [/LIST]
 
-[FONT="Courier New"]GuildBankLedger_to_csv.lua[/FONT] requires that you have downloaded and installed a standalone Lua interpreter, presumably from [URL="http://www.lua.org/"]lua.org[/URL].
-
-Optional: if you have [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] installed, GuildBankLedger will look up average price information and include it in the CSV file.
+Yeah, this sequence is annoying and manual. I [i]could[/i] make it all automatic, but then I would have to tap into all your inventory actions such as look/sell/drop/craft/trade/send and that becomes a lot of extra event listeners. All those listeners, especially on loot events, makes for a slower game. No thank you. I would rather have a faster game.
 
 --Z
