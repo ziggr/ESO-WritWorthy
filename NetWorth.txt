@@ -1,5 +1,5 @@
 ## Title: Net Worth
-## Description: Guild Bank Ledger version 2.5.1
+## Description: Net Worth version 2.5.1
 ## Author: ziggr
 ## APIVersion: 100016
 ## SavedVariables: NetWorthVars
