@@ -7,7 +7,7 @@ NetWorth.savedVarVersion = 1
 NetWorth.NAME_BANK        = "bank"
 NetWorth.NAME_CRAFT_BAG   = "craft bag"
 NetWorth.default = {
-    bags = {}
+    bag = {}
 }
 
 -- Item ----------------------------------------------------------------------
@@ -23,6 +23,7 @@ function Item:FromNothing()
               , mm          = 0
               , npc         = 0  -- Value if sold to NPC Vendor
               , name        = ""
+           -- , link        = "" -- Not retaining Link: makes data file too large.
               }
     setmetatable(o, self)
     self.__index = self
@@ -39,16 +40,27 @@ function Item:FromBag(bag_id, slot_index)
     local item_name = GetItemName(bag_id, slot_index)
     local item_link = GetItemLink(bag_id, slot_index, LINK_STYLE_DEFAULT)
     local _, ct, npc_sell_price = GetItemInfo(bag_id, slot_index)
+    if ct == 0 then return nil end
     local mm = NetWorth.MMPrice(item_link)
     local o = { total_value = ct * max(npc_sell_price, mm)
               , ct          = ct
               , mm          = mm
               , npc         = npc_sell_price
               , name        = item_name
+           -- , link        = item_link
               }
     setmetatable(o, self)
     self.__index = self
     return o
+end
+
+function Item:ToDString()
+    return "tot:" .. tostring(self.total_value)
+      ..   " ct:" .. tostring(self.ct)
+      ..   " mm:" .. tostring(self.mm)
+      ..  " npc:" .. tostring(self.npc)
+      .. " name:" .. tostring(self.name)
+      -- .. " link:" .. tostring(self.link)
 end
 
 -- Bag -----------------------------------------------------------------------
@@ -69,6 +81,7 @@ function Bag:FromName(name)
               , gold  = 0
               , item_subtotal = 0
               , item_ct = 0
+              , items = {}
               }
     setmetatable(o, self)
     self.__index = self
@@ -82,23 +95,23 @@ function Bag:ReadFromServer()
         self:ReadFromBagId(BAG_BANK)
         self.gold = GetBankedMoney()
         self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. #self.items)
+        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. self.item_ct)
     elseif self.name == NetWorth.NAME_CRAFT_BAG then
         self:ReadFromCraftBag()
         self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. #self.items)
+        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. self.item_ct)
     else
         self:ReadFromBagId(BAG_BACKPACK)
         self:ReadFromBagId(BAG_WORN)
         self.gold = GetCurrentMoney()
         self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. #self.items)
+        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. self.item_ct)
     end
 end
 
 function Bag:ReadFromBagId(bag_id)
     local slot_ct = GetBagSize(bag_id)
-    for slot_index = 1, slot_ct do
+    for slot_index = 0, slot_ct do
         local item = Item:FromBag(bag_id, slot_index)
         self:AddItem(item)
     end
@@ -107,15 +120,28 @@ end
 function Bag:ReadFromCraftBag()
     slot_id = GetNextVirtualBagSlotId(slot_id)
     while slot_id do
-        local item = Item:FromBag(bag_id, slot_index)
+        local item = Item:FromBag(BAG_VIRTUAL, slot_id)
         self:AddItem(item)
         slot_id = GetNextVirtualBagSlotId(slot_id)
     end
 end
 
 function Bag:AddItem(item)
+    if not item then return end
     self.item_subtotal = self.item_subtotal + item.total_value
     self.item_ct = self.item_ct + 1
+
+        -- We don't actually NEED itemized lists here, except for debugging
+        -- or checking our work. ToDString() is sufficient, and allows us to
+        -- fit all 8 characters + bank and craftbag all under 1MB.
+        --
+        -- 8x data compression just by omitting links and storing only
+        -- strings instead of structured data:
+        --
+        -- 256KB structured, with links
+        --  96KB structured, without links
+        --  29KB as strings, without links
+    table.insert(self.items, item:ToDString())
 end
 
 -- Init ----------------------------------------------------------------------
@@ -199,6 +225,10 @@ function NetWorth:ScanNow()
     self.bag[1]:ReadFromServer()
     self.bag[2]:ReadFromServer()
     self.bag[3]:ReadFromServer()
+
+    self.savedVariables.bag[1] = self.bag[1]
+    self.savedVariables.bag[2] = self.bag[2]
+    self.savedVariables.bag[3] = self.bag[3]
 end
 
 function NetWorth.MMPrice(link)
