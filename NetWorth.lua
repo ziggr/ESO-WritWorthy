@@ -68,7 +68,7 @@ function Bag:FromName(name)
               , total = 0
               , gold  = 0
               , item_subtotal = 0
-              , items = {}
+              , item_ct = 0
               }
     setmetatable(o, self)
     self.__index = self
@@ -82,14 +82,17 @@ function Bag:ReadFromServer()
         self:ReadFromBagId(BAG_BANK)
         self.gold = GetBankedMoney()
         self.total = self.gold + self.item_subtotal
+        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. #self.items)
     elseif self.name == NetWorth.NAME_CRAFT_BAG then
         self:ReadFromCraftBag()
         self.total = self.gold + self.item_subtotal
+        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. #self.items)
     else
         self:ReadFromBagId(BAG_BACKPACK)
         self:ReadFromBagId(BAG_WORN)
         self.gold = GetCurrentMoney()
         self.total = self.gold + self.item_subtotal
+        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. #self.items)
     end
 end
 
@@ -112,9 +115,8 @@ end
 
 function Bag:AddItem(item)
     self.item_subtotal = self.item_subtotal + item.total_value
-    table.insert(self.items, item)
+    self.item_ct = self.item_ct + 1
 end
-
 
 -- Init ----------------------------------------------------------------------
 
@@ -189,7 +191,7 @@ end
 -- Fetch Inventory Data from the server ------------------------------------------
 
 function NetWorth:ScanNow()
-    local char_name = GetCurrentCharacterId()
+    local char_name = GetUnitName("player")
     self.bag = { [1] = Bag:FromName(NetWorth.NAME_BANK)
                , [2] = Bag:FromName(NetWorth.NAME_CRAFT_BAG)
                , [3] = Bag:FromName(char_name)
