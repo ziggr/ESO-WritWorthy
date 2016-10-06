@@ -4,8 +4,9 @@ local NetWorth = {}
 NetWorth.name            = "NetWorth"
 NetWorth.version         = "2.6.1"
 NetWorth.savedVarVersion = 1
-NetWorth.NAME_BANK        = "bank"
-NetWorth.NAME_CRAFT_BAG   = "craft bag"
+NetWorth.NAME_BANK       = "bank"
+NetWorth.NAME_CRAFT_BAG  = "craft bag"
+NetWorth.char_index      = nil
 NetWorth.default = {
     bag = {}
 }
@@ -161,8 +162,19 @@ function NetWorth:Initialize()
                             , nil
                             , self.default
                             )
+    self.char_index = self:FindCharIndex()
     self:CreateSettingsWindow()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
+end
+
+-- Return the bag index for this character, if it already has one, or a new
+-- index if not.
+function NetWorth:FindCharIndex()
+    local char_name = GetUnitName("player")
+    for i, bag in ipairs(self.savedVariables.bag) do
+        if bag.name == char_name then return i end
+    end
+    return 1 + #self.savedVariables.bag
 end
 
 -- UI ------------------------------------------------------------------------
@@ -189,13 +201,13 @@ function NetWorth:CreateSettingsWindow()
         },
 
         { type      = "description"
-        , text      = "BAGS\nline 1\nline 2\nline 3\n"
+        , text      = ""
         , width     = "half"
         , reference = "NetWorth_desc_bags"
         },
 
         { type      = "description"
-        , text      = "AMOUNTS\nval 1\nval 2\nval 3\n"
+        , text      = ""
         , width     = "half"
         , reference = "NetWorth_desc_amounts"
         },
@@ -212,40 +224,63 @@ end
 function NetWorth.OnPanelControlsCreated(panel)
     self = NetWorth
 
+    if NetWorth_desc_amounts.desc then
+        NetWorth_desc_amounts.desc:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
+    end
+    self:UpdateDisplay()
+end
 
-    local bag_name    = {}
-    local bag_amount  = {}
-    local total       = 0
+function NetWorth:UpdateDisplay()
+    local bag_name   = {}
+    local bag_amount = {}
+    local total      = 0
+    local total_gold = 0
+    local total_item = 0
     for i, bag in ipairs(self.savedVariables.bag) do
         bag_name  [i] = bag.name
         bag_amount[i] = ZO_CurrencyControl_FormatCurrency(bag.gold + bag.item_subtotal, false)
         total = total + bag.gold + bag.item_subtotal
+        total_gold = total_gold + bag.gold
+        total_item = total_item + bag.item_subtotal
     end
     table.insert(bag_name,   "--")
     table.insert(bag_name,  "total")
     table.insert(bag_amount, "--")
     table.insert(bag_amount, ZO_CurrencyControl_FormatCurrency(total, false))
-    local s = table.concat(bag_name,   "\n")
-    local ss = table.concat(bag_amount, "\n")
-    NetWorth_desc_bags.desc:SetText(s)
-    NetWorth_desc_amounts.desc:SetText(ss)
+    table.insert(bag_name,   "")
+    table.insert(bag_amount, "")
+    table.insert(bag_name,   "in gold")
+    table.insert(bag_name,   "in inventory")
+    table.insert(bag_amount, ZO_CurrencyControl_FormatCurrency(total_gold, false))
+    table.insert(bag_amount, ZO_CurrencyControl_FormatCurrency(total_item, false))
+
+    local sn = table.concat(bag_name,   "\n")
+    local sa = table.concat(bag_amount, "\n")
+
+    NetWorth_desc_bags.data.text    = sn
+    NetWorth_desc_amounts.data.text = sa
+    NetWorth_desc_bags.desc:SetText(sn)
+    NetWorth_desc_amounts.desc:SetText(sa)
 end
 
 -- Fetch Inventory Data from the server ------------------------------------------
 
 function NetWorth:ScanNow()
     local char_name = GetUnitName("player")
-    self.bag = { [1] = Bag:FromName(NetWorth.NAME_BANK)
-               , [2] = Bag:FromName(NetWorth.NAME_CRAFT_BAG)
-               , [3] = Bag:FromName(char_name)
+    local ci = self.char_index
+    self.bag = { [1 ] = Bag:FromName(NetWorth.NAME_BANK)
+               , [2 ] = Bag:FromName(NetWorth.NAME_CRAFT_BAG)
+               , [ci] = Bag:FromName(char_name)
                }
-    self.bag[1]:ReadFromServer()
-    self.bag[2]:ReadFromServer()
-    self.bag[3]:ReadFromServer()
+    self.bag[1 ]:ReadFromServer()
+    self.bag[2 ]:ReadFromServer()
+    self.bag[ci]:ReadFromServer()
 
-    self.savedVariables.bag[1] = self.bag[1]
-    self.savedVariables.bag[2] = self.bag[2]
-    self.savedVariables.bag[3] = self.bag[3]
+    self.savedVariables.bag[1 ] = self.bag[1 ]
+    self.savedVariables.bag[2 ] = self.bag[2 ]
+    self.savedVariables.bag[ci] = self.bag[ci]
+
+    self:UpdateDisplay()
 end
 
 function NetWorth.MMPrice(link)
