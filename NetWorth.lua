@@ -2,7 +2,7 @@ local LAM2 = LibStub("LibAddonMenu-2.0")
 
 local NetWorth = {}
 NetWorth.name            = "NetWorth"
-NetWorth.version         = "2.5.1"
+NetWorth.version         = "2.6.1"
 NetWorth.savedVarVersion = 1
 NetWorth.NAME_BANK        = "bank"
 NetWorth.NAME_CRAFT_BAG   = "craft bag"

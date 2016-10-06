@@ -1,7 +1,7 @@
 ## Title: Net Worth
-## Description: Net Worth version 2.5.1
+## Description: Net Worth version 2.6.1
 ## Author: ziggr
-## APIVersion: 100016
+## APIVersion: 100017
 ## SavedVariables: NetWorthVars
 ## OptionalDependsOn: LibAddonMenu-2.0
 
