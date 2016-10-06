@@ -95,17 +95,17 @@ function Bag:ReadFromServer()
         self:ReadFromBagId(BAG_BANK)
         self.gold = GetBankedMoney()
         self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. self.item_ct)
+        d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
     elseif self.name == NetWorth.NAME_CRAFT_BAG then
         self:ReadFromCraftBag()
         self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. self.item_ct)
+        d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
     else
         self:ReadFromBagId(BAG_BACKPACK)
         self:ReadFromBagId(BAG_WORN)
         self.gold = GetCurrentMoney()
         self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. tostring(self.total) .. " item_ct:" .. self.item_ct)
+        d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
     end
 end
 
@@ -189,15 +189,15 @@ function NetWorth:CreateSettingsWindow()
         },
 
         { type      = "description"
-        , text      = "line 1\nline 2\nline 3\n"
+        , text      = "BAGS\nline 1\nline 2\nline 3\n"
         , width     = "half"
-        , reference = "NetWorth_desc_left"
+        , reference = "NetWorth_desc_bags"
         },
 
         { type      = "description"
-        , text      = "val 1\nval 2\nval 3\n"
+        , text      = "AMOUNTS\nval 1\nval 2\nval 3\n"
         , width     = "half"
-        , reference = "NetWorth_desc_right"
+        , reference = "NetWorth_desc_amounts"
         },
 
     }
@@ -211,7 +211,24 @@ end
 -- guild names until a human actually opens our panel.
 function NetWorth.OnPanelControlsCreated(panel)
     self = NetWorth
-    -- ### put live data into the desc panels
+
+
+    local bag_name    = {}
+    local bag_amount  = {}
+    local total       = 0
+    for i, bag in ipairs(self.savedVariables.bag) do
+        bag_name  [i] = bag.name
+        bag_amount[i] = ZO_CurrencyControl_FormatCurrency(bag.gold + bag.item_subtotal, false)
+        total = total + bag.gold + bag.item_subtotal
+    end
+    table.insert(bag_name,   "--")
+    table.insert(bag_name,  "total")
+    table.insert(bag_amount, "--")
+    table.insert(bag_amount, ZO_CurrencyControl_FormatCurrency(total, false))
+    local s = table.concat(bag_name,   "\n")
+    local ss = table.concat(bag_amount, "\n")
+    NetWorth_desc_bags.desc:SetText(s)
+    NetWorth_desc_amounts.desc:SetText(ss)
 end
 
 -- Fetch Inventory Data from the server ------------------------------------------
