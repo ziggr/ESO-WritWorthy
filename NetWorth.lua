@@ -43,9 +43,9 @@ function Item:FromBag(bag_id, slot_index)
     local _, ct, npc_sell_price = GetItemInfo(bag_id, slot_index)
     if ct == 0 then return nil end
     local mm = NetWorth.MMPrice(item_link)
-    local o = { total_value = ct * max(npc_sell_price, mm)
+    local o = { total_value = Item.round(ct * max(npc_sell_price, mm))
               , ct          = ct
-              , mm          = mm
+              , mm          = Item.round(mm)
               , npc         = npc_sell_price
               , name        = item_name
            -- , link        = item_link
@@ -53,6 +53,11 @@ function Item:FromBag(bag_id, slot_index)
     setmetatable(o, self)
     self.__index = self
     return o
+end
+
+function Item.round(f)
+    if not f then return f end
+    return math.floor(0.5+f)
 end
 
 function Item:ToDString()
@@ -223,7 +228,7 @@ end
 -- guild names until a human actually opens our panel.
 function NetWorth.OnPanelControlsCreated(panel)
     self = NetWorth
-
+    if not (NetWorth_desc_amounts and NetWorth_desc_amounts.desc) then return end
     if NetWorth_desc_amounts.desc then
         NetWorth_desc_amounts.desc:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
     end
