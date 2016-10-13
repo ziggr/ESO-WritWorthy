@@ -6,39 +6,39 @@
 2000	50	nil	40	Boning Knife
 1240	31	nil	40	Cheaply Bound Journal
 1640	41	nil	40	Child's Drum
-493	200	2	0	Lockpick
+544	200	3	0	Lockpick
 80	1	nil	80	Lightning Staff of the Shadow Dancer
 1640	41	nil	40	Common Buckle
 2400	60	nil	40	Copper Measures
 1240	31	nil	40	Crocodile Gravy Boat
 800	20	nil	40	Cutting board
 1200	30	nil	40	Deerbone Comb
-10710	200	54	30	Grand Soul Gem
+10264	200	51	30	Grand Soul Gem
 1600	40	nil	40	Dragon Paperweight
 1600	40	nil	40	Fast-Running Hourglass
 2000	50	nil	40	Feather Pillow
-50898	17	2994	0	Psijic Ambrosia
+50561	17	2974	0	Psijic Ambrosia
 2000	50	nil	40	Graht-Oak Rolling Pin
 1600	40	nil	40	Joint Salve Jar
 1400	35	nil	40	Knee Pillow
 800	20	nil	40	Lead Sieve
 1080	27	nil	40	Legionnaire Figurine
-34291	200	171	14	Grand Repair Kit
+34055	200	170	14	Grand Repair Kit
 1600	40	nil	40	Natural Hand Soap
-10710	200	54	30	Grand Soul Gem
-6372	119	54	30	Grand Soul Gem
-130	1	130	10	Tonal Architect Tonic Recipe
+10264	200	51	30	Grand Soul Gem
+10264	200	51	30	Grand Soul Gem
+0	1	nil	0	Enchanter Survey: Wrothgar III
 800	20	nil	40	Netch-hide Lunch Sack
-25	1	25	9	Orcish Bratwurst on Bun Recipe
-0	1	nil	0	Enchanter Survey: Wrothgar II
+0	2	nil	0	Enchanter Survey: Wrothgar II
 1600	40	nil	40	Portable Chamber Pot
-493	200	2	0	Lockpick
+544	200	3	0	Lockpick
 1600	40	nil	40	Rash Ointment
 800	20	nil	40	Set of Chisels
 1120	28	nil	40	Smuggler's Doll
 800	20	nil	40	Ash-Begone Soap
 800	20	nil	40	Spice Rack
 1200	30	nil	40	Spool of Fishing Line
+384	2	192	13	Glass Style Motif Fragment
 10	1	nil	10	truly superb glyph of magicka^n
 800	20	nil	40	Sturdy Awl
 1600	40	nil	40	Sturdy Iron Lantern
@@ -56,18 +56,23 @@
 10	1	nil	10	truly superb glyph of magicka^n
 10	1	nil	10	truly superb glyph of magicka^n
 1600	40	nil	40	Wooden Letter Opener
+154	1	154	9	superb glyph of disease resist^n
 0	1	nil	0	Litany of Blood
 50	1	nil	50	rubedite axe^n
 800	20	nil	40	Perfect Metronome
 1600	40	nil	40	Bolt of Red Fabric
+134	1	134	9	superb glyph of stamina recovery^n
 0	1	nil	0	Woodworker Survey: The Rift
+0	1	nil	0	Woodworker Survey: Grahtwood
+1205	1	1205	10	Black Marsh Wamasu Loin Recipe
+132	1	132	9	Infernal Infusion Recipe
 1200	30	nil	40	Torchbug Hair Tonic
 0	1	nil	0	Enchanter Survey: Wrothgar I
 0	1	nil	0	Alchemist Survey: Wrothgar I
-3	1	nil	3	Traveler's Boots
-404	1	404	9	Fishy Stick Recipe
+273	1	273	9	Fishy Stick Recipe
 10	1	nil	10	truly superb glyph of magicka^n
 1440	36	nil	40	Ayleid Alphabet Pocket Translations
+168	10	17	5	Grand Soul Gem (Empty)
 560	14	nil	40	Caravan Schedule
 1200	30	nil	40	Ornate Tortoiseshell Comb
 400	10	nil	40	Clothier's Tape
@@ -80,34 +85,37 @@
 400	10	nil	40	Glow Stick
 280	7	nil	40	Moon-Sugar Chawbox
 400	10	nil	40	Pewter Portrait Frame
-22	1	22	9	Vvardenfell Ash Yam Loaf Recipe
-598	1	598	10	Ash-Hopper Dumplings on Scathecraw Recipe
+2369	40	59	22	Common Soul Gem
 400	10	nil	40	Stuffed Pony Guar
-564	1	564	50	Ring of the Night Mother
-703	1	703	50	Ring of the Shadow Dancer
+501	1	501	50	Ring of the Night Mother
+601	1	601	50	Ring of the Shadow Dancer
+2	1	nil	2	trifling glyph of absorb stamina^n
+2	1	nil	2	trifling glyph of stamina recovery^n
 48	1	nil	48	Arm Cops of Night's Silence
 0	1	nil	0	Blacksmith Survey: Grahtwood
-0	1	nil	0	Enchanter Survey: Auridon
+0	2	nil	0	Enchanter Survey: Auridon
 336	84	nil	4	Rumare Slaughterfish Pie
-2338	1	2338	10	Wild-Boar-and-Beets Recipe
+23	1	23	9	Clan Mother's Cordial Recipe
 1080	27	nil	40	Wooden Serving Spoon
-10	1	nil	10	Goblin-Style Grilled Rat Recipe
+25	1	25	9	Grilled Timber Mammoth Kebabs Recipe
 29	1	nil	29	Belt of the Willow's Path
-3	1	nil	3	Cuffed Boots
+0	1	nil	0	Clothier Survey: Coldharbour I
+8	1	nil	8	greater glyph of frost^n
+57	1	57	9	Taneth Coffee Recipe
 29	1	nil	29	Boots of Hunding's Rage
 29	1	nil	29	Bracers of Hunding's Rage
 58	1	nil	58	Guards of Night's Silence
 48	1	nil	48	Helmet of Night's Silence
-537	35	15	5	Grand Soul Gem (Empty)
-0	1	nil	0	Alchemist Survey: Craglorn I
-9	1	nil	9	Busy Bee Brew Recipe
-9	1	nil	9	Green Bananas with Garlic Recipe
+164	1	164	9	Eidar Radish Salad Recipe
+0	2	nil	0	Alchemist Survey: Craglorn I
+0	1	nil	0	Clothier Survey: Craglorn II
+0	1	nil	0	Enchanter Survey: Stonefalls
 58	1	nil	58	Jack of Night's Silence
 0	1	nil	0	Blacksmith Survey: Coldharbour II
 0	1	nil	0	Kollopi Essence
 0	1	nil	0	Sea Viper Armor
 0	1	nil	0	Servant's Outfit
-269	109	2	0	Lockpick
+297	109	3	0	Lockpick
 30	1	nil	30	Gauntlets of the Seducer
 50	1	nil	50	Pauldron of the Seducer
 50	1	nil	50	Pauldron of Julianos
@@ -116,313 +124,312 @@
 0	1	nil	0	Leniency Edict
 80	1	nil	80	Amber Plasm Lightning Staff
 51	1	nil	51	Helm of the Seducer
-13030	76	171	14	Grand Repair Kit
-151	7	22	2	rough oak^ns
-14848	967	15	4	sanded oak^ns
-12969	2208	6	4	rawhide^ns
-216	7	31	2	superb hide scraps^p
-116	6	19	2	rough maple^ns
-9040	926	10	4	sanded maple^ns
-262	7	37	2	iron ore
-112617	873	129	0	Jade
-18218	2838	6	4	jute^ns
-167	6	28	2	raw jute^ns
-0	1226	nil	0	Turquoise
-51	6	8	2	rough birch^ns
-10084	2118	5	0	natural water
-5683	758	7	1	clear water
+15836	93	170	14	Grand Repair Kit
+127	7	18	2	rough oak^ns
+15335	978	16	4	sanded oak^ns
+12695	2119	6	4	rawhide^ns
+252	7	36	2	superb hide scraps^p
+52	3	17	2	rough maple^ns
+8892	935	10	4	sanded maple^ns
+153	4	38	2	iron ore
+113004	876	129	0	Jade
+16335	2621	6	4	jute^ns
+86	3	29	2	raw jute^ns
+3681	1227	3	0	Turquoise
+53	6	9	2	rough birch^ns
+10422	2130	5	0	natural water
+5295	763	7	1	clear water
 73	5	15	2	rough ash^ns
-35178	416	85	0	Emerald
-8180	720	11	4	hide^ns
-87	4	22	2	hide scraps^p
-2568	1284	2	0	Quartz
-16804	707	24	4	flax^ns
-50	2	25	2	raw flax^ns
-269	8	34	2	shadowhide scraps^p
-94	3	31	2	Calcinium ore
-13923	819	17	0	Ruby
-9416	768	12	4	Steel ingot
-3023	96	31	1	pristine water
-19897	3331	6	4	Iron ingot
-78	2	39	2	high iron ore
-16710	1027	16	4	dwarven ingot
-11688	362	32	4	ebony ingot
+35145	413	85	0	Emerald
+8229	723	11	4	hide^ns
+78	4	20	2	hide scraps^p
+1083	1288	1	0	Quartz
+18560	707	26	4	flax^ns
+29	2	15	2	raw flax^ns
+272	8	34	2	shadowhide scraps^p
+117	3	39	2	Calcinium ore
+0	822	nil	0	Ruby
+9504	768	12	4	Steel ingot
+3040	96	32	1	pristine water
+19364	3148	6	4	Iron ingot
+81	2	41	2	high iron ore
+16351	1027	16	4	dwarven ingot
+12656	387	33	4	ebony ingot
 19	1	19	2	thick leather scraps^p
-0	704	nil	0	Citrine
-36	2	18	2	leather scraps^p
+0	705	nil	0	Citrine
+35	2	17	2	leather scraps^p
 17	1	17	2	fell hide scraps^p
-6077	537	11	4	leather^ns
-10150	930	11	4	thick leather^ns
-34488	1187	29	4	fell hide^ns
-185	6	31	2	orichalcum ore
-203	6	34	2	dwarven ore
+6175	541	11	4	leather^ns
+10189	930	11	4	thick leather^ns
+34914	1187	29	4	fell hide^ns
+190	6	32	2	orichalcum ore
+209	6	35	2	dwarven ore
 70	1	70	2	ebony ore
-11328	1004	11	4	orichalcum ingot
+11235	984	11	4	orichalcum ingot
 16	1	16	2	rough beech^ns
 53	5	11	2	rough hickory^ns
 71	5	14	2	rough yew^ns
-7457	670	11	4	sanded beech^ns
-6013	511	12	4	sanded hickory^ns
-10015	382	26	4	sanded yew^ns
-12528	803	16	4	cotton^ns
-5819	413	14	4	spidersilk^ns
-20415	716	29	4	ebonthread^ns
-30	1	30	2	raw cotton^ns
-85	3	28	2	raw spidersilk^ns
-155	8	19	2	raw ebonthread^ns
-82	3	27	2	Galatite ore
-137	4	34	2	Quicksilver ore
-604	12	50	2	voidstone ore
-122	9	14	2	rough mahogany^ns
-226	10	23	2	rough nightwood^ns
+7222	650	11	4	sanded beech^ns
+7086	561	13	4	sanded hickory^ns
+11029	382	29	4	sanded yew^ns
+11303	810	14	4	cotton^ns
+5888	413	14	4	spidersilk^ns
+20663	741	28	4	ebonthread^ns
+20	1	20	2	raw cotton^ns
+78	3	26	2	raw spidersilk^ns
+153	8	19	2	raw ebonthread^ns
+83	3	28	2	Galatite ore
+136	4	34	2	Quicksilver ore
+104	2	52	2	voidstone ore
+148	9	16	2	rough mahogany^ns
 19	2	9	2	topgrain hide scraps^p
-175	5	35	2	iron hide scraps^p
-6560	561	12	0	Fire Opal
-14265	459	31	0	Carnelian
-2764	1058	3	0	Garnet
-11062	453	24	0	Sapphire
-6555	1311	5	0	Chysolite
-0	714	nil	0	Amethyst
-9346	973	10	0	Diamond
-1332	1278	1	0	Almandine
-33592	919	37	2	cleansed water
-23039	373	62	2	filtered water
-14707	683	22	2	purified water
-4333	743	6	3	cloud mist
-208765	1300	161	1	Frost Mirriam
-28799	2567	11	0	Garlic
-20926	2580	8	0	Isinglass
-22856	2565	9	0	Honey
-17227	2467	7	0	Metheglin
-18142	2352	8	0	Lemon
-15439	2214	7	0	Ginger
-23237	2556	9	0	Cheese
-17382	2254	8	0	Seasoning
-29075	1285	23	1	Bervez Juice
-20154	2272	9	0	Saltrice
-19114	2286	8	0	Millet
-19391	2455	8	0	Flour
-8711	1297	7	0	Tomato
-7176	1331	5	0	Greens
-6337	910	7	0	Game
-11337	1449	8	0	Jazbay Grapes
-8019	1258	6	0	Rose
-8569	1359	6	0	Rye
-16488	2416	7	0	Seaweed
-5749	1169	5	0	Rice
-88247	1500	59	2	blue entoloma
-31958	571	56	2	stinkhorn
-38405	585	66	2	emetic russula
-25385	524	48	2	violet coprinus
-325420	1070	304	2	namira's rot
-32112	911	35	2	white cap
-24905	444	56	2	luminous russula
-51551	1024	50	2	imp stool
-150310	1533	98	2	blessed thistle
-300506	2315	130	2	lady's smock
-180664	2674	68	2	wormwood
-160665	1765	91	2	bugloss
-195149	1699	115	2	corn flower
-261309	1939	135	2	dragonthorn
-237390	1946	122	2	mountain flower
-909934	1709	532	2	columbine
-24633	214	115	2	nirnroot
-151186	1385	109	2	water hyacinth
-5141	1297	4	0	Bloodstone
-4470	1034	4	0	Sardonyx
-791	268	3	0	flint
-1205	247	5	0	Bone
-52	3	17	2	raw ironweed^ns
-170	8	21	2	raw silverweed^ns
-272	8	34	2	raw void bloom^ns
-615	152	4	0	Molybdenum
-1179	265	4	0	Adamantite
-1434	328	4	0	Obsidian
-904	167	5	0	Nickel
-806	267	3	0	Moonstone
-1385	280	5	0	Corundum
-968	355	3	0	Manganese
-502	137	4	0	Starmetal
-8968	1340	7	0	Red Meat
-4493	1968	2	0	Fish
-12499	1173	11	0	White Meat
-12278	1334	9	0	Bananas
-8747	1284	7	0	Small Game
-11393	1275	9	0	Potato
-5530	949	6	0	Comberry
-8848	1297	7	0	Jasmine
-8092	1225	7	0	Coffee
-10768	1294	8	0	Mint
-6668	1291	5	0	Yeast
-10224	1470	7	0	Pumpkin
-7699	1175	7	0	Radish
-6211	1296	5	0	Melon
-14328	1491	10	0	Beets
-8087	1191	7	0	Apples
-7835	1496	5	0	Poultry
-7182	1071	7	0	Corn
-9549	1291	7	0	Carrots
-6480	1377	5	0	Barley
-5189	1440	4	0	Lotus
-7748	1201	6	0	Guarana
-6617	1370	5	0	Bittergreen
-6091	1359	4	0	Yerba Mate
-4690	1138	4	0	Surilie Grapes
-7474	1356	6	0	Ginkgo
-6408	1582	4	0	Ginseng
-4608	1315	4	0	Wheat
-5590	1259	4	0	Acai Berry
-48804	2376	21	0	worms^p
-13430	1359	10	0	guts^p
-11806	3305	4	0	crawlers^p
-6716	2518	3	0	insect parts^p
+169	5	34	2	iron hide scraps^p
+6457	560	12	0	Fire Opal
+15118	459	33	0	Carnelian
+2783	1065	3	0	Garnet
+11124	460	24	0	Sapphire
+3194	1315	2	0	Chysolite
+0	717	nil	0	Amethyst
+8822	978	9	0	Diamond
+1617	1283	1	0	Almandine
+32730	925	35	2	cleansed water
+25068	373	67	2	filtered water
+14072	683	21	2	purified water
+4351	749	6	3	cloud mist
+206080	1303	158	1	Frost Mirriam
+29613	2572	12	0	Garlic
+20579	2590	8	0	Isinglass
+22551	2575	9	0	Honey
+17807	2502	7	0	Metheglin
+18396	2398	8	0	Lemon
+14633	2229	7	0	Ginger
+23064	2596	9	0	Cheese
+17325	2259	8	0	Seasoning
+24919	1289	19	1	Bervez Juice
+20484	2292	9	0	Saltrice
+20997	2306	9	0	Millet
+20353	2505	8	0	Flour
+8456	1307	6	0	Tomato
+7324	1331	6	0	Greens
+6449	940	7	0	Game
+11766	1459	8	0	Jazbay Grapes
+8187	1258	7	0	Rose
+8650	1379	6	0	Rye
+16844	2416	7	0	Seaweed
+5649	1189	5	0	Rice
+89754	1503	60	2	blue entoloma
+32499	577	56	2	stinkhorn
+40638	588	69	2	emetic russula
+29749	530	56	2	violet coprinus
+333389	1073	311	2	namira's rot
+31341	914	34	2	white cap
+25419	447	57	2	luminous russula
+53713	1024	52	2	imp stool
+153753	1536	100	2	blessed thistle
+311116	2317	134	2	lady's smock
+179686	2672	67	2	wormwood
+159765	1769	90	2	bugloss
+199218	1693	118	2	corn flower
+293260	1947	151	2	dragonthorn
+235569	1945	121	2	mountain flower
+912637	1712	533	2	columbine
+22712	204	111	2	nirnroot
+155558	1391	112	2	water hyacinth
+5876	1299	5	0	Bloodstone
+4496	1040	4	0	Sardonyx
+932	267	3	0	flint
+1025	252	4	0	Bone
+53	3	18	2	raw ironweed^ns
+258	8	32	2	raw silverweed^ns
+289	8	36	2	raw void bloom^ns
+572	144	4	0	Molybdenum
+1290	269	5	0	Adamantite
+640	154	4	0	Obsidian
+1087	170	6	0	Nickel
+911	268	3	0	Moonstone
+1193	272	4	0	Corundum
+775	175	4	0	Manganese
+515	139	4	0	Starmetal
+9167	1340	7	0	Red Meat
+4263	1968	2	0	Fish
+12236	1173	10	0	White Meat
+11766	1344	9	0	Bananas
+8531	1284	7	0	Small Game
+11430	1275	9	0	Potato
+5588	959	6	0	Comberry
+8796	1298	7	0	Jasmine
+8280	1255	7	0	Coffee
+11430	1324	9	0	Mint
+6796	1321	5	0	Yeast
+10596	1500	7	0	Pumpkin
+7795	1205	6	0	Radish
+6377	1316	5	0	Melon
+14269	1491	10	0	Beets
+7676	1201	6	0	Apples
+8224	1496	5	0	Poultry
+6685	1081	6	0	Corn
+9697	1311	7	0	Carrots
+6684	1397	5	0	Barley
+5281	1456	4	0	Lotus
+7532	1201	6	0	Guarana
+6583	1370	5	0	Bittergreen
+6351	1359	5	0	Yerba Mate
+4435	1138	4	0	Surilie Grapes
+7482	1356	6	0	Ginkgo
+7155	1594	4	0	Ginseng
+4599	1315	3	0	Wheat
+5595	1269	4	0	Acai Berry
+49069	2377	21	0	worms^p
+13661	1359	10	0	guts^p
+11829	3305	4	0	crawlers^p
+6907	2521	3	0	insect parts^p
 418	13	32	0	fish roe
 1063	17	63	0	minnow
-11504	99	116	1	Jejora
+11396	99	115	1	Jejora
 6810	227	30	2	Odra
-67500	45	1500	2	Pojora
-23484	139	169	2	Edora
+90	45	nil	2	Pojora
+24211	139	174	2	Edora
 5402	82	66	2	Jaera
-8869	187	47	2	Pora
+8842	187	47	2	Pora
 7019	88	80	2	Denara
 13160	188	70	3	Rera
-25712	313	82	3	Derado
-2496	832	nil	3	Rekura
-19607	618	32	3	Kura
-7614	323	24	1	Jode
-8885	272	33	1	Notade
-4662	84	56	1	Ode
+25958	313	83	3	Derado
+12480	832	15	3	Rekura
+19807	620	32	3	Kura
+5380	322	17	1	Jode
+7862	274	29	1	Notade
+5040	84	60	1	Ode
 3105	69	45	1	Tade
 148	74	nil	2	Jayde
 4140	69	60	2	Edode
 6905	109	63	2	Pojode
 2920	98	30	2	Rekude
-10205	178	57	2	Hade
+10680	178	60	2	Hade
 5120	128	40	2	Idode
 8168	171	48	3	Pode
-14770	211	70	3	Kedeko
-10758	326	33	3	Rede
-17718	475	37	3	Kude
-12581	972	13	1	Oko
-19391	1094	18	1	Makko
-10025	672	15	1	Deni
-4644	387	12	1	Okoma
-6425	538	12	1	Makkoma
-4738	394	12	1	Denima
+18199	211	86	3	Kedeko
+10692	324	33	3	Rede
+17792	477	37	3	Kude
+11103	966	11	1	Oko
+20094	1091	18	1	Makko
+9443	670	14	1	Deni
+4026	387	10	1	Okoma
+6437	539	12	1	Makkoma
+4577	393	12	1	Denima
 5407	366	15	1	Kuoko
-5160	509	10	1	Rakeipa
+5148	510	10	1	Rakeipa
 3332	392	9	1	Dekeipa
 3336	408	8	1	Meip
-6091	427	14	1	Haoko
-5268	459	11	1	Deteri
-14494	254	57	1	Okori
+6105	428	14	1	Haoko
+5634	460	12	1	Deteri
+15392	254	61	1	Okori
 2114	382	6	1	Oru
-20414	346	59	1	Taderi
-16361	366	45	1	Makderi
-4863	491	10	1	Kaderi
-2365	2365	1	1	Ta
-7860	3499	2	1	Jejota
-18528	1315	14	1	Denata
-108016	1132	95	2	Rekuta
-1740171	343	5073	2	Kuta
-2374	72	33	1	Jora
-7527	380	20	1	Porade
+20029	346	58	1	Taderi
+16781	366	46	1	Makderi
+4873	492	10	1	Kaderi
+2353	2353	1	1	Ta
+7713	3500	2	1	Jejota
+18754	1315	14	1	Denata
+109111	1137	96	2	Rekuta
+1036110	205	5054	2	Kuta
+1926	62	31	1	Jora
+7492	380	20	1	Porade
 6534	55	119	1	Jera
-6483	583	11	4	Calcinium ingot
-7903	810	10	4	Galatite ingot
-11841	1197	10	4	quicksilver ingot
-4838	723	7	4	voidstone ingot
-5679	598	9	4	Kresh Fiber^ns
-4784	622	8	4	ironthread^ns
-10927	1423	8	4	silverweave^ns
-5842	1042	6	4	void cloth^ns
-5773	577	10	4	topgrain hide^ns
-3218	463	7	4	Iron Hide^ns
-3756	441	9	4	superb hide^ns
-8070	1597	5	4	Shadowhide^ns
-4986	530	9	4	sanded birch^ns
-11688	771	15	4	sanded ash^ns
-12980	1215	11	4	sanded mahogany^ns
-4035	326	12	4	sanded nightwood^ns
-2861	142	20	0	Copper
-2792	313	9	0	Argentum
-25071	233	108	0	Daedra Heart
-8101	144	56	0	Palladium
-12808	544	24	2	honing stone
-155356	1504	103	5	dwarven oil
-210270	448	469	9	grain solvent
-2207489	229	9640	15	tempering alloy
-8620	674	13	2	hemming
-26274	665	40	5	embroidery
-220100	918	240	9	elegant lining
-1274864	207	6159	15	dreugh wax
-8224	978	8	2	pitch
-25366	841	30	5	turpen
-96092	596	161	9	mastic
-1252382	296	4231	15	rosin
-263734	45	5861	0	Fortified Nirncrux
-323578	20	16179	0	Potent Nirncrux
-12678	28	453	0	Dwemer Frame
-444	8	56	2	Dwemer Scrap
-15544	55	283	0	Charcoal of Remorse
+6855	608	11	4	Calcinium ingot
+7885	810	10	4	Galatite ingot
+12289	1247	10	4	quicksilver ingot
+33041	5072	7	4	voidstone ingot
+5522	598	9	4	Kresh Fiber^ns
+5098	647	8	4	ironthread^ns
+11915	1423	8	4	silverweave^ns
+18766	3320	6	4	void cloth^ns
+6267	627	10	4	topgrain hide^ns
+3272	463	7	4	Iron Hide^ns
+3723	441	8	4	superb hide^ns
+8055	1514	5	4	Shadowhide^ns
+5509	580	9	4	sanded birch^ns
+10446	771	14	4	sanded ash^ns
+12929	1215	11	4	sanded mahogany^ns
+17268	1215	14	4	sanded nightwood^ns
+2774	142	20	0	Copper
+2416	298	8	0	Argentum
+26275	234	112	0	Daedra Heart
+8156	144	57	0	Palladium
+11889	532	22	2	honing stone
+150336	1490	101	5	dwarven oil
+209591	442	474	9	grain solvent
+1913800	199	9617	15	tempering alloy
+8624	667	13	2	hemming
+25681	659	39	5	embroidery
+218922	920	238	9	elegant lining
+1303676	211	6179	15	dreugh wax
+8217	977	8	2	pitch
+24366	839	29	5	turpen
+96439	598	161	9	mastic
+1191549	267	4463	15	rosin
+262426	45	5832	0	Fortified Nirncrux
+321396	20	16070	0	Potent Nirncrux
+13402	28	479	0	Dwemer Frame
+410	8	51	2	Dwemer Scrap
+15566	55	283	0	Charcoal of Remorse
 116	1	116	2	Ashes of Remorse
-42817	4	10704	0	Perfect Roe
-314194	5249	60	4	Rubedite Ingot
-5721	1065	5	3	Star Dew
-114940	2588	44	3	Lorkhan's Tears
-74482	4552	16	4	Sanded Ruby Ash^ns
-451683	7526	60	4	Ancestor Silk^ns
-318388	4807	66	4	Rubedo Leather^ns
-16131	965	17	3	Jehade
-20240	861	24	3	Rejera
-7469	15	498	0	Goldscale
-361	2	180	2	Ancient Scale
-24234	44	551	0	Malachite
-446	6	74	5	Malachite Shard
-7668	38	202	0	Laurel
-17583	179	98	3	Itade
-174798	349	501	3	Repora
-3594	90	40	0	Cassiterite
+43093	4	10773	0	Perfect Roe
+294154	4993	59	4	Rubedite Ingot
+6391	1065	6	3	Star Dew
+117664	2604	45	3	Lorkhan's Tears
+74102	4523	16	4	Sanded Ruby Ash^ns
+425850	7388	58	4	Ancestor Silk^ns
+305446	4740	64	4	Rubedo Leather^ns
+17097	965	18	3	Jehade
+20390	863	24	3	Rejera
+7403	15	494	0	Goldscale
+337	2	169	2	Ancient Scale
+23947	44	544	0	Malachite
+486	6	81	5	Malachite Shard
+7361	38	194	0	Laurel
+18569	179	104	3	Itade
+173340	349	497	3	Repora
+3532	90	39	0	Cassiterite
 90	6	15	2	Cassiterite Sand
-574	6	96	2	rubedite ore
-654	20	33	2	rough ruby ash^ns
-767	9	85	2	raw ancestor silk^ns
-1518	15	101	2	rubedo hide scraps^p
-3867	118	33	0	Rogue's Soot
-13324	34	392	0	Auric Tusk
-2543	15	170	0	Potash
+469	5	94	2	rubedite ore
+182	6	30	2	rough ruby ash^ns
+679	8	85	2	raw ancestor silk^ns
+804	8	101	2	rubedo hide scraps^p
+3875	118	33	0	Rogue's Soot
+13334	34	392	0	Auric Tusk
+2624	15	175	0	Potash
 0	18	nil	0	Crown Mimic Stone
-9748	5	1950	0	Eagle Feather
-67929	35	1941	0	Dragon Scute
-55859	27	2069	0	Lion Fang
-3227	49	66	0	Azure Plasm
-1899	443	4	0	Grease
-134	30	4	1	Ichor
-333	43	8	1	Slime
-3442	261	13	2	Gall
-1833	181	10	2	Terebinthine
-2033	204	10	3	Tarblack
-2949	747	4	3	Alkahest
-21806	31	703	0	Fine Chalk
-484	6	81	2	Coarse Chalk
-13951	13	1073	0	Tainted Blood
-5510	43	128	0	Polished Shilling
-13547	332	41	2	Torchbug Thorax
-2334	66	35	2	Beetle Scuttle
-2241	279	8	2	Spider Egg
-25600	272	94	2	Butterfly Wing
-1237	225	5	2	Fleshfly Larva||Fleshfly Larvae
-10613	139	76	2	Scrib Jelly
-9387	237	40	2	Nightshade
-8242	152	54	2	Mudcrab Chitin
-12286	16	768	0	Black Beeswax
-35717	23	1553	0	Defiled Whiskers
-5666	25	227	0	Oxblood Fungus
-184	3	61	2	Oxblood Fungus Spore
-4283	14	306	0	Pearl Sand
+9782	5	1956	0	Eagle Feather
+70898	35	2026	0	Dragon Scute
+57206	27	2119	0	Lion Fang
+2828	47	60	0	Azure Plasm
+1756	455	4	0	Grease
+89	30	3	1	Ichor
+332	43	8	1	Slime
+3521	267	13	2	Gall
+1715	181	9	2	Terebinthine
+2093	210	10	3	Tarblack
+3099	759	4	3	Alkahest
+21796	32	681	0	Fine Chalk
+323	4	81	2	Coarse Chalk
+12965	13	997	0	Tainted Blood
+4991	43	116	0	Polished Shilling
+14661	332	44	2	Torchbug Thorax
+2286	66	35	2	Beetle Scuttle
+2319	285	8	2	Spider Egg
+25829	272	95	2	Butterfly Wing
+1305	228	6	2	Fleshfly Larva||Fleshfly Larvae
+11058	145	76	2	Scrib Jelly
+9685	240	40	2	Nightshade
+8481	152	56	2	Mudcrab Chitin
+10968	16	686	0	Black Beeswax
+34495	23	1500	0	Defiled Whiskers
+6430	25	257	0	Oxblood Fungus
+6	3	nil	2	Oxblood Fungus Spore
+3612	14	258	0	Pearl Sand
 30	5	6	2	Grain of Pearl Sand
 200	40	5	5	essence of health
-493	200	2	0	Lockpick
+544	200	3	0	Lockpick
 0	105	nil	0	Counterfeit Pardon Edict
 63	1	nil	63	Greaves of Julianos
 46	1	nil	46	Battle Axe of the Night Mother
@@ -441,54 +448,47 @@
 27	1	nil	27	rubedite sabatons^p
 27	1	nil	27	rubedite gauntlets^p
 74	1	nil	74	ruby ash lightning staff^n
-74	30	2	0	Lockpick
-1356	7	194	13	Glass Style Motif Fragment
+82	30	3	0	Lockpick
+1345	7	192	13	Glass Style Motif Fragment
 31	1	nil	31	Magnus' Girdle
-74	1	nil	74	ruby ash inferno staff^n
 145	1	145	46	ancestor silk hat^n
-55	1	nil	55	ancestor silk robe^n
 8	2	nil	4	Argonian Saddle-Cured Rabbit
 74	1	nil	74	ruby ash bow^n
-74	1	nil	74	ruby ash ice staff^n
+141	1	141	9	superb glyph of health recovery^n
 55	1	nil	55	ancestor silk breeches^p
-74	1	nil	74	ruby ash lightning staff^n
 46	1	nil	46	rubedite sword^n
 46	1	nil	46	rubedite helm^n
 396	99	nil	4	Khenarthi's Wings Chai
 396	99	nil	4	Fresh Apples and Eidar Cheese
 74	1	nil	74	ruby ash restoration staff^n
-115	1	115	27	ancestor silk shoes^p
-74	1	nil	74	ruby ash restoration staff^n
-21602	126	171	14	Grand Repair Kit
+288	1	nil	288	rubedite greatsword^n
+21455	126	170	14	Grand Repair Kit
 46	1	nil	46	ancestor silk epaulets^p
-74	1	nil	74	ruby ash restoration staff^n
 31	1	nil	31	Sabatons of Julianos
 60	1	nil	60	Cuirass of Hunding's Rage
 27	1	nil	27	ancestor silk sash^p
-145	1	145	46	ancestor silk hat^n
-55	1	nil	55	ancestor silk breeches^p
-1030	51	20	5	Mistral Banana-Bunny Hash
-27	1	nil	27	ancestor silk sash^p
+108	1	nil	108	rubedite gauntlets^p
+1018	51	20	5	Mistral Banana-Bunny Hash
 240	48	nil	5	essence of stamina
-24025	200	120	5	essence of Spell Power
-676	52	13	5	Cloudy Gradual Ravage Health Poison IX
-175	35	nil	5	essence of Ravage Health
-310	62	nil	5	essence of Magicka
-26792	129	208	5	essence of health
-385	77	nil	5	essence of health
-449	31	14	5	essence of stamina
+24721	200	124	5	essence of Spell Power
+627	52	12	5	Cloudy Gradual Ravage Health Poison IX
+170	34	nil	5	essence of Ravage Health
+930	62	15	5	essence of Magicka
+27042	129	210	5	essence of health
+380	76	nil	5	essence of health
+432	31	14	5	essence of stamina
 46	1	nil	46	ruby ash shield^n
 46	1	nil	46	ruby ash shield^n
-46	1	nil	46	ruby ash shield^n
+154	1	154	9	superb glyph of flame resist^n
 27	1	nil	27	rubedo leather bracers^p
 3	1	nil	3	Wet Gunny Sack
 27	1	nil	27	rubedo leather bracers^p
 436	34	13	5	Firsthold Fruit and Cheese Plate
-307	36	9	5	Cloudy Damage Health Poison IX
+468	36	13	5	Cloudy Damage Health Poison IX
 0	1	nil	0	Guild Tabard
 46	1	nil	46	rubedite dagger^n
 46	1	nil	46	rubedo leather helmet^n
-153	1	153	9	superb glyph of health^n
+155	1	155	9	superb glyph of health^n
 46	1	nil	46	rubedo leather helmet^n
 46	1	nil	46	rubedo leather arm cops^p
 46	1	nil	46	rubedo leather arm cops^p
@@ -498,161 +498,237 @@
 0	1	nil	0	Undaunted Enclave Invitation
 46	1	nil	46	rubedite helm^n
 130	1	130	55	rubedite greaves^p
-46	1	nil	46	rubedite sword^n
 46	1	nil	46	rubedite pauldron^p
 46	1	nil	46	rubedite pauldron^p
 230	46	nil	5	Hearty Garlic Corn Chowder
-180	36	nil	5	Lilmoth Garlic Hagfish
+175	35	nil	5	Lilmoth Garlic Hagfish
 170	34	nil	5	Muthsera's Remorse
-180	36	nil	5	Hagraven's Tonic
+175	35	nil	5	Hagraven's Tonic
 230	46	nil	5	Markarth Mead
 25530	200	128	5	essence of Invisibility
 306	1	306	50	Sithis' Ring
 74	1	nil	74	ruby ash bow^n
 138	1	138	50	Sithis' Necklace
-136	5	27	9	Roguish Stealth Draught
+134	5	27	9	Roguish Stealth Draught
 0	1	nil	0	Shadowsilk Gem
 0	1	nil	0	Pledge of Mara
 0	1	nil	0	Merethic Restorative Resin
-396	99	nil	4	Pickled Carrot Slurry
-74	1	nil	74	rubedite greatsword^n
-396	99	nil	4	Arenthian Brandy
-182	1	182	55	rubedite cuirass^n
-27	1	nil	27	rubedite sabatons^p
-27	1	nil	27	rubedite gauntlets^p
-671	56	12	5	Cloudy Hindering Poison IX
-153	1	153	9	superb glyph of health^n
-130	1	130	55	rubedite greaves^p
-654	36	18	5	essence of Magicka
-153	1	153	9	superb glyph of health^n
-46	1	nil	46	ancestor silk epaulets^p
+392	98	nil	4	Pickled Carrot Slurry
+3	1	nil	3	Cuffed Boots
+74	1	nil	74	ruby ash inferno staff^n
+74	1	nil	74	ruby ash ice staff^n
+0	1	nil	0	Woodworker Survey: Wrothgar II
+74	1	nil	74	ruby ash lightning staff^n
+392	98	nil	4	Arenthian Brandy
+74	1	nil	74	ruby ash restoration staff^n
+46	1	nil	46	ruby ash shield^n
+46	1	nil	46	ruby ash shield^n
+10	1	10	0	diamond ring^n
+645	56	12	5	Cloudy Hindering Poison IX
+155	1	155	9	superb glyph of health^n
+623	36	17	5	essence of Magicka
 0	1	nil	0	Litany of Blood
-147	1	147	9	superb glyph of magicka^n
-147	1	147	9	superb glyph of magicka^n
-147	1	147	9	superb glyph of magicka^n
+151	1	151	9	superb glyph of magicka^n
+151	1	151	9	superb glyph of magicka^n
 240	60	nil	4	Cloudy Damage Health Poison V
 192	48	nil	4	Cloudy Gradual Ravage Health Poison V
 256	64	nil	4	Cloudy Hindering Poison V
 1659	13	128	5	essence of Invisibility
-4204	35	120	5	essence of Spell Power
-156	1	156	9	superb glyph of stamina^n
-156	1	156	9	superb glyph of stamina^n
-80	1	nil	80	rubedite battle axe^n
-8018	150	53	30	Grand Soul Gem
-722	15	48	19	Lesser Soul Gem
-10943	185	59	26	Greater Soul Gem
-14357	1	14357	51	Necklace of Willpower
+4326	35	124	5	essence of Spell Power
+141	1	141	9	superb glyph of stamina^n
+141	1	141	9	superb glyph of stamina^n
 84	1	nil	84	Magnus' Inferno Staff
+7698	150	51	30	Grand Soul Gem
+573	15	38	19	Lesser Soul Gem
+10192	185	55	26	Greater Soul Gem
+13986	1	13986	51	Necklace of Willpower
+80	1	nil	80	rubedite battle axe^n
 6	1	nil	6	Side-Stitched Trousers
-1358	1	1358	51	Ring of Willpower
-1358	1	1358	51	Ring of Willpower
+3	1	nil	3	Traveler's Boots
+1338	1	1338	51	Ring of Willpower
+1338	1	1338	51	Ring of Willpower
 80	1	nil	80	ruby ash restoration staff^n
 498	166	nil	3	potion of health
 36	1	nil	36	ruby ring of potion boost^n
 46	1	nil	46	voidsteel mace^n
 38	1	nil	38	Helmet of the Willow's Path
 300	100	nil	3	Elinhir Roast Antelope
-96	1	96	9	monumental glyph of health^n
+98	1	98	9	monumental glyph of health^n
 64	1	nil	64	Magnus' Inferno Staff
 300	100	nil	3	Spiced Mazte
 38	1	nil	38	Arm Cops of the Willow's Path
 300	100	nil	3	Sorry, Honey Lager
 46	1	nil	46	nightwood shield^n
-493	200	2	0	Lockpick
+544	200	3	0	Lockpick
 501	167	nil	3	potion of Ravage Health
-165	55	nil	3	Spiced Mazte
+162	54	nil	3	Spiced Mazte
+68	1	nil	68	nightwood bow^n
 36	1	nil	36	ruby ring of potion boost^n
-30	12	2	0	Lockpick
-96	1	96	9	monumental glyph of health^n
+68	1	nil	68	nightwood bow^n
+33	12	3	0	Lockpick
+68	1	nil	68	nightwood bow^n
 0	1	nil	0	Hunting Bow
 80	1	80	8	monumental glyph of frost^n
-498	166	nil	3	potion of stamina
+68	1	nil	68	nightwood bow^n
+495	165	nil	3	potion of stamina
 161	1	nil	161	voidsteel helm^n
+68	1	nil	68	nightwood bow^n
 66	1	nil	66	Great Axe of the Titanborn
 300	100	nil	3	Spiceberry Chai
 258	1	nil	258	voidsteel maul^n
 23	1	nil	23	Bracers of Night's Silence
+68	1	nil	68	nightwood bow^n
 146	1	146	50	Helmet of Flanking
-101	1	101	9	monumental glyph of magicka^n
-101	1	101	9	monumental glyph of magicka^n
+102	1	102	9	monumental glyph of magicka^n
+68	1	nil	68	nightwood bow^n
 46	1	nil	46	Guards of the Willow's Path
 85	1	85	8	monumental glyph of flame^n
 95	1	95	9	monumental glyph of frost^n
+288	1	nil	288	ruby ash restoration staff^n
 23	1	nil	23	Boots of Night's Silence
 162	54	nil	3	Spiceberry Chai
 96	1	nil	96	shadowhide belt^n
-177	59	nil	3	Sorry, Honey Lager
+174	58	nil	3	Sorry, Honey Lager
 23	1	nil	23	Belt of Oblivion's Foe
 46	1	nil	46	Jack of Night's Silence
 80	1	80	8	monumental glyph of frost^n
-102	1	102	9	monumental glyph of stamina^n
-102	1	102	9	monumental glyph of stamina^n
+90	1	90	9	monumental glyph of stamina^n
+216	1	nil	216	rubedo leather guards^p
+90	1	90	9	monumental glyph of stamina^n
 96	1	nil	96	shadowspun shoes^p
+8	1	nil	8	splendid glyph of shock^n
 96	1	nil	96	voidsteel girdle^n
 288	1	nil	288	ruby ash restoration staff^n
-177	59	nil	3	Elinhir Roast Antelope
-68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood bow^n
+174	58	nil	3	Elinhir Roast Antelope
+68	1	nil	68	nightwood bow^n
 288	1	nil	288	ruby ash inferno staff^n
+68	1	nil	68	nightwood bow^n
+135	1	135	7	major glyph of reduce feat cost^n
+68	1	nil	68	nightwood bow^n
+68	1	nil	68	nightwood bow^n
 68	1	nil	68	nightwood inferno staff^n
-68	1	nil	68	nightwood inferno staff^n
-68	1	nil	68	nightwood ice staff^n
-68	1	nil	68	nightwood ice staff^n
-68	1	nil	68	nightwood ice staff^n
 258	1	nil	258	nightwood restoration staff^n
 108	1	nil	108	ancestor silk shoes^p
-68	1	nil	68	nightwood lightning staff^n
-68	1	nil	68	nightwood lightning staff^n
-68	1	nil	68	nightwood lightning staff^n
-68	1	nil	68	nightwood restoration staff^n
-34288	200	171	14	Grand Repair Kit
-68	1	nil	68	nightwood restoration staff^n
+68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood inferno staff^n
+34054	200	170	14	Grand Repair Kit
+68	1	nil	68	nightwood inferno staff^n
 258	1	nil	258	nightwood lightning staff^n
-4175	78	54	30	Grand Soul Gem
-51	1	nil	51	shadowspun robe^n
-42	1	nil	42	nightwood shield^n
-42	1	nil	42	nightwood shield^n
-42	1	nil	42	nightwood shield^n
-42	1	nil	42	nightwood shield^n
-51	1	nil	51	shadowspun robe^n
-52	1	nil	52	shadowspun breeches^p
-52	1	nil	52	shadowspun breeches^p
+4003	78	51	30	Grand Soul Gem
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood lightning staff^n
+68	1	nil	68	nightwood lightning staff^n
+68	1	nil	68	nightwood lightning staff^n
+68	1	nil	68	nightwood lightning staff^n
+68	1	nil	68	nightwood lightning staff^n
 43	1	nil	43	shadowspun epaulets^p
-26	1	nil	26	shadowspun shoes^p
+68	1	nil	68	nightwood lightning staff^n
 300	100	nil	3	Cyrodilic Pumpkin Fritters
-26	1	nil	26	shadowspun shoes^p
+68	1	nil	68	nightwood restoration staff^n
 162	54	nil	3	Cyrodilic Pumpkin Fritters
-2400	14	171	14	Grand Repair Kit
-43	1	nil	43	shadowspun hat^n
+68	1	nil	68	nightwood restoration staff^n
+68	1	nil	68	nightwood restoration staff^n
 42	1	nil	42	shadowspun epaulets^p
 42	1	nil	42	shadowspun epaulets^p
-43	1	nil	43	shadowspun hat^n
-51	1	nil	51	voidsteel greaves^p
-43	1	nil	43	shadowspun epaulets^p
-26	1	nil	26	shadowspun sash^p
-26	1	nil	26	shadowspun sash^p
+68	1	nil	68	nightwood restoration staff^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
 26	1	nil	26	shadowhide bracers^p
 26	1	nil	26	shadowhide bracers^p
 43	1	nil	43	shadowhide helmet^n
 43	1	nil	43	shadowhide helmet^n
 43	1	nil	43	shadowhide arm cops^p
 300	100	nil	3	Chorrol Corn on the Cob
-42	1	nil	42	voidsteel sword^n
-41	1	nil	41	Ring of Syrabane
-42	1	nil	42	voidsteel sword^n
-42	1	nil	42	voidsteel sword^n
-165	55	nil	3	Chorrol Corn on the Cob
-68	1	nil	68	voidsteel greatsword^n
-68	1	nil	68	voidsteel greatsword^n
-498	166	nil	3	potion of Magicka
+42	1	nil	42	nightwood shield^n
+100	1	100	41	Ring of Syrabane
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+162	54	nil	3	Chorrol Corn on the Cob
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+51	1	nil	51	shadowspun robe^n
+51	1	nil	51	shadowspun robe^n
+495	165	nil	3	potion of Magicka
+51	1	nil	51	shadowspun robe^n
 500	1	500	48	Ring of the Shadow Dancer
+51	1	nil	51	shadowspun robe^n
+26	1	nil	26	shadowspun shoes^p
+26	1	nil	26	shadowspun shoes^p
+26	1	nil	26	shadowspun shoes^p
 43	1	nil	43	shadowhide arm cops^p
-51	1	nil	51	voidsteel cuirass^n
-51	1	nil	51	voidsteel cuirass^n
-25	1	nil	25	voidsteel sabatons^p
-25	1	nil	25	voidsteel sabatons^p
-25	1	nil	25	voidsteel gauntlets^p
-25	1	nil	25	voidsteel gauntlets^p
+26	1	nil	26	shadowspun shoes^p
+43	1	nil	43	shadowspun hat^n
+43	1	nil	43	shadowspun hat^n
+43	1	nil	43	shadowspun hat^n
+43	1	nil	43	shadowspun hat^n
+52	1	nil	52	shadowspun breeches^p
+52	1	nil	52	shadowspun breeches^p
+52	1	nil	52	shadowspun breeches^p
+52	1	nil	52	shadowspun breeches^p
+43	1	nil	43	shadowspun epaulets^p
+43	1	nil	43	shadowspun epaulets^p
+43	1	nil	43	shadowspun epaulets^p
+26	1	nil	26	shadowspun sash^p
+26	1	nil	26	shadowspun sash^p
 42	1	nil	42	Ring of Soulshine
+26	1	nil	26	shadowspun sash^p
+26	1	nil	26	shadowspun sash^p
+26	1	nil	26	shadowhide bracers^p
+26	1	nil	26	shadowhide bracers^p
+43	1	nil	43	shadowhide helmet^n
+43	1	nil	43	shadowhide helmet^n
+43	1	nil	43	shadowhide arm cops^p
+43	1	nil	43	shadowhide arm cops^p
+42	1	nil	42	voidsteel sword^n
+42	1	nil	42	voidsteel sword^n
+42	1	nil	42	voidsteel sword^n
+68	1	nil	68	voidsteel greatsword^n
+68	1	nil	68	voidsteel greatsword^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+42	1	nil	42	voidsteel dagger^n
+51	1	nil	51	voidsteel cuirass^n
+51	1	nil	51	voidsteel cuirass^n
+51	1	nil	51	voidsteel cuirass^n
+51	1	nil	51	voidsteel cuirass^n
+25	1	nil	25	voidsteel sabatons^p
+25	1	nil	25	voidsteel sabatons^p
+25	1	nil	25	voidsteel sabatons^p
+25	1	nil	25	voidsteel sabatons^p
+25	1	nil	25	voidsteel gauntlets^p
+25	1	nil	25	voidsteel gauntlets^p
+25	1	nil	25	voidsteel gauntlets^p
+25	1	nil	25	voidsteel gauntlets^p
+42	1	nil	42	voidsteel helm^n
+42	1	nil	42	voidsteel helm^n
+42	1	nil	42	voidsteel helm^n
+42	1	nil	42	voidsteel helm^n
+51	1	nil	51	voidsteel greaves^p
+51	1	nil	51	voidsteel greaves^p
+51	1	nil	51	voidsteel greaves^p
+51	1	nil	51	voidsteel greaves^p
+42	1	nil	42	voidsteel pauldron^p
+42	1	nil	42	voidsteel pauldron^p
+42	1	nil	42	voidsteel pauldron^p
+42	1	nil	42	voidsteel pauldron^p
 45	1	nil	45	Helm of Julianos
 43	1	nil	43	Necklace of Willpower
 54	1	nil	54	Cuirass of Julianos
@@ -665,132 +741,144 @@
 43	1	nil	43	Ring of Willpower
 27	1	nil	27	Gauntlets of Julianos
 62	1	nil	62	birch bow^n
-4481	1	4481	13	Psijic Ambrosia Recipe, Fragment III
-493	200	2	0	Lockpick
+4407	1	4407	13	Psijic Ambrosia Recipe, Fragment III
+544	200	3	0	Lockpick
 74	1	nil	74	ruby ash bow^n
-30	1	30	9	Fyr's Hyperagonal Potation Recipe
+36	1	36	9	Bananas in Moon-Sugar Syrup Recipe
 30	1	nil	30	Shoes of the Shadow Dancer
-3070	200	15	5	Grand Soul Gem (Empty)
+3367	200	17	5	Grand Soul Gem (Empty)
 0	50	nil	0	Counterfeit Pardon Edict
-868	32	27	9	Roguish Stealth Draught
-153	1	153	9	superb glyph of health^n
-493	200	2	0	Lockpick
-703	1	703	50	Ring of the Shadow Dancer
+938	35	27	9	Roguish Stealth Draught
+154	1	154	9	superb glyph of health^n
+544	200	3	0	Lockpick
+601	1	601	50	Ring of the Shadow Dancer
 28	1	nil	28	rubedo leather bracers^p
-153	1	153	9	superb glyph of health^n
+154	1	154	9	superb glyph of health^n
 74	1	nil	74	ruby ash bow^n
-147	1	147	9	superb glyph of magicka^n
-3070	200	15	5	Grand Soul Gem (Empty)
-147	1	147	9	superb glyph of magicka^n
+151	1	151	9	superb glyph of magicka^n
+3367	200	17	5	Grand Soul Gem (Empty)
+151	1	151	9	superb glyph of magicka^n
 46	1	nil	46	rubedo leather arm cops^p
-6499	53	123	5	essence of Weapon Power
-74	1	nil	74	ruby ash bow^n
-147	1	147	9	superb glyph of magicka^n
-10705	200	54	30	Grand Soul Gem
+6627	53	125	5	essence of Weapon Power
+101	6	17	5	Grand Soul Gem (Empty)
+15	1	15	9	Hagraven's Tonic Recipe
 82	1	nil	82	Inferno Staff of Julianos
-156	1	156	9	superb glyph of stamina^n
-156	1	156	9	superb glyph of stamina^n
+141	1	141	9	superb glyph of stamina^n
+141	1	141	9	superb glyph of stamina^n
 921	45	20	9	Roguish Escape Draught
-156	1	156	9	superb glyph of stamina^n
+30	1	30	9	Fyr's Hyperagonal Potation Recipe
 84	1	nil	84	Magnus' Inferno Staff
-216	1	nil	216	rubedite cuirass^n
-76	1	nil	76	ruby ash restoration staff^n
+281	1	200	281	ruby ash restoration staff^n
+80	1	80	76	ruby ash restoration staff^n
 46	1	nil	46	rubedite helm^n
-16	1	16	9	Tomato Garlic Chutney Recipe
-8778	164	54	30	Grand Soul Gem
-141	1	141	47	ancestor silk epaulets^p
-55	1	nil	55	ancestor silk robe^n
-57	1	nil	57	rubedo leather jack^n
+4259	83	51	30	Grand Soul Gem
+10264	200	51	30	Grand Soul Gem
+180	1	nil	180	rubedite dagger^n
+171	1	171	57	rubedo leather jack^n
 1078	13	83	5	Drain Health Poison IX
-3070	200	15	5	Grand Soul Gem (Empty)
-281	1	nil	281	ruby ash inferno staff^n
+3367	200	17	5	Grand Soul Gem (Empty)
 28	1	nil	28	rubedo leather bracers^p
-74	1	nil	74	ruby ash bow^n
 74	1	nil	74	ruby ash inferno staff^n
 74	1	nil	74	ruby ash inferno staff^n
 400	100	nil	4	Fresh Apples and Eidar Cheese
-16	4	nil	4	Fresh Apples and Eidar Cheese
+12	3	nil	4	Fresh Apples and Eidar Cheese
 74	1	nil	74	ruby ash ice staff^n
 74	1	nil	74	ruby ash ice staff^n
-46	1	nil	46	rubedite sword^n
-288	24	12	5	Cloudy Hindering Poison IX
+55	1	nil	55	ancestor silk robe^n
+300	24	13	5	Cloudy Hindering Poison IX
 74	1	nil	74	ruby ash restoration staff^n
-1090	54	20	5	Mistral Banana-Bunny Hash
+1078	54	20	5	Mistral Banana-Bunny Hash
 400	100	nil	4	Khenarthi's Wings Chai
-14	1	14	9	Colovian Ginger Beer Recipe
-55	1	nil	55	ancestor silk breeches^p
-170	34	nil	5	Lilmoth Garlic Hagfish
-46	1	nil	46	ancestor silk epaulets^p
-48	1	48	9	Clan Mother's Banana Pilaf Recipe
+55	1	nil	55	ancestor silk robe^n
+115	1	115	27	ancestor silk shoes^p
+165	33	nil	5	Lilmoth Garlic Hagfish
+115	1	115	27	ancestor silk shoes^p
+145	1	145	46	ancestor silk hat^n
 55	1	nil	55	rubedo leather jack^n
-16	4	nil	4	Khenarthi's Wings Chai
-10	1	nil	10	Sweet Lemonale Recipe
+12	3	nil	4	Khenarthi's Wings Chai
+63	23	3	0	Lockpick
 400	100	nil	4	Pickled Carrot Slurry
 74	1	nil	74	ruby ash lightning staff^n
-18	1	18	9	Millet and Beef Stuffed Peppers Recipe
-16	1	16	9	Tenmar Millet-Carrot Couscous Recipe
+145	1	145	46	ancestor silk hat^n
+55	1	nil	55	ancestor silk breeches^p
 74	1	nil	74	ruby ash lightning staff^n
 74	1	nil	74	ruby ash restoration staff^n
 74	1	nil	74	ruby ash restoration staff^n
-9765	36	271	5	essence of Immovability
-222	26	9	5	Cloudy Damage Health Poison IX
+9855	36	274	5	essence of Immovability
+338	26	13	5	Cloudy Damage Health Poison IX
 46	1	nil	46	rubedite helm^n
 27	1	nil	27	rubedo leather boots^p
-74	1	nil	74	ruby ash restoration staff^n
-74	1	nil	74	ruby ash restoration staff^n
+55	1	nil	55	ancestor silk breeches^p
+46	1	nil	46	ancestor silk epaulets^p
 9362	86	109	5	essence of Spell Power
 500	100	nil	5	essence of Ravage Health
-9586	2	4793	13	Psijic Ambrosia Recipe, Fragment II
+9758	2	4879	13	Psijic Ambrosia Recipe, Fragment II
 12	3	nil	4	Sipping Imga Tonic
-295	59	nil	5	essence of health
+290	58	nil	5	essence of health
 46	1	nil	46	ruby ash shield^n
 46	1	nil	46	ruby ash shield^n
-46	1	nil	46	ruby ash shield^n
-57	23	2	1	Lockpick
-646	8	81	2	Coarse Chalk
+46	1	nil	46	ancestor silk epaulets^p
+27	1	nil	27	ancestor silk sash^p
+27	1	nil	27	ancestor silk sash^p
+27	1	nil	27	rubedo leather bracers^p
+175	1	nil	175	rubedite axe^n
+46	1	nil	46	rubedo leather helmet^n
+46	1	nil	46	rubedo leather arm cops^p
 470	94	nil	5	Hearty Garlic Corn Chowder
+46	1	nil	46	rubedite sword^n
 3319	26	128	5	essence of Invisibility
+46	1	nil	46	rubedite sword^n
+74	1	nil	74	rubedite greatsword^n
 0	1	nil	0	Undaunted Enclave Invitation
-34288	200	171	14	Grand Repair Kit
-4358	1	4358	13	Psijic Ambrosia Recipe, Fragment IV
-9581	2	4791	13	Psijic Ambrosia Recipe, Fragment V
+34054	200	170	14	Grand Repair Kit
+74	1	nil	74	rubedite greatsword^n
+4412	1	4412	13	Psijic Ambrosia Recipe, Fragment IV
+9365	2	4683	13	Psijic Ambrosia Recipe, Fragment V
 8	2	nil	4	Pickled Carrot Slurry
+46	1	nil	46	rubedite dagger^n
+46	1	nil	46	rubedite dagger^n
 400	100	nil	4	Arenthian Brandy
 8	2	nil	4	Arenthian Brandy
-81	3	27	9	Roguish Stealth Draught
-46	1	nil	46	ruby ash shield^n
+14	1	14	9	Tomato Garlic Chutney Recipe
+182	1	182	55	rubedite cuirass^n
+182	1	182	55	rubedite cuirass^n
+27	1	nil	27	rubedite sabatons^p
 488	38	13	5	Firsthold Fruit and Cheese Plate
 12	3	nil	4	Argonian Saddle-Cured Rabbit
+27	1	nil	27	rubedite sabatons^p
+27	1	nil	27	rubedite gauntlets^p
+27	1	nil	27	rubedite gauntlets^p
 30	1	nil	30	Girdle of the Night Mother
-465	93	nil	5	essence of Ravage Health
+46	1	nil	46	rubedite helm^n
+460	92	nil	5	essence of Ravage Health
+510	1	510	10	Venison Stuffed Grape Leaves Recipe
 300	1	nil	300	Crab-Slaughter-Crane
+130	1	130	55	rubedite greaves^p
+130	1	130	55	rubedite greaves^p
+46	1	nil	46	rubedite pauldron^p
 3	1	nil	3	Wet Gunny Sack
-180	1	180	60	Robe of the Shadow Dancer
-10115	59	171	14	Grand Repair Kit
+46	1	nil	46	rubedite pauldron^p
+51	1	51	9	Indoril Radish Tartlets Recipe
+60	1	nil	60	Robe of the Shadow Dancer
+10727	63	170	14	Grand Repair Kit
 170	34	nil	5	Muthsera's Remorse
-182	1	182	55	rubedite cuirass^n
 500	100	nil	5	Markarth Mead
 290	58	nil	5	Markarth Mead
 3	1	nil	3	Plain Sandals
-624	48	13	5	Cloudy Gradual Ravage Health Poison IX
-130	1	130	55	rubedite greaves^p
-170	34	nil	5	Hagraven's Tonic
-2410	157	15	5	Grand Soul Gem (Empty)
+557	48	12	5	Cloudy Gradual Ravage Health Poison IX
+165	33	nil	5	Hagraven's Tonic
+3367	200	17	5	Grand Soul Gem (Empty)
 141	1	141	47	rubedite helm^n
 76	1	nil	76	ruby ash bow^n
-315	63	nil	5	essence of Magicka
-36	2	18	5	essence of Magicka
-0	1	nil	0	shadowspun robe^n
-29	2	15	5	essence of stamina
+945	63	15	5	essence of Magicka
+35	2	17	5	essence of Magicka
+28	2	14	5	essence of stamina
 28	1	nil	28	rubedo leather boots^p
 76	1	nil	76	rubedite maul^n
-80	1	nil	80	Bow of Martial Knowledge
 47	1	nil	47	rubedite mace^n
 410	82	nil	5	essence of stamina
 10	2	5	5	essence of health
-60	1	nil	60	Elegant Breeches
-29	1	nil	29	Belt of the Twin Sisters
-4688	1	4688	13	Psijic Ambrosia Recipe, Fragment VII
+4468	1	4468	13	Psijic Ambrosia Recipe, Fragment VII
 52	1	nil	52	Helm of Julianos
 52	1	nil	52	Magnus' Pauldron
 63	1	nil	63	Cuirass of Julianos
@@ -798,120 +886,189 @@
 63	1	nil	63	Greaves of Julianos
 31	1	nil	31	Sabatons of Julianos
 31	1	nil	31	Gauntlets of Julianos
-400	10	nil	40	Fast-Running Hourglass
 46	1	nil	46	shadowspun hat^n
-14357	1	14357	51	Necklace of Willpower
+13986	1	13986	51	Necklace of Willpower
 55	1	nil	55	shadowspun robe^n
 46	1	nil	46	shadowspun epaulets^p
 84	1	nil	84	Inferno Staff of Julianos
 27	1	nil	27	shadowspun sash^p
 165	1	165	55	shadowspun breeches^p
 27	1	nil	27	shadowspun shoes^p
-45428	1	45428	51	Ring of Willpower
-45428	1	45428	51	Ring of Willpower
+44456	1	44456	51	Ring of Willpower
+44456	1	44456	51	Ring of Willpower
 27	1	nil	27	shadowspun gloves^p
 64	1	nil	64	The Emperor's Blessing
 23	1	nil	23	iron axe^n
 400	100	nil	4	Blue Road Marathon
 260	22	12	4	philter of health
-493	200	2	0	Lockpick
-1921	88	22	5	Garlic Cod with Potato Crust
-109	44	2	0	Lockpick
+544	200	3	0	Lockpick
+1978	88	22	5	Garlic Cod with Potato Crust
+120	44	3	0	Lockpick
 1050	1	1050	50	Ring of Bahraha's Curse
-32917	192	171	14	Grand Repair Kit
+32692	192	170	14	Grand Repair Kit
+14	1	nil	14	homespun gloves^p
 314	24	13	4	philter of Magicka
 0	146	nil	0	Counterfeit Pardon Edict
-23789	194	123	5	essence of Weapon Power
+24256	194	125	5	essence of Weapon Power
 400	100	nil	4	Skyrim Jazbay Crostata
 2	1	nil	2	trifling glyph of health^n
-200	50	nil	4	Skyrim Jazbay Crostata
+196	49	nil	4	Skyrim Jazbay Crostata
 46	1	nil	46	ironthread robe^n
 400	100	nil	4	Cyrodilic Cornbread
-10705	200	54	30	Grand Soul Gem
+37	1	nil	37	maple lightning staff^n
+10264	200	51	30	Grand Soul Gem
+23	1	nil	23	iron axe^n
 0	1	nil	0	Prismatic Blade
 37	1	nil	37	maple restoration staff^n
 23	1	nil	23	iron dagger^n
-208	52	nil	4	Cyrodilic Cornbread
+10	1	nil	10	maple bow^n
+10	1	nil	10	maple bow^n
+10	1	nil	10	maple bow^n
+204	51	nil	4	Cyrodilic Cornbread
 15	3	nil	5	Roguish Escape Draught
-200	50	nil	4	Blue Road Marathon
+196	49	nil	4	Blue Road Marathon
 25	4	6	4	Cloudy Damage Health Poison VI
 0	1	nil	0	Bandit Note
 400	100	nil	4	Gods-Blind-Me
 32	16	nil	2	dram of Invisibility
-208	52	nil	4	Gods-Blind-Me
+204	51	nil	4	Gods-Blind-Me
 23	1	nil	23	ironthread shoes^p
 16	4	nil	4	Cloudy Gradual Ravage Health Poison VI
-87	87	nil	1	sip of Magicka
-15	1	15	5	essence of stamina
+10	1	nil	10	maple bow^n
+10	1	nil	10	maple bow^n
+86	86	nil	1	sip of Magicka
+14	1	14	5	essence of stamina
+10	1	nil	10	maple bow^n
 4	1	nil	4	elixir of Magicka
-400	100	nil	4	Mammoth Snout Pie
-15	6	2	1	Lockpick
+1042	100	10	4	Mammoth Snout Pie
+10	1	nil	10	maple inferno staff^n
+16	6	3	1	Lockpick
 12	1	nil	12	iron girdle^n
-200	50	nil	4	Mammoth Snout Pie
-81	3	27	9	Roguish Stealth Draught
+521	50	10	4	Mammoth Snout Pie
+80	3	27	9	Roguish Stealth Draught
 23	1	nil	23	ironthread sash^p
 400	100	nil	4	Two-Zephyr Tea
-10	1	nil	10	maple bow^n
+10	1	nil	10	maple inferno staff^n
+10	1	nil	10	maple inferno staff^n
 200	50	nil	4	Two-Zephyr Tea
-36	2	18	5	essence of Magicka
-2369	40	59	22	Common Soul Gem
-10	1	nil	10	maple bow^n
+35	2	17	5	essence of Magicka
+288	1	nil	288	ruby ash restoration staff^n
+16	4	4	1	Petty Repair Kit
 21	7	nil	3	solution of Weapon Power
-10	1	nil	10	maple bow^n
+30	1	30	10	maple ice staff^n
+30	1	30	10	maple ice staff^n
+30	1	30	10	maple ice staff^n
 10	2	5	5	essence of health
-10	1	nil	10	maple bow^n
-10	1	nil	10	maple bow^n
 0	1	nil	0	Grand Amnesty Edict
-10	1	nil	10	maple bow^n
-52	4	13	5	Cloudy Gradual Ravage Health Poison IX
-3897	1	3897	38	Signet of the Warlock
-3897	1	3897	38	Signet of the Warlock
+10	1	nil	10	maple lightning staff^n
+10	1	nil	10	maple lightning staff^n
+10	1	nil	10	maple lightning staff^n
+10	1	nil	10	maple restoration staff^n
+10	1	nil	10	maple restoration staff^n
+6	1	nil	6	maple shield^n
+6	1	nil	6	maple shield^n
+6	1	nil	6	maple shield^n
+46	4	12	5	Cloudy Gradual Ravage Health Poison IX
+6	1	nil	6	maple shield^n
+3443	1	3443	38	Signet of the Warlock
+6	1	nil	6	maple shield^n
+3443	1	3443	38	Signet of the Warlock
+6	1	nil	6	maple shield^n
 30	1	nil	30	Sash of Twilight's Embrace
 30	1	nil	30	Sabatons of Oblivion's Foe
-703	1	703	50	Ring of the Shadow Dancer
-703	1	703	50	Ring of the Shadow Dancer
-564	1	564	50	Ring of the Night Mother
-41	1	nil	41	Ring of Syrabane
+601	1	601	50	Ring of the Shadow Dancer
+601	1	601	50	Ring of the Shadow Dancer
+502	1	502	50	Ring of the Night Mother
+100	1	100	41	Ring of Syrabane
 42	1	nil	42	Ring of Soulshine
 11	11	nil	1	sip of health
-314	1	314	50	Necklace of the Shadow Dancer
+6	1	nil	6	maple shield^n
+6	1	nil	6	maple shield^n
+6	1	nil	6	iron sword^n
+6	1	nil	6	iron sword^n
+6	1	nil	6	iron sword^n
+459	1	459	50	Necklace of the Shadow Dancer
+6	1	nil	6	iron sword^n
+10	1	nil	10	iron greatsword^n
 51	1	nil	51	Helm of Oblivion's Foe
 61	1	nil	61	Greaves of the Seducer
 61	1	nil	61	Greaves of Oblivion's Foe
 30	1	nil	30	Gloves of the Shadow Dancer
+10	1	nil	10	iron greatsword^n
+10	1	nil	10	iron greatsword^n
+10	1	nil	10	iron greatsword^n
 30	1	nil	30	Gauntlets of Oblivion's Foe
 61	1	nil	61	Cuirass of the Seducer
 61	1	nil	61	Cuirass of Oblivion's Foe
-6	1	nil	6	maple shield^n
-12	12	nil	1	sip of stamina
+11	11	nil	1	sip of stamina
 699	1	699	60	Breeches of the Shadow Dancer
 74	74	nil	1	sip of Ravage Stamina
-6	1	nil	6	maple shield^n
-2	1	nil	2	trifling glyph of health^n
 6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
+7	1	nil	7	iron cuirass^n
+7	1	nil	7	iron cuirass^n
+7	1	nil	7	iron cuirass^n
+7	1	nil	7	iron cuirass^n
+3	1	nil	3	iron sabatons^p
+3	1	nil	3	iron sabatons^p
 37	1	37	2	trifling glyph of magicka^n
-6	1	nil	6	iron dagger^n
-6	1	nil	6	iron dagger^n
+3	1	nil	3	iron gauntlets^p
+3	1	nil	3	iron gauntlets^p
 82	1	nil	82	Sword Saint's Blade
-6	1	nil	6	iron dagger^n
-6	1	nil	6	iron dagger^n
-65	1	65	2	trifling glyph of stamina^n
-65	1	65	2	trifling glyph of stamina^n
+6	1	nil	6	iron helm^n
+6	1	nil	6	iron helm^n
 6	1	nil	6	iron helm^n
 6	1	nil	6	iron helm^n
 7	1	nil	7	iron greaves^p
+7	1	nil	7	iron greaves^p
+7	1	nil	7	iron greaves^p
+6	1	nil	6	iron pauldron^p
+65	1	65	2	trifling glyph of stamina^n
 6	1	nil	6	iron pauldron^p
 6	1	nil	6	iron pauldron^p
+6	1	nil	6	iron pauldron^p
+7	1	nil	7	homespun robe^n
+7	1	nil	7	homespun robe^n
+7	1	nil	7	homespun robe^n
+7	1	nil	7	homespun robe^n
+3	1	nil	3	homespun shoes^p
+3	1	nil	3	homespun shoes^p
+7	1	nil	7	iron greaves^p
+3	1	nil	3	homespun gloves^p
+3	1	nil	3	homespun gloves^p
+3	1	nil	3	homespun gloves^p
+3	1	nil	3	homespun gloves^p
+6	1	nil	6	homespun hat^n
+6	1	nil	6	homespun hat^n
+7	1	nil	7	homespun breeches^p
 100	25	nil	4	philter of stamina
+7	1	nil	7	homespun breeches^p
+7	1	nil	7	homespun breeches^p
+7	1	nil	7	homespun breeches^p
 6	1	nil	6	homespun epaulets^p
+6	1	nil	6	homespun epaulets^p
+6	1	nil	6	homespun epaulets^p
+6	1	nil	6	homespun epaulets^p
+6	1	nil	6	homespun epaulets^p
+3	1	nil	3	homespun sash^p
+3	1	nil	3	homespun sash^p
+3	1	nil	3	rawhide bracers^p
+3	1	nil	3	rawhide bracers^p
 3	1	nil	3	rawhide bracers^p
 3	1	nil	3	rawhide bracers^p
 6	1	nil	6	rawhide helmet^n
 6	1	nil	6	rawhide helmet^n
+6	1	nil	6	rawhide helmet^n
+6	1	nil	6	rawhide helmet^n
+6	1	nil	6	rawhide arm cops^p
+6	1	nil	6	rawhide arm cops^p
 6	1	nil	6	rawhide arm cops^p
 6	1	nil	6	rawhide arm cops^p
 52	1	nil	52	Helm of Hunding's Rage
-26218	1	26218	51	Necklace of Agility
+27227	1	27227	51	Necklace of Agility
 63	1	nil	63	Jack of Hunding's Rage
 52	1	nil	52	Arm Cops of the Night Mother
 52	1	nil	52	Dagger of the Night Mother
@@ -919,8 +1076,8 @@
 31	1	nil	31	Sash of the Night Mother
 63	1	nil	63	Guards of Hunding's Rage
 31	1	nil	31	Boots of Hunding's Rage
-51303	1	51303	51	Ring of Agility
-51303	1	51303	51	Ring of Agility
+49451	1	49451	51	Ring of Agility
+49451	1	49451	51	Ring of Agility
 31	1	nil	31	Bracers of Hunding's Rage
 58	1	nil	58	Battle Axe of the Night Mother
 400	100	nil	4	panacea of health
@@ -928,13 +1085,13 @@
 68	1	nil	68	nightwood bow^n
 42	1	nil	42	voidsteel sword^n
 258	1	nil	258	voidsteel greatsword^n
-493	200	2	0	Lockpick
+544	200	3	0	Lockpick
 68	1	nil	68	nightwood bow^n
-10705	200	54	30	Grand Soul Gem
+10264	200	51	30	Grand Soul Gem
 400	100	nil	4	panacea of health
 51	1	nil	51	Shield of the Night Mother
-4878	100	49	5	The Emperor's Venison Fricassee
-316	79	nil	4	panacea of health
+6179	100	62	5	The Emperor's Venison Fricassee
+312	78	nil	4	panacea of health
 42	1	nil	42	voidsteel sword^n
 68	1	nil	68	nightwood bow^n
 68	1	nil	68	nightwood bow^n
@@ -950,102 +1107,102 @@
 68	1	nil	68	nightwood bow^n
 295	59	nil	5	Hagraven's Tonic
 42	1	nil	42	voidsteel sword^n
-42	1	nil	42	voidsteel sword^n
-42	1	nil	42	voidsteel sword^n
+193	1	nil	193	voidsteel cuirass^n
+8	1	nil	8	splendid glyph of weapon damage^n
 770	60	13	5	Firsthold Fruit and Cheese Plate
 180	1	nil	180	rubedite helm^n
 355	71	nil	5	essence of health
-42	1	nil	42	voidsteel sword^n
+511	3	170	14	Grand Repair Kit
 400	100	nil	4	Orcrest Garlic Apple Jelly
 355	71	nil	5	essence of stamina
 400	100	nil	4	Millet-Stuffed Pork Loin
-34288	200	171	14	Grand Repair Kit
-460	92	nil	5	distillate of Spell Power
-462	66	7	4	panacea of Magicka
+34055	200	170	14	Grand Repair Kit
+7084	92	77	5	distillate of Spell Power
+455	65	7	4	panacea of Magicka
 500	100	nil	5	Lillandril Summer Sausage
-4878	100	49	5	The Emperor's Venison Fricassee
-27	11	2	1	Lockpick
+6179	100	62	5	The Emperor's Venison Fricassee
+30	11	3	1	Lockpick
 355	71	nil	5	essence of Ravage Health
 68	1	nil	68	voidsteel greatsword^n
 500	100	nil	5	Lillandril Summer Sausage
 68	1	nil	68	voidsteel greatsword^n
-68	1	nil	68	voidsteel greatsword^n
-68	1	nil	68	voidsteel greatsword^n
+193	1	nil	193	shadowhide guards^p
+68	1	nil	68	nightwood bow^n
 61	3	20	9	Roguish Escape Draught
 42	1	nil	42	voidsteel dagger^n
-51	1	nil	51	shadowspun robe^n
+68	1	nil	68	nightwood bow^n
 42	1	nil	42	voidsteel dagger^n
-500	100	nil	5	distillate of Spell Power
-224	56	nil	4	West Weald Corn Chowder
-4878	100	49	5	The Emperor's Venison Fricassee
-68	1	nil	68	nightwood inferno staff^n
+7700	100	77	5	distillate of Spell Power
+220	55	nil	4	West Weald Corn Chowder
+6179	100	62	5	The Emperor's Venison Fricassee
+68	1	nil	68	nightwood bow^n
 224	56	nil	4	Orcrest Garlic Apple Jelly
-224	56	nil	4	Millet-Stuffed Pork Loin
+220	55	nil	4	Millet-Stuffed Pork Loin
 400	100	nil	4	Grandpa's Bedtime Tonic
-68	1	nil	68	nightwood inferno staff^n
-34288	200	171	14	Grand Repair Kit
+68	1	nil	68	nightwood bow^n
+34055	200	170	14	Grand Repair Kit
 224	56	nil	4	Grandpa's Bedtime Tonic
 90	1	90	0	shadowhide guards^p
-10	2	nil	5	distillate of Spell Power
-68	1	nil	68	nightwood inferno staff^n
+154	2	77	5	distillate of Spell Power
+288	1	50	288	rubedite maul^n
 400	100	nil	4	Comely Wench Whiskey
-68	1	nil	68	nightwood ice staff^n
-224	56	nil	4	Comely Wench Whiskey
-68	1	nil	68	nightwood ice staff^n
-51	1	nil	51	shadowspun robe^n
+68	1	nil	68	nightwood bow^n
+220	55	nil	4	Comely Wench Whiskey
+68	1	nil	68	nightwood bow^n
+68	1	nil	68	nightwood inferno staff^n
 400	100	nil	4	Aetherial Tea
-224	56	nil	4	Aetherial Tea
+220	55	nil	4	Aetherial Tea
 43	1	nil	43	Magnus' Axe
 42	1	nil	42	voidsteel dagger^n
 42	1	nil	42	voidsteel dagger^n
-68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood inferno staff^n
 51	1	nil	51	voidsteel greaves^p
 42	1	nil	42	voidsteel dagger^n
 42	1	nil	42	voidsteel dagger^n
 42	1	nil	42	voidsteel dagger^n
-68	1	nil	68	nightwood lightning staff^n
-68	1	nil	68	nightwood lightning staff^n
-68	1	nil	68	nightwood lightning staff^n
-68	1	nil	68	nightwood restoration staff^n
-68	1	nil	68	nightwood restoration staff^n
+68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood inferno staff^n
+68	1	nil	68	nightwood ice staff^n
 42	1	nil	42	voidsteel dagger^n
 42	1	nil	42	voidsteel dagger^n
 42	1	nil	42	voidsteel dagger^n
 51	1	nil	51	voidsteel cuirass^n
-26	1	nil	26	shadowspun shoes^p
-26	1	nil	26	shadowspun shoes^p
-43	1	nil	43	shadowspun hat^n
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood ice staff^n
 400	100	nil	4	panacea of stamina
 272	68	nil	4	panacea of stamina
 264	66	nil	4	panacea of Ravage Health
-43	1	nil	43	shadowspun hat^n
+68	1	nil	68	nightwood ice staff^n
 51	1	nil	51	voidsteel cuirass^n
-51	1	nil	51	voidsteel cuirass^n
-52	1	nil	52	shadowspun breeches^p
-52	1	nil	52	shadowspun breeches^p
+68	1	nil	68	nightwood ice staff^n
+68	1	nil	68	nightwood lightning staff^n
+68	1	nil	68	nightwood lightning staff^n
 43	1	nil	43	shadowspun epaulets^p
 42	1	nil	42	shadowspun epaulets^p
 42	1	nil	42	shadowspun epaulets^p
-43	1	nil	43	shadowspun epaulets^p
-26	1	nil	26	shadowspun sash^p
-26	1	nil	26	shadowspun sash^p
-10652	199	54	30	Grand Soul Gem
-51	1	nil	51	voidsteel cuirass^n
+68	1	nil	68	nightwood lightning staff^n
+68	1	nil	68	nightwood lightning staff^n
+68	1	nil	68	nightwood lightning staff^n
+10213	199	51	30	Grand Soul Gem
+68	1	nil	68	nightwood lightning staff^n
 25	1	nil	25	voidsteel sabatons^p
 25	1	nil	25	voidsteel sabatons^p
-25	1	nil	25	voidsteel sabatons^p
+68	1	nil	68	nightwood restoration staff^n
 26	1	nil	26	shadowhide bracers^p
 26	1	nil	26	shadowhide bracers^p
 43	1	nil	43	Magnus' Axe
-25	1	nil	25	voidsteel sabatons^p
+68	1	nil	68	nightwood restoration staff^n
 25	1	nil	25	voidsteel gauntlets^p
 43	1	nil	43	shadowhide helmet^n
 43	1	nil	43	shadowhide helmet^n
 25	1	nil	25	voidsteel gauntlets^p
-25	1	nil	25	voidsteel gauntlets^p
+68	1	nil	68	nightwood restoration staff^n
 43	1	nil	43	shadowhide arm cops^p
 43	1	nil	43	shadowhide arm cops^p
-25	1	nil	25	voidsteel gauntlets^p
+68	1	nil	68	nightwood restoration staff^n
 42	1	nil	42	voidsteel helm^n
 42	1	nil	42	voidsteel helm^n
 42	1	nil	42	voidsteel helm^n
@@ -1053,23 +1210,30 @@
 51	1	nil	51	voidsteel greaves^p
 51	1	nil	51	voidsteel greaves^p
 51	1	nil	51	voidsteel greaves^p
-51	1	nil	51	voidsteel greaves^p
+42	1	nil	42	nightwood shield^n
 42	1	nil	42	voidsteel pauldron^p
 42	1	nil	42	voidsteel pauldron^p
 42	1	nil	42	voidsteel pauldron^p
 42	1	nil	42	voidsteel pauldron^p
-89	1	89	0	shadowhide bracers^p
-350	70	nil	5	essence of Magicka
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+42	1	nil	42	nightwood shield^n
+90	1	90	0	shadowhide bracers^p
+1050	70	15	5	essence of Magicka
 500	100	nil	5	Lilmoth Garlic Hagfish
 500	100	nil	5	Hearty Garlic Corn Chowder
 1283	100	13	5	Firsthold Fruit and Cheese Plate
 500	100	nil	5	Muthsera's Remorse
 500	100	nil	5	Markarth Mead
 500	100	nil	5	Hagraven's Tonic
-96	1	96	9	monumental glyph of health^n
-96	1	96	9	monumental glyph of health^n
-101	1	101	9	monumental glyph of magicka^n
-101	1	101	9	monumental glyph of magicka^n
+98	1	98	9	monumental glyph of health^n
+102	1	102	9	monumental glyph of magicka^n
 42	1	nil	42	Helm of Julianos
 43	1	nil	43	Pendant of Soulshine
 51	1	nil	51	Cuirass of Julianos
@@ -1082,11 +1246,11 @@
 43	1	nil	43	Ring of Soulshine
 25	1	nil	25	Gauntlets of Julianos
 76	1	nil	76	nightwood bow^n
-286	116	2	0	Lockpick
+316	116	3	0	Lockpick
 800	200	4	1	Petty Repair Kit
 70	70	nil	1	sip of health
 64	1	nil	64	The Emperor's Blessing
-37	1	37	2	trifling glyph of magicka^n
+181936	36	5054	2	Kuta
 36	1	nil	36	Greatsword of Ashen Grip
 43	1	nil	43	Pendant of Soulshine
 90	1	nil	90	steel helm^n
@@ -1095,98 +1259,154 @@
 678	100	7	5	Sweetroll
 81	12	7	5	Sweetroll
 800	200	4	1	Petty Repair Kit
-6	1	nil	6	iron sword^n
+2	1	nil	2	trifling glyph of health^n
 28	1	nil	28	homespun jerkin^n
-6	1	nil	6	iron sword^n
+50	1	50	2	trifling glyph of absorb health^n
 54	1	nil	54	linen shoes^p
 800	200	4	1	Petty Repair Kit
-6	1	nil	6	iron sword^n
+2	1	nil	2	trifling glyph of health^n
 90	1	nil	90	steel dagger^n
 1496	187	nil	8	Lesser Repair Kit
 43	1	nil	43	Ring of Soulshine
 144	1	nil	144	steel greatsword^n
 144	1	nil	144	oak restoration staff^n
-6	1	nil	6	iron dagger^n
+2	1	nil	2	trifling glyph of health^n
 23	1	nil	23	iron dagger^n
-6	1	nil	6	iron dagger^n
-6	1	nil	6	iron dagger^n
+14	1	nil	14	iron gauntlets^p
+2	1	nil	2	trifling glyph of health^n
 28	1	nil	28	iron greaves^p
-6	1	nil	6	iron dagger^n
-6	1	nil	6	iron dagger^n
+2	1	nil	2	trifling glyph of shock resist^n
+37	1	37	2	trifling glyph of magicka^n
+37	1	37	2	trifling glyph of magicka^n
+37	1	37	2	trifling glyph of magicka^n
 28	1	nil	28	homespun robe^n
 90	1	nil	90	linen epaulets^p
-10	1	nil	10	maple bow^n
-10	1	nil	10	maple bow^n
-7	1	nil	7	iron cuirass^n
+65	1	65	2	trifling glyph of stamina^n
+65	1	65	2	trifling glyph of stamina^n
+65	1	65	2	trifling glyph of stamina^n
 40	40	nil	1	sip of Ravage Health
 28	1	nil	28	rawhide guards^p
-65	1	65	2	trifling glyph of stamina^n
-7	1	nil	7	iron cuirass^n
+6	1	nil	6	iron sword^n
+0	1	nil	0	Woodworker Survey: Craglorn III
+6	1	nil	6	iron sword^n
 200	100	nil	2	Venison Pasty
 37	1	nil	37	maple restoration staff^n
-102	51	nil	2	Redoran Peppered Melon
-102	51	nil	2	Bitterlemon Tea
+100	50	nil	2	Redoran Peppered Melon
+100	50	nil	2	Bitterlemon Tea
 23	1	nil	23	iron sword^n
 13	1	nil	13	Sash of Ashen Grip
-102	51	nil	2	Venison Pasty
+100	50	nil	2	Venison Pasty
+6	1	nil	6	iron sword^n
+6	1	nil	6	iron sword^n
 300	100	nil	3	Honey Rye
-6	1	nil	6	iron helm^n
-6	1	nil	6	iron helm^n
-108	27	4	1	Petty Repair Kit
-10	1	nil	10	maple bow^n
-10	1	nil	10	maple bow^n
+6	1	nil	6	iron sword^n
+6	1	nil	6	iron sword^n
+120	30	4	1	Petty Repair Kit
+10	1	nil	10	iron greatsword^n
+10	1	nil	10	iron greatsword^n
+10	1	nil	10	iron greatsword^n
 7	1	nil	7	iron greaves^p
-7	1	nil	7	iron greaves^p
-153	51	nil	3	Honey Rye
-6	1	nil	6	iron pauldron^p
-6	1	nil	6	iron pauldron^p
-10	1	nil	10	maple bow^n
-10	1	nil	10	maple bow^n
+10	1	nil	10	iron greatsword^n
+150	50	nil	3	Honey Rye
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
 22	1	nil	22	iron helm^n
-7	1	nil	7	homespun robe^n
-7	1	nil	7	homespun robe^n
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
 200	100	nil	2	Battaglir Chowder
+6	1	nil	6	iron dagger^n
 22	1	nil	22	rawhide arm cops^p
+6	1	nil	6	iron dagger^n
+6	1	nil	6	iron dagger^n
 104	52	nil	2	Battaglir Chowder
-71	71	nil	1	sip of Magicka
+6	1	nil	6	iron dagger^n
+70	70	nil	1	sip of Magicka
 27	1	nil	27	Greaves of Hunding's Rage
 200	100	nil	2	Eltheric Hooch
-7	1	nil	7	homespun breeches^p
+7	1	nil	7	iron cuirass^n
 72	72	nil	1	sip of Ravage Stamina
-7	1	nil	7	homespun breeches^p
-71	71	nil	1	sip of stamina
+7	1	nil	7	iron cuirass^n
+70	70	nil	1	sip of stamina
 27	1	nil	27	iron cuirass^n
 6	1	nil	6	homespun epaulets^p
 13	1	nil	13	Gauntlets of Hunding's Rage
 104	52	nil	2	Eltheric Hooch
+7	1	nil	7	iron cuirass^n
 144	1	nil	144	oak inferno staff^n
 13	1	nil	13	Sabatons of Hunding's Rage
-3	1	nil	3	rawhide bracers^p
-3	1	nil	3	rawhide bracers^p
+7	1	nil	7	iron cuirass^n
+3	1	nil	3	iron sabatons^p
 10	1	nil	10	maple inferno staff^n
-6	1	nil	6	rawhide helmet^n
-6	1	nil	6	rawhide helmet^n
-6	1	nil	6	rawhide arm cops^p
+3	1	nil	3	iron sabatons^p
+3	1	nil	3	iron sabatons^p
+3	1	nil	3	iron sabatons^p
 14	1	nil	14	iron girdle^n
-6	1	nil	6	rawhide arm cops^p
+3	1	nil	3	iron gauntlets^p
 10	1	nil	10	maple inferno staff^n
 10	1	nil	10	maple inferno staff^n
-10	1	nil	10	maple ice staff^n
-10	1	nil	10	maple ice staff^n
-10	1	nil	10	maple ice staff^n
+3	1	nil	3	iron gauntlets^p
+3	1	nil	3	iron gauntlets^p
+3	1	nil	3	iron gauntlets^p
+30	1	30	10	maple ice staff^n
+30	1	30	10	maple ice staff^n
+30	1	30	10	maple ice staff^n
+6	1	nil	6	iron helm^n
+6	1	nil	6	iron helm^n
 23	1	nil	23	homespun epaulets^p
+6	1	nil	6	iron helm^n
+6	1	nil	6	iron helm^n
+7	1	nil	7	iron greaves^p
 10	1	nil	10	maple lightning staff^n
 10	1	nil	10	maple lightning staff^n
 10	1	nil	10	maple lightning staff^n
-10	1	nil	10	maple restoration staff^n
+7	1	nil	7	iron greaves^p
+7	1	nil	7	iron greaves^p
+7	1	nil	7	iron greaves^p
+6	1	nil	6	iron pauldron^p
+6	1	nil	6	iron pauldron^p
+6	1	nil	6	iron pauldron^p
+6	1	nil	6	iron pauldron^p
+7	1	nil	7	homespun robe^n
+7	1	nil	7	homespun robe^n
+7	1	nil	7	homespun robe^n
+7	1	nil	7	homespun robe^n
+3	1	nil	3	homespun shoes^p
+3	1	nil	3	homespun shoes^p
+3	1	nil	3	homespun shoes^p
+3	1	nil	3	homespun shoes^p
+3	1	nil	3	homespun gloves^p
+3	1	nil	3	homespun gloves^p
+3	1	nil	3	homespun gloves^p
+3	1	nil	3	homespun gloves^p
+6	1	nil	6	homespun hat^n
+6	1	nil	6	homespun hat^n
+6	1	nil	6	homespun hat^n
+6	1	nil	6	homespun hat^n
+7	1	nil	7	homespun breeches^p
+7	1	nil	7	homespun breeches^p
+7	1	nil	7	homespun breeches^p
+7	1	nil	7	homespun breeches^p
 6	1	nil	6	homespun epaulets^p
-10	1	nil	10	maple restoration staff^n
-6	1	nil	6	maple shield^n
-6	1	nil	6	maple shield^n
-6	1	nil	6	maple shield^n
-6	1	nil	6	maple shield^n
-6	1	nil	6	maple shield^n
-6	1	nil	6	maple shield^n
+6	1	nil	6	homespun epaulets^p
+6	1	nil	6	homespun epaulets^p
+3	1	nil	3	homespun sash^p
+3	1	nil	3	homespun sash^p
+3	1	nil	3	homespun sash^p
+3	1	nil	3	homespun sash^p
+3	1	nil	3	rawhide bracers^p
+3	1	nil	3	rawhide bracers^p
+3	1	nil	3	rawhide bracers^p
+3	1	nil	3	rawhide bracers^p
+6	1	nil	6	rawhide helmet^n
+6	1	nil	6	rawhide helmet^n
+6	1	nil	6	rawhide helmet^n
+6	1	nil	6	rawhide helmet^n
+6	1	nil	6	rawhide arm cops^p
+6	1	nil	6	rawhide arm cops^p
+6	1	nil	6	rawhide arm cops^p
+6	1	nil	6	rawhide arm cops^p
 25	1	nil	25	linen hat^n
 23	1	nil	23	Anchorstone Amulet
 30	1	nil	30	hide jack^n

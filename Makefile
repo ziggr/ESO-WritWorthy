@@ -20,7 +20,7 @@ zip:
 	cd published; zip -r NetWorth\ x.x.x.zip NetWorth
 
 tab:
-	grep "tot:" data/NetWorth.lua | sed -E "s/.*tot:([0-9nil]+) ct:([0-9nil]+) mm:([0-9nil]+) npc:([0-9nil]+) name:(.*)\",/\1	\2	\3	\4	\5/" tmp_x > data/NetWorth.txt
+	grep "tot:" data/NetWorth.lua | sed -E "s/.*tot:([0-9nil]+) ct:([0-9nil]+) mm:([0-9nil]+) npc:([0-9nil]+) name:(.*)\",/\1	\2	\3	\4	\5/" > data/NetWorth.txt
 	head data/NetWorth.txt
 	pbcopy < data/NetWorth.txt
 	# Data copied to clipboard. Paste it somewhere.
