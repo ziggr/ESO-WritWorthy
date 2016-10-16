@@ -13,14 +13,27 @@ MMChat.default = {
 MMChat.channel_id_enabled = {
   [CHAT_CHANNEL_WHISPER] = true
 , [CHAT_CHANNEL_GUILD_3] = true
+, [CHAT_CHANNEL_GUILD_4] = true
 --, [CHAT_CHANNEL_GUILD_5] = true
 , [CHAT_CHANNEL_OFFICER_3] = true
+, [CHAT_CHANNEL_OFFICER_4] = true
 --, [CHAT_CHANNEL_OFFICER_5] = true
 }
 MMChat.text_queue = {}
 
 MMChat.LINK_PATTERN   = '|H%d:item:[0-9:]+|h[^|]*|h'
 MMChat.LINK_PATTERN_N = '([%d+x]*) ?('..MMChat.LINK_PATTERN..')'
+
+-- Chat colors
+MMChat.GREY = "999999"
+
+function MMChat.color(color, text)
+    return "|c" .. color .. text .. "|r"
+end
+
+function MMChat.grey(text)
+    return MMChat.color(MMChat.GREY, text)
+end
 
 function MMChat.round(f)
     if not f then return f end
@@ -32,6 +45,7 @@ function MMChat.ToMoney(x)
     if not x then return "?" end
     return ZO_CurrencyControl_FormatCurrency(MMChat.round(x), false)
 end
+
 
 
 -- Item ----------------------------------------------------------------------
@@ -49,9 +63,11 @@ end
 
 -- A formatted line suitable for display in chat
 function Item:ToText()
-    return         tostring(MMChat.ToMoney(self.total_value))
+    return  MMChat.grey(
+                   tostring(MMChat.ToMoney(self.total_value)).."g"
         .."  = ".. tostring(self.ct) .."x"
         .." "   .. tostring(MMChat.ToMoney(self.mm)) .."g"
+            ) -- end grey
         .."   " .. tostring(self.link)
 end
 
@@ -66,6 +82,12 @@ end
 -- Might some day go dynamic, but for now...
 function MMChat:IsEnabledForChannelID(channel_id)
     return MMChat.channel_id_enabled[channel_id]
+end
+
+-- Don't report on our own MM reports!
+function MMChat:IsMMReport(text)
+    if string.match(text, "^MM price ") then return true end
+    return string.match(text, "^MM has no data ")
 end
 
 -- Is this MM-worthy?
@@ -157,7 +179,7 @@ function MMChat.OnEventChatMessageChannel(
     if not MMChat:IsEnabledForChannelID(channel_id) then return end
 
     -- return text, zo_channel_info.saveTarget
-    if MMChat:ContainsLink(text) then
+    if MMChat:ContainsLink(text) and not MMChat:IsMMReport(text) then
         table.insert(MMChat.text_queue, text)
         zo_callLater(MMChat.AfterMessage, 50)
         -- MMChat.AfterMessage()
@@ -187,9 +209,3 @@ EVENT_MANAGER:RegisterForEvent( MMChat.name .. "2"
                               , EVENT_CHAT_MESSAGE_CHANNEL
                               , MMChat.OnEventChatMessageChannel
                               )
-
-
--- Still need:
---  Softer formatting
---  zo_callback delay
---  nil handling if no MM
