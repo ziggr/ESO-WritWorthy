@@ -1,24 +1,7 @@
-Want to know how all your inventory is worth?
+How much is that thing worth?
 
-This add on scans all your inventories:
-[list]
-[*]characters
-[*]bank
-[*]craft bag
-[/list]
+This add-on scans incoming chat messages and automatically displays Master Merchant price checks in your chat window.
 
-It then adds up the value of all your items and gold and reports a total.
-
-If you have [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] installed, it uses Master Merchant averages instead of the game's own NPC vendor price, when M.M. has a price.
-
-[LIST=1]
-[*]Log into a character.
-[*]Click "Save Data Now" button. Add-on will scan bag, bank, and craft bag contents.
-[*]Log into another character
-[*]Click "Save Data Now".
-[*]Repeat for each character.
-[/LIST]
-
-Yeah, this sequence is annoying and manual. I [i]could[/i] make it all automatic, but then I would have to tap into all your inventory actions such as look/sell/drop/craft/trade/send and that becomes a lot of extra event listeners. All those listeners, especially on loot events, makes for a slower game. No thank you. I would rather have a faster game.
+It also detects multipliers so that when you see "WTS 200x [Void Cloth]" it displays the price for the whole stack, not just one unit.
 
 --Z

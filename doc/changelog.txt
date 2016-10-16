@@ -1,5 +1,5 @@
-[B]2.5.2 2016-10-01[/B]
+[B]2.6.1 2016-10-16[/B]
 [LIST]
-[*]Create new add-on, based on GuildBankLedger 2.5.2.
+[*]Create new add-on, based on NetWorth 2.5.2 (an add-on I never published)
 [/LIST]
 
