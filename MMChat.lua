@@ -13,153 +13,96 @@ MMChat.default = {
 MMChat.channel_id_enabled = {
   [CHAT_CHANNEL_WHISPER] = true
 , [CHAT_CHANNEL_GUILD_3] = true
-, [CHAT_CHANNEL_GUILD_5] = true
+--, [CHAT_CHANNEL_GUILD_5] = true
 , [CHAT_CHANNEL_OFFICER_3] = true
-, [CHAT_CHANNEL_OFFICER_5] = true
+--, [CHAT_CHANNEL_OFFICER_5] = true
 }
+MMChat.text_queue = {}
 
+MMChat.LINK_PATTERN   = '|H%d:item:[0-9:]+|h[^|]*|h'
+MMChat.LINK_PATTERN_N = '([%d+x]*) ?('..MMChat.LINK_PATTERN..')'
+
+function MMChat.round(f)
+    if not f then return f end
+    return math.floor(0.5+f)
+end
+
+
+-- Item ----------------------------------------------------------------------
+local Item = {}
+function Item:FromLinkCt(link, ct)
+    local o = { total_value = 0
+              , ct          = ct
+              , mm          = nil
+              , link        = link
+              }
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+-- A formatted line suitable for display in chat
+function Item:ToText()
+    return         tostring(ZO_CurrencyControl_FormatCurrency(self.total_value, false))
+        .."  = ".. tostring(self.ct) .."x"
+        .." "   .. tostring(ZO_CurrencyControl_FormatCurrency(self.mm, false)) .."g"
+        .."   " .. tostring(self.link)
+end
+
+function Item:FetchMM()
+    self.mm = MMChat.MMPrice(self.link)
+    self.mm = 12 -- NUR ZUM DEBUGGEN
+    if self.mm then
+        self.total_value = self.mm * self.ct
+    end
+end
+
+-- MMChat --------------------------------------------------------------------
 -- Might some day go dynamic, but for now...
 function MMChat:IsEnabledForChannelID(channel_id)
     return MMChat.channel_id_enabled[channel_id]
 end
 
--- Item ----------------------------------------------------------------------
+-- Is this MM-worthy?
+-- "|H0:item:4456:30:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
+function MMChat:ContainsLink(text)
+    return string.match(text, MMChat.LINK_PATTERN)
+end
+
+-- Convert "100x" to integer 100. Convert empty (no multiplier) to 1.
+function MMChat:ToInt(s)
+    if not s or s == "" then return 1 end
+    local nox = string.gsub(s,"x", "")
+    return tonumber(nox)
+end
+
+-- Donated by @astraea360: 10x|H1:item:54181:34:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h 100x|H1:item:54180:33:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h 200x|H1:item:54179:32:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h 200x|H1:item:54178:31:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h
+-- (Flash Auction, 15 seconds) Donated by @dot_hackza: |H1:item:84705:362:50:0:0:0:0:0:0:0:0:0:0:0:0:1:0:0:0:0:0|h|h
+
+-- Given a string "100xRawhide 50xHemming Dreugh Wax"
+-- return a list of Items
+--      (100 "Rawhide"      )
+--      ( 50 "Hemming"      )
+--      (  1  "Dreugh Wax"  )
 --
--- The occupant of a single bag slot. This is a single item, or a stack of
--- items. In the BAG_BACKPACK, materials can occupy multiple slots, so they
--- will appear as multiple Item instances. This is expected.
-
-local Item = {}
-function Item:FromNothing()
-    local o = { total_value = 0
-              , ct          = 0
-              , mm          = 0
-              , npc         = 0  -- Value if sold to NPC Vendor
-              , name        = ""
-           -- , link        = "" -- Not retaining Link: makes data file too large.
-              }
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-function max(a, b)
-    if not a then return b end
-    if not b then return a end
-    return math.max(a, b)
-end
-
-function Item:FromBag(bag_id, slot_index)
-    local item_name = GetItemName(bag_id, slot_index)
-    local item_link = GetItemLink(bag_id, slot_index, LINK_STYLE_DEFAULT)
-    local _, ct, npc_sell_price = GetItemInfo(bag_id, slot_index)
-    if ct == 0 then return nil end
-    local mm = MMChat.MMPrice(item_link)
-    local o = { total_value = Item.round(ct * max(npc_sell_price, mm))
-              , ct          = ct
-              , mm          = Item.round(mm)
-              , npc         = npc_sell_price
-              , name        = item_name
-           -- , link        = item_link
-              }
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-function Item.round(f)
-    if not f then return f end
-    return math.floor(0.5+f)
-end
-
-function Item:ToDString()
-    return "tot:" .. tostring(self.total_value)
-      ..   " ct:" .. tostring(self.ct)
-      ..   " mm:" .. tostring(self.mm)
-      ..  " npc:" .. tostring(self.npc)
-      .. " name:" .. tostring(self.name)
-      -- .. " link:" .. tostring(self.link)
-end
-
--- Bag -----------------------------------------------------------------------
+-- Suitable for MM-ification and multiplication (but that's someone else's focus).
 --
--- One line in the summary display, with the itemized details that built
--- up to that line.
---
--- One "bag" is one of:
---    - a single character's items (BAG_BACKPACK + BAG_WORN)
---    - bank (BAG_BANK)
---    - craft bag (BAG_VIRTUAL)
---
-
-local Bag = {}
-function Bag:FromName(name)
-    local o = { name = name
-              , total = 0
-              , gold  = 0
-              , item_subtotal = 0
-              , item_ct = 0
-              , items = {}
-              }
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
--- Main entry for a bag.
--- Fans out to specific bag-fetching subroutines.
-function Bag:ReadFromServer()
-    if self.name == MMChat.NAME_BANK then
-        self:ReadFromBagId(BAG_BANK)
-        self.gold = GetBankedMoney()
-        self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
-    elseif self.name == MMChat.NAME_CRAFT_BAG then
-        self:ReadFromCraftBag()
-        self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
-    else
-        self:ReadFromBagId(BAG_BACKPACK)
-        self:ReadFromBagId(BAG_WORN)
-        self.gold = GetCurrentMoney()
-        self.total = self.gold + self.item_subtotal
-        d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
+function MMChat:ToLinkCounts(text)
+    local r = {}
+    for ct, link in string.gmatch(text, MMChat.LINK_PATTERN_N) do
+        local item = Item:FromLinkCt(link, MMChat:ToInt(ct))
+        table.insert(r, item)
     end
+    return r
 end
 
-function Bag:ReadFromBagId(bag_id)
-    local slot_ct = GetBagSize(bag_id)
-    for slot_index = 0, slot_ct do
-        local item = Item:FromBag(bag_id, slot_index)
-        self:AddItem(item)
-    end
-end
-
-function Bag:ReadFromCraftBag()
-    slot_id = GetNextVirtualBagSlotId(slot_id)
-    while slot_id do
-        local item = Item:FromBag(BAG_VIRTUAL, slot_id)
-        self:AddItem(item)
-        slot_id = GetNextVirtualBagSlotId(slot_id)
-    end
-end
-
-function Bag:AddItem(item)
-    if not item then return end
-    self.item_subtotal = self.item_subtotal + item.total_value
-    self.item_ct = self.item_ct + 1
-
-        -- We don't actually NEED itemized lists here, except for debugging
-        -- or checking our work. ToDString() is sufficient, and allows us to
-        -- fit all 8 characters + bank and craftbag all under 1MB.
-        --
-        -- 8x data compression just by omitting links and storing only
-        -- strings instead of structured data:
-        --
-        -- 256KB structured, with links
-        --  96KB structured, without links
-        --  29KB as strings, without links
-    table.insert(self.items, item:ToDString())
+function MMChat.MMPrice(link)
+    if not MasterMerchant then return nil end
+    if not link then return nil end
+    mm = MasterMerchant:itemStats(link, false)
+    if not mm then return nil end
+    --d("MM for link: "..tostring(link).." "..tostring(mm.avgPrice))
+    return mm.avgPrice
 end
 
 -- Init ----------------------------------------------------------------------
@@ -179,175 +122,56 @@ function MMChat:Initialize()
                             , nil
                             , self.default
                             )
-    self.char_index = self:FindCharIndex()
-    self:CreateSettingsWindow()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
-end
-
--- Return the bag index for this character, if it already has one, or a new
--- index if not.
-function MMChat:FindCharIndex()
-    local char_name = GetUnitName("player")
-    for i, bag in ipairs(self.savedVariables.bag) do
-        if bag.name == char_name then return i end
-    end
-    return 1 + #self.savedVariables.bag
-end
-
--- UI ------------------------------------------------------------------------
-
-function MMChat:CreateSettingsWindow()
-    local panelData = {
-          type                = "panel"
-        , name                = "MMChat"
-        , displayName         = "MMChat"
-        , author              = "ziggr"
-        , version             = self.version
-        , slashCommand        = "/nn"
-        , registerForRefresh  = true
-        , registerForDefaults = false
-    }
-    local cntrlOptionsPanel = LAM2:RegisterAddonPanel( self.name
-                                                     , panelData
-                                                     )
-    local optionsData = {
-        { type      = "button"
-        , name      = "Scan Now"
-        , tooltip   = "Fetch inventory data now."
-        , func      = function() self:ScanNow() end
-        },
-
-        { type      = "description"
-        , text      = ""
-        , width     = "half"
-        , reference = "MMChat_desc_bags"
-        },
-
-        { type      = "description"
-        , text      = ""
-        , width     = "half"
-        , reference = "MMChat_desc_amounts"
-        },
-
-    }
-
-    LAM2:RegisterOptionControls("MMChat", optionsData)
-    CALLBACK_MANAGER:RegisterCallback("LAM-PanelControlsCreated"
-            , self.OnPanelControlsCreated)
-end
-
--- Delay initialization of options panel: don't waste time fetching
--- guild names until a human actually opens our panel.
-function MMChat.OnPanelControlsCreated(panel)
-    self = MMChat
-    if not (MMChat_desc_amounts and MMChat_desc_amounts.desc) then return end
-    if MMChat_desc_amounts.desc then
-        MMChat_desc_amounts.desc:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
-    end
-    self:UpdateDisplay()
-end
-
-function MMChat:UpdateDisplay()
-    local bag_name   = {}
-    local bag_amount = {}
-    local total      = 0
-    local total_gold = 0
-    local total_item = 0
-    for i, bag in ipairs(self.savedVariables.bag) do
-        bag_name  [i] = bag.name
-        bag_amount[i] = ZO_CurrencyControl_FormatCurrency(bag.gold + bag.item_subtotal, false)
-        total = total + bag.gold + bag.item_subtotal
-        total_gold = total_gold + bag.gold
-        total_item = total_item + bag.item_subtotal
-    end
-    table.insert(bag_name,   "--")
-    table.insert(bag_name,  "total")
-    table.insert(bag_amount, "--")
-    table.insert(bag_amount, ZO_CurrencyControl_FormatCurrency(total, false))
-    table.insert(bag_name,   "")
-    table.insert(bag_amount, "")
-    table.insert(bag_name,   "in gold")
-    table.insert(bag_name,   "in inventory")
-    table.insert(bag_amount, ZO_CurrencyControl_FormatCurrency(total_gold, false))
-    table.insert(bag_amount, ZO_CurrencyControl_FormatCurrency(total_item, false))
-
-    local sn = table.concat(bag_name,   "\n")
-    local sa = table.concat(bag_amount, "\n")
-
-    MMChat_desc_bags.data.text    = sn
-    MMChat_desc_amounts.data.text = sa
-    MMChat_desc_bags.desc:SetText(sn)
-    MMChat_desc_amounts.desc:SetText(sa)
-end
-
--- Fetch Inventory Data from the server ------------------------------------------
-
-function MMChat:ScanNow()
-    local char_name = GetUnitName("player")
-    local ci = self.char_index
-    self.bag = { [1 ] = Bag:FromName(MMChat.NAME_BANK)
-               , [2 ] = Bag:FromName(MMChat.NAME_CRAFT_BAG)
-               , [ci] = Bag:FromName(char_name)
-               }
-    self.bag[1 ]:ReadFromServer()
-    self.bag[2 ]:ReadFromServer()
-    self.bag[ci]:ReadFromServer()
-
-    self.savedVariables.bag[1 ] = self.bag[1 ]
-    self.savedVariables.bag[2 ] = self.bag[2 ]
-    self.savedVariables.bag[ci] = self.bag[ci]
-
-    self:UpdateDisplay()
-end
-
-function MMChat.MMPrice(link)
-    if not MasterMerchant then return nil end
-    if not link then return nil end
-    mm = MasterMerchant:itemStats(link, false)
-    if not mm then return nil end
-    --d("MM for link: "..tostring(link).." "..tostring(mm.avgPrice))
-    return mm.avgPrice
 end
 
 -- Chat Event Handler --------------------------------------------------------
 
-function MMChat.OnChatMessageChannel( channel_id
-                                    , from
-                                    , text
-                                    , is_cust_svc
-                                    )
-
-    d("on_cmc id:"..tostring(channel_id).." from:"..tostring(from)
-        .." is_cs:"..tostring(is_cust_svc).." text:'"..tostring(text).."'")
-
-
-    -- Get channel information
-    local zo_channel_info_array = ZO_ChatSystem_GetChannelInfo()
-    local zo_channel_info = zo_channel_info_array[channel_id]
-    if not zo_channel_info or not zo_channel_info.format then return end
-
-    return text, zo_channel_info.saveTarget
+-- Using zo_calllater() to defer this MM handling until AFTER we're out of chat
+-- handling, so that we don't break any chat events with our noise.
+function MMChat.AfterMessage()
+    local text = table.remove(MMChat.text_queue, 1)
+    if not text then
+        d("dequeued nothing")
+        return
+    end
+    d("dequeued " .. text)
+    local item_list = MMChat:ToLinkCounts(text)
+    local total     = 0
+    for i, item in ipairs(item_list) do
+        item:FetchMM()
+        d(item:ToText())
+        total = total + item.total_value
+    end
+    d(ZO_CurrencyControl_FormatCurrency(total, false) .. "g total")
 end
 
-function MMChat.OnEventChatMessageChannel( event_id
-                                    , channel_id
-                                    , from
-                                    , text
-                                    , is_cust_svc
-                                    )
+function MMChat.OnEventChatMessageChannel(
+          event_id
+        , channel_id
+        , from
+        , text
+        , is_cust_svc
+        )
     if not MMChat:IsEnabledForChannelID(channel_id) then return end
 
-    d("on_e event_id:"..tostring(event_id)
-        .." id:"..tostring(channel_id).." from:"..tostring(from)
-        .." is_cs:"..tostring(is_cust_svc).." text:'"..tostring(text).."'")
+    d("on_event")
+    -- d("on_e event_id:"..tostring(event_id)
+    --     .." id:"..tostring(channel_id).." from:"..tostring(from)
+    --     .." is_cs:"..tostring(is_cust_svc).." text:'"..tostring(text).."'")
 
+    -- -- Get channel information
+    -- local zo_channel_info_array = ZO_ChatSystem_GetChannelInfo()
+    -- local zo_channel_info = zo_channel_info_array[channel_id]
+    -- if not zo_channel_info or not zo_channel_info.format then return end
 
-    -- Get channel information
-    local zo_channel_info_array = ZO_ChatSystem_GetChannelInfo()
-    local zo_channel_info = zo_channel_info_array[channel_id]
-    if not zo_channel_info or not zo_channel_info.format then return end
-
-    return text, zo_channel_info.saveTarget
+    -- return text, zo_channel_info.saveTarget
+    if MMChat:ContainsLink(text) then
+        d("link detected")
+        table.insert(MMChat.text_queue, text)
+        -- zo_calllater(MMChat.AfterMessage, 50)
+        MMChat.AfterMessage()
+    end
 end
 
 -- Postamble -----------------------------------------------------------------
