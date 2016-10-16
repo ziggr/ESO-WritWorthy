@@ -27,6 +27,12 @@ function MMChat.round(f)
     return math.floor(0.5+f)
 end
 
+-- Return commafied integer number, or "?" if nil.
+function MMChat.ToMoney(x)
+    if not x then return "?" end
+    return ZO_CurrencyControl_FormatCurrency(MMChat.round(x), false)
+end
+
 
 -- Item ----------------------------------------------------------------------
 local Item = {}
@@ -43,15 +49,14 @@ end
 
 -- A formatted line suitable for display in chat
 function Item:ToText()
-    return         tostring(ZO_CurrencyControl_FormatCurrency(self.total_value, false))
+    return         tostring(MMChat.ToMoney(self.total_value))
         .."  = ".. tostring(self.ct) .."x"
-        .." "   .. tostring(ZO_CurrencyControl_FormatCurrency(self.mm, false)) .."g"
+        .." "   .. tostring(MMChat.ToMoney(self.mm)) .."g"
         .."   " .. tostring(self.link)
 end
 
 function Item:FetchMM()
     self.mm = MMChat.MMPrice(self.link)
-    self.mm = 12 -- NUR ZUM DEBUGGEN
     if self.mm then
         self.total_value = self.mm * self.ct
     end
@@ -131,11 +136,7 @@ end
 -- handling, so that we don't break any chat events with our noise.
 function MMChat.AfterMessage()
     local text = table.remove(MMChat.text_queue, 1)
-    if not text then
-        d("dequeued nothing")
-        return
-    end
-    d("dequeued " .. text)
+    if not text then return end
     local item_list = MMChat:ToLinkCounts(text)
     local total     = 0
     for i, item in ipairs(item_list) do
@@ -143,7 +144,7 @@ function MMChat.AfterMessage()
         d(item:ToText())
         total = total + item.total_value
     end
-    d(ZO_CurrencyControl_FormatCurrency(total, false) .. "g total")
+    d(MMChat.ToMoney(total) .. "g total")
 end
 
 function MMChat.OnEventChatMessageChannel(
@@ -155,22 +156,11 @@ function MMChat.OnEventChatMessageChannel(
         )
     if not MMChat:IsEnabledForChannelID(channel_id) then return end
 
-    d("on_event")
-    -- d("on_e event_id:"..tostring(event_id)
-    --     .." id:"..tostring(channel_id).." from:"..tostring(from)
-    --     .." is_cs:"..tostring(is_cust_svc).." text:'"..tostring(text).."'")
-
-    -- -- Get channel information
-    -- local zo_channel_info_array = ZO_ChatSystem_GetChannelInfo()
-    -- local zo_channel_info = zo_channel_info_array[channel_id]
-    -- if not zo_channel_info or not zo_channel_info.format then return end
-
     -- return text, zo_channel_info.saveTarget
     if MMChat:ContainsLink(text) then
-        d("link detected")
         table.insert(MMChat.text_queue, text)
-        -- zo_calllater(MMChat.AfterMessage, 50)
-        MMChat.AfterMessage()
+        zo_callLater(MMChat.AfterMessage, 50)
+        -- MMChat.AfterMessage()
     end
 end
 
@@ -197,3 +187,9 @@ EVENT_MANAGER:RegisterForEvent( MMChat.name .. "2"
                               , EVENT_CHAT_MESSAGE_CHANNEL
                               , MMChat.OnEventChatMessageChannel
                               )
+
+
+-- Still need:
+--  Softer formatting
+--  zo_callback delay
+--  nil handling if no MM
