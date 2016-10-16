@@ -1,0 +1,91 @@
+ 1 CHAT_CATEGORY_HEADER_CHANNELS               .
+ 1 CHAT_CATEGORY_HEADER_MIN_VALUE              .
+10 CHAT_CATEGORY_HEADER_GUILDS                 .
+45 CHAT_CATEGORY_HEADER_COMBAT                 .
+45 CHAT_CATEGORY_HEADER_MAX_VALUE              .
+
+45 CHAT_CATEGORY_COMBAT_EXPERIENCE             .
+46 CHAT_CATEGORY_COMBAT_TELVAR_STONES          .
+47 CHAT_CATEGORY_COMBAT_RANK_POINTS            .
+48 CHAT_CATEGORY_COMBAT_ALLIANCE_POINTS        .
+49 CHAT_CATEGORY_COMBAT_GAINED_EFFECT          .
+50 CHAT_CATEGORY_COMBAT_LOST_EFFECT            .
+51 CHAT_CATEGORY_COMBAT_DIRECT_DAMAGE          .
+52 CHAT_CATEGORY_COMBAT_DOT                    .
+53 CHAT_CATEGORY_COMBAT_DIRECT_HEAL            .
+54 CHAT_CATEGORY_COMBAT_HOT                    .
+55 CHAT_CATEGORY_COMBAT_ENERGIZE               .
+56 CHAT_CATEGORY_COMBAT_DRAIN                  .
+57 CHAT_CATEGORY_COMBAT_DODGE_PARRY_MISS       .
+58 CHAT_CATEGORY_COMBAT_BLOCK_ABSORBED_DEFEND  .
+59 CHAT_CATEGORY_COMBAT_RESIST                 .
+60 CHAT_CATEGORY_COMBAT_OTHER                  .
+61 CHAT_CATEGORY_COMBAT_DEATH                  .
+
+ 1 CHAT_CATEGORY_MIN_VALUE                     .
+ 1 CHAT_CATEGORY_SAY                           .
+ 2 CHAT_CATEGORY_YELL                          .
+ 3 CHAT_CATEGORY_WHISPER_INCOMING              .
+ 4 CHAT_CATEGORY_WHISPER_OUTGOING              .
+ 6 CHAT_CATEGORY_ZONE                          .
+ 7 CHAT_CATEGORY_PARTY                         .
+ 8 CHAT_CATEGORY_EMOTE                         .
+ 9 CHAT_CATEGORY_SYSTEM                        .
+10 CHAT_CATEGORY_GUILD_1                       .
+11 CHAT_CATEGORY_GUILD_2                       .
+12 CHAT_CATEGORY_GUILD_3                       .
+13 CHAT_CATEGORY_GUILD_4                       .
+14 CHAT_CATEGORY_GUILD_5                       .
+15 CHAT_CATEGORY_OFFICER_1                     .
+16 CHAT_CATEGORY_OFFICER_2                     .
+17 CHAT_CATEGORY_OFFICER_3                     .
+18 CHAT_CATEGORY_OFFICER_4                     .
+19 CHAT_CATEGORY_OFFICER_5                     .
+20 CHAT_CATEGORY_ZONE_ENGLISH                  .
+21 CHAT_CATEGORY_ZONE_FRENCH                   .
+22 CHAT_CATEGORY_ZONE_GERMAN                   .
+23 CHAT_CATEGORY_ZONE_JAPANESE                 .
+41 CHAT_CATEGORY_MONSTER_SAY                   .
+42 CHAT_CATEGORY_MONSTER_YELL                  .
+43 CHAT_CATEGORY_MONSTER_WHISPER               .
+44 CHAT_CATEGORY_MONSTER_EMOTE                 .
+61 CHAT_CATEGORY_MAX_VALUE                     .
+
+ 0 CHAT_CHANNEL_MIN_VALUE                      .
+ 0 CHAT_CHANNEL_SAY                            .
+ 1 CHAT_CHANNEL_YELL                           .
+ 2 CHAT_CHANNEL_WHISPER                        .
+ 3 CHAT_CHANNEL_PARTY                          .
+ 4 CHAT_CHANNEL_WHISPER_SENT                   .
+ 5 CHAT_CHANNEL_UNUSED_1                       .
+ 6 CHAT_CHANNEL_EMOTE                          .
+ 7 CHAT_CHANNEL_MONSTER_SAY                    .
+ 8 CHAT_CHANNEL_MONSTER_YELL                   .
+ 9 CHAT_CHANNEL_MONSTER_WHISPER                .
+10 CHAT_CHANNEL_MONSTER_EMOTE                  .
+11 CHAT_CHANNEL_SYSTEM                         .
+12 CHAT_CHANNEL_GUILD_1                        .
+13 CHAT_CHANNEL_GUILD_2                        .
+14 CHAT_CHANNEL_GUILD_3                        .
+15 CHAT_CHANNEL_GUILD_4                        .
+16 CHAT_CHANNEL_GUILD_5                        .
+17 CHAT_CHANNEL_OFFICER_1                      .
+18 CHAT_CHANNEL_OFFICER_2                      .
+19 CHAT_CHANNEL_OFFICER_3                      .
+20 CHAT_CHANNEL_OFFICER_4                      .
+21 CHAT_CHANNEL_OFFICER_5                      .
+22 CHAT_CHANNEL_USER_CHANNEL_1                 .
+23 CHAT_CHANNEL_USER_CHANNEL_2                 .
+24 CHAT_CHANNEL_USER_CHANNEL_3                 .
+25 CHAT_CHANNEL_USER_CHANNEL_4                 .
+26 CHAT_CHANNEL_USER_CHANNEL_5                 .
+27 CHAT_CHANNEL_USER_CHANNEL_6                 .
+28 CHAT_CHANNEL_USER_CHANNEL_7                 .
+29 CHAT_CHANNEL_USER_CHANNEL_8                 .
+30 CHAT_CHANNEL_USER_CHANNEL_9                 .
+31 CHAT_CHANNEL_ZONE                           .
+32 CHAT_CHANNEL_ZONE_LANGUAGE_1                .
+33 CHAT_CHANNEL_ZONE_LANGUAGE_2                .
+34 CHAT_CHANNEL_ZONE_LANGUAGE_3                .
+35 CHAT_CHANNEL_ZONE_LANGUAGE_4                .
+35 CHAT_CHANNEL_MAX_VALUE                      .
