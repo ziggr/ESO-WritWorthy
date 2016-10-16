@@ -10,6 +10,18 @@ MMChat.char_index      = nil
 MMChat.default = {
     bag = {}
 }
+MMChat.channel_id_enabled = {
+  [CHAT_CHANNEL_WHISPER] = true
+, [CHAT_CHANNEL_GUILD_3] = true
+, [CHAT_CHANNEL_GUILD_5] = true
+, [CHAT_CHANNEL_OFFICER_3] = true
+, [CHAT_CHANNEL_OFFICER_5] = true
+}
+
+-- Might some day go dynamic, but for now...
+function MMChat:IsEnabledForChannelID(channel_id)
+    return MMChat.channel_id_enabled[channel_id]
+end
 
 -- Item ----------------------------------------------------------------------
 --
@@ -323,6 +335,7 @@ function MMChat.OnEventChatMessageChannel( event_id
                                     , text
                                     , is_cust_svc
                                     )
+    if not MMChat:IsEnabledForChannelID(channel_id) then return end
 
     d("on_e event_id:"..tostring(event_id)
         .." id:"..tostring(channel_id).." from:"..tostring(from)
