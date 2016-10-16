@@ -187,8 +187,8 @@ end
 function MMChat:CreateSettingsWindow()
     local panelData = {
           type                = "panel"
-        , name                = "Net Worth"
-        , displayName         = "Net Worth"
+        , name                = "MMChat"
+        , displayName         = "MMChat"
         , author              = "ziggr"
         , version             = self.version
         , slashCommand        = "/nn"
@@ -297,10 +297,66 @@ function MMChat.MMPrice(link)
     return mm.avgPrice
 end
 
+-- Chat Event Handler --------------------------------------------------------
+
+function MMChat.OnChatMessageChannel( channel_id
+                                    , from
+                                    , text
+                                    , is_cust_svc
+                                    )
+
+    d("on_cmc id:"..tostring(channel_id).." from:"..tostring(from)
+        .." is_cs:"..tostring(is_cust_svc).." text:'"..tostring(text).."'")
+
+
+    -- Get channel information
+    local zo_channel_info_array = ZO_ChatSystem_GetChannelInfo()
+    local zo_channel_info = zo_channel_info_array[channel_id]
+    if not zo_channel_info or not zo_channel_info.format then return end
+
+    return text, zo_channel_info.saveTarget
+end
+
+function MMChat.OnEventChatMessageChannel( event_id
+                                    , channel_id
+                                    , from
+                                    , text
+                                    , is_cust_svc
+                                    )
+
+    d("on_e event_id:"..tostring(event_id)
+        .." id:"..tostring(channel_id).." from:"..tostring(from)
+        .." is_cs:"..tostring(is_cust_svc).." text:'"..tostring(text).."'")
+
+
+    -- Get channel information
+    local zo_channel_info_array = ZO_ChatSystem_GetChannelInfo()
+    local zo_channel_info = zo_channel_info_array[channel_id]
+    if not zo_channel_info or not zo_channel_info.format then return end
+
+    return text, zo_channel_info.saveTarget
+end
 
 -- Postamble -----------------------------------------------------------------
 
 EVENT_MANAGER:RegisterForEvent( MMChat.name
                               , EVENT_ADD_ON_LOADED
                               , MMChat.OnAddOnLoaded
+                              )
+
+-- ZO_ChatSystem_AddEventHandler() does not work if other
+-- ZO_ChatSystem_AddEventHandler() clients are in play: Shissu/pChat/libChat2
+-- and wkyyyd's enhanced chat all cause this  to not be called.
+--
+-- ZO_ChatSystem_AddEventHandler ( EVENT_CHAT_MESSAGE_CHANNEL
+--                               , MMChat.OnChatMessageChannel
+--                               )
+
+-- EVENT_MANAGER:RegisterForEvent() is post-called, after the message appears
+-- in chat, after wykkyd and libChat2 have a chance to modify and display.
+-- Perfect for our needs as an after-event trigger.
+
+EVENT_MANAGER:RegisterForEvent( MMChat.name .. "2"
+                              , EVENT_CHAT_MESSAGE_CHANNEL
+                              , MMChat.OnEventChatMessageChannel
                               )
