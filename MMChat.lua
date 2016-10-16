@@ -1,13 +1,13 @@
 local LAM2 = LibStub("LibAddonMenu-2.0")
 
-local NetWorth = {}
-NetWorth.name            = "NetWorth"
-NetWorth.version         = "2.6.1"
-NetWorth.savedVarVersion = 1
-NetWorth.NAME_BANK       = "bank"
-NetWorth.NAME_CRAFT_BAG  = "craft bag"
-NetWorth.char_index      = nil
-NetWorth.default = {
+local MMChat = {}
+MMChat.name            = "MMChat"
+MMChat.version         = "2.6.1"
+MMChat.savedVarVersion = 1
+MMChat.NAME_BANK       = "bank"
+MMChat.NAME_CRAFT_BAG  = "craft bag"
+MMChat.char_index      = nil
+MMChat.default = {
     bag = {}
 }
 
@@ -42,7 +42,7 @@ function Item:FromBag(bag_id, slot_index)
     local item_link = GetItemLink(bag_id, slot_index, LINK_STYLE_DEFAULT)
     local _, ct, npc_sell_price = GetItemInfo(bag_id, slot_index)
     if ct == 0 then return nil end
-    local mm = NetWorth.MMPrice(item_link)
+    local mm = MMChat.MMPrice(item_link)
     local o = { total_value = Item.round(ct * max(npc_sell_price, mm))
               , ct          = ct
               , mm          = Item.round(mm)
@@ -97,12 +97,12 @@ end
 -- Main entry for a bag.
 -- Fans out to specific bag-fetching subroutines.
 function Bag:ReadFromServer()
-    if self.name == NetWorth.NAME_BANK then
+    if self.name == MMChat.NAME_BANK then
         self:ReadFromBagId(BAG_BANK)
         self.gold = GetBankedMoney()
         self.total = self.gold + self.item_subtotal
         d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
-    elseif self.name == NetWorth.NAME_CRAFT_BAG then
+    elseif self.name == MMChat.NAME_CRAFT_BAG then
         self:ReadFromCraftBag()
         self.total = self.gold + self.item_subtotal
         d(self.name .. " total:" .. ZO_CurrencyControl_FormatCurrency(self.total, false) .. " item_ct:" .. self.item_ct)
@@ -152,17 +152,17 @@ end
 
 -- Init ----------------------------------------------------------------------
 
-function NetWorth.OnAddOnLoaded(event, addonName)
-    if addonName ~= NetWorth.name then return end
-    if not NetWorth.version then return end
-    if not NetWorth.default then return end
-    NetWorth:Initialize()
+function MMChat.OnAddOnLoaded(event, addonName)
+    if addonName ~= MMChat.name then return end
+    if not MMChat.version then return end
+    if not MMChat.default then return end
+    MMChat:Initialize()
 end
 
-function NetWorth:Initialize()
+function MMChat:Initialize()
 
     self.savedVariables = ZO_SavedVars:NewAccountWide(
-                              "NetWorthVars"
+                              "MMChatVars"
                             , self.savedVarVersion
                             , nil
                             , self.default
@@ -174,7 +174,7 @@ end
 
 -- Return the bag index for this character, if it already has one, or a new
 -- index if not.
-function NetWorth:FindCharIndex()
+function MMChat:FindCharIndex()
     local char_name = GetUnitName("player")
     for i, bag in ipairs(self.savedVariables.bag) do
         if bag.name == char_name then return i end
@@ -184,7 +184,7 @@ end
 
 -- UI ------------------------------------------------------------------------
 
-function NetWorth:CreateSettingsWindow()
+function MMChat:CreateSettingsWindow()
     local panelData = {
           type                = "panel"
         , name                = "Net Worth"
@@ -208,34 +208,34 @@ function NetWorth:CreateSettingsWindow()
         { type      = "description"
         , text      = ""
         , width     = "half"
-        , reference = "NetWorth_desc_bags"
+        , reference = "MMChat_desc_bags"
         },
 
         { type      = "description"
         , text      = ""
         , width     = "half"
-        , reference = "NetWorth_desc_amounts"
+        , reference = "MMChat_desc_amounts"
         },
 
     }
 
-    LAM2:RegisterOptionControls("NetWorth", optionsData)
+    LAM2:RegisterOptionControls("MMChat", optionsData)
     CALLBACK_MANAGER:RegisterCallback("LAM-PanelControlsCreated"
             , self.OnPanelControlsCreated)
 end
 
 -- Delay initialization of options panel: don't waste time fetching
 -- guild names until a human actually opens our panel.
-function NetWorth.OnPanelControlsCreated(panel)
-    self = NetWorth
-    if not (NetWorth_desc_amounts and NetWorth_desc_amounts.desc) then return end
-    if NetWorth_desc_amounts.desc then
-        NetWorth_desc_amounts.desc:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
+function MMChat.OnPanelControlsCreated(panel)
+    self = MMChat
+    if not (MMChat_desc_amounts and MMChat_desc_amounts.desc) then return end
+    if MMChat_desc_amounts.desc then
+        MMChat_desc_amounts.desc:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
     end
     self:UpdateDisplay()
 end
 
-function NetWorth:UpdateDisplay()
+function MMChat:UpdateDisplay()
     local bag_name   = {}
     local bag_amount = {}
     local total      = 0
@@ -262,19 +262,19 @@ function NetWorth:UpdateDisplay()
     local sn = table.concat(bag_name,   "\n")
     local sa = table.concat(bag_amount, "\n")
 
-    NetWorth_desc_bags.data.text    = sn
-    NetWorth_desc_amounts.data.text = sa
-    NetWorth_desc_bags.desc:SetText(sn)
-    NetWorth_desc_amounts.desc:SetText(sa)
+    MMChat_desc_bags.data.text    = sn
+    MMChat_desc_amounts.data.text = sa
+    MMChat_desc_bags.desc:SetText(sn)
+    MMChat_desc_amounts.desc:SetText(sa)
 end
 
 -- Fetch Inventory Data from the server ------------------------------------------
 
-function NetWorth:ScanNow()
+function MMChat:ScanNow()
     local char_name = GetUnitName("player")
     local ci = self.char_index
-    self.bag = { [1 ] = Bag:FromName(NetWorth.NAME_BANK)
-               , [2 ] = Bag:FromName(NetWorth.NAME_CRAFT_BAG)
+    self.bag = { [1 ] = Bag:FromName(MMChat.NAME_BANK)
+               , [2 ] = Bag:FromName(MMChat.NAME_CRAFT_BAG)
                , [ci] = Bag:FromName(char_name)
                }
     self.bag[1 ]:ReadFromServer()
@@ -288,7 +288,7 @@ function NetWorth:ScanNow()
     self:UpdateDisplay()
 end
 
-function NetWorth.MMPrice(link)
+function MMChat.MMPrice(link)
     if not MasterMerchant then return nil end
     if not link then return nil end
     mm = MasterMerchant:itemStats(link, false)
@@ -300,7 +300,7 @@ end
 
 -- Postamble -----------------------------------------------------------------
 
-EVENT_MANAGER:RegisterForEvent( NetWorth.name
+EVENT_MANAGER:RegisterForEvent( MMChat.name
                               , EVENT_ADD_ON_LOADED
-                              , NetWorth.OnAddOnLoaded
+                              , MMChat.OnAddOnLoaded
                               )
