@@ -69,6 +69,7 @@ function Item:ToText()
         .." "   .. tostring(MMChat.ToMoney(self.mm)) .."g"
             ) -- end grey
         .."   " .. tostring(self.link)
+        .. " "  .. self:BoundHow()
 end
 
 function Item:FetchMM()
@@ -76,6 +77,55 @@ function Item:FetchMM()
     if self.mm then
         self.total_value = self.mm * self.ct
     end
+end
+
+Item.BIND_STRING = {
+  [BIND_TYPE_NONE]               = ""
+, [BIND_TYPE_ON_EQUIP]           = "BoE"
+, [BIND_TYPE_ON_PICKUP]          = "BoP"
+, [BIND_TYPE_ON_PICKUP_BACKPACK] = "Bag-BoP"
+, [BIND_TYPE_UNSET]              = "unset"
+}
+
+-- Return Master Merchant's "stats to chat" text.
+--
+-- Basically copied straight from Master Merchant's own
+-- MasterMerchant:onItemActionLinkStatsLink()
+function Item:PriceCheckText()
+  local tipLine, days = MasterMerchant:itemPriceTip(self.link, true)
+  if not tipLine then
+    if days == 10000 then
+      tipLine = GetString(MM_TIP_FORMAT_NONE)
+    else
+      tipLine = string.format(GetString(MM_TIP_FORMAT_NONE_RANGE), days)
+    end
+  end
+  if tipLine then
+    tipLine = string.gsub(tipLine, 'M.M.', 'MM')
+    local ChatEditControl = CHAT_SYSTEM.textEntry.editControl
+    if (not ChatEditControl:HasFocus()) then StartChatInput() end
+    local itemText = string.gsub(self.link, '|H0', '|H1')
+    return(MasterMerchant.concat(tipLine, GetString(MM_TIP_FOR), itemText))
+  end
+  return ""
+end
+
+function Item:BoundHow()
+    if not IsItemLinkBound(self.link) then return "" end
+    local bt = GetItemLinkBindType(self.link)
+    return Item.BIND_STRING[bt]
+end
+
+-- ChatEvent --------------------------------------------------------------------
+local ChatEvent = {}
+function ChatEvent:New(channel_id, from, text)
+    local o = { channel_id  = channel_id
+              , from        = from
+              , text        = text
+              }
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
 
 -- MMChat --------------------------------------------------------------------
@@ -88,6 +138,16 @@ end
 function MMChat:IsMMReport(text)
     if string.match(text, "^MM price ") then return true end
     return string.match(text, "^MM has no data ")
+end
+
+MMChat.PRICE_CHECK = { "^PC ", "Price Check " }
+
+function MMChat:IsPriceCheck(text)
+    for _, key in pairs(MMChat.PRICE_CHECK) do
+        if string.match(text,              key ) then return true end
+        if string.match(text, string.lower(key)) then return true end
+    end
+    return false
 end
 
 -- Is this MM-worthy?
@@ -132,6 +192,17 @@ function MMChat.MMPrice(link)
     return mm.avgPrice
 end
 
+function MMChat:SendChatMessage(chat_event, message)
+    if chat_event.channel_id == CHAT_CHANNEL_WHISPER then
+        CHAT_SYSTEM:SetChannel(CHAT_CHANNEL_WHISPER, chat_event.from)
+    else
+        CHAT_SYSTEM:SetChannel(chat_event.channel_id)
+    end
+    d(message)
+    -- CHAT_SYSTEM:StartTextEntry(message)
+    -- CHAT_SYSTEM:SubmitTextEntry()
+end
+
 -- Init ----------------------------------------------------------------------
 
 function MMChat.OnAddOnLoaded(event, addonName)
@@ -157,8 +228,9 @@ end
 -- Using zo_calllater() to defer this MM handling until AFTER we're out of chat
 -- handling, so that we don't break any chat events with our noise.
 function MMChat.AfterMessage()
-    local text = table.remove(MMChat.text_queue, 1)
-    if not text then return end
+    local event = table.remove(MMChat.text_queue, 1)
+    if not event then return end
+    local text = event.text
     local item_list = MMChat:ToLinkCounts(text)
     local total     = 0
     for i, item in ipairs(item_list) do
@@ -166,7 +238,18 @@ function MMChat.AfterMessage()
         d(item:ToText())
         total = total + item.total_value
     end
-    d(MMChat.ToMoney(total) .. "g total")
+    local is_pc = MMChat:IsPriceCheck(text)
+    local pc = ""
+    if is_pc then
+        pc = "PRICE CHECK on channel " .. tostring(event.channel_id)
+    end
+    d(MMChat.ToMoney(total) .. "g total  " .. pc)
+    if is_pc then
+        for i, item in ipairs(item_list) do
+            local pc_text = item:PriceCheckText(item.link) .. " " .. item:BoundHow()
+            MMChat:SendChatMessage(event, pc_text)
+        end
+    end
 end
 
 function MMChat.OnEventChatMessageChannel(
@@ -180,11 +263,13 @@ function MMChat.OnEventChatMessageChannel(
 
     -- return text, zo_channel_info.saveTarget
     if MMChat:ContainsLink(text) and not MMChat:IsMMReport(text) then
-        table.insert(MMChat.text_queue, text)
+        local event = ChatEvent:New(channel_id, from, text)
+        table.insert(MMChat.text_queue, event)
         zo_callLater(MMChat.AfterMessage, 50)
         -- MMChat.AfterMessage()
     end
 end
+
 
 -- Postamble -----------------------------------------------------------------
 
