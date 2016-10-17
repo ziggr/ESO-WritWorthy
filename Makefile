@@ -11,7 +11,7 @@ get:
 zip:
 	-rm -rf published/MMChat published/MMChat\ x.x.x.zip
 	mkdir -p published/MMChat
-	cp -R Libs published/MMChat/Libs
+	#cp -R Libs published/MMChat/Libs
 	cp ./MMChat* published/MMChat/
 	cd published; zip -r MMChat\ x.x.x.zip MMChat
 
