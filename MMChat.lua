@@ -246,7 +246,7 @@ function MMChat.AfterMessage()
     d(MMChat.ToMoney(total) .. "g total  " .. pc)
     if is_pc then
         for i, item in ipairs(item_list) do
-            local pc_text = item:PriceCheckText(item.link) .. " " .. item:BoundHow()
+            local pc_text = item:PriceCheckText(item.link) .. " " ..  item:BoundHow()
             MMChat:SendChatMessage(event, pc_text)
         end
     end
