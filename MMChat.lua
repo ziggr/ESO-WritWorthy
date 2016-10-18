@@ -2,7 +2,7 @@ local LAM2 = LibStub("LibAddonMenu-2.0")
 
 local MMChat = {}
 MMChat.name            = "MMChat"
-MMChat.version         = "2.6.1"
+MMChat.version         = "2.6.2"
 MMChat.savedVarVersion = 1
 MMChat.default = {
     channel_enabled = {
