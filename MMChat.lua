@@ -168,6 +168,98 @@ function MMChat.MMPrice(link)
     return mm.avgPrice
 end
 
+-- UI ------------------------------------------------------------------------
+
+function MMChat:CreateSettingsWindow()
+    local panelData = {
+          type                = "panel"
+        , name                = "MMChat"
+        , displayName         = "MMChat"
+        , author              = "ziggr"
+        , version             = self.version
+        , registerForRefresh  = false
+        , registerForDefaults = false
+    }
+    local cntrlOptionsPanel = LAM2:RegisterAddonPanel( self.name
+                                                     , panelData
+                                                     )
+    local channel_guild   = { CHAT_CHANNEL_GUILD_1
+                            , CHAT_CHANNEL_GUILD_2
+                            , CHAT_CHANNEL_GUILD_3
+                            , CHAT_CHANNEL_GUILD_4
+                            , CHAT_CHANNEL_GUILD_5
+                            }
+    local channel_officer = { CHAT_CHANNEL_OFFICER_1
+                            , CHAT_CHANNEL_OFFICER_2
+                            , CHAT_CHANNEL_OFFICER_3
+                            , CHAT_CHANNEL_OFFICER_4
+                            , CHAT_CHANNEL_OFFICER_5
+                            }
+
+    local optionsData = {
+        { type      = "description"
+        , text      = "Display M.M. data in for which chat channels?"
+        },
+
+        { type      = "checkbox"
+        , name      = "Tell"
+        , width     = "half"
+        , getFunc   = function()
+                        return self.savedVariables.channel_enabled[CHAT_CHANNEL_WHISPER]
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.channel_enabled[CHAT_CHANNEL_WHISPER] = e
+                      end
+        },
+        { type      = "header"
+        , name      = "Guilds"
+        },
+    }
+    for i = 1,5 do
+        local guild_id   = GetGuildId(i)
+        local guild_name = GetGuildName(guild_id)
+
+        table.insert(optionsData,
+        { type      = "checkbox"
+        , name      = "Guild "..i..": " .. guild_name
+        , width     = "half"
+        , getFunc   = function()
+                        return self.savedVariables.channel_enabled[channel_guild[i]]
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.channel_enabled[channel_guild[i]] = e
+                      end
+        })
+
+        table.insert(optionsData,
+        { type      = "checkbox"
+        , name      = "Officer "..i
+        , width     = "half"
+        , getFunc   = function()
+                        return self.savedVariables.channel_enabled[channel_officer[i]]
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.channel_enabled[channel_officer[i]] = e
+                      end
+        })
+    end
+
+    LAM2:RegisterOptionControls("MMChat", optionsData)
+    CALLBACK_MANAGER:RegisterCallback( "LAM-PanelControlsCreated"
+                                     , self.OnPanelControlsCreated)
+end
+
+-- Delay initialization of options panel: don't waste time fetching
+-- guild names until a human actually opens our panel.
+function MMChat.OnPanelControlsCreated(panel)
+    self = MMChat
+    if not (MMChat_desc_amounts and MMChat_desc_amounts.desc) then return end
+    if MMChat_desc_amounts.desc then
+        MMChat_desc_amounts.desc:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
+    end
+    self:UpdateDisplay()
+end
+
 -- Init ----------------------------------------------------------------------
 
 function MMChat.OnAddOnLoaded(event, addonName)
@@ -184,6 +276,7 @@ function MMChat:Initialize()
                             , nil
                             , self.default
                             )
+    self:CreateSettingsWindow()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
 
