@@ -164,9 +164,34 @@ function MMChat.MMPrice(link)
     if not link then return nil end
     mm = MasterMerchant:itemStats(link, false)
     if not mm then return nil end
-    --d("MM for link: "..tostring(link).." "..tostring(mm.avgPrice))
+
+    if mm.avgPrice and 0 < mm.avgPrice then
+        return mm.avgPrice
+    end
+
+                        -- Normal price lookup came up empty, try an
+                        -- expanded time range.
+                        --
+                        -- MasterMerchant lacks an API to control time range,
+                        -- it does this internally by polling the state of
+                        -- control/shift-key modifiers (!) so we monkey-patch
+                        -- our own code that ignores modifier keys and always
+                        -- returns a LOOONG time range
+    local save_tc = MasterMerchant.TimeCheck
+    MasterMerchant.TimeCheck
+        = function(self)
+            d("Monkey patch called")
+            local daysRange = 100  -- 3+ months is long enough.
+            return GetTimeStamp() - (86400 * daysRange), daysRange
+          end
+    mm = MasterMerchant:itemStats(link, false)
+    MasterMerchant.TimeCheck = save_tc
+
+    if not mm then return nil end
     return mm.avgPrice
 end
+
+
 
 -- UI ------------------------------------------------------------------------
 

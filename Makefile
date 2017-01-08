@@ -1,7 +1,7 @@
 .PHONY: send get csv
 
 put:
-	git commit -am auto
+	#git commit -am auto
 	cp -f ./MMChat.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/MMChat/
 
 get:
