@@ -1,8 +1,8 @@
-## Title: MMChat
-## Description: MMChat version 2.6.2
+## Title: WritWorthy
+## Description: WritWorthy version 2.7.1
 ## Author: ziggr
-## APIVersion: 100017
-## SavedVariables: MMChatVars
+## APIVersion: 100018
+## SavedVariables: WritWorthyVars
 ## OptionalDependsOn: LibAddonMenu-2.0
 
 Libs/LibStub/LibStub.lua
@@ -21,4 +21,4 @@ Libs/LibAddonMenu-2.0/controls/slider.lua
 Libs/LibAddonMenu-2.0/controls/texture.lua
 Libs/LibAddonMenu-2.0/controls/iconpicker.lua
 
-MMChat.lua
+WritWorthy.lua

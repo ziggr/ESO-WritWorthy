@@ -1,7 +1,5 @@
-How much is that thing worth?
+Is this Master Writ worth doing?
 
-This add-on scans incoming chat messages and automatically displays Master Merchant price checks in your chat window.
-
-It also detects multipliers so that when you see "WTS 200x [Void Cloth]" it displays the price for the whole stack, not just one unit.
+Some Master Writs require large quantities of expensive crafting materials, but return very few Writ Voucher rewards. This add-on shows the Master Merchant gold cost of all the materials, and the gold cost per writ voucher reward.
 
 --Z

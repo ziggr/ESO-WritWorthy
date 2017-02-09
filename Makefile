@@ -2,16 +2,13 @@
 
 put:
 	#git commit -am auto
-	cp -f ./MMChat.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/MMChat/
-
-get:
-	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/MMChat.lua ../../SavedVariables/
-	cp -f ../../SavedVariables/MMChat.lua data/
+	cp -f ./WritWorthy.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
+	cp -f ./WritWorthy.txt /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
 
 zip:
-	-rm -rf published/MMChat published/MMChat\ x.x.x.zip
-	mkdir -p published/MMChat
-	cp -R Libs published/MMChat/Libs
-	cp ./MMChat* published/MMChat/
-	cd published; zip -r MMChat\ x.x.x.zip MMChat
+	-rm -rf published/WritWorthy published/WritWorthy\ x.x.x.zip
+	mkdir -p published/WritWorthy
+	cp -R Libs published/WritWorthy/Libs
+	cp ./WritWorthy* published/WritWorthy/
+	cd published; zip -r WritWorthy\ x.x.x.zip WritWorthy
 
