@@ -1,0 +1,5 @@
+Is this Master Writ worth doing?
+
+Some Master Writs require large quantities of expensive crafting materials, but return very few Writ Voucher rewards. This add-on shows the Master Merchant gold cost of all the materials, and the gold cost per writ voucher reward.
+
+--Z
