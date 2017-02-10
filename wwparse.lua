@@ -10,11 +10,11 @@ local SmithItem = {}
 
 
 -- The four crafting schools (clothing counts as two: light and medium)
-SmithItem.HEAVY = { base_mat_link   = "[Rubedite Ingot]"
-                  , green_mat_link  = "[Honing Stone]"
-                  , blue_mat_link   = "[Dwarven Oil]"
-                  , purple_mat_link = "[Grain Solvent]"
-                  , gold_mat_link   = "[Tempering Alloy]"
+SmithItem.HEAVY = { base_mat_link    = "[Rubedite Ingot]"
+                  , green_mat_link   = "[Honing Stone]"
+                  , blue_mat_link    = "[Dwarven Oil]"
+                  , purple_mat_link  = "[Grain Solvent]"
+                  , gold_mat_link    = "[Tempering Alloy]"
                   }
 
 SmithItem.MEDIUM = { base_mat_link   = "[Rubedo Leather]"

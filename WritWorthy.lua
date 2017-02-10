@@ -5,6 +5,10 @@ local WritWorthy = {}
 WritWorthy.name            = "WritWorthy"
 WritWorthy.version         = "2.7.1"
 
+local function Fail(msg)
+    d(msg)
+end
+
 -- Chat Colors ---------------------------------------------------------------
 
 WritWorthy.GREY = "999999"
@@ -30,8 +34,379 @@ function WritWorthy.ToMoney(x)
     return ZO_CurrencyControl_FormatCurrency(WritWorthy.round(x), false)
 end
 
+-- SmithItem =================================================================
+--
+-- A single blacksmithing, clothing, or woodworking crafted item, required
+-- for a Master Writ.
+local SmithItem = {}
 
--- WritWorthy ====================================================================
+-- The four crafting schools (clothing counts as two: light and medium)
+SmithItem.HEAVY = {
+    base_mat_name       = "rubedite"
+,   green_mat_name      = "honing stone"
+,   blue_mat_name       = "dwarven oil"
+,   purple_mat_name     = "grain solvent"
+,   gold_mat_name       = "tempering alloy"
+}
+
+SmithItem.MEDIUM = {
+    base_mat_name       = "rubedo leather"
+,   green_mat_name      = "hemming"
+,   blue_mat_name       = "embroidery"
+,   purple_mat_name     = "elegant lining"
+,   gold_mat_name       = "dreugh wax"
+}
+
+SmithItem.LIGHT  = {
+    base_mat_name       = "ancestor ailk"
+,   green_mat_name      = "hemming"
+,   blue_mat_name       = "embroidery"
+,   purple_mat_name     = "elegant lining"
+,   gold_mat_name       = "dreugh wax"
+}
+
+SmithItem.WOOD   = {
+    base_mat_name       = "ruby ash"
+,   green_mat_name      = "pitch"
+,   blue_mat_name       = "turpen"
+,   purple_mat_name     = "mastic"
+,   gold_mat_name       = "rosin"
+}
+
+-- Traits for weapons and armor.
+-- Need two tables since "Nirnhoned" could mean either potent or fortified.
+SmithItem.TRAITS_WEAPON = {
+    ["Powered"]         = "chysolite"
+,   ["Charged"]         = "amethyst"
+,   ["Precise"]         = "ruby"
+,   ["Infused"]         = "jade"
+,   ["Defending"]       = "turquoise"
+,   ["Training"]        = "carnelian"
+,   ["Sharpened"]       = "fire opal"
+,   ["Decisive"]        = "citrine"
+,   ["Nirnhoned"]       = "potent nirncrux"
+}
+SmithItem.ARMOR    = {
+    ["Sturdy"]          = "quartz"
+,   ["Impenetrable"]    = "diamond"
+,   ["Reinforced"]      = "sardonyx"
+,   ["Well-fitted"]     = "almandine"
+,   ["Training"]        = "emerald"
+,   ["Infused"]         = "bloodstone"
+,   ["Prosperous"]      = "garnet"
+,   ["Divines"]         = "sapphire"
+,   ["Nirnhoned"]       = "fortified nirncrux"
+}
+
+SmithItem.MOTIF = {
+    ["Altmer"]                  = "adamantite"
+,   ["Dunmer"]                  = "obsidian"
+,   ["Bosmer"]                  = "bone"
+,   ["Nord"]                    = "corundum"
+,   ["Breton"]                  = "molybdenum"
+,   ["Redguard"]                = "starmetal"
+,   ["Khajiit"]                 = "moonstone"
+,   ["Orc"]                     = "manganese"
+,   ["Argonian"]                = "flint"
+,   ["Imperial"]                = "nickel"
+,   ["Ancient Elf"]             = "palladium"
+,   ["Barbarian"]               = "copper"
+,   ["Primal"]                  = "argentum"
+,   ["Daedric"]                 = "daedra heart"
+,   ["Dwemer"]                  = "dwemer frame"
+,   ["Glass"]                   = "malachite"
+,   ["Xivkyn"]                  = "charcoal of remorse"
+,   ["Akaviri"]                 = "goldscale"
+,   ["Mercenary"]               = "laurel"
+,   ["Ancient Orc"]             = "cassiterite"
+,   ["Trinimac"]                = "auric tusk"
+,   ["Malacath"]                = "potash"
+,   ["Outlaw"]                  = "rogue's soot"
+,   ["Aldmeri Dominion"]        = "eagle feather"
+,   ["Daggerfall Covenant"]     = "lion fang"
+,   ["Ebonheart Pact"]          = "dragon scute"
+,   ["Soul-shriven"]            = "azure plasm"
+,   ["Abah's Watch"]            = "polished shilling"
+,   ["Thieves Guild"]           = "fine chalk"
+,   ["Assassins League"]        = "tainted blood"
+,   ["Dro-m'athra"]             = "defiled whiskers"
+,   ["Dark Brotherhood"]        = "black beeswax"
+,   ["Minotaur"]                = "oxblood fungus"
+,   ["Order of the Hour"]       = "pearl sand"
+,   ["Yokudan"]                 = "ferrous salts"
+,   ["Celestial"]               = "star sapphire"
+,   ["Draugr"]                  = "pristine shroud"
+,   ["Hollowjack"]              = "amber marble"
+,   ["Grim Harlequin"]          = "grinstones"
+,   ["Stahlrim Frostcaster"]    = "stahlrim shard"
+,   ["Skinchanger"]             = "wolfsbane incense"
+}
+
+-- Material requirements for each possitble Master Write BS/CL/WW item.
+                        -- abbreviations to make the table more concise.
+local HVY = SmithItem.HEAVY
+local MED = SmithItem.MEDIUM
+local LGT = SmithItem.LGT
+local WW  = SmithItem.WW
+local WEAPON = SmithItem.TRAITS_WEAPON
+local ARMOR  = SmithItem.ARMOR
+
+SmithItem.ITEM_BASE = {
+    { name = "Rubedite Axe",                school = HVY, base_mat_ct = 11, trait_set = WEAPON }
+,   { name = "Rubedite Mace",               school = HVY, base_mat_ct = 11, trait_set = WEAPON }
+,   { name = "Rubedite Sword",              school = HVY, base_mat_ct = 11, trait_set = WEAPON }
+,   { name = "Rubedite Battle Axe",         school = HVY, base_mat_ct = 14, trait_set = WEAPON }
+,   { name = "Rubedite Greatsword",         school = HVY, base_mat_ct = 14, trait_set = WEAPON }
+,   { name = "Rubedite Maul",               school = HVY, base_mat_ct = 14, trait_set = WEAPON }
+,   { name = "Rubedite Dagger",             school = HVY, base_mat_ct = 10, trait_set = WEAPON }
+
+,   { name = "Rubedite Cuirass",            school = HVY, base_mat_ct = 15, trait_set = ARMOR  }
+,   { name = "Rubedite Sabatons",           school = HVY, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedite Gauntlets",          school = HVY, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedite Helm",               school = HVY, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedite Greaves",            school = HVY, base_mat_ct = 14, trait_set = ARMOR  }
+,   { name = "Rubedite Pauldron",           school = HVY, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedite Girdle",             school = HVY, base_mat_ct = 13, trait_set = ARMOR  }
+
+,   { name = "Ancestor Silk Robe",          school = LGT, base_mat_ct = 15, trait_set = ARMOR  }
+,   { name = "Ancestor Silk Jerkin",        school = LGT, base_mat_ct = 15, trait_set = ARMOR  }
+,   { name = "Ancestor Silk Shoes",         school = LGT, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Ancestor Silk Gloves",        school = LGT, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Ancestor Silk Hat",           school = LGT, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Ancestor Silk Breeches",      school = LGT, base_mat_ct = 14, trait_set = ARMOR  }
+,   { name = "Ancestor Silk Epaulets",      school = LGT, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Ancestor Silk Sash",          school = LGT, base_mat_ct = 13, trait_set = ARMOR  }
+
+,   { name = "Rubedo Leather Jack",         school = MED, base_mat_ct = 15, trait_set = ARMOR  }
+,   { name = "Rubedo Leather Boots",        school = MED, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedo Leather Bracers",      school = MED, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedo Leather Helmet",       school = MED, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedo Leather Guards",       school = MED, base_mat_ct = 14, trait_set = ARMOR  }
+,   { name = "Rubedo Leather Arm Cops",     school = MED, base_mat_ct = 13, trait_set = ARMOR  }
+,   { name = "Rubedo Leather Belt",         school = MED, base_mat_ct = 13, trait_set = ARMOR  }
+
+,   { name = "Ruby Ash Bow",                school = WW,  base_mat_ct = 12, trait_set = WEAPON }
+,   { name = "Ruby Ash Inferno Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON }
+,   { name = "Ruby Ash Ice Staff",          school = WW,  base_mat_ct = 12, trait_set = WEAPON }
+,   { name = "Ruby Ash Lightning Staff",    school = WW,  base_mat_ct = 12, trait_set = WEAPON }
+,   { name = "Ruby Ash Restoration Staff",  school = WW,  base_mat_ct = 12, trait_set = WEAPON }
+
+,   { name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR  }
+}
+
+-- Material counts for improving to purple or gold.
+SmithItem.PURPLE = { green_mat_ct   = 2
+                   , blue_mat_ct    = 3
+                   , purple_mat_ct  = 4
+                   , gold_mat_ct    = 0
+                   }
+
+SmithItem.GOLD   = { green_mat_ct   = 2
+                   , blue_mat_ct    = 3
+                   , purple_mat_ct  = 4
+                   , gold_mat_ct    = 8
+                   }
+
+-- It is easier to maintain code if I can type "[Dreugh Wax]" instead of
+--"|H0:item:54177:34:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
+SmithItem.LINK = {
+    { "ancestor silk"       , "|H0:item:64504:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "rubedo leather"      , "|H0:item:64506:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "rubedite"            , "|H0:item:64489:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "ruby ash"            , "|H0:item:64502:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+
+,   { "hemming"             , "|H0:item:54174:31:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "embroidery"          , "|H0:item:54175:32:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "elegant lining"      , "|H0:item:54176:33:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "dreugh wax"          , "|H0:item:54177:34:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+
+,   { "honing stone"        , "|H0:item:54170:31:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "dwarven oil"         , "|H0:item:54171:32:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "grain solvent"       , "|H0:item:54172:33:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "tempering alloy"     , "|H0:item:54173:34:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+
+,   { "pitch"               , "|H0:item:54178:31:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "turpen"              , "|H0:item:54179:32:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "mastic"              , "|H0:item:54180:33:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "rosin"               , "|H0:item:54181:34:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+
+,   { "adamantite"          , "|H0:item:33252:30:50:0:0:0:0:0:0:0:0:0:0:0:0:7:0:0:0:0:0|h|h" }
+,   { "obsidian"            , "|H0:item:33253:30:0:0:0:0:0:0:0:0:0:0:0:0:0:4:0:0:0:0:0|h|h" }
+,   { "bone"                , "|H0:item:33194:30:0:0:0:0:0:0:0:0:0:0:0:0:0:8:0:0:0:0:0|h|h" }
+,   { "corundum"            , "|H0:item:33256:30:0:0:0:0:0:0:0:0:0:0:0:0:0:5:0:0:0:0:0|h|h" }
+,   { "molybdenum"          , "|H0:item:33251:30:13:0:0:0:0:0:0:0:0:0:0:0:0:1:0:0:0:0:0|h|h" }
+,   { "starmetal"           , "|H0:item:33258:30:0:0:0:0:0:0:0:0:0:0:0:0:0:2:0:0:0:0:0|h|h" }
+,   { "moonstone"           , "|H0:item:33255:30:50:0:0:0:0:0:0:0:0:0:0:0:0:9:0:0:0:0:0|h|h" }
+,   { "manganese"           , "|H0:item:33257:30:50:0:0:0:0:0:0:0:0:0:0:0:0:3:0:0:0:0:0|h|h" }
+,   { "flint"               , "|H0:item:33150:30:0:0:0:0:0:0:0:0:0:0:0:0:0:6:0:0:0:0:0|h|h" }
+,   { "nickel"              , "|H0:item:33254:30:50:0:0:0:0:0:0:0:0:0:0:0:0:34:0:0:0:0:0|h|h" }
+,   { "palladium"           , "|H0:item:46152:30:0:0:0:0:0:0:0:0:0:0:0:0:0:15:0:0:0:0:0|h|h" }
+,   { "copper"              , "|H0:item:46149:30:23:0:0:0:0:0:0:0:0:0:0:0:0:17:0:0:0:0:0|h|h" }
+,   { "argentum"            , "|H0:item:46150:30:16:0:0:0:0:0:0:0:0:0:0:0:0:19:0:0:0:0:0|h|h" }
+,   { "daedra heart"        , "|H0:item:46151:30:50:0:0:0:0:0:0:0:0:0:0:0:0:20:0:0:0:0:0|h|h" }
+,   { "dwemer frame"        , "|H0:item:57587:30:0:0:0:0:0:0:0:0:0:0:0:0:0:14:0:0:0:0:0|h|h" }
+,   { "malachite"           , "|H0:item:64689:6:0:0:0:0:0:0:0:0:0:0:0:0:0:28:0:0:0:0:0|h|h" }
+,   { "charcoal of remorse" , "|H0:item:59922:30:0:0:0:0:0:0:0:0:0:0:0:0:0:29:0:0:0:0:0|h|h" }
+,   { "goldscale"           , "|H0:item:64687:30:50:0:0:0:0:0:0:0:0:0:0:0:0:33:0:0:0:0:0|h|h" }
+,   { "laurel"              , "|H0:item:64713:6:50:0:0:0:0:0:0:0:0:0:0:0:0:26:0:0:0:0:0|h|h" }
+,   { "cassiterite"         , "|H0:item:69555:30:0:0:0:0:0:0:0:0:0:0:0:0:0:22:0:0:0:0:0|h|h" }
+,   { "auric tusk"          , "|H0:item:71582:30:0:0:0:0:0:0:0:0:0:0:0:0:0:21:0:0:0:0:0|h|h" }
+,   { "potash"              , "|H0:item:71584:30:50:0:0:0:0:0:0:0:0:0:0:0:0:13:0:0:0:0:0|h|h" }
+,   { "rogue's soot"        , "|H0:item:71538:30:0:0:0:0:0:0:0:0:0:0:0:0:0:47:0:0:0:0:0|h|h" }
+,   { "eagle feather"       , "|H0:item:71738:30:0:0:0:0:0:0:0:0:0:0:0:0:0:25:0:0:0:0:0|h|h" }
+,   { "lion fang"           , "|H0:item:71742:30:0:0:0:0:0:0:0:0:0:0:0:0:0:23:0:0:0:0:0|h|h" }
+,   { "dragon scute"        , "|H0:item:71740:30:0:0:0:0:0:0:0:0:0:0:0:0:0:24:0:0:0:0:0|h|h" }
+,   { "azure plasm"         , "|H0:item:71766:30:50:0:0:0:0:0:0:0:0:0:0:0:0:30:0:0:0:0:0|h|h" }
+,   { "fine chalk"          , "|H0:item:75370:30:0:0:0:0:0:0:0:0:0:0:0:0:0:11:0:0:0:0:0|h|h" }
+,   { "polished shilling"   , "|H0:item:76914:30:0:0:0:0:0:0:0:0:0:0:0:0:0:41:0:0:0:0:0|h|h" }
+,   { "tainted blood"       , "|H0:item:76910:30:0:0:0:0:0:0:0:0:0:0:0:0:0:46:0:0:0:0:0|h|h" }
+,   { "defiled whiskers"    , "|H0:item:79672:30:0:0:0:0:0:0:0:0:0:0:0:0:0:45:0:0:0:0:0|h|h" }
+,   { "black beeswax"       , "|H0:item:79304:30:0:0:0:0:0:0:0:0:0:0:0:0:0:12:0:0:0:0:0|h|h" }
+,   { "oxblood fungus"      , "|H0:item:81994:30:0:0:0:0:0:0:0:0:0:0:0:0:0:39:0:0:0:0:0|h|h" }
+,   { "pearl sand"          , "|H0:item:81996:30:0:0:0:0:0:0:0:0:0:0:0:0:0:16:0:0:0:0:0|h|h" }
+,   { "ferrous salts"       , "|H0:item:64685:30:1:0:0:0:0:0:0:0:0:0:0:0:0:35:0:0:0:0:0|h|h" }
+,   { "star sapphire"       , "|H0:item:81998:30:1:0:0:0:0:0:0:0:0:0:0:0:0:27:0:0:0:0:0|h|h" }
+,   { "pristine shroud"     , "|H0:item:75373:30:1:0:0:0:0:0:0:0:0:0:0:0:0:31:0:0:0:0:0|h|h" }
+,   { "amber marble"        , "|H0:item:82000:30:1:0:0:0:0:0:0:0:0:0:0:0:0:59:0:0:0:0:0|h|h" }
+,   { "grinstones"          , "|H0:item:82002:30:1:0:0:0:0:0:0:0:0:0:0:0:0:58:0:0:0:0:0|h|h" }
+,   { "stalhrim shard"      , "|H0:item:114283:30:1:0:0:0:0:0:0:0:0:0:0:0:0:53:0:0:0:0:0|h|h" }
+,   { "wolfsbane incense"   , "|H0:item:96388:30:1:0:0:0:0:0:0:0:0:0:0:0:0:42:0:0:0:0:0|h|h" }
+
+,   { "quartz"              , "|H0:item:4456:30:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "diamond"             , "|H0:item:23219:30:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "sardonyx"            , "|H0:item:30221:30:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "almandine"           , "|H0:item:23221:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "emerald"             , "|H0:item:4442:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "bloodstone"          , "|H0:item:30219:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "garnet"              , "|H0:item:23171:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "sapphire"            , "|H0:item:23173:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "fortified nirncrux"  , "|H0:item:56862:30:6:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "chysolite"           , "|H0:item:23203:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "amethyst"            , "|H0:item:23204:30:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "ruby"                , "|H0:item:4486:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "jade"                , "|H0:item:810:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "turquoise"           , "|H0:item:813:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "carnelian"           , "|H0:item:23165:30:50:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "fire opal"           , "|H0:item:23149:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "citrine"             , "|H0:item:16291:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+,   { "potent nirncrux"     , "|H0:item:56863:30:46:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h" }
+
+}
+function SmithItem:New()
+    local o = {
+        base_text       = nil   -- "Consume to start quest"
+                                -- "\nCraft a Rubedite Sword;"
+                                -- " Quality: Legendary;"
+                                -- " Trait: Defending;"
+                                -- " Set: Way of the Arena;"
+                                -- " Style: Primal"
+    ,   reward_text     = nil   -- "Reward 92 (icon) Writ Vouchers"
+
+    ,   item_base       = nil   -- SmithItem.ITEM_BASE[x]
+    ,   base_mat_mm     = nil   -- 13.42315
+
+    ,   trait_mat_name  = nil   -- [Turquoise]
+    ,   trait_mat_mm    = nil   -- 0.1315
+
+    ,   motif_mat_name  = nil   -- [Argentum]
+    ,   motif_mat_mm    = nil   -- 13.1551
+
+    ,   improve_level   = nil   -- PURPLE, GOLD
+    ,   voucher_ct      = nil   -- 92
+    }
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function SmithItem:ParseBaseText(base_text)
+    self.base_text = base_text
+
+    -- "Rubedite Sword" ==> blacksmithing, 11 Rubedite Ingot
+    for _, item_base in ipairs(SmithItem.ITEM_BASE) do
+        if base_text:find(item_base.name) then
+            self.item_base     = item_base
+            break
+        end
+    end
+    if not self.item_base then return Fail("base not found") end
+
+    -- "Trait: Defending" ==> [Turquoise]
+    for trait_name, trait_mat_name in pairs(self.item_base.trait_set) do
+        if base_text:find("Trait: "..trait_name) then
+            self.trait_mat_name = trait_mat_name
+            break
+        end
+    end
+    if not self.trait_mat_name then return Fail("trait not found") end
+
+    -- "Style: Primal" ==> [Argentum]
+    for motif_name, motif_mat_name in pairs(SmithItem.MOTIF) do
+        if base_text:find("Style: "..motif_name) then
+            self.motif_mat_name = motif_mat_name
+            break
+        end
+    end
+    if not self.motif_mat_name then return Fail("motif not found") end
+
+    -- "Quality: Epic" ==> purple
+    if base_text:find("Quality: Epic") then
+        self.improve_level = SmithItem.PURPLE
+    end
+    if base_text:find("Quality: Legendary") then
+        self.improve_level = SmithItem.GOLD
+    end
+    if not self.improve_level then return Fail("quality not found") end
+
+end
+
+function SmithItem:ParseRewardText(reward_text)
+    self.reward_text = reward_text
+    local _,_,s = reward_text:find("Reward: (%d+)")
+    if s then
+        self.voucher_ct = tonumber(s)
+    end
+    if not self.voucher_ct then return Fail("voucher ct not found") end
+end
+
+function SmithItem:FromLink(item_link)
+    local o = SmithItem:New()
+    o:ParseBaseText(GenerateMasterWritBaseText(item_link))
+    o:ParseRewardText(GenerateMasterWritRewardText(item_link))
+    return o
+end
+
+function SmithItem:DebugDump()
+    d(self.base_text)
+    d(self.reward_text)
+
+    if self.item_base then
+        d("item_base.name       : " .. tostring(self.item_base.name))
+        d("item_base.base_mat_ct: " .. tostring(self.item_base.base_mat_ct))
+    else
+        d("item_base            : nil")
+    end
+    d("base_mat_mm          : " .. tostring(self.base_mat_mm))
+
+    d("trait_mat_name       : " .. tostring(self.trait_mat_name))
+    d("trait_mat_mm         : " .. tostring(self.trait_mat_mm))
+
+    d("motif_mat_name       : " .. tostring(self.motif_mat_name))
+    d("motif_mat_mm         : " .. tostring(self.motif_mat_mm))
+
+    if self.improve_level then
+        d("improve_level.ct     : " .. tostring(self.improve_level.green_mat_ct)
+                             .. "/" .. tostring(self.improve_level.blue_mat_ct)
+                             .. "/" .. tostring(self.improve_level.purple_mat_ct)
+                             .. "/" .. tostring(self.improve_level.gold_mat_ct))
+    else
+        d("improve_level        : nil")
+    end
+
+    d("voucher_ct           : " .. tostring(self.voucher_ct))
+end
+
+-- WritWorthy ================================================================
 
 function WritWorthy.MMPrice(link)
     if not MasterMerchant then return nil end
@@ -91,10 +466,29 @@ function WritWorthy.TooltipInterceptInstall()
     end
 end
 
-function WritWorthy.TooltipInsertOurText(control, link)
+-- Hook to let us add stuff to a tooltip.
+--
+-- control:  the tooltip, responds to :AddLine(text)
+-- link:     the item whose tip ZOScode is showing.
+--
+function WritWorthy.TooltipInsertOurText(control, item_link)
+    -- Only fire for master writs.
+    if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
+
     local insert_text = "Zig was here."
     control:AddLine(insert_text)
+
+    -- zum Testen
+    local t = GenerateMasterWritBaseText(item_link)
+    d("Base text: " .. t)
+    t = GenerateMasterWritRewardText(item_link)
+    d("Reward text: " .. t)
+    local smith_item = SmithItem:FromLink(item_link)
+
+    smith_item:DebugDump()
 end
+
+
 
 -- Init ----------------------------------------------------------------------
 
