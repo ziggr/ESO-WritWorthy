@@ -76,7 +76,7 @@ function MatRow.ListDump(mat_list)
         d(WritWorthy.ToMoney(row_total) .. "g = "
          .. tostring(row.ct) .. "x "
          .. WritWorthy.ToMoney(row.mm) .. " "
-         .. row.link )
+         .. tostring(row.link) )
     end
     d(WritWorthy.ToMoney(total) .. "g total")
 end
@@ -111,7 +111,7 @@ SmithItem.MEDIUM = {
 }
 
 SmithItem.LIGHT  = {
-    base_mat_name       = "ancestor ailk"
+    base_mat_name       = "ancestor silk"
 ,   green_mat_name      = "hemming"
 ,   blue_mat_name       = "embroidery"
 ,   purple_mat_name     = "elegant lining"
@@ -360,6 +360,7 @@ function SmithItem:New()
     ,   improve_level   = nil   -- PURPLE, GOLD
     ,   voucher_ct      = nil   -- 92
     ,   mat_list        = {}    -- of MatRow
+    ,   purchase_gold   = nil   -- 90000  (only for guild store purchases)
     }
     setmetatable(o, self)
     self.__index = self
@@ -404,7 +405,7 @@ function SmithItem:ParseBaseText(base_text)
         self.improve_level = SmithItem.GOLD
     end
     if not self.improve_level then return Fail("quality not found") end
-
+    return self
 end
 
 function SmithItem:ParseRewardText(reward_text)
@@ -418,10 +419,11 @@ end
 
 -- Factory to take an item, parse its MasterWrit descriptive text into
 -- useful fields.
-function SmithItem:FromLink(item_link)
+function SmithItem:FromLink(item_link, purchase_gold)
     local o = SmithItem:New()
-    o:ParseBaseText(GenerateMasterWritBaseText(item_link))
+    if not (o:ParseBaseText(GenerateMasterWritBaseText(item_link))) return nil
     o:ParseRewardText(GenerateMasterWritRewardText(item_link))
+    o.purchase_gold = purchase_gold
     return o
 end
 
@@ -477,14 +479,26 @@ function SmithItem:TooltipText()
     local mat_total  = MatRow.ListTotal(self.mat_list)
     local total_text = "Mat total: " .. WritWorthy.ToMoney(mat_total) .. "g"
 
+    local purchase_total = 0
+    local purchase_text  = ""
+    if self.purchase_gold then
+        purchase_total = self.purchase_gold
+        purchase_text = "Purchase: " .. WritWorthy.ToMoney(self.purchase_gold) .. "g"
+    end
+
     local voucher_ct = tonumber(self.voucher_ct)
     local per_voucher_text = ""
     if 0 < voucher_ct then
-        local p = mat_total / voucher_ct
+        local total = mat_total + purchase_total
+        local p = total / voucher_ct
         per_voucher_text = "Per voucher: " .. WritWorthy.ToMoney(p) .. "g"
     end
 
-    return total_text .. "  " .. per_voucher_text
+    if not purchase_text then
+        return total_text .. "  " .. per_voucher_text
+    end
+
+    return total_text .. "  " .. purchase_text .. "\n" .. per_voucher_text
 end
 
 -- WritWorthy ================================================================
@@ -543,6 +557,15 @@ function WritWorthy.TooltipInterceptInstall()
         tt(control,link,...)
         WritWorthy.TooltipInsertOurText(control,link)
     end
+    local tt=ItemTooltip.SetTradingHouseItem
+    ItemTooltip.SetTradingHouseItem=function(control,tradingHouseIndex,...)
+        tt(control,tradingHouseIndex,...)
+        local _,_,_,_,_,_,purchase_gold = GetTradingHouseSearchResultItemInfo(tradingHouseIndex)
+        WritWorthy.TooltipInsertOurText(control
+                , GetTradingHouseSearchResultItemLink(tradingHouseIndex)
+                , purchase_gold
+                )
+    end
 end
 
 -- Hook to let us add stuff to a tooltip.
@@ -550,11 +573,12 @@ end
 -- control:  the tooltip, responds to :AddLine(text)
 -- link:     the item whose tip ZOScode is showing.
 --
-function WritWorthy.TooltipInsertOurText(control, item_link)
+function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
     -- Only fire for master writs.
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
 
-    local smith_item = SmithItem:FromLink(item_link)
+    local smith_item = SmithItem:FromLink(item_link, purchase_gold)
+    if not smith_item then return end
     smith_item:CollectMatList()
     smith_item:DebugDump()
 
