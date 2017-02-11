@@ -3,4 +3,8 @@
 ## Author: ziggr
 ## APIVersion: 100018
 
+WritWorthy_Util.lua
+WritWorthy_Smithing.lua
+WritWorthy_Link.lua
+WritWorthy_MatRow.lua
 WritWorthy.lua
