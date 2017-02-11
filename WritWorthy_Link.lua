@@ -1,6 +1,7 @@
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 
--- It is easier to maintain code if I can type "dreugh wax" instead of
+-- A big table of links that lets me maintain all my OTHER data tables with
+-- nice human-readable strings like "dreugh wax" instead of
 --"|H0:item:54177:34:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
 --
 WritWorthy.LINK = {

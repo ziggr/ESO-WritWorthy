@@ -1,4 +1,7 @@
-local LAM2 = LibStub("LibAddonMenu-2.0")
+-- WritWorthy: Is this Maaster Writ worth doing?
+--
+-- In a master writ's tooltip, include the material cost for that writ
+-- as both a gold total, and a gold per writ voucher reward.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 

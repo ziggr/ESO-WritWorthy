@@ -1,3 +1,4 @@
+
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 
 WritWorthy.MatRow = {}
@@ -10,7 +11,7 @@ local MatRow = WritWorthy.MatRow
 -- MatRow ====================================================================
 --
 -- One row of a materials list.
-
+--
 function MatRow:New()
     local o = {
         name    = nil   -- "rubedite"

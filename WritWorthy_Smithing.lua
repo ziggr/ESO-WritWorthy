@@ -1,3 +1,5 @@
+-- Parse a Blacksmithing/Clothier/Woodworking master writ.
+
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 
 WritWorthy.Smithing = {}
@@ -70,7 +72,10 @@ Smithing.TRAITS_ARMOR    = {
 }
 
 -- Motifs --------------------------------------------------------------------
-
+--
+-- Surprise: "Soul-Shriven" does not match "Style: Soul-Shriven" in base_text.
+-- I suspect there's some non-printing character after the hyphen.
+--
 Smithing.MOTIF = {
     ["Altmer"]                  = "adamantite"
 ,   ["Dunmer"]                  = "obsidian"
