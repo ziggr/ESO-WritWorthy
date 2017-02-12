@@ -138,6 +138,7 @@ Smithing.REQUEST_ITEMS = {
 ,   { item_name = "Rubedite Mace",               school = HVY, base_mat_ct = 11, trait_set = WEAPON }
 ,   { item_name = "Rubedite Sword",              school = HVY, base_mat_ct = 11, trait_set = WEAPON }
 ,   { item_name = "Rubedite Battle Axe",         school = HVY, base_mat_ct = 14, trait_set = WEAPON }
+,   { item_name = "Rubedite Greataxe",           school = HVY, base_mat_ct = 14, trait_set = WEAPON }
 ,   { item_name = "Rubedite Greatsword",         school = HVY, base_mat_ct = 14, trait_set = WEAPON }
 ,   { item_name = "Rubedite Maul",               school = HVY, base_mat_ct = 14, trait_set = WEAPON }
 ,   { item_name = "Rubedite Dagger",             school = HVY, base_mat_ct = 10, trait_set = WEAPON }
