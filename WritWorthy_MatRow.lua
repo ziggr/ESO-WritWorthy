@@ -3,6 +3,7 @@ local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 
 WritWorthy.MatRow = {}
 local MatRow = WritWorthy.MatRow
+local Fail   = WritWorthy.Util.Fail
 
 -- requires WritWorthy.LINK[]
 -- requires WritWorthy.MMPrice()
@@ -28,12 +29,14 @@ function MatRow:FromName(mat_name, ct)
     local o  = MatRow:New()
     o.name = mat_name
     o.link = WritWorthy.LINK[mat_name]
+    if not o.link then return Fail("link not found:"..tostring(mat_name)) end
     if ct then
         o.ct = tonumber(ct)
     else
         o.ct = 1
     end
     o.mm = WritWorthy.Util.MMPrice(o.link)
+    if not o.mm then return Fail("MM not found: " ..tostring(mat_name)) end
     return o
 end
 

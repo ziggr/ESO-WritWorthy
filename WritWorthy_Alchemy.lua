@@ -112,7 +112,6 @@ function Effect:Possible(reagent1, reagent2, reagent3)
     return ct
 end
 
-
 local A = Alchemy       -- For shorter tables
 
 -- Effects and Reagents are interconnected.
@@ -193,16 +192,15 @@ function Alchemy.Winner( effect1,  effect2,  effect3
         return false
     end
 
-
-    d("Testing r3: "..reagent1.name .." + ".. reagent2.name .." + ".. reagent3.name
-     .. " " .. effect1.name ..":" ..tostring(effect1:Possible( reagent1, reagent2, reagent3 ))
-     .. " " .. effect2.name ..":" ..tostring(effect2:Possible( reagent1, reagent2, reagent3 ))
-     .. " " .. effect3.name ..":" ..tostring(effect3:Possible( reagent1, reagent2, reagent3 ))
-     )
+    -- d("Testing r3: "..reagent1.name .." + ".. reagent2.name .." + ".. reagent3.name
+    --  .. " " .. effect1.name ..":" ..tostring(effect1:Possible( reagent1, reagent2, reagent3 ))
+    --  .. " " .. effect2.name ..":" ..tostring(effect2:Possible( reagent1, reagent2, reagent3 ))
+    --  .. " " .. effect3.name ..":" ..tostring(effect3:Possible( reagent1, reagent2, reagent3 ))
+    --  )
     if      effect1:Possible( reagent1, reagent2, reagent3 )
         and effect2:Possible( reagent1, reagent2, reagent3 )
         and effect3:Possible( reagent1, reagent2, reagent3 ) then
-        d("WINNER: " .. reagent1.name .." + ".. reagent2.name .." + ".. reagent3.name)
+        -- d("WINNER: " .. reagent1.name .." + ".. reagent2.name .." + ".. reagent3.name)
         return true
     end
     return false
@@ -211,13 +209,12 @@ end
 -- A "reagent_three" or "r3" is a 3-tuple of Reagent.
 
 function Alchemy.ToReagentThreeList(effect1, effect2, effect3)
-    d(111)
     -- First reagent must have effect1.
     local pool1 = {}
-    d("Effects: 1:"..effect1.name.."   2:"..effect2.name.."   3:"..effect3.name)
+    -- d("Effects: 1:"..effect1.name.."   2:"..effect2.name.."   3:"..effect3.name)
     for _, reagent in pairs(effect1.reagents) do
         pool1[reagent.name] = reagent
-        d("Pool1: " .. reagent.name )
+        -- d("Pool1: " .. reagent.name )
     end
 
     -- Second and third reagents must have any of the three effects.
@@ -225,18 +222,33 @@ function Alchemy.ToReagentThreeList(effect1, effect2, effect3)
     for _, reagents in pairs({ effect1.reagents, effect2.reagents, effect3.reagents }) do
         for _, reagent in pairs(reagents) do
             pool23[reagent.name] = reagent
-            d("Pool23: " .. reagent.name )
+            -- d("Pool23: " .. reagent.name )
         end
     end
 
     local r3list = {}
+    local seen   = {}
     for _, reagent1 in pairs(pool1) do
         for i, reagent2 in pairs(pool23) do
             for j, reagent3 in pairs(pool23) do
-                if i < j then   -- avoid duplicate work
-                    if Alchemy.Winner( effect1,  effect2,  effect3
-                                     , reagent1, reagent2, reagent3 ) then
-                        table.insert(r3list, { reagent1, reagent2, reagent3 } )
+                if i < j then   -- avoid duplicate work between 2+3
+                    -- Avoid different permuations of the same 3 reagents
+                    -- by canonicalizing their names into a single sorted
+                    -- sequence and using that as the insertion key
+                    -- for the resulting r3list.
+                    local rnames = { reagent1.name
+                                   , reagent2.name
+                                   , reagent3.name
+                                   }
+                    table.sort(rnames)
+                    rkey = rnames[1] .."+".. rnames[2] .."+".. rnames[3]
+                    if not seen[rkey] then
+                        seen[rkey] = true
+                        if Alchemy.Winner( effect1,  effect2,  effect3
+                                         , reagent1, reagent2, reagent3 ) then
+
+                            table.insert(r3list, { reagent1, reagent2, reagent3 } )
+                        end
                     end
                 end
             end
@@ -286,11 +298,36 @@ function Parser:ParseBaseText(base_text)
                                             , self.effects[2]
                                             , self.effects[3]
                                             )
+    return self
 end
 
 function Parser:ToMatList()
-    -- find the cheapest of the r3 tuples and return that.
-    -- I don't know HOW MANY of these I have to make.
+    -- d("self.r3list ct:"..tostring(#self.r3list))
+
+                        -- Find the cheapest of multiple possible 3-tuples.
+    local MatRow = WritWorthy.MatRow
+    local min_gold = 9999999999
+    local min_r3   = nil
+    local mat_ct   = 2  -- Poisons require 20z, I make 16x per mat
+    for _, r3 in pairs(self.r3list) do
+        r3[1].mat = MatRow:FromName(r3[1].name, mat_ct)
+        r3[2].mat = MatRow:FromName(r3[2].name, mat_ct)
+        r3[3].mat = MatRow:FromName(r3[3].name, mat_ct)
+        local tot  = r3[1].mat.mm + r3[2].mat.mm + r3[3].mat.mm
+        if tot < min_gold then
+            min_gold = tot
+            min_r3   = r3
+        end
+    end
+                        -- Return materials for one batch of potion or poison.
+    if self.is_poison then
+        table.insert(self.mat_list, MatRow:FromName("Alkahest", mat_ct))
+    else
+        table.insert(self.mat_list, MatRow:FromName("Lorkhan's Tears", mat_ct))
+    end
+    table.insert(self.mat_list, min_r3[1].mat)
+    table.insert(self.mat_list, min_r3[2].mat)
+    table.insert(self.mat_list, min_r3[3].mat)
 
     return self.mat_list
 end
