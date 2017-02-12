@@ -5,6 +5,7 @@
 
 WritWorthy_Util.lua
 WritWorthy_Smithing.lua
+WritWorthy_Alchemy.lua
 WritWorthy_Link.lua
 WritWorthy_MatRow.lua
 WritWorthy.lua
