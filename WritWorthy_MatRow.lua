@@ -40,6 +40,21 @@ function MatRow:FromName(mat_name, ct)
     return o
 end
 
+function MatRow:FromLink(mat_link, ct)
+    local o  = MatRow:New()
+    o.name = GetItemLinkName(mat_link)
+    o.link = mat_link
+    if not o.link then return Fail("name not found:"..tostring(mat_link)) end
+    if ct then
+        o.ct = tonumber(ct)
+    else
+        o.ct = 1
+    end
+    o.mm = WritWorthy.Util.MMPrice(o.link)
+    if not o.mm then return Fail("MM not found: " ..tostring(mat_name)) end
+    return o
+end
+
 function MatRow:Total()
     if not self.ct then return 0 end
     if not self.mm then return 0 end

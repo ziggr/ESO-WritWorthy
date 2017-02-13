@@ -19,7 +19,7 @@ WritWorthy.ICON_TO_PARSER = {
 ,   ["/esoui/art/icons/master_writ_woodworking.dds"  ] = WritWorthy.Smithing.Parser
 ,   ["/esoui/art/icons/master_writ_alchemy.dds"      ] = WritWorthy.Alchemy.Parser
 ,   ["/esoui/art/icons/master_writ_enchanting.dds"   ] = WritWorthy.Enchanting.Parser
-,   ["/esoui/art/icons/master_writ_provisioning.dds" ] = nil
+,   ["/esoui/art/icons/master_writ_provisioning.dds" ] = WritWorthy.Provisioning.Parser
 }
 
 -- Factory to return a parser who knows how to read this particular
