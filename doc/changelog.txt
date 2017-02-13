@@ -1,5 +1,5 @@
 [B]2.7.1 2017-02-09[/B]
 [LIST]
-[*]Create new add-on, based on MMChat 2.6.2 (an add-on I never published)
+[*]First release
 [/LIST]
 

@@ -1,8 +1,10 @@
 Is this Master Writ worth doing?
 
-Most writs consume less than 1000g worth of materials for each writ voucher they return.  But some consume 4000g+ per voucher and are probably not worth doing.
+Most writs consume less than 1000g worth of materials for each writ voucher they return.  But some consume 4000g+ materials per voucher and are probably not worth doing.
 
-This add-on shows adds a line of text to each Master Writ's tooltip, showing the total material cost, and the cost per writ voucher reward.
+Shopping guild stores for Master Writs? Which is cheaper, 700,000g for a 72-voucher writ, or 400,000g for a 45-voucher writ? Sure, you could do division in your head or with a calculator. Or let the computer tell you (it's the 400,000g/45-voucher writ, just barely).
+
+This add-on shows adds text to each Master Writ's tooltip, showing the total material cost, purchase price (if any), and the cost per writ voucher reward.
 
 It also dumps a complete material list to chat.
 
