@@ -9,6 +9,35 @@ WritWorthy.Provisioning = {
 local Provisioning = WritWorthy.Provisioning
 local Fail         = WritWorthy.Util.Fail
 
+-- Find a recipe by name.
+--
+-- First time this runs, we cache a list of all 554 recipe names.
+-- Takes almost 1 second!
+--
+-- returns a 2-tuple:
+--   recipe_list_index : 1..28  which of 28 lists
+--   recipe_index      : 1..36  recipe's index with the above recipe list
+--   mat_ct            : 1..5   number of different ingredients in recipe
+function Provisioning.FindRecipe(fooddrink_name)
+    local recipe_list_ct = GetNumRecipeLists()
+    for rl_index = 1,recipe_list_ct do
+        local rl_name, rl_recipe_ct = GetRecipeListInfo(rl_index)
+        for recipe_index = 1,rl_recipe_ct do
+            local _, r_fooddrink_name, mat_ct
+                = GetRecipeInfo(rl_index, recipe_index)
+                        -- Some recipe slots in the list are blanked out.
+                        -- Skip 'em.
+            if 0 < mat_ct then
+                if fooddrink_name:find(r_fooddrink_name) then
+                    d("found:"..fooddrink_name)
+                    return rl_index, recipe_index, mat_ct
+                end
+            end
+        end
+    end
+    return Fail("recipe not found:"..fooddrink_name)
+end
+
 Provisioning.Parser = {}
 local Parser = Provisioning.Parser
 
@@ -30,43 +59,9 @@ function Parser:New()
 end
 
 function Parser:ParseBaseText(base_text)
-                        -- This is noticeably slow, takes almost 1 second
-                        -- on my machine. Jarring. Future ideas:
-                        -- 1. Cache recent hits so that re-touching the same
-                        --    writ over and over doesn't lock up the world.
-                        -- 2. Preload a "name"->{ rl_index, recipe_index }
-                        --    2-tuple hashtable makes it an O(1) lookup once you
-                        --    regex out the key from the base_text.
-                        -- I prefer #2. Could lazy-build that ONCE per launch,
-                        -- don't even need a 554-entry hashtable unless you
-                        -- mouseover a provisioning writ.
-
-    local recipe_list_ct = GetNumRecipeLists()
-    for rl_index = 1,recipe_list_ct do
-        local rl_name, rl_recipe_ct = GetRecipeListInfo(rl_index)
-        for recipe_index = 1,rl_recipe_ct do
-            local _, fooddrink_name, mat_ct
-                = GetRecipeInfo(rl_index, recipe_index)
-                        -- Some recipe slots in the list are blanked out.
-                        -- Skip 'em.
-            if 0 < mat_ct then
-                d("rl:"..tostring(rl_index).." ri:"..tostring(recipe_index)
-                    .." name:"..tostring(fooddrink_name)
-                    .." mat_ct:"..tostring(mat_ct))
-                if base_text:find(fooddrink_name) then
-                    self.recipe_list_index = rl_index
-                    self.recipe_index      = recipe_index
-
-                    self.fooddrink_name    = fooddrink_name
-                    self.mat_ct            = mat_ct
-                    d("found:"..fooddrink_name)
-                    break
-                end
-            end
-        end
-        if self.fooddrink_name then break end
-    end
-    if not self.fooddrink_name then return Fail("recipe not found") end
+    self.recipe_list_index, self.recipe_index, self.mat_ct
+        = Provisioning.FindRecipe(base_text)
+    if not self.mat_ct then return nil end
     return self
 end
 
