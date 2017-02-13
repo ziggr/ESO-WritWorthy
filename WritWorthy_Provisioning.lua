@@ -30,6 +30,17 @@ function Parser:New()
 end
 
 function Parser:ParseBaseText(base_text)
+                        -- This is noticeably slow, takes almost 1 second
+                        -- on my machine. Jarring. Future ideas:
+                        -- 1. Cache recent hits so that re-touching the same
+                        --    writ over and over doesn't lock up the world.
+                        -- 2. Preload a "name"->{ rl_index, recipe_index }
+                        --    2-tuple hashtable makes it an O(1) lookup once you
+                        --    regex out the key from the base_text.
+                        -- I prefer #2. Could lazy-build that ONCE per launch,
+                        -- don't even need a 554-entry hashtable unless you
+                        -- mouseover a provisioning writ.
+
     local recipe_list_ct = GetNumRecipeLists()
     for rl_index = 1,recipe_list_ct do
         local rl_name, rl_recipe_ct = GetRecipeListInfo(rl_index)
