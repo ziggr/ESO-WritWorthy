@@ -173,6 +173,7 @@ Smithing.REQUEST_ITEMS = {
 ,   { item_name = "Ruby Ash Frost Staff",        school = WW,  base_mat_ct = 12, trait_set = WEAPON }
 ,   { item_name = "Ruby Ash Lightning Staff",    school = WW,  base_mat_ct = 12, trait_set = WEAPON }
 ,   { item_name = "Ruby Ash Restoration Staff",  school = WW,  base_mat_ct = 12, trait_set = WEAPON }
+,   { item_name = "Ruby Ash Healing Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON }
 
 ,   { item_name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR  }
 }
