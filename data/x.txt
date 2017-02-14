@@ -1,0 +1,15 @@
+ 1   Restore Health
+
+12    : 7            Cowardice              Increase Spell Resist,
+19    : 3     : 15   Unstoppable            Restore Magicka,        Spell Critical
+28    : 2     :  6   Gradual Ravage Health  Ravage Health,          Ravage Stamina
+ 2    : 4     :  6   Ravage Health          Ravage Magicka,         Ravage Stamina
+ 8    :11     : 15   Breach                 Increase Spell Power,   Spell Critical
+12    : 7     : 21   Cowardice              Increase Spell Resist   Detection
+18    :10     :  2   Enervation             Fracture                Ravage Health
+26    : 4     :  6   Vulnerability          Ravage Magicka          Ravage Stamina
+27            :  4   Lingering Health                               Ravage Magicka
+28    : 2     :  6   Gradual Ravage Health  Ravage Health           Ravage Stamina
+29    : 9     :  6   Vitality               Increase Armor          Ravage Stamina
+
+

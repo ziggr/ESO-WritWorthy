@@ -1,0 +1,343 @@
+
+item_id
+------
+        -- epic quality
+119563 	heavy weapons
+119564	glyph
+119680 	heavy armor
+119681 	wood weapons
+119682  wood armor
+119693 	food
+119694  light armor
+119695 	med armor
+119699 	potion or poison
+119700 	potion or poison
+119701 	potion or poison
+119702 	potion or poison
+119703 	potion or poison
+119705 	potion or poison
+119818 	potion or poison
+119819 	potion or poison
+119820 	potion or poison
+        -- legenary quality
+121527  heavy weapons
+121528 	glypyh
+121529  heavy armor
+121530  wood weapons
+121531  wood armor
+121532  light armor
+
+writ1  smithing 	weapon/armor item
+-----
+26    Ancestor Silk Hat
+28    Ancestor Silk Robe
+29    Ancestor Silk Epaulets
+32    Ancestor Silk Shoes
+34    Ancestor Silk Gloves
+35    Rubedo Leather Helmet
+37    Rubedo Leather Jack
+40    Rubedo Leather Guards
+43    Rubedo Leather Bracers
+46    Rubedite Cuirass
+47    Rubedite Pauldron
+48    Rubedite Girdle
+49    Rubedite Greaves
+52    Rubedite Gauntlets
+53    Rubedite Axe
+56    Rubedite Mace
+59    Rubedite Sword
+65    Ruby Ash Shield
+67    Rubedite Greatsword
+68    Rubedite Greataxe
+70    Ruby Ash Bow
+71    Ruby Ash Healing Staff
+72    Ruby Ash Inferno Staff
+73    Ruby Ash Frost Staff
+74    Ruby Ash Lightning Staff
+
+writ2 	smithing	material id
+-----
+188    Rubedite
+190    Rubedo Leather
+192    Ruby Ash
+194    Ancestor Silk
+
+writ3 	smthing + enchanting 	quality
+-----
+ 4     Epic/purple
+ 5     Legendary/gold
+
+writ4 	smithing 	set bonus
+-----
+  37    Death's Wind
+  38    Twilight's Embrace
+  41    Whitestrake's Retribution
+  43    Armor of the Seducer
+  44    Vampire's Kiss
+  48    Magnus' Gift
+  51    Night Mother's Gaze
+  54    Ashen Grip
+  73    Oblivion's Foe
+  74    Spectre's Eye
+  78    Hist Bark
+  80    Hunding's Rage
+  81    Song of Lamae
+  82    Alessia's Bulwark
+  87    Eyes of Mara
+  92    Kagrenac's Hope
+  95    Shalidor's Curse
+ 127    Deadly Strike
+ 148    Way of the Arena
+ 161    Twice-Born Star
+ 178    Armor Master
+ 207    Law of Julianos
+ 226    Eternal Hunt
+ 242    Pelinal's Aptitude
+
+writ5 	smithing 	traits
+-----
+ 1     Powered
+ 2     Charged
+ 3     Precise
+ 4     Infused
+ 5     Defending
+ 6     Training (weapon)
+ 7     Sharpened
+ 8     Decisive
+11     Sturdy
+12     Impenetrable
+13     Reinforced
+14     Well-fitted
+15     Training (armor)
+16     Infused
+17     Prosperous
+18     Divines
+25     Nirnhoned (armor)
+26     Nirnhoned (weapon)
+
+writ6 	smithing 	motif id (NOT always book/page motif numbers)
+-----
+ 1     Breton
+ 3     Orc
+ 4     Dunmer
+ 6     Argonian
+ 7     Altmer
+ 9     Khajiit
+11     Thieves Guild
+12     Dark Brotherhood
+13     Malacath
+14     Dwemer
+15     Ancient Elf
+19     Primal
+20     Daedric
+21     Trinimac
+22     Ancient Orc
+23     Daggerfall Covenant
+24     Ebonheart Pact
+26     Mercenary
+27     Celestial
+28     Glass
+29     Xivkyn
+30     Soul-Shriven
+31     Draugr
+33     Akaviri
+34     Imperial
+35     Yokudan
+42     Skinchanger
+46     Assassins League
+
+writ1 	provisioning 		food_drink_id (not the recipe)
+-----
+68251   Capon Tomato-Beet Casserole
+68274   Velothi View Vintage Malbec
+
+		GetRecipeResultItemLink(rl_index, recipe_index) returns food_drink_link
+		so cycle and cache that, pull food_drink_id out of the link.
+
+writ2 	enchanting 		glyph item_id
+-----
+26580    Health
+26582    Magicka
+26583    Magicka Recovery
+26588    Stamina
+26591    Weakening
+26844    Shock
+26845    Crushing
+26847    Disease Resist
+26849    Flame Resist
+43570    Shock Resist
+43573    Absorb Health
+45869    Decrease Health
+45874    Potion Boost
+45875    Potion Speed
+45884    Increase Magical Harm
+68343    Prismatic Defense
+68344    Prismatic Onslaught
+
+
+writ2	enchanting 		level
+-----
+207 CP150 Superb Glyph
+225 CP160 Truly Superb Glyph
+
+writ1	alchemy 	potion or poison
+-----
+199    potion Lorkhan's Tears
+239    poison Alkahest
+
+writ2 	alchemy 	potion/poison effect1
+writ3   alchemy 	potion/poison effect2
+writ4   alchemy 	potion/poison effect3
+-----
+ 1   Restore Health
+ 2   Ravage Health
+ 4   Ravage Magicka
+ 6   Ravage Stamina
+15   Spell Critical
+26   Vulnerability
+27   Lingering Health
+28   Gradual Ravage Health
+
+
+Smithing
+------
+writ1	weapon/armor item
+writ2	material id
+writ3	quality
+writ4	set bonus
+writ5	trait
+writ6	motif
+
+Provisioning
+----
+writ1	food_drink_id
+
+Enchanting
+-----
+writ1 	glyph_id
+writ2	level
+writ3	quality
+
+Alchemy
+-----
+writ1 	solvent: poison or potion
+
+        :item_id
+        :
+        :      :sub_type. Always 6="Legendary Quality."
+        :      :
+        :      : :internal_level. Always 1
+        :      : :
+        :      : : :enchant_id. Always 0.
+        :      : : :
+        :      : : : :enchant_level. Always 0.
+        :      : : : :
+        :      : : : : :enchant_sub_type. Always 0.
+        :      : : : : :
+        :      : : : : :     :writ1    :writ2  :writ3  :writ4  :writ5  :writ6. For weapons/armor, motif number
+        :      : : : : :     :         :       :       :       :       :
+        :      : : : : :     :         :       :       :       :       :
+|H0:item:119563:6:1:0:0:0    :   53    :188    : 4     : 74    : 3     :13     :0:0:0:0:0:0:0:0: 57750|h|h 	Craft a Rubedite Axe; Quality: Epic; Trait: Precise; Set: Spectre's Eye; Style: Malacath
+|H0:item:121527:6:1:0:0:0    :   53    :188    : 5     : 87    : 4     :29     :0:0:0:0:0:0:0:0:961400|h|h 	Craft a Rubedite Axe; Quality: Legendary; Trait: Infused; Set: Eyes of Mara; Style: Xivkyn
+|H0:item:119563:6:1:0:0:0    :   56    :188    : 4     :127    : 4     :14     :0:0:0:0:0:0:0:0: 59125|h|h 	Craft a Rubedite Mace; Quality: Epic; Trait: Infused; Set: Deadly Strike; Style: Dwemer
+|H0:item:119563:6:1:0:0:0    :   59    :188    : 4     : 54    : 8     :13     :0:0:0:0:0:0:0:0: 49875|h|h 	Craft a Rubedite Sword; Quality: Epic; Trait: Decisive; Set: Ashen Grip; Style: Malacath
+|H0:item:119563:6:1:0:0:0    :   67    :188    : 4     :127    :26     :28     :0:0:0:0:0:0:0:0:492000|h|h 	Craft a Rubedite Greatsword; Quality: Epic; Trait: Nirnhoned; Set: Deadly Strike; Style: Glass
+|H0:item:119563:6:1:0:0:0    :   68    :188    : 4     : 43    : 5     :23     :0:0:0:0:0:0:0:0: 56063|h|h 	Craft a Rubedite Greataxe; Quality: Epic; Trait: Defending; Set: Armor of the Seducer; Style: Daggerfall Covenant
+|H0:item:121527:6:1:0:0:0    :   68    :188    : 5     : 82    : 1     :24     :0:0:0:0:0:0:0:0:895850|h|h 	Craft a Rubedite Greataxe; Quality: Legendary; Trait: Powered; Set: Alessia's Bulwark; Style: Ebonheart Pact
+|H0:item:121527:6:1:0:0:0    :   59    :188    : 5     :148    : 5     :19     :0:0:0:0:0:0:0:0:917700|h|h 	Craft a Rubedite Sword; Quality: Legendary; Trait: Defending; Set: Way of the Arena; Style: Primal
+
+|H0:item:119680:6:1:0:0:0    :   46    :188    : 4     : 80    :16     :29     :0:0:0:0:0:0:0:0: 57750|h|h 	Craft a Rubedite Cuirass; Quality: Epic; Trait: Infused; Set: Hunding's Rage; Style: Xivkyn
+|H0:item:119680:6:1:0:0:0    :   47    :188    : 4     :127    :14     : 3     :0:0:0:0:0:0:0:0: 60000|h|h 	Craft a Rubedite Pauldron; Quality: Epic; Trait: Well-fitted; Set: Deadly Strike; Style: Orc
+|H0:item:119680:6:1:0:0:0    :   47    :188    : 4     :127    :16     :11     :0:0:0:0:0:0:0:0: 66000|h|h 	Craft a Rubedite Pauldron; Quality: Epic; Trait: Infused; Set: Deadly Strike; Style: Thieves Guild
+|H0:item:119680:6:1:0:0:0    :   47    :188    : 4     :127    :18     :42     :0:0:0:0:0:0:0:0: 66000|h|h 	Craft a Rubedite Pauldron; Quality: Epic; Trait: Divines; Set: Deadly Strike; Style: Skinchanger
+|H0:item:119680:6:1:0:0:0    :   47    :188    : 4     :226    :17     : 7     :0:0:0:0:0:0:0:0: 60000|h|h 	Craft a Rubedite Pauldron; Quality: Epic; Trait: Prosperous; Set: Eternal Hunt; Style: Altmer
+|H0:item:119680:6:1:0:0:0    :   47    :188    : 4     : 41    :14     :24     :0:0:0:0:0:0:0:0: 57500|h|h 	Craft a Rubedite Pauldron; Quality: Epic; Trait: Well-fitted; Set: Whitestrake's Retribution; Style: Ebonheart Pact
+|H0:item:119680:6:1:0:0:0    :   48    :188    : 4     :127    :25     :42     :0:0:0:0:0:0:0:0:169125|h|h 	Craft a Rubedite Girdle; Quality: Epic; Trait: Nirnhoned; Set: Deadly Strike; Style: Skinchanger
+|H0:item:119680:6:1:0:0:0    :   49    :188    : 4     :178    :17     :19     :0:0:0:0:0:0:0:0: 63000|h|h 	Craft a Rubedite Greaves; Quality: Epic; Trait: Prosperous; Set: Armor Master; Style: Primal
+|H0:item:119680:6:1:0:0:0    :   52    :188    : 4     :127    :25     :11     :0:0:0:0:0:0:0:0:198000|h|h 	Craft a Rubedite Gauntlets; Quality: Epic; Trait: Nirnhoned; Set: Deadly Strike; Style: Thieves Guild
+|H0:item:121529:6:1:0:0:0    :   48    :188    : 5     :127    :12     :26     :0:0:0:0:0:0:0:0:898700|h|h 	Craft a Rubedite Girdle; Quality: Legendary; Trait: Impenetrable; Set: Deadly Strike; Style: Mercenary
+
+|H0:item:119681:6:1:0:0:0    :   71    :192    : 4     : 38    : 5     : 9     :0:0:0:0:0:0:0:0: 48750|h|h 	Craft a Ruby Ash Healing Staff; Quality: Epic; Trait: Defending; Set: Twilight's Embrace; Style: Khajiit
+|H0:item:119681:6:1:0:0:0    :   72    :192    : 4     :127    : 4     :22     :0:0:0:0:0:0:0:0: 60375|h|h 	Craft a Ruby Ash Inferno Staff; Quality: Epic; Trait: Infused; Set: Deadly Strike; Style: Ancient Orc
+|H0:item:119681:6:1:0:0:0    :   72    :192    : 4     : 37    : 5     :14     :0:0:0:0:0:0:0:0: 52250|h|h 	Craft a Ruby Ash Inferno Staff; Quality: Epic; Trait: Defending; Set: Death's Wind; Style: Dwemer
+|H0:item:119681:6:1:0:0:0    :   73    :192    : 4     :127    : 7     :12     :0:0:0:0:0:0:0:0: 56375|h|h 	Craft a Ruby Ash Frost Staff; Quality: Epic; Trait: Sharpened; Set: Deadly Strike; Style: Dark Brotherhood
+|H0:item:119681:6:1:0:0:0    :   73    :192    : 4     : 92    : 3     :30     :0:0:0:0:0:0:0:0: 60500|h|h 	Craft a Ruby Ash Frost Staff; Quality: Epic; Trait: Precise; Set: Kagrenac's Hope; Style: Soul-Shriven
+|H0:item:119681:6:1:0:0:0    :   74    :192    : 4     : 44    : 6     :22     :0:0:0:0:0:0:0:0: 53813|h|h 	Craft a Ruby Ash Lightning Staff; Quality: Epic; Trait: Training; Set: Vampire's Kiss; Style: Ancient Orc
+|H0:item:121530:6:1:0:0:0    :   70    :192    : 5     :127    : 2     :42     :0:0:0:0:0:0:0:0:473550|h|h 	Craft a Ruby Ash Bow; Quality: Legendary; Trait: Charged; Set: Deadly Strike; Style: Skinchanger
+|H0:item:121530:6:1:0:0:0    :   73    :192    : 5     :127    : 7     :12     :0:0:0:0:0:0:0:0:554400|h|h 	Craft a Ruby Ash Frost Staff; Quality: Legendary; Trait: Sharpened; Set: Deadly Strike; Style: Dark Brotherhood
+
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     :127    :14     :27     :0:0:0:0:0:0:0:0: 72000|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Well-fitted; Set: Deadly Strike; Style: Celestial
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     :127    :25     :21     :0:0:0:0:0:0:0:0:189750|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Nirnhoned; Set: Deadly Strike; Style: Trinimac
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     :161    :12     :21     :0:0:0:0:0:0:0:0: 66000|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Impenetrable; Set: Twice-Born Star; Style: Trinimac
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     :161    :16     :27     :0:0:0:0:0:0:0:0: 72000|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Infused; Set: Twice-Born Star; Style: Celestial
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     :242    :12     :15     :0:0:0:0:0:0:0:0: 63000|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Impenetrable; Set: Pelinal's Aptitude; Style: Ancient Elf
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     : 37    :13     :22     :0:0:0:0:0:0:0:0: 49875|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Reinforced; Set: Death's Wind; Style: Ancient Orc
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     : 43    :15     :42     :0:0:0:0:0:0:0:0: 53625|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Training; Set: Armor of the Seducer; Style: Skinchanger
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     : 43    :18     :35     :0:0:0:0:0:0:0:0: 58500|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Divines; Set: Armor of the Seducer; Style: Yokudan
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     : 48    :25     : 3     :0:0:0:0:0:0:0:0:150000|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Nirnhoned; Set: Magnus' Gift; Style: Orc
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     : 73    :16     : 3     :0:0:0:0:0:0:0:0: 55000|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Infused; Set: Oblivion's Foe; Style: Orc
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     : 74    :15     :20     :0:0:0:0:0:0:0:0: 60500|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Training; Set: Spectre's Eye; Style: Daedric
+|H0:item:119682:6:1:0:0:0    :   65    :192    : 4     : 81    :13     :35     :0:0:0:0:0:0:0:0: 61500|h|h 	Craft a Ruby Ash Shield; Quality: Epic; Trait: Reinforced; Set: Song of Lamae; Style: Yokudan
+|H0:item:121531:6:1:0:0:0    :   65    :192    : 5     :161    :25     :11     :0:0:0:0:0:0:0:0:831600|h|h 	Craft a Ruby Ash Shield; Quality: Legendary; Trait: Nirnhoned; Set: Twice-Born Star; Style: Thieves Guild
+
+|H0:item:119694:6:1:0:0:0    :   26    :194    : 4     :127    :18     :20     :0:0:0:0:0:0:0:0: 56375|h|h 	Craft an Ancestor Silk Hat; Quality: Epic; Trait: Divines; Set: Deadly Strike; Style: Daedric
+|H0:item:119694:6:1:0:0:0    :   28    :194    : 4     : 73    :25     :33     :0:0:0:0:0:0:0:0:214500|h|h 	Craft an Ancestor Silk Robe; Quality: Epic; Trait: Nirnhoned; Set: Oblivion's Foe; Style: Akaviri
+|H0:item:119694:6:1:0:0:0    :   28    :194    : 4     : 78    :15     :31     :0:0:0:0:0:0:0:0: 60000|h|h 	Craft an Ancestor Silk Robe; Quality: Epic; Trait: Training; Set: Hist Bark; Style: Draugr
+|H0:item:119694:6:1:0:0:0    :   34    :194    : 4     :127    :12     :22     :0:0:0:0:0:0:0:0: 63000|h|h 	Craft an Ancestor Silk Gloves; Quality: Epic; Trait: Impenetrable; Set: Deadly Strike; Style: Ancient Orc
+|H0:item:121532:6:1:0:0:0    :   29    :194    : 5     :127    :12     :29     :0:0:0:0:0:0:0:0:721600|h|h 	Craft an Ancestor Silk Epaulets; Quality: Legendary; Trait: Impenetrable; Set: Deadly Strike; Style: Xivkyn
+|H0:item:121532:6:1:0:0:0    :   29    :194    : 5     :127    :12     : 6     :0:0:0:0:0:0:0:0:672000|h|h 	Craft an Ancestor Silk Epaulets; Quality: Legendary; Trait: Impenetrable; Set: Deadly Strike; Style: Argonian
+|H0:item:121532:6:1:0:0:0    :   32    :194    : 5     : 54    :18     :23     :0:0:0:0:0:0:0:0:699200|h|h 	Craft an Ancestor Silk Shoes; Quality: Legendary; Trait: Divines; Set: Ashen Grip; Style: Daggerfall Covenant
+
+|H0:item:119695:6:1:0:0:0    :   35    :190    : 4     :127    :11     : 1     :0:0:0:0:0:0:0:0: 53750|h|h 	Craft a Rubedo Leather Helmet; Quality: Epic; Trait: Sturdy; Set: Deadly Strike; Style: Breton
+|H0:item:119695:6:1:0:0:0    :   37    :190    : 4     :127    :16     :13     :0:0:0:0:0:0:0:0: 60375|h|h 	Craft a Rubedo Leather Jack; Quality: Epic; Trait: Infused; Set: Deadly Strike; Style: Malacath
+|H0:item:119695:6:1:0:0:0    :   37    :190    : 4     :127    :17     : 4     :0:0:0:0:0:0:0:0: 60000|h|h 	Craft a Rubedo Leather Jack; Quality: Epic; Trait: Prosperous; Set: Deadly Strike; Style: Dunmer
+|H0:item:119695:6:1:0:0:0    :   37    :190    : 4     : 95    :13     :31     :0:0:0:0:0:0:0:0: 69000|h|h 	Craft a Rubedo Leather Jack; Quality: Epic; Trait: Reinforced; Set: Shalidor's Curse; Style: Draugr
+|H0:item:119695:6:1:0:0:0    :   40    :190    : 4     :127    :13     :34     :0:0:0:0:0:0:0:0: 61813|h|h 	Craft a Rubedo Leather Guards; Quality: Epic; Trait: Reinforced; Set: Deadly Strike; Style: Imperial
+|H0:item:119695:6:1:0:0:0    :   40    :190    : 4     :127    :17     :33     :0:0:0:0:0:0:0:0: 69875|h|h 	Craft a Rubedo Leather Guards; Quality: Epic; Trait: Prosperous; Set: Deadly Strike; Style: Akaviri
+|H0:item:119695:6:1:0:0:0    :   40    :190    : 4     :127    :17     :35     :0:0:0:0:0:0:0:0: 64500|h|h 	Craft a Rubedo Leather Guards; Quality: Epic; Trait: Prosperous; Set: Deadly Strike; Style: Yokudan
+|H0:item:119695:6:1:0:0:0    :   40    :190    : 4     :207    :11     :24     :0:0:0:0:0:0:0:0: 60375|h|h 	Craft a Rubedo Leather Guards; Quality: Epic; Trait: Sturdy; Set: Law of Julianos; Style: Ebonheart Pact
+|H0:item:119695:6:1:0:0:0    :   43    :190    : 4     :127    :11     :26     :0:0:0:0:0:0:0:0: 66000|h|h 	Craft a Rubedo Leather Bracers; Quality: Epic; Trait: Sturdy; Set: Deadly Strike; Style: Mercenary
+|H0:item:119695:6:1:0:0:0    :   43    :190    : 4     :127    :18     :15     :0:0:0:0:0:0:0:0: 63000|h|h 	Craft a Rubedo Leather Bracers; Quality: Epic; Trait: Divines; Set: Deadly Strike; Style: Ancient Elf
+|H0:item:119695:6:1:0:0:0    :   43    :190    : 4     : 37    :11     :13     :0:0:0:0:0:0:0:0: 49875|h|h 	Craft a Rubedo Leather Bracers; Quality: Epic; Trait: Sturdy; Set: Death's Wind; Style: Malacath
+|H0:item:119695:6:1:0:0:0    :   43    :190    : 4     : 51    :15     :46     :0:0:0:0:0:0:0:0: 57750|h|h 	Craft a Rubedo Leather Bracers; Quality: Epic; Trait: Training; Set: Night Mother's Gaze; Style: Assassins League
+
+|H0:item:119564:6:1:0:0:0    :26580    :207    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Superb Glyph of Health; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :26845    :207    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Superb Glyph of Crushing; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :43570    :207    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Superb Glyph of Shock Resist; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :68343    :207    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0:120000|h|h 	Craft a Superb Glyph of Prismatic Defense; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :68344    :207    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0:120000|h|h 	Craft a Superb Glyph of Prismatic Onslaught; Quality: Epic
+|H0:item:121528:6:1:0:0:0    :26580    :207    : 5     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 60000|h|h 	Craft a Superb Glyph of Health; Quality: Legendary
+|H0:item:121528:6:1:0:0:0    :26844    :207    : 5     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 60000|h|h 	Craft a Superb Glyph of Shock; Quality: Legendary
+|H0:item:121528:6:1:0:0:0    :26849    :207    : 5     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 60000|h|h 	Craft a Superb Glyph of Flame Resist; Quality: Legendary
+|H0:item:121528:6:1:0:0:0    :45875    :225    : 5     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 66000|h|h 	Craft a Truly Superb Glyph of Potion Speed; Quality: Legendary
+|H0:item:119564:6:1:0:0:0    :26582    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Magicka; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :26583    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Magicka Recovery; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :26588    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Stamina; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :26591    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Weakening; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :26845    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Crushing; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :26847    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Disease Resist; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :43573    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Absorb Health; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :45869    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Decrease Health; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :45874    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Potion Boost; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :45884    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 22000|h|h 	Craft a Truly Superb Glyph of Increase Magical Harm; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :68343    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0:132000|h|h 	Craft a Truly Superb Glyph of Prismatic Defense; Quality: Epic
+|H0:item:119564:6:1:0:0:0    :68344    :225    : 4     :  0    : 0     : 0     :0:0:0:0:0:0:0:0:132000|h|h 	Craft a Truly Superb Glyph of Prismatic Onslaught; Quality: Epic
+|H0:item:121528:6:1:0:0:0    :26580    :225    : 5     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 66000|h|h 	Craft a Truly Superb Glyph of Health; Quality: Legendary
+|H0:item:121528:6:1:0:0:0    :26844    :225    : 5     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 66000|h|h 	Craft a Truly Superb Glyph of Shock; Quality: Legendary
+
+|H0:item:119693:6:1:0:0:0    :68251    :  0    : 0     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Capon Tomato-Beet Casserole
+|H0:item:119693:6:1:0:0:0    :68274    :  0    : 0     :  0    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Velothi View Vintage Malbec
+
+|H0:item:119699:6:1:0:0:0    :  239    :  2    : 4     :  6    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Damage Health Poison IX with the following properties: Ravage Health, Ravage Magicka, Ravage Stamina
+|H0:item:119700:6:1:0:0:0    :  239    : 29    : 9     :  6    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Damage Stamina Poison IX with the following properties: Vitality, Increase Armor, Ravage Stamina
+|H0:item:119701:6:1:0:0:0    :  239    : 27    : 1     :  4    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Damage Magicka Poison IX with the following properties: Lingering Health, Restore Health, Ravage Magicka
+|H0:item:119702:6:1:0:0:0    :  199    : 28    : 2     :  6    : 0     : 0     :0:0:0:0:0:0:0:0: 50000|h|h 	Craft an Essence of Ravage Health with the following properties: Gradual Ravage Health, Ravage Health, Ravage Stamina
+|H0:item:119702:6:1:0:0:0    :  239    : 28    : 2     :  6    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Damage Health Poison IX with the following properties: Gradual Ravage Health, Ravage Health, Ravage Stamina
+|H0:item:119703:6:1:0:0:0    :  239    :  8    :11     : 15    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Sorcery-Draining Poison IX with the following properties: Breach, Increase Spell Power, Spell Critical
+|H0:item:119705:6:1:0:0:0    :  199    : 19    : 3     : 15    : 0     : 0     :0:0:0:0:0:0:0:0: 50000|h|h 	Craft an Essence of Immovability with the following properties: Unstoppable, Restore Magicka, Spell Critical
+|H0:item:119818:6:1:0:0:0    :  239    : 26    : 4     :  6    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Damage Magicka Poison IX with the following properties: Vulnerability, Ravage Magicka, Ravage Stamina
+|H0:item:119819:6:1:0:0:0    :  239    : 18    :10     :  2    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Damage Health Poison IX with the following properties: Enervation, Fracture, Ravage Health
+|H0:item:119820:6:1:0:0:0    :  199    : 12    : 7     :  1    : 0     : 0     :0:0:0:0:0:0:0:0: 50000|h|h 	Craft an Essence of Cowardice with the following properties: Cowardice, Increase Spell Resist, Restore Health
+|H0:item:119820:6:1:0:0:0    :  239    : 12    : 7     : 21    : 0     : 0     :0:0:0:0:0:0:0:0: 20000|h|h 	Craft a Stealth-Draining Poison IX with the following properties: Cowardice, Increase Spell Resist, Detection
+
+

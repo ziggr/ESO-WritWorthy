@@ -1,0 +1,18 @@
+ESOUI forums poster Rhyono suggests:
+
+What about analyzing the item link instead?
+
+Here's an alchemy writ:
+
+|H1:item:119818:6:1:0:0:0:199:26:4:6:0:0:0:0:0:0:0:0:0:0:50000|h|h
+
+For the colored ones from left to right:
+1. There are 12 alchemy writ IDs. This is what determines the base potion required.
+2. Material type, for alchemy I'll assume it's always 199.
+3. First property
+4. Second property
+5. Third property
+
+Provisioning has 1 type, Enchanting has 2, Blacksmithing has 4, Woodworking has 4, Clothier has 4.
+
+

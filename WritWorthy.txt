@@ -2,6 +2,7 @@
 ## Description: WritWorthy version 2.7.1
 ## Author: ziggr
 ## APIVersion: 100018
+## SavedVariables: WritWorthyVars
 
 WritWorthy_Util.lua
 WritWorthy_Smithing.lua
