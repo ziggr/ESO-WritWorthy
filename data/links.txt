@@ -29,26 +29,51 @@ item_id
 
 writ1  smithing 	weapon/armor item
 -----
+25 x
 26    Ancestor Silk Hat
+27 x
 28    Ancestor Silk Robe
 29    Ancestor Silk Epaulets
+30    Ancestor Silk Sash
+31    Ancestor Silk Breeches
 32    Ancestor Silk Shoes
+33 x
 34    Ancestor Silk Gloves
 35    Rubedo Leather Helmet
+36 x
 37    Rubedo Leather Jack
+38    Rubedo Leather Arm Cops
+39    Rubedo Leather Belt
 40    Rubedo Leather Guards
+41    Rubedo Leather Boots
+42 x
 43    Rubedo Leather Bracers
+44    Rubedite Helm
+45 x
 46    Rubedite Cuirass
 47    Rubedite Pauldron
 48    Rubedite Girdle
 49    Rubedite Greaves
+50    Rubedite Sabatons
+51 x
 52    Rubedite Gauntlets
 53    Rubedite Axe
+54 x
+55 x
 56    Rubedite Mace
+57 x
+58 x
 59    Rubedite Sword
+60 x
+61 x
+62    Rubedite Dagger
+63 x
+64 x
 65    Ruby Ash Shield
+66 x
 67    Rubedite Greatsword
 68    Rubedite Greataxe
+69    Rubedite Maul
 70    Ruby Ash Bow
 71    Ruby Ash Healing Staff
 72    Ruby Ash Inferno Staff
@@ -69,6 +94,7 @@ writ3 	smthing + enchanting 	quality
 
 writ4 	smithing 	set bonus
 -----
+   1 x
   37    Death's Wind
   38    Twilight's Embrace
   41    Whitestrake's Retribution
