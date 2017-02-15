@@ -6,11 +6,7 @@
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "2.7.1"
-WritWorthy.savedVarVersion = 1
-WritWorthy.default = {
-    link_base_text = {}
-}
+WritWorthy.version         = "2.7.2"
 
 local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
@@ -74,12 +70,6 @@ function WritWorthy.ToLinkBaseText(item_link)
     return item_link .. "\t" .. req_text .."\t".. writ_text
 end
 
-function WritWorthy.StoreLinkBaseText(item_link)
-    local link_base_text = WritWorthy.ToLinkBaseText(item_link)
-    if not link_base_text then return end
-    WritWorthy.savedVariables[link_base_text] = 0
-end
-
 -- Return the text we should add to a tooltip.
 function WritWorthy.TooltipText(mat_list, purchase_gold, voucher_ct)
     if (not voucher_ct) or (voucher_ct < 1) or (not mat_list) then return nil end
@@ -115,9 +105,6 @@ end
 function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
     -- Only fire for master writs.
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
-
--- Nur zum Testen.
--- WritWorthy.StoreLinkBaseText(item_link)
 
     local mat_list   = WritWorthy.ToMatList(item_link)
     local voucher_ct = WritWorthy.ToVoucherCount(item_link)
@@ -171,13 +158,6 @@ function WritWorthy.OnAddOnLoaded(event, addonName)
 end
 
 function WritWorthy:Initialize()
-    self.savedVariables = ZO_SavedVars:NewAccountWide(
-                              "WritWorthyVars"
-                            , self.savedVarVersion
-                            , nil
-                            , self.default
-                            )
-
     WritWorthy.TooltipInterceptInstall()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
