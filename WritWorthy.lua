@@ -5,17 +5,12 @@
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 
-local SmithItem = WritWorthy.Smithing.Parser
-local MatRow = WritWorthy.MatRow
-
 WritWorthy.name            = "WritWorthy"
 WritWorthy.version         = "2.7.1"
 WritWorthy.savedVarVersion = 1
 WritWorthy.default = {
     link_base_text = {}
 }
-
-WritWorthy.ROLLED = 1
 
 local Util = WritWorthy.Util
 
@@ -40,6 +35,7 @@ WritWorthy.ICON_TO_PARSER = {
 function WritWorthy.CreateParser(item_link)
     local icon, _, _, _, item_style = GetItemLinkInfo(item_link)
     local parser_class = WritWorthy.ICON_TO_PARSER[icon]
+d("Got parser_class:"..tostring(parser_class))
     if not parser_class then return nil end
     return parser_class:New()
 end
@@ -49,11 +45,13 @@ end
 function WritWorthy.ToMatList(item_link)
     local parser = WritWorthy.CreateParser(item_link)
     if not parser then return nil end
-
-    local base_text = GenerateMasterWritBaseText(item_link)
-    if not parser:ParseBaseText(base_text) then return nil end
-
+d(44)
+    -- local base_text = GenerateMasterWritBaseText(item_link)
+    -- if not parser:ParseBaseText(base_text) then return nil end
+    if not parser:ParseItemLink(item_link) then return nil end
+d(55)
     local mat_list = parser:ToMatList()
+d("mat_list ct:"..tostring(#mat_list))
     return mat_list
 end
 
@@ -61,68 +59,9 @@ end
 -- writ vouchers it returns.
 function WritWorthy.ToVoucherCount(item_link)
     local reward_text = GenerateMasterWritRewardText(item_link)
-    local _,_,s = reward_text:find("Reward: (%d+)")
-    if s then
-        local vc = tonumber(s)
-        if vc then return vc end
-    end
-    return Fail("voucher ct not found")
-end
-
-function WritWorthy.Roll1()
-    d("Rolling smith 1...")
-    local fmt1 = "|H0:item:119563:6:1:0:0:0:%d:188:4:74:3:13:0:0:0:0:0:0:0:0:57750|h|h"
-    for i = 1,100 do
-        local link = fmt1:format(i)
-        WritWorthy.StoreLinkBaseText(link)
-    end
-    d("smithing smith 1 done")
-end
-
-function WritWorthy.Roll2()
-    d("Rolling smith 2")
-    local fmt1 = "|H0:item:119563:6:1:0:0:0:53:188:4:%d:3:13:0:0:0:0:0:0:0:0:57750|h|h"
-    for i = 1,300 do
-        local link = fmt1:format(i)
-        WritWorthy.StoreLinkBaseText(link)
-    end
-    d("smithing smith 2 done")
-end
-
-function WritWorthy.Roll3()
-    d("Rolling smith 6")
-    local fmt1 = "|H0:item:119563:6:1:0:0:0:53:188:4:74:3:%d:0:0:0:0:0:0:0:0:57750|h|h"
-    for i = 1,100 do
-        local link = fmt1:format(i)
-        WritWorthy.StoreLinkBaseText(link)
-    end
-    d("smithing 6 done")
-end
-
-function WritWorthy.Roll4()
-    d("Rolling alchemy")
-    local fmt2 = "|H0:item:119699:6:1:0:0:0:239:2:4:6:0:0:0:0:0:0:0:0:0:0:20000|h|h"
-    for i = 1,35 do
-        local link = fmt2:format(i)
-        WritWorthy.StoreLinkBaseText(link)
-    end
-    d("alchemy done")
-end
-
-function WritWorthy.Roll()
-    local fn = {
-        [1] = WritWorthy.Roll1
-    ,   [2] = WritWorthy.Roll1
-    ,   [3] = WritWorthy.Roll1
-    ,   [4] = WritWorthy.Roll1
-    }
-
-    local fn = fn[WritWorthy.ROLLED]
-    if fn then
-        d(format("Rolling %d...", WritWorthy.ROLLED))
-        WritWorthy.ROLLED = WritWorthy.ROLLED + 1
-        zo_calllater(fn, 100)
-    end
+    local fields      = Util.ToWritFields(item_link)
+    local vc          = Util.round(fields.writ_reward / 10000)
+    return vc
 end
 
 -- Convert a writ link to a string with both the link and base text
@@ -131,10 +70,10 @@ function WritWorthy.ToLinkBaseText(item_link)
     if not item_link then return nil end
                         -- strip "Consume to start quest:\n" preamble
     local base_text = GenerateMasterWritBaseText(item_link)
-    local writ_text = WritWorthy.ToLinkBaseText(item_link)
-    d("b:"..tostring(base_text))
+    local writ_text = GenerateMasterWritRewardText(item_link)
+    -- d("b:"..tostring(base_text))
     local req_text  = base_text:gsub(".*\n","")
-    d("r:"..tostring(req_text))
+    -- d("r:"..tostring(req_text))
     return item_link .. "\t" .. req_text .."\t".. writ_text
 end
 
@@ -181,8 +120,7 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
 
 -- Nur zum Testen.
---WritWorthy.Roll()
-WritWorthy.StoreLinkBaseText(item_link)
+-- WritWorthy.StoreLinkBaseText(item_link)
 
     local mat_list   = WritWorthy.ToMatList(item_link)
     local voucher_ct = WritWorthy.ToVoucherCount(item_link)

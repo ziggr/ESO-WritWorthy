@@ -8,6 +8,7 @@ WritWorthy.Alchemy = {
 }
 
 local Alchemy = WritWorthy.Alchemy
+local Util    = WritWorthy.Util
 local Fail    = WritWorthy.Util.Fail
 
 WritWorthy.Alchemy.Effect  = {}
@@ -20,18 +21,20 @@ local Reagent = WritWorthy.Alchemy.Reagent
 -- But it is handy here to let this constructor also interconnect two negating
 -- effects, as well as register this effect in Alchemy.Effect{}
 
-function Effect:New(name, negates)
+function Effect:New(effect_id, name, negates)
     local o = {
-        name     = name -- "Speed"
-    ,   negates  = nil  -- HINDER
-    ,   reagents = {}   -- { "Blessed Thistle" --> BLESSED_THISTLE
-                        -- , "Namira's Rot"    --> NAMIRAS_ROT
-                        -- , "Scrib Jelly"     --> SCRIB_JELLY
-                        -- , }
+        effect_id = effect_id  -- 23
+    ,   name      = name       -- "Speed"
+    ,   negates   = nil        -- HINDER
+    ,   reagents  = {}         -- { "Blessed Thistle" --> BLESSED_THISTLE
+                               -- , "Namira's Rot"    --> NAMIRAS_ROT
+                               -- , "Scrib Jelly"     --> SCRIB_JELLY
+                               -- , }
     }
 
                         -- Register this effect in our list of effects.
-    Alchemy.Effects[name] = o
+    Alchemy.Effects[name]      = o
+    Alchemy.Effects[effect_id] = o
 
                         -- Interconnect two negating effects
     if negates then
@@ -119,36 +122,36 @@ local A = Alchemy       -- For shorter tables
 -- directly connect to them as we build this table.
 --
 -- instance                            name              negates (only need 1 of the 2)
-A.BREACH                = Effect:New( "Breach"                                          )
-A.COWARDICE             = Effect:New( "Cowardice"                                       )
-A.DEFILE                = Effect:New( "Defile"                                          )
-A.DETECTION             = Effect:New( "Detection"                                       )
-A.ENERVATION            = Effect:New( "Enervation"                                      )
-A.ENTRAPMENT            = Effect:New( "Entrapment"                                      )
-A.FRACTURE              = Effect:New( "Fracture"                                        )
-A.GRADUAL_RAVAGE_HEALTH = Effect:New( "Gradual Ravage Health"                           )
-A.HINDRANCE             = Effect:New( "Hindrance"                                       )
-A.INCREASE_ARMOR        = Effect:New( "Increase Armor"        , A.FRACTURE              )
-A.INCREASE_SPELL_POWER  = Effect:New( "Increase Spell Power"  , A.COWARDICE             )
-A.INCREASE_SPELL_RESIST = Effect:New( "Increase Spell Resist" , A.BREACH                )
-A.INCREASE_WEAPON_POWER = Effect:New( "Increase Weapon Power"                           )
-A.INVISIBLE             = Effect:New( "Invisible"             , A.DETECTION             )
-A.LINGERING_HEALTH      = Effect:New( "Lingering Health"      , A.GRADUAL_RAVAGE_HEALTH )
-A.MAIM                  = Effect:New( "Maim"                  , A.INCREASE_WEAPON_POWER )
-A.PROTECTION            = Effect:New( "Protection"                                      )
-A.RAVAGE_HEALTH         = Effect:New( "Ravage Health"                                   )
-A.RAVAGE_MAGICKA        = Effect:New( "Ravage Magicka"                                  )
-A.RAVAGE_STAMINA        = Effect:New( "Ravage Stamina"                                  )
-A.RESTORE_HEALTH        = Effect:New( "Restore Health"        , A.RAVAGE_HEALTH         )
-A.RESTORE_MAGICKA       = Effect:New( "Restore Magicka"       , A.RAVAGE_MAGICKA        )
-A.RESTORE_STAMINA       = Effect:New( "Restore Stamina"       , A.RAVAGE_STAMINA        )
-A.SPEED                 = Effect:New( "Speed"                 , A.HINDRANCE             )
-A.SPELL_CRITICAL        = Effect:New( "Spell Critical"                                  )
-A.UNCERTAINTY           = Effect:New( "Uncertainty"           , A.SPELL_CRITICAL        )
-A.UNSTOPPABLE           = Effect:New( "Unstoppable"           , A.ENTRAPMENT            )
-A.VITALITY              = Effect:New( "Vitality"              , A.DEFILE                )
-A.VULNERABILITY         = Effect:New( "Vulnerability"         , A.PROTECTION            )
-A.WEAPON_CRITICAL       = Effect:New( "Weapon Critical"       , A.ENERVATION            )
+A.BREACH                = Effect:New(  8, "Breach"                                          )
+A.COWARDICE             = Effect:New( 12, "Cowardice"                                       )
+A.DEFILE                = Effect:New( 30, "Defile"                                          )
+A.DETECTION             = Effect:New( 21, "Detection"                                       )
+A.ENERVATION            = Effect:New( 18, "Enervation"                                      )
+A.ENTRAPMENT            = Effect:New( 20, "Entrapment"                                      )
+A.FRACTURE              = Effect:New( 10, "Fracture"                                        )
+A.GRADUAL_RAVAGE_HEALTH = Effect:New( 28, "Gradual Ravage Health"                           )
+A.HINDRANCE             = Effect:New( 24, "Hindrance"                                       )
+A.INCREASE_ARMOR        = Effect:New(  9, "Increase Armor"        , A.FRACTURE              )
+A.INCREASE_SPELL_POWER  = Effect:New( 11, "Increase Spell Power"  , A.COWARDICE             )
+A.INCREASE_SPELL_RESIST = Effect:New(  7, "Increase Spell Resist" , A.BREACH                )
+A.INCREASE_WEAPON_POWER = Effect:New( 13, "Increase Weapon Power"                           )
+A.INVISIBLE             = Effect:New( 22, "Invisible"             , A.DETECTION             )
+A.LINGERING_HEALTH      = Effect:New( 27, "Lingering Health"      , A.GRADUAL_RAVAGE_HEALTH )
+A.MAIM                  = Effect:New( 14, "Maim"                  , A.INCREASE_WEAPON_POWER )
+A.PROTECTION            = Effect:New( 25, "Protection"                                      )
+A.RAVAGE_HEALTH         = Effect:New(  2, "Ravage Health"                                   )
+A.RAVAGE_MAGICKA        = Effect:New(  4, "Ravage Magicka"                                  )
+A.RAVAGE_STAMINA        = Effect:New(  6, "Ravage Stamina"                                  )
+A.RESTORE_HEALTH        = Effect:New(  1, "Restore Health"        , A.RAVAGE_HEALTH         )
+A.RESTORE_MAGICKA       = Effect:New(  3, "Restore Magicka"       , A.RAVAGE_MAGICKA        )
+A.RESTORE_STAMINA       = Effect:New(  5, "Restore Stamina"       , A.RAVAGE_STAMINA        )
+A.SPEED                 = Effect:New( 23, "Speed"                 , A.HINDRANCE             )
+A.SPELL_CRITICAL        = Effect:New( 15, "Spell Critical"                                  )
+A.UNCERTAINTY           = Effect:New( 16, "Uncertainty"           , A.SPELL_CRITICAL        )
+A.UNSTOPPABLE           = Effect:New( 19, "Unstoppable"           , A.ENTRAPMENT            )
+A.VITALITY              = Effect:New( 29, "Vitality"              , A.DEFILE                )
+A.VULNERABILITY         = Effect:New( 26, "Vulnerability"         , A.PROTECTION            )
+A.WEAPON_CRITICAL       = Effect:New( 17, "Weapon Critical"       , A.ENERVATION            )
 
 -- Reagents
 A.BLESSED_THISTLE  = Reagent:New("Blessed Thistle" , { A.RESTORE_STAMINA       , A.INCREASE_WEAPON_POWER , A.RAVAGE_HEALTH        , A.SPEED             } )
@@ -219,7 +222,10 @@ function Alchemy.ToReagentThreeList(effect1, effect2, effect3)
 
     -- Second and third reagents must have any of the three effects.
     local pool23 = {}
-    for _, reagents in pairs({ effect1.reagents, effect2.reagents, effect3.reagents }) do
+    for _, reagents in pairs({ effect1.reagents
+                             , effect2.reagents
+                             , effect3.reagents
+                             }) do
         for _, reagent in pairs(reagents) do
             pool23[reagent.name] = reagent
             -- d("Pool23: " .. reagent.name )
@@ -294,6 +300,23 @@ function Parser:ParseBaseText(base_text)
         Fail("Expect 3 effects, found " .. tostring(#self.effects))
     end
 
+    self.r3list = Alchemy.ToReagentThreeList( self.effects[1]
+                                            , self.effects[2]
+                                            , self.effects[3]
+                                            )
+    return self
+end
+
+function Parser:ParseItemLink(item_link)
+    local fields      = Util.ToWritFields(item_link)
+    local solvent_id  = fields.writ1
+    self.is_poison    = solvent_id == 199 -- Lorkhan's Tears
+    for _, effect_id in ipairs({ fields.writ2
+                               , fields.writ3
+                               , fields.writ4 }) do
+        local effect = Alchemy.Effects[effect_id]
+        table.insert(self.effects, effect)
+    end
     self.r3list = Alchemy.ToReagentThreeList( self.effects[1]
                                             , self.effects[2]
                                             , self.effects[3]

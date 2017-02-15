@@ -10,6 +10,6 @@ It also dumps a complete material list to chat.
 
 Requires [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] for material prices.
 
-Warning: this add-on ONLY works for English. The add-on does a lot of string-matching against writ descriptions, and I only have the English strings.
+Thank you to [URL=http://www.esoui.com/downloads/info1376-CraftStoreFixedandImproved.html]CraftStore[/URL] for some internal glyph item_id tables that saved me an hour of work.
 
 --Z

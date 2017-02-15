@@ -7,6 +7,7 @@ WritWorthy.Provisioning = {
 }
 
 local Provisioning = WritWorthy.Provisioning
+local Util         = WritWorthy.Util
 local Fail         = WritWorthy.Util.Fail
 
 -- Lazy-fetch all 554 recipe names from ZOScode, cache them and their
@@ -29,10 +30,17 @@ function Provisioning.LoadData()
         for recipe_index = 1,rl_recipe_ct do
             local _, fooddrink_name, mat_ct
                 = GetRecipeInfo(rl_index, recipe_index)
+            local fooddrink_link = GetRecipeResultItemLink(
+                                          rl_index
+                                        , recipe_index
+                                        , LINK_STYLE_DEFAULT )
+            local _, _, fooddrink_item_id = ZO_LinkHandler_ParseLink(fooddrink_link)
+
                         -- Some recipe slots in the list are blanked out.
                         -- Skip 'em.
             if 0 < mat_ct then
-                names[fooddrink_name] = { rl_index, recipe_index }
+                names[fooddrink_name]    = { rl_index, recipe_index }
+                names[fooddrink_item_id] = { rl_index, recipe_index }
             end
         end
     end
@@ -75,6 +83,7 @@ function Parser:New()
     ,   recipe_list_index = nil -- 1..28 separate recipe lists
     ,   recipe_index      = nil -- sub-index within the above list
     ,   fooddrink_name    = nil -- "Chicken Breast"
+    ,   fooddrink_item_id = nil -- 33819
     ,   mat_ct            = nil -- 1..5+ number of ingredients
 
     ,   mat_list          = {}  -- of MatRow
@@ -89,6 +98,16 @@ function Parser:ParseBaseText(base_text)
     if not self.fooddrink_name then return Fail("unable to regex food/drink") end
     self.recipe_list_index, self.recipe_index, self.mat_ct
         = Provisioning.FindRecipe(self.fooddrink_name)
+    if not self.mat_ct then return nil end
+    return self
+end
+
+
+function Parser:ParseItemLink(item_link)
+    local fields            = Util.ToWritFields(item_link)
+    self.fooddrink_item_id = fields.writ1
+    self.recipe_list_index, self.recipe_index, self.mat_ct
+        = Provisioning.FindRecipe(self.fooddrink_item_id)
     if not self.mat_ct then return nil end
     return self
 end
