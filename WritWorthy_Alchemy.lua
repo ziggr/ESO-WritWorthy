@@ -286,27 +286,6 @@ function Parser:New()
     return o
 end
 
-function Parser:ParseBaseText(base_text)
-    self.base_text = base_text
-
-    self.is_poison = base_text:find("Poison IX")
-
-    for _, effect in pairs(Alchemy.Effects) do
-        if base_text:find(effect.name) then
-            table.insert(self.effects, effect)
-        end
-    end
-    if 3 ~= #self.effects then
-        Fail("Expect 3 effects, found " .. tostring(#self.effects))
-    end
-
-    self.r3list = Alchemy.ToReagentThreeList( self.effects[1]
-                                            , self.effects[2]
-                                            , self.effects[3]
-                                            )
-    return self
-end
-
 function Parser:ParseItemLink(item_link)
     local fields      = Util.ToWritFields(item_link)
     local solvent_id  = fields.writ1

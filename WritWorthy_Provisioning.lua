@@ -40,8 +40,7 @@ function Provisioning.LoadData()
                         -- Some recipe slots in the list are blanked out.
                         -- Skip 'em.
             if 0 < mat_ct then
-
-                names[fooddrink_name]    = { rl_index, recipe_index }
+                --names[fooddrink_name]    = { rl_index, recipe_index }
                 names[fooddrink_item_id] = { rl_index, recipe_index }
                 recipe_ct = recipe_ct + 1
             end
@@ -97,16 +96,6 @@ function Parser:New()
     self.__index = self
     return o
 end
-
-function Parser:ParseBaseText(base_text)
-    self.fooddrink_name = base_text:match("Craft an? (.+)")
-    if not self.fooddrink_name then return Fail("unable to regex food/drink") end
-    self.recipe_list_index, self.recipe_index, self.mat_ct
-        = Provisioning.FindRecipe(self.fooddrink_name)
-    if not self.mat_ct then return nil end
-    return self
-end
-
 
 function Parser:ParseItemLink(item_link)
     local fields            = Util.ToWritFields(item_link)

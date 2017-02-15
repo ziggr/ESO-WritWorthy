@@ -49,47 +49,30 @@ Smithing.SCHOOL_WOOD   = {
 -- Weapon and Armor must be separate sets because "Nirnhoned" mats differ
 -- (potent vs. fortified nirncrux)
 --
+-- Index numbers here are item_link writ5 numbers
 Smithing.TRAITS_WEAPON = {
-    ["Powered"]         = "chysolite"
-,   ["Charged"]         = "amethyst"
-,   ["Precise"]         = "ruby"
-,   ["Infused"]         = "jade"
-,   ["Defending"]       = "turquoise"
-,   ["Training"]        = "carnelian"
-,   ["Sharpened"]       = "fire opal"
-,   ["Decisive"]        = "citrine"
-,   ["Nirnhoned"]       = "potent nirncrux"
-,   [ 1]                = "chysolite"
-,   [ 2]                = "amethyst"
-,   [ 3]                = "ruby"
-,   [ 4]                = "jade"
-,   [ 5]                = "turquoise"
-,   [ 6]                = "carnelian"
-,   [ 7]                = "fire opal"
-,   [ 8]                = "citrine"
-,   [26]                = "potent nirncrux"
+    [ 1] = "chysolite"          -- Powered
+,   [ 2] = "amethyst"           -- Charged
+,   [ 3] = "ruby"               -- Precise
+,   [ 4] = "jade"               -- Infused
+,   [ 5] = "turquoise"          -- Defending
+,   [ 6] = "carnelian"          -- Training (weapon)
+,   [ 7] = "fire opal"          -- Sharpened
+,   [ 8] = "citrine"            -- Decisive
+,   [26] = "potent nirncrux"    -- Nirnhoned (weapon)
 
 
 }
 Smithing.TRAITS_ARMOR    = {
-    ["Sturdy"]          = "quartz"
-,   ["Impenetrable"]    = "diamond"
-,   ["Reinforced"]      = "sardonyx"
-,   ["Well-"]           = "almandine"   -- Well-fitted does not match. Again with the non-printing char after the hyphen?
-,   ["Training"]        = "emerald"
-,   ["Infused"]         = "bloodstone"
-,   ["Prosperous"]      = "garnet"
-,   ["Divines"]         = "sapphire"
-,   ["Nirnhoned"]       = "fortified nirncrux"
-,   [11]                = "quartz"
-,   [12]                = "diamond"
-,   [13]                = "sardonyx"
-,   [14]                = "almandine"
-,   [15]                = "emerald"
-,   [16]                = "bloodstone"
-,   [17]                = "garnet"
-,   [18]                = "sapphire"
-,   [25]                = "fortified nirncrux"
+    [11] = "quartz"             -- Sturdy
+,   [12] = "diamond"            -- Impenetrable
+,   [13] = "sardonyx"           -- Reinforced
+,   [14] = "almandine"          -- Well-fitted
+,   [15] = "emerald"            -- Training (armor)
+,   [16] = "bloodstone"         -- Infused
+,   [17] = "garnet"             -- Prosperous
+,   [18] = "sapphire"           -- Divines
+,   [25] = "fortified nirncrux" -- Nirnhoned (armor)
 
 }
 
@@ -99,108 +82,66 @@ Smithing.TRAITS_ARMOR    = {
 -- I suspect there's some non-printing character after the hyphen.
 --
 Smithing.MOTIF = {
-    ["Altmer"]                  = "adamantite"
-,   ["Dunmer"]                  = "obsidian"
-,   ["Bosmer"]                  = "bone"
-,   ["Nord"]                    = "corundum"
-,   ["Breton"]                  = "molybdenum"
-,   ["Redguard"]                = "starmetal"
-,   ["Khajiit"]                 = "moonstone"
-,   ["Orc"]                     = "manganese"
-,   ["Argonian"]                = "flint"
-,   ["Imperial"]                = "nickel"
-,   ["Ancient Elf"]             = "palladium"
-,   ["Barbaric"]                = "copper"
-,   ["Primal"]                  = "argentum"
-,   ["Daedric"]                 = "daedra heart"
-,   ["Dwemer"]                  = "dwemer frame"
-,   ["Glass"]                   = "malachite"
-,   ["Xivkyn"]                  = "charcoal of remorse"
-,   ["Akaviri"]                 = "goldscale"
-,   ["Mercenary"]               = "laurel"
-,   ["Ancient Orc"]             = "cassiterite"
-,   ["Trinimac"]                = "auric tusk"
-,   ["Malacath"]                = "potash"
-,   ["Outlaw"]                  = "rogue's soot"
-,   ["Aldmeri Dominion"]        = "eagle feather"
-,   ["Daggerfall Covenant"]     = "lion fang"
-,   ["Ebonheart Pact"]          = "dragon scute"
-,   ["Soul-"]                   = "azure plasm" -- "Soul-Shriven" does not match
-,   ["Abah's Watch"]            = "polished shilling"
-,   ["Thieves Guild"]           = "fine chalk"
-,   ["Assassins League"]        = "tainted blood"
-,   ["Dro-m'athra"]             = "defiled whiskers"
-,   ["Dark Brotherhood"]        = "black beeswax"
-,   ["Minotaur"]                = "oxblood fungus"
-,   ["Order of the Hour"]       = "pearl sand"
-,   ["Yokudan"]                 = "ferrous salts"
-,   ["Celestial"]               = "star sapphire"
-,   ["Draugr"]                  = "pristine shroud"
-,   ["Hollowjack"]              = "amber marble"
-,   ["Grim Harlequin"]          = "grinstones"
-,   ["Stahlrim Frostcaster"]    = "stahlrim shard"
-,   ["Skinchanger"]             = "wolfsbane incense"
-
-,   [ 1]  = "molybdenum"          -- Breton
-,   [ 2]  = "starmetal"           -- Redguard
-,   [ 3]  = "manganese"           -- Orc
-,   [ 4]  = "obsidian"            -- Dunmer
-,   [ 5]  = "corundum"            -- Nord
-,   [ 6]  = "flint"               -- Argonian
-,   [ 7]  = "adamantite"          -- Altmer
-,   [ 8]  = "bone"                -- Bosmer
-,   [ 9]  = "moonstone"           -- Khajiit
-,   [10]  = nil                   -- Unique
-,   [11]  = "fine chalk"          -- Thieves Guild
-,   [12]  = "black beeswax"       -- Dark Brotherhood
-,   [13]  = "potash"              -- Malacath
-,   [14]  = "dwemer frame"        -- Dwemer
-,   [15]  = "palladium"           -- Ancient Elf
-,   [16]  = "pearl sand"          -- Order of the Hour
-,   [17]  = "copper"              -- Barbaric
-,   [18]  = nil                   -- Bandit
-,   [19]  = "argentum"            -- Primal
-,   [20]  = "daedra heart"        -- Daedric
-,   [21]  = "auric tusk"          -- Trinimac
-,   [22]  = "cassiterite"         -- Ancient Orc
-,   [23]  = "lion fang"           -- Daggerfall Covenant
-,   [24]  = "dragon scute"        -- Ebonheart Pact
-,   [25]  = "eagle feather"       -- Aldmeri Dominion
-,   [26]  = "laurel"              -- Mercenary
-,   [27]  = "star sapphire"       -- Celestial
-,   [28]  = "malachite"           -- Glass
-,   [29]  = "charcoal of remorse" -- Xivkyn
-,   [30]  = "azure plasm"         -- Soul-Shriven
-,   [31]  = "pristine shroud"     -- Draugr
-,   [32]  = nil                   -- Maormer
-,   [33]  = "goldscale"           -- Akaviri
-,   [34]  = "nickel"              -- Imperial
-,   [35]  = "ferrous salts"       -- Yokudan
-,   [36]  = nil                   -- unused
-,   [37]  = nil                   -- Reach Winter
-,   [38]  = nil                   -- Worm Cult
-,   [39]  = "oxblood fungus"      -- Minotaur
-,   [40]  = nil                   -- Ebony        HEY THIS EXISTS NOW 2.7
-,   [41]  = "polished shilling"   -- Abah's Watch
-,   [42]  = "wolfsbane incense"   -- Skinchanger
-,   [43]  = nil                   -- Morag Tong
-,   [44]  = nil                   -- Ra Gada      HEY THIS EXISTS NOW 2.7
-,   [45]  = "defiled whiskers"    -- Dro-m'Athra
-,   [46]  = "tainted blood"       -- Assassins League
-,   [47]  = "rogue's soot"        -- Outlaw
-,   [48]  = nil                   -- Unused 11
-,   [49]  = nil                   -- Unused 12
-,   [50]  = nil                   -- Unused 13
-,   [51]  = nil                   -- Unused 14
-,   [52]  = nil                   -- Unused 15
-,   [53]  = "stahlrim shard"      -- Stalhrim Frostcaster
-,   [54]  = nil                   -- Unused 17
-,   [55]  = nil                   -- Unused 18
-,   [56]  = nil                   -- Silken Ring  HEY THIS EXISTS NOW 2.7
-,   [57]  = nil                   -- Mazzatun     HEY THIS EXISTS NOW 2.7
-,   [58]  = "grinstones"          -- Grim Harlequin
-,   [59]  = "amber marble"        -- Hollowjack
-,   [60]  = nil                   --
+    [ 1]  = "molybdenum"           -- Breton
+,   [ 2]  = "starmetal"            -- Redguard
+,   [ 3]  = "manganese"            -- Orc
+,   [ 4]  = "obsidian"             -- Dunmer
+,   [ 5]  = "corundum"             -- Nord
+,   [ 6]  = "flint"                -- Argonian
+,   [ 7]  = "adamantite"           -- Altmer
+,   [ 8]  = "bone"                 -- Bosmer
+,   [ 9]  = "moonstone"            -- Khajiit
+,   [10]  = nil                    -- Unique
+,   [11]  = "fine chalk"           -- Thieves Guild
+,   [12]  = "black beeswax"        -- Dark Brotherhood
+,   [13]  = "potash"               -- Malacath
+,   [14]  = "dwemer frame"         -- Dwemer
+,   [15]  = "palladium"            -- Ancient Elf
+,   [16]  = "pearl sand"           -- Order of the Hour
+,   [17]  = "copper"               -- Barbaric
+,   [18]  = nil                    -- Bandit
+,   [19]  = "argentum"             -- Primal
+,   [20]  = "daedra heart"         -- Daedric
+,   [21]  = "auric tusk"           -- Trinimac
+,   [22]  = "cassiterite"          -- Ancient Orc
+,   [23]  = "lion fang"            -- Daggerfall Covenant
+,   [24]  = "dragon scute"         -- Ebonheart Pact
+,   [25]  = "eagle feather"        -- Aldmeri Dominion
+,   [26]  = "laurel"               -- Mercenary
+,   [27]  = "star sapphire"        -- Celestial
+,   [28]  = "malachite"            -- Glass
+,   [29]  = "charcoal of remorse"  -- Xivkyn
+,   [30]  = "azure plasm"          -- Soul-Shriven
+,   [31]  = "pristine shroud"      -- Draugr
+,   [32]  = nil                    -- Maormer
+,   [33]  = "goldscale"            -- Akaviri
+,   [34]  = "nickel"               -- Imperial
+,   [35]  = "ferrous salts"        -- Yokudan
+,   [36]  = nil                    -- unused
+,   [37]  = nil                    -- Reach Winter
+,   [38]  = nil                    -- Worm Cult
+,   [39]  = "oxblood fungus"       -- Minotaur
+,   [40]  = "night pumice"         -- Ebony
+,   [41]  = "polished shilling"    -- Abah's Watch
+,   [42]  = "wolfsbane incense"    -- Skinchanger
+,   [43]  = nil                    -- Morag Tong
+,   [44]  = "ancient sandstone"    -- Ra Gada
+,   [45]  = "defiled whiskers"     -- Dro-m'Athra
+,   [46]  = "tainted blood"        -- Assassins League
+,   [47]  = "rogue's soot"         -- Outlaw
+,   [48]  = nil                    -- Unused 11
+,   [49]  = nil                    -- Unused 12
+,   [50]  = nil                    -- Unused 13
+,   [51]  = nil                    -- Unused 14
+,   [52]  = nil                    -- Unused 15
+,   [53]  = "stahlrim shard"       -- Stalhrim Frostcaster
+,   [54]  = nil                    -- Unused 17
+,   [55]  = nil                    -- Unused 18
+,   [56]  = "distilled slowsilver" -- Silken Ring
+,   [57]  = "leviathan scrimshaw"  -- Mazzatun
+,   [58]  = "grinstones"           -- Grim Harlequin
+,   [59]  = "amber marble"         -- Hollowjack
+,   [60]  = nil                    --
 }
 
 -- Requestable items ---------------------------------------------------------
@@ -277,6 +218,7 @@ Smithing.GOLD = {
 ,   gold_mat_ct    = 8
 }
 
+-- indices are item_link writ3 numbers (1-3 are white..blue, not used here)
 Smithing.QUALITY = {
     [4] = Smithing.PURPLE
 ,   [5] = Smithing.GOLD
@@ -304,47 +246,6 @@ function Parser:New()
     setmetatable(o, self)
     self.__index = self
     return o
-end
-
-function Parser:ParseBaseText(base_text)
-    self.base_text = base_text
-
-    -- "Rubedite Sword" ==> blacksmithing, 11 Rubedite Ingot
-    for _, request_item in pairs(Smithing.REQUEST_ITEMS) do
-        if base_text:find(request_item.item_name) then
-            self.request_item = request_item
-            break
-        end
-    end
-    if not self.request_item then return Fail("base not found") end
-
-    -- "Trait: Defending" ==> [Turquoise]
-    for trait_name, trait_mat_name in pairs(self.request_item.trait_set) do
-        if base_text:find("Trait: "..tostring(trait_name)) then
-            self.trait_mat_name = trait_mat_name
-            break
-        end
-    end
-    if not self.trait_mat_name then return Fail("trait not found") end
-
-    -- "Style: Primal" ==> [Argentum]
-    for motif_name, motif_mat_name in pairs(Smithing.MOTIF) do
-        if base_text:find("Style: "..motif_name) then
-            self.motif_mat_name = motif_mat_name
-            break
-        end
-    end
-    if not self.motif_mat_name then return Fail("motif not found: " .. base_text) end
-
-    -- "Quality: Epic" ==> purple
-    if base_text:find("Quality: Epic") then
-        self.improve_level = Smithing.PURPLE
-    end
-    if base_text:find("Quality: Legendary") then
-        self.improve_level = Smithing.GOLD
-    end
-    if not self.improve_level then return Fail("quality not found") end
-    return self
 end
 
 function Parser:ParseItemLink(item_link)

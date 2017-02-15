@@ -7,7 +7,6 @@ WritWorthy.Enchanting = {
                 -- 43573 (glyph_id) --> same
 }
 
-
 local Enchanting = WritWorthy.Enchanting
 local Util       = WritWorthy.Util
 local Fail       = WritWorthy.Util.Fail
@@ -40,27 +39,24 @@ Enchanting.KUTA     = { name="Kuta"    }
 
 local ADD   = "add"
 local SUB   = "sub"
-local CP150 = "CP150"
-local CP160 = "CP160"
-
+-- item_link writ2 values
+local CP150 = 207
+local CP160 = 225
+-- item_link writ3 values
+local PURPLE  = 4
+local GOLD    = 5
 Enchanting.POTENCY_RUNES = {
     [ADD] = { [CP150] = Enchanting.REJERA
             , [CP160] = Enchanting.REPORA
-            , [207]   = Enchanting.REJERA
-            , [225]   = Enchanting.REPORA
             }
 ,   [SUB] = { [CP150] = Enchanting.JEHADE
             , [CP160] = Enchanting.ITADE
-            , [207]   = Enchanting.JEHADE
-            , [225]   = Enchanting.ITADE
             }
 }
 
 Enchanting.ASPECT_RUNES = {
-    ["Epic"]      = Enchanting.REKUTA
-,   ["Legendary"] = Enchanting.KUTA
-,   [4]           = Enchanting.REKUTA
-,   [5]           = Enchanting.KUTA
+    [PURPLE]    = Enchanting.REKUTA
+,   [GOLD]      = Enchanting.KUTA
 }
 
 
@@ -74,7 +70,6 @@ function Enchanting.Glyph:New(name, essence_rune, add_sub, glyph_id)
     }
 
                         -- Register this effect in our list of effects.
-    Enchanting.Glyphs[name]     = o
     Enchanting.Glyphs[glyph_id] = o
 
     setmetatable(o, self)
@@ -149,43 +144,6 @@ function Parser:New()
     setmetatable(o, self)
     self.__index = self
     return o
-end
-
-function Parser:ParseBaseText(base_text)
-    self.base_text = base_text
-
-    for key, aspect_rune in pairs(Enchanting.ASPECT_RUNES) do
-        if base_text:find("Quality: "..key) then
-            self.aspect_rune = aspect_rune
-            break
-        end
-    end
-    if not self.aspect_rune then return Fail("quality not found") end
-
-    for key, glyph in pairs(Enchanting.Glyphs) do
-        if base_text:find("Glyph of "..glyph.name) then
-            self.glyph = glyph
-        end
-    end
-    if not self.glyph then return Fail("glyph not found") end
-
-                        -- Since string "Superb" appears in both
-                        -- CP160 "Truly Superb" and CP150 "Superb",
-                        -- search for "Truply Superb" first.
-    local level_txt = nil
-    if base_text:find("Truly Superb") then
-        level_txt = CP160
-    elseif base_text:find("Superb") then
-        level_txt = CP150
-    else
-        return Fail("level not found")
-    end
-    self.potency_rune = Enchanting.POTENCY_RUNES[self.glyph.add_sub][level_txt]
-    if not self.potency_rune then return Fail("potency not found "
-        .." add_sub:"..tostring(self.glyph.add_sub)
-        .." level_txt:"..tostring(level_txt)) end
-
-    return self
 end
 
 function Parser:ParseItemLink(item_link)
