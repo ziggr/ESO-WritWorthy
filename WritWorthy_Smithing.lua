@@ -348,9 +348,7 @@ function Parser:ParseBaseText(base_text)
 end
 
 function Parser:ParseItemLink(item_link)
-d(300)
     local fields        = Util.ToWritFields(item_link)
-d(310)
     local item_num      = fields.writ1
     local material_num  = fields.writ2
     local quality_num   = fields.writ3
@@ -361,18 +359,14 @@ d(310)
     self.request_item   = Smithing.REQUEST_ITEMS[item_num]
     self.trait_mat_name = self.request_item.trait_set[trait_num]
     self.motif_mat_name = Smithing.MOTIF[motif_num]
-d(320)
     if not self.motif_mat_name then return Fail("motif not found "..tostring(motif_num)) end
-d(330)
     self.improve_level  = Smithing.QUALITY[quality_num]
     if not self.improve_level then return Fail("quality not found "..tostring(quality_num)) end
-d(333)
     return self
 end
 
 -- Convert result of ParseBaseText() into  a flat list of items.
 function Parser:ToMatList()
-d(444)
     local MatRow = WritWorthy.MatRow
     local ml = {}
     table.insert(ml, MatRow:FromName( self.request_item.school.base_mat_name
@@ -390,7 +384,6 @@ d(444)
         table.insert(ml, MatRow:FromName( self.request_item.school.gold_mat_name
                                         , self.improve_level.gold_mat_ct ))
     end
-d(555)
     self.mat_list = ml
     return self.mat_list
 end

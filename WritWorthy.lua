@@ -13,6 +13,7 @@ WritWorthy.default = {
 }
 
 local Util = WritWorthy.Util
+local Fail = WritWorthy.Util.Fail
 
 WritWorthy.ICON_TO_PARSER = {
     ["/esoui/art/icons/master_writ_blacksmithing.dds"] = WritWorthy.Smithing.Parser
@@ -35,7 +36,6 @@ WritWorthy.ICON_TO_PARSER = {
 function WritWorthy.CreateParser(item_link)
     local icon, _, _, _, item_style = GetItemLinkInfo(item_link)
     local parser_class = WritWorthy.ICON_TO_PARSER[icon]
-d("Got parser_class:"..tostring(parser_class))
     if not parser_class then return nil end
     return parser_class:New()
 end
@@ -45,13 +45,10 @@ end
 function WritWorthy.ToMatList(item_link)
     local parser = WritWorthy.CreateParser(item_link)
     if not parser then return nil end
-d(44)
-    -- local base_text = GenerateMasterWritBaseText(item_link)
-    -- if not parser:ParseBaseText(base_text) then return nil end
-    if not parser:ParseItemLink(item_link) then return nil end
-d(55)
+    if not parser:ParseItemLink(item_link) then
+        return Fail("WritWorthy: could not parse.")
+    end
     local mat_list = parser:ToMatList()
-d("mat_list ct:"..tostring(#mat_list))
     return mat_list
 end
 

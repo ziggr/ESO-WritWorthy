@@ -25,6 +25,7 @@ function Provisioning.LoadData()
     if Provisioning.NAMES then return Provisioning.NAMES end
     local names = {}
     local recipe_list_ct = GetNumRecipeLists()
+    local recipe_ct      = 0
     for rl_index = 1,recipe_list_ct do
         local rl_name, rl_recipe_ct = GetRecipeListInfo(rl_index)
         for recipe_index = 1,rl_recipe_ct do
@@ -34,17 +35,21 @@ function Provisioning.LoadData()
                                           rl_index
                                         , recipe_index
                                         , LINK_STYLE_DEFAULT )
-            local _, _, fooddrink_item_id = ZO_LinkHandler_ParseLink(fooddrink_link)
-
+            local _, _, _, fooddrink_item_id = ZO_LinkHandler_ParseLink(fooddrink_link)
+            fooddrink_item_id = tonumber(fooddrink_item_id)
                         -- Some recipe slots in the list are blanked out.
                         -- Skip 'em.
             if 0 < mat_ct then
+
                 names[fooddrink_name]    = { rl_index, recipe_index }
                 names[fooddrink_item_id] = { rl_index, recipe_index }
+                recipe_ct = recipe_ct + 1
             end
         end
     end
-    d("WritWorthy: "..tostring(#names).." recipe names loaded.")
+                        -- I've seen the above code REPEATELY not load
+                        -- all 554 recipes. Don't know why.
+    d("WritWorthy: "..Util.ToMoney(recipe_ct).." recipe names loaded.")
     Provisioning.NAMES = names
     return Provisioning.NAMES
 end
