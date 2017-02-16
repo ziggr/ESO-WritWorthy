@@ -289,7 +289,7 @@ end
 function Parser:ParseItemLink(item_link)
     local fields      = Util.ToWritFields(item_link)
     local solvent_id  = fields.writ1
-    self.is_poison    = solvent_id == 199 -- Lorkhan's Tears
+    self.is_poison    = solvent_id == 239 -- Lorkhan's Tears
     for _, effect_id in ipairs({ fields.writ2
                                , fields.writ3
                                , fields.writ4 }) do
