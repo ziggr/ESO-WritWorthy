@@ -11,6 +11,6 @@
 
 [B]2.7.1 2017-02-12[/B]
 [LIST]
-[*]First release. Used string matching that worked only for US English clients.
+[*]First release. Uses string matching that worked only for US English clients.
 [/LIST]
 

@@ -4,9 +4,14 @@
 -- as both a gold total, and a gold per writ voucher reward.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local LAM2 = LibStub("LibAddonMenu-2.0")
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "2.7.2"
+WritWorthy.version         = "2.7.3"
+WritWorthy.savedVarVersion = 1
+WritWorthy.default = {
+    enable_mat_list_chat = false
+}
 
 local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
@@ -74,7 +79,6 @@ end
 function WritWorthy.TooltipText(mat_list, purchase_gold, voucher_ct)
     if (not voucher_ct) or (voucher_ct < 1) or (not mat_list) then return nil end
 
-    WritWorthy.MatRow.ListDump(mat_list)
     local mat_gold       = WritWorthy.MatRow.ListTotal(mat_list)
     local mat_text       = "Mat total: " .. Util.ToMoney(mat_gold) .. "g"
     local total_gold     = nil
@@ -110,8 +114,10 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
     local voucher_ct = WritWorthy.ToVoucherCount(item_link)
     local text = WritWorthy.TooltipText(mat_list, purchase_gold, voucher_ct)
     if not text then return end
-
     control:AddLine(text)
+    if WritWorthy.savedVariables.enable_mat_list_chat then
+        WritWorthy.MatRow.ListDump(mat_list)
+    end
 end
 
 -- Tooltip Intercept ---------------------------------------------------------
@@ -149,6 +155,39 @@ function WritWorthy.TooltipInterceptInstall()
     end
 end
 
+-- UI ------------------------------------------------------------------------
+
+function WritWorthy:CreateSettingsWindow()
+    local panelData = {
+        type                = "panel",
+        name                = "WritWorthy",
+        displayName         = "WritWorthy",
+        author              = "ziggr",
+        version             = self.version,
+        --slashCommand        = "/gg",
+        registerForRefresh  = false,
+        registerForDefaults = false,
+    }
+    local cntrlOptionsPanel = LAM2:RegisterAddonPanel( self.name
+                                                     , panelData
+                                                     )
+    local optionsData = {
+        { type      = "checkbox"
+        , name      = "Show material list in chat"
+        , tooltip   = "Write several lines of materials to chat each"
+                      .." time a Master Writ tooltip appears."
+        , getFunc   = function()
+                        return self.savedVariables.enable_mat_list_chat
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_mat_list_chat = e
+                      end
+        },
+    }
+
+    LAM2:RegisterOptionControls("WritWorthy", optionsData)
+end
+
 -- Init ----------------------------------------------------------------------
 
 function WritWorthy.OnAddOnLoaded(event, addonName)
@@ -158,7 +197,14 @@ function WritWorthy.OnAddOnLoaded(event, addonName)
 end
 
 function WritWorthy:Initialize()
+    self.savedVariables = ZO_SavedVars:NewAccountWide(
+                              "WritWorthyVars"
+                            , self.savedVarVersion
+                            , nil
+                            , self.default
+                            )
     WritWorthy.TooltipInterceptInstall()
+    self:CreateSettingsWindow()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
 
