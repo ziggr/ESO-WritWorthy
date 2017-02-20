@@ -1,3 +1,8 @@
+[B]2.7.4 2017-02-20[/B]
+[LIST]
+[*]Add a table of recipes to Provisioning so that the provisioning writs can show a material list even if the current character does not know the required recipe.  Fixes "Recipe not found" errors for such writs.
+[/LIST]
+
 [B]2.7.3 2017-02-16[/B]
 [LIST]
 [*]Settings UI: checkbox to enable/disable material list dump to chat. Too much clutter in the chat window.
