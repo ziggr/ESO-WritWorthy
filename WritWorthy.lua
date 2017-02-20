@@ -11,7 +11,14 @@ WritWorthy.version         = "2.7.3"
 WritWorthy.savedVarVersion = 1
 WritWorthy.default = {
     enable_mat_list_chat = false
+
+                        -- Provisioning fields written when Provisioning.ZZ_SAVE_DATA = true.
+                        -- This is how Zig exports a table of recipe/ingredients.
+                        -- Provisioning fields here are never read.
+,   provisioning_recipes = {}
+,   provisioning_ingredient_links = {}
 }
+
 
 local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
@@ -77,25 +84,42 @@ end
 
 -- Return the text we should add to a tooltip.
 function WritWorthy.TooltipText(mat_list, purchase_gold, voucher_ct)
-    if (not voucher_ct) or (voucher_ct < 1) or (not mat_list) then return nil end
+                        -- No vouchers? No per-voucher cost.
+    if (not voucher_ct) or (voucher_ct < 1) then return nil end
 
-    local mat_gold       = WritWorthy.MatRow.ListTotal(mat_list)
-    local mat_text       = "Mat total: " .. Util.ToMoney(mat_gold) .. "g"
-    local total_gold     = nil
-    local purchase_text  = nil
+                        -- No cost? No per-voucher cost.
+    if (not mat_list) and (not purchase_gold) then return nil end
+
+                        -- Accumulators for totals and text
+    local tooltip_elements   = {}
+    local total_gold         = 0
+
+    if mat_list then
+        local mat_gold   = WritWorthy.MatRow.ListTotal(mat_list)
+        total_gold       = total_gold + mat_gold
+        table.insert( tooltip_elements
+                    , "Mat total: " .. Util.ToMoney(mat_gold) .. "g" )
+    end
+
     if purchase_gold then
-        total_gold = mat_gold + purchase_gold
-        purchase_text = "Purchase: " .. Util.ToMoney(purchase_gold) .. "g"
-    else
-        total_gold = mat_gold
+        total_gold       = total_gold + purchase_gold
+        table.insert( tooltip_elements
+                    , "Purchase: " .. Util.ToMoney(purchase_gold) .. "g" )
     end
+
     local per_voucher_gold = total_gold / voucher_ct
-    local per_voucher_text = "Per voucher: "
-                .. Util.ToMoney(per_voucher_gold) .. "g"
-    if not purchase_gold then
-        return mat_text .. "  " .. per_voucher_text
-    end
-    return mat_text .. "  " .. purchase_text .. "\n" .. per_voucher_text
+    table.insert( tooltip_elements
+                , "Per voucher: " .. Util.ToMoney(per_voucher_gold) .. "g" )
+
+                        -- Avoid line breaks in the middle of an element
+                        -- Insert our own line break between elements 2 and 3.
+    if 3 <= #tooltip_elements then
+        return          tooltip_elements[1]
+             .. "  " .. tooltip_elements[2]
+             .. "\n" .. tooltip_elements[3]
+     else
+        return table.concat(tooltip_elements, " ")
+     end
 end
 
 -- Add text to a tooltip.

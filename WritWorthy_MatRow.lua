@@ -28,7 +28,7 @@ end
 function MatRow:FromName(mat_name, ct)
     local o  = MatRow:New()
     o.name = mat_name
-    o.link = WritWorthy.LINK[mat_name]
+    o.link = WritWorthy.FindLink(mat_name)
     if not o.link then return Fail("link not found:"..tostring(mat_name)) end
     if ct then
         o.ct = tonumber(ct)

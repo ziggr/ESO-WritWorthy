@@ -1,6 +1,6 @@
-[B]2.7.3 2017-02-14[/B]
+[B]2.7.3 2017-02-16[/B]
 [LIST]
-[*]Settings UI: checkbox to enable/disable material list dump to chat. Too much clutter in the chat window. No, I'm not going to add them to the tooltip: that would just be too much clutter in the tooltip.
+[*]Settings UI: checkbox to enable/disable material list dump to chat. Too much clutter in the chat window.
 [*]Bugfix: Alchemy materials had poison/potion = Alkahest/Lorkhan's Tears swapped.
 [/LIST]
 

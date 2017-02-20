@@ -310,7 +310,10 @@ function Parser:ToMatList()
     local MatRow = WritWorthy.MatRow
     local min_gold = 9999999999
     local min_r3   = nil
-    local mat_ct   = 2  -- Poisons require 20z, I make 16x per mat
+    local mat_ct   = 5  -- Writs usually require 20x, I make 4x potion, 16x poison per mat
+    if self.is_poison then
+        mat_ct = 2
+    end
     for _, r3 in pairs(self.r3list) do
         r3[1].mat = MatRow:FromName(r3[1].name, mat_ct)
         r3[2].mat = MatRow:FromName(r3[2].name, mat_ct)
