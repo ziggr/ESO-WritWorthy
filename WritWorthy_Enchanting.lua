@@ -153,6 +153,15 @@ function Parser:ParseItemLink(item_link)
     local quality_num = fields.writ3
 
     self.glyph        = Enchanting.Glyphs[glyph_id]
+    if not (    self.glyph
+            and self.glyph.add_sub
+            and Enchanting.POTENCY_RUNES[self.glyph.add_sub]
+            and level_num
+            and Enchanting.POTENCY_RUNES[self.glyph.add_sub][level_num]
+            and quality_num
+            and Enchanting.ASPECT_RUNES[quality_num]) then
+        return Fail("Glyph not found:"..tostring(glyph_id))
+    end
     self.potency_rune = Enchanting.POTENCY_RUNES[self.glyph.add_sub][level_num]
     self.aspect_rune  = Enchanting.ASPECT_RUNES[quality_num]
 
