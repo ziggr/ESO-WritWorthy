@@ -50,6 +50,8 @@ Smithing.SCHOOL_WOOD   = {
 -- (potent vs. fortified nirncrux)
 --
 -- Index numbers here are item_link writ5 numbers
+-- and appear to match ITEM_TYPE_XXXX_XXXX constants
+--
 Smithing.TRAITS_WEAPON = {
     [ 1] = "chysolite"          -- Powered
 ,   [ 2] = "amethyst"           -- Charged
@@ -58,7 +60,7 @@ Smithing.TRAITS_WEAPON = {
 ,   [ 5] = "turquoise"          -- Defending
 ,   [ 6] = "carnelian"          -- Training (weapon)
 ,   [ 7] = "fire opal"          -- Sharpened
-,   [ 8] = "citrine"            -- Decisive
+,   [ 8] = "citrine"            -- Decisive (nee weighted)
 ,   [26] = "potent nirncrux"    -- Nirnhoned (weapon)
 
 
@@ -70,7 +72,7 @@ Smithing.TRAITS_ARMOR    = {
 ,   [14] = "almandine"          -- Well-fitted
 ,   [15] = "emerald"            -- Training (armor)
 ,   [16] = "bloodstone"         -- Infused
-,   [17] = "garnet"             -- Prosperous
+,   [17] = "garnet"             -- Prosperous (nee Exploration)
 ,   [18] = "sapphire"           -- Divines
 ,   [25] = "fortified nirncrux" -- Nirnhoned (armor)
 
@@ -143,6 +145,62 @@ Smithing.MOTIF = {
 ,   [59]  = "amber marble"         -- Hollowjack
 ,   [60]  = nil                    --
 }
+
+-- Smithing Research Lines ---------------------------------------------------
+--
+-- What to pass as arg#2 to GetSmithingResearchLineTraitInfo() to see which
+-- traits we know about that item
+--
+-- Probably want to fold these into SCHOOL above.
+--
+-- Indices learned by iterating over calls to
+-- GetSmithingResearchLineInfo(school, i)
+--
+local RESEARCH_LINE_INDEX = {
+    HEAVY = {
+        H1_AXE          =  1
+    ,   H1_MACE         =  2
+    ,   H1_SWORD        =  3
+    ,   H2_BATTLE_AXE   =  4
+    ,   H2_MAUL         =  5
+    ,   H2_GREATSSWORD  =  6
+    ,   DAGGER          =  7
+    ,   CHEST           =  8
+    ,   FEET            =  9
+    ,   HANDS           = 10
+    ,   HEAD            = 11
+    ,   LEGS            = 12
+    ,   SHOULDERS       = 13
+    ,   WAIST           = 14
+    }
+,   LIGHT = {
+        CHEST           =  1
+    ,   FEET            =  2
+    ,   HANDS           =  3
+    ,   HEAD            =  4
+    ,   LEGS            =  5
+    ,   SHOULDERS       =  6
+    ,   WAIST           =  7
+    }
+,   MEDIUM = {
+        CHEST           =  8
+    ,   FEET            =  9
+    ,   HANDS           = 10
+    ,   HEAD            = 11
+    ,   LEGS            = 12
+    ,   SHOULDERS       = 13
+    ,   WAIST           = 14
+    }
+,   WOOD = {
+        BOW             =  1
+    ,   FLAME_STAFF     =  2
+    ,   ICE_STAFF       =  3
+    ,   LIGHTNING_STAFF =  4
+    ,   RESTO_STAFF     =  5
+    ,   SHIELD          =  6
+    }
+}
+
 
 -- Requestable items ---------------------------------------------------------
 --
