@@ -574,6 +574,8 @@ function Recipe:New(args)
     local o = {
         fooddrink_item_id = args.fooddrink_item_id  -- int(33526)
     ,   recipe_item_id    = args.recipe_item_id     -- int(45888)
+    ,   recipe_link       = args.recipe_link        -- "|H1:item:45888:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
+    ,   is_known          = args.is_known           -- true
     ,   mat_table         = {}                      -- "ingr_name" ==> int(ingr_ct)
     }
 
@@ -586,14 +588,16 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     local o = Recipe:New({ fooddrink_item_id= fooddrink_item_id })
     o.recipe_item_id = Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID[fooddrink_item_id]
     if not o.recipe_item_id then return nil end
-    local recipe_link = string.format(
+    o.recipe_link = string.format(
               "|H1:item:%d:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
             , o.recipe_item_id
             )
-    local mat_ct = GetItemLinkRecipeNumIngredients(recipe_link)
+    o.is_known = IsItemLinkRecipeKnown(o.recipe_link)
+
+    local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
     for ingr_index = 1,mat_ct do
         local ingr_name, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
-                              recipe_link
+                              o.recipe_link
                             , ingr_index)
         if 0 < ingr_ct and ingr_name ~= "" then
             ingr_name = WritWorthy.ToLinkKey(ingr_name)
@@ -602,6 +606,7 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     end
     return o
 end
+
 
 -- Provisioning --------------------------------------------------------------
 
@@ -656,3 +661,13 @@ function Parser:ToMatList()
     return ml
 end
 
+function Parser:ToKnowList()
+    local Know = WritWorthy.Know
+    d("prov know " .. tostring(self.recipe.is_known))
+    local k = Know:New({ name = "recipe"
+                       , is_known = self.recipe.is_known
+                       , lack_msg = "Recipe not known"
+                       })
+    d(k.lack_msg)
+    return { k }
+end

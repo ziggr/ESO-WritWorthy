@@ -49,15 +49,20 @@ function WritWorthy.CreateParser(item_link)
 end
 
 -- Convert a Master Writ item_link into the list of materials that
--- writ consumes.
-function WritWorthy.ToMatList(item_link)
+-- writ consumes, and the list of required trait or recipe knowledge
+-- necessary to craft the item.
+function WritWorthy.ToMatKnowList(item_link)
     local parser = WritWorthy.CreateParser(item_link)
     if not parser then return nil end
     if not parser:ParseItemLink(item_link) then
         return Fail("WritWorthy: could not parse.")
     end
     local mat_list = parser:ToMatList()
-    return mat_list
+    local know_list = nil
+    if parser.ToKnowList then
+        know_list = parser:ToKnowList()
+    end
+    return mat_list, know_list
 end
 
 -- Convert a Master Writ item_link into the integer number of
@@ -83,7 +88,7 @@ function WritWorthy.ToLinkBaseText(item_link)
 end
 
 -- Return the text we should add to a tooltip.
-function WritWorthy.TooltipText(mat_list, purchase_gold, voucher_ct)
+function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
                         -- No vouchers? No per-voucher cost.
     if (not voucher_ct) or (voucher_ct < 1) then return nil end
 
@@ -122,6 +127,19 @@ function WritWorthy.TooltipText(mat_list, purchase_gold, voucher_ct)
      end
 end
 
+-- Return big red indicators for any required knowledge that you lack.
+function WritWorthy.KnowTooltipText(know_list)
+    if not know_list then return nil end
+    local elements = {}
+    for i, know in ipairs(know_list) do
+        local s = know:TooltipText()
+        if s then
+            table.insert(elements, s)
+        end
+    end
+    return table.concat(elements, "\n")
+end
+
 -- Add text to a tooltip.
 --
 -- control:       the tooltip, responds to :AddLine(text)
@@ -134,14 +152,32 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
     -- Only fire for master writs.
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
 
-    local mat_list   = WritWorthy.ToMatList(item_link)
+    local mat_list, know_list   = WritWorthy.ToMatKnowList(item_link)
     local voucher_ct = WritWorthy.ToVoucherCount(item_link)
-    local text = WritWorthy.TooltipText(mat_list, purchase_gold, voucher_ct)
-    if not text then return end
-    control:AddLine(text)
+    local mat_text = WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
+    if not mat_text then return end
+    control:AddLine(mat_text)
     if WritWorthy.savedVariables.enable_mat_list_chat then
         WritWorthy.MatRow.ListDump(mat_list)
+        WritWorthy.KnowDump(know_list)
     end
+    local know_text = WritWorthy.KnowTooltipText(know_list)
+    if know_text then
+        control:AddLine(know_text)
+    end
+end
+
+-- Write a list of required knowledge to chat.
+function WritWorthy.KnowDump(know_list)
+    if not know_list
+        then d("know_list:"..tostring(know_list))
+        return
+    end
+    local elements = {}
+    for i, know in ipairs(know_list) do
+        d(know:DebugText())
+    end
+    return table.concat(elements, "\n")
 end
 
 -- Tooltip Intercept ---------------------------------------------------------

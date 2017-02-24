@@ -62,14 +62,19 @@ end
 
 -- Chat Colors ---------------------------------------------------------------
 
-WritWorthy.GREY = "999999"
 
 function Util.color(color, text)
     return "|c" .. color .. text .. "|r"
 end
 
 function Util.grey(text)
-    return Util.color(WritWorthy.GREY, text)
+    local GREY = "999999"
+    return Util.color(GREY, text)
+end
+
+function Util.red(text)
+    local RED  = "FF3333"
+    return Util.color(RED, text)
 end
 
 function Util.round(f)
