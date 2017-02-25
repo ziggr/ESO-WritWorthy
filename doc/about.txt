@@ -17,6 +17,6 @@ It also dumps a complete material list to chat.
 
 Requires [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] for material prices.
 
-Thank you to [URL=http://www.esoui.com/downloads/info1376-CraftStoreFixedandImproved.html]CraftStore[/URL] and [URL=http://www.esoui.com/downloads/info1043-ESOMasterRecipeList.html]ESO Master Recipe List[/URL] for some internal glyph and recipe item_id tables that saved me a couple hours of work.
+Thank you to [URL=http://www.esoui.com/downloads/info1376-CraftStoreFixedandImproved.html]CraftStore Fixed and Improved[/URL] and [URL=http://www.esoui.com/downloads/info1043-ESOMasterRecipeList.html]ESO Master Recipe List[/URL] for some internal glyph and recipe item_id tables that saved me a couple hours of work.
 
 --Z
