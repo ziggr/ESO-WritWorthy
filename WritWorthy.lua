@@ -169,8 +169,8 @@ end
 
 -- Write a list of required knowledge to chat.
 function WritWorthy.KnowDump(know_list)
-    if not know_list
-        then d("know_list:"..tostring(know_list))
+    if not know_list then
+        -- d("know_list:"..tostring(know_list))
         return
     end
     local elements = {}
