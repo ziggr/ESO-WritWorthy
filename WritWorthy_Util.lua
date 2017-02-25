@@ -3,6 +3,8 @@ WritWorthy = {}
 WritWorthy.Util = {}
 local Util = WritWorthy.Util
 
+WritWorthy.GOLD_UNKNOWN = nil
+
 function Util.Fail(msg)
     d(msg)
 end
@@ -92,10 +94,10 @@ end
 
 -- Master Merchant integration
 function Util.MMPrice(link)
-    if not MasterMerchant then return nil end
-    if not link then return nil end
+    if not MasterMerchant then return WritWorthy.GOLD_UNKNOWN end
+    if not link then return WritWorthy.GOLD_UNKNOWN end
     local mm = MasterMerchant:itemStats(link, false)
-    if not mm then return nil end
+    if not mm then return WritWorthy.GOLD_UNKNOWN end
     if mm.avgPrice and 0 < mm.avgPrice then
         return mm.avgPrice
     end
@@ -117,6 +119,6 @@ function Util.MMPrice(link)
     mm = MasterMerchant:itemStats(link, false)
     MasterMerchant.TimeCheck = save_tc
 
-    if not mm then return nil end
+    if not mm then return WritWorthy.GOLD_UNKNOWN end
     return mm.avgPrice
 end

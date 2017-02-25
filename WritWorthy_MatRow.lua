@@ -18,7 +18,7 @@ function MatRow:New()
         name    = nil   -- "rubedite"
     ,   link    = nil   -- "|H0:item:64489:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
     ,   ct      = nil   -- 13
-    ,   mm      = nil   -- 13.42315
+    ,   mm      = nil   -- 13.42315  Can be nil if MM not loaded, or lacks a price for this material.
     }
     setmetatable(o, self)
     self.__index = self
@@ -36,7 +36,6 @@ function MatRow:FromName(mat_name, ct)
         o.ct = 1
     end
     o.mm = WritWorthy.Util.MMPrice(o.link)
-    if not o.mm then return Fail("MM not found: " ..tostring(mat_name)) end
     return o
 end
 
@@ -51,37 +50,40 @@ function MatRow:FromLink(mat_link, ct)
         o.ct = 1
     end
     o.mm = WritWorthy.Util.MMPrice(o.link)
-    if not o.mm then return Fail("MM not found: " ..tostring(mat_name)) end
     return o
 end
 
+-- Return number amount of gold or WritWorthy.GOLD_UNKNOWN (aka nil) if unknown.
 function MatRow:Total()
-    if not self.ct then return 0 end
-    if not self.mm then return 0 end
+    if not self.ct then return WritWorthy.GOLD_UNKNOWN end
+    if not self.mm then return WritWorthy.GOLD_UNKNOWN end
     return self.ct * self.mm
 end
 
 -- list functions ------------------------------------------------------------
 
 function MatRow.ListDump(mat_list)
-    local total = 0
     local ToMoney = WritWorthy.Util.ToMoney
-
     for _, row in ipairs(mat_list) do
         local row_total = row:Total()
-        total = total + row_total
         d(ToMoney(row_total) .. "g = "
          .. tostring(row.ct) .. "x "
          .. ToMoney(row.mm) .. " "
          .. tostring(row.link) )
     end
+    local total = MatRow.ListTotal(mat_list)
     d(ToMoney(total) .. "g total")
 end
 
 function MatRow.ListTotal(mat_list)
     local total = 0
     for _, row in ipairs(mat_list) do
-        total = total + row:Total()
+        local row_total = row:Total()
+        if row_total and total then
+            total = total + row_total
+        else
+            total = WritWorthy.GOLD_UNKNOWN
+        end
     end
     return total
 end

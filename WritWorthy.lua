@@ -101,7 +101,9 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
 
     if mat_list then
         local mat_gold   = WritWorthy.MatRow.ListTotal(mat_list)
-        total_gold       = total_gold + mat_gold
+        if mat_gold then
+            total_gold   = total_gold + mat_gold
+        end
         table.insert( tooltip_elements
                     , "Mat total: " .. Util.ToMoney(mat_gold) .. "g" )
     end

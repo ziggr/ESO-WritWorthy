@@ -318,9 +318,21 @@ function Parser:ToMatList()
         r3[1].mat = MatRow:FromName(r3[1].name, mat_ct)
         r3[2].mat = MatRow:FromName(r3[2].name, mat_ct)
         r3[3].mat = MatRow:FromName(r3[3].name, mat_ct)
-        local tot  = r3[1].mat.mm + r3[2].mat.mm + r3[3].mat.mm
-        if tot < min_gold then
-            min_gold = tot
+
+                        -- If we cannot get MM prices, then WHICH three
+                        -- reagents we pick doesn't really matter. We're done
+                        -- trying to find the cheapest.
+        local mat_list = { r3[1].mat, r3[2].mat, r3[3].mat }
+        local mat_total = MatRow.ListTotal(mat_list)
+        if not mat_total then
+            min_gold = WritWorthy.GOLD_UNKNOWN
+            min_r3   = r3
+            break
+        end
+                        -- If we can get MM prices, keep checking for the
+                        -- cheapest combination of three reagents.
+        if mat_total and min_gold and mat_total < min_gold then
+            min_gold = mat_total
             min_r3   = r3
         end
     end
