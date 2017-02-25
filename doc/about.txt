@@ -4,7 +4,7 @@ Most writs consume less than 1000g worth of materials for each writ voucher they
 
 Shopping guild stores for Master Writs? Which is cheaper, 700,000g for a 72-voucher writ, or 400,000g for a 45-voucher writ? Sure, you could do division in your head or with a calculator. Or let the computer tell you (it's the 400,000g/45-voucher writ, just barely).
 
-This add-on shows adds text to each Master Writ's tooltip, showing the total material cost, purchase price (if any), and the cost per writ voucher reward.
+This add-on adds text to each Master Writ's tooltip, showing the total material cost, purchase price (if any), and the cost per writ voucher reward.
 
 
 Not interested in writs that require something that you cannot craft?
