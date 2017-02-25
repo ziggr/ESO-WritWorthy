@@ -352,6 +352,7 @@ Smithing.SET_BONUS = {
  ,  [ 71] = { name = "Durok's Bane",                                 }
  ,  [ 72] = { name = "Nikulas' Heavy Armor",                         }
  ,  [ 73] = { name = "Oblivion's Foe",                  trait_ct = 8 }
+ ,  [ 74] = { name = "Spectre's Eye",                   trait_ct = 8 }
  ,  [ 75] = { name = "Torug's Pact",                    trait_ct = 3 }
  ,  [ 76] = { name = "Robes of Alteration Mastery",                  }
  ,  [ 77] = { name = "Crusader",                                     }
