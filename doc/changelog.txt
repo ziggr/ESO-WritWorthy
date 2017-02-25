@@ -1,3 +1,8 @@
+[B]2.7.5 2017-02-24[/B]
+[LIST]
+[*]Add big red text to tooltip if current character cannot craft the required item due to missing motif, traits or recipe.
+[/LIST]
+
 [B]2.7.4 2017-02-20[/B]
 [LIST]
 [*]Add a table of recipes to Provisioning so that the provisioning writs can show a material list even if the current character does not know the required recipe.  Fixes "Recipe not found" errors for such writs.
