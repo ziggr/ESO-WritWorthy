@@ -16,8 +16,8 @@ local Fail     = WritWorthy.Util.Fail
 -- GetSmithingResearchLineTraitInfo() to see which
 -- traits we know about that item, or if we know enough traits to craft
 -- the requested set bonus for that item.
---   Indices learned by iterating over calls to
--- GetSmithingResearchLineInfo(school, i)
+-- "research lines" values learned by iterating over calls to
+-- GetSmithingResearchLineInfo(trade_skill_type, i)
 --
 Smithing.SCHOOL_HEAVY =  {
     trade_skill_type    = CRAFTING_TYPE_BLACKSMITHING
@@ -100,8 +100,16 @@ Smithing.SCHOOL_WOOD   = {
 -- Weapon and Armor must be separate sets because "Nirnhoned" mats differ
 -- (potent vs. fortified nirncrux)
 --
--- Index numbers here are item_link writ5 numbers
+-- Table keys here are item_link writ5 numbers
 -- and appear to match ITEM_TYPE_XXXX_XXXX constants
+--
+-- trait_index numbers are indices into research lines.
+-- Gleaned through calls to
+--  GetSmithingResearchLineTraitInfo(
+--              trade_skill_type
+--            , research_line     -- from Smithing.SCHOOL_XXX.CHEST and such
+--            , i                 -- 1..9
+--            )
 --
 Smithing.TRAITS_WEAPON = {
     [ITEM_TRAIT_TYPE_WEAPON_POWERED    ] = { trait_name = "powered",      mat_name = "chysolite"          , trait_index = 1 }
@@ -128,6 +136,17 @@ Smithing.TRAITS_ARMOR    = {
 
 -- Motifs --------------------------------------------------------------------
 --
+-- Table index is writ6
+--
+-- is_simple = motifs that only come in complete books, no separate pages.
+-- crown_id  = motifs that only come in complete books from the Crown store.
+--             Motifs that come only in complete books, the function
+--             IsSmithingStyleKnown() accurately returns whether you've
+--             learned the whole book.
+-- pages_id  = The achievement ID that goes with learning a page of a motif.
+--             IDs from CraftStore Fixed and Improved.
+--
+
 Smithing.MOTIF = {
     [ITEMSTYLE_RACIAL_BRETON        ] = { mat_name = "molybdenum"          , motif_name = "Breton"               , is_simple = true } -- 01
 ,   [ITEMSTYLE_RACIAL_REDGUARD      ] = { mat_name = "starmetal"           , motif_name = "Redguard"             , is_simple = true } -- 02
@@ -214,9 +233,19 @@ Smithing.MOTIF_PAGE = {
 
 -- Requestable items ---------------------------------------------------------
 --
--- Material requirements for each possitble Master Write BS/CL/WW item.
+-- Material, trait, and motif page requirements for each possitble Master
+-- Writ BS/CL/WW item.
 --
-
+-- table index and item_id are writ1
+-- item_name        no longer used, retained here to document each line.
+-- school           tells which set of crafting materials and research lines to use.
+-- base_mat_ct      is how many Rubedite/Silk/whatever to use to create a CP150 item.
+-- trait_set        picks between armor and and weapon traits. writ5.
+-- research_line    is the researchLineIndex argument to
+--                      GetSmithingResearchLineTraitInfo() to see if we know the
+--                      correct and enough traits.
+-- motif_page       is which of the 1..14 motif pages applies to this item.
+--
                         -- abbreviations to make the table more concise.
 local HVY    = Smithing.SCHOOL_HEAVY
 local MED    = Smithing.SCHOOL_MEDIUM
@@ -276,7 +305,8 @@ Smithing.REQUEST_ITEMS = {
 --
 -- Table index is writ4 value for smithing writs.
 --
--- ??? Could not find "Spectre's Eye"
+-- Learned by iterating over itemLink strings and dumping their baseText.
+-- Dump still around somewhere in doc/item_link.txt.
 --
 Smithing.SET_BONUS = {
     [  1] = nil

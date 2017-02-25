@@ -336,10 +336,3 @@ function Parser:ToMatList()
 
     return self.mat_list
 end
-
--- Craft a Damage Stamina Poison IX with the following properties: Vitality, Increase Armor, Ravage Stamina
--- Craft a Resolve-Draining Poison IX with the following properties: Increase Armor, Protection, Defile
--- Craft a Damage Health Poison IX with the following properties: Ravage Health, Ravage Magicka, Ravage Stamina
--- Craft a Damage Health Poison IX with the following properties: Increase Weapon Power, Speed, Ravage Health
--- Craft a Damage Magicka Poison IX with the following properties: Lingering Health, Restore Health, Ravage Magicka
-

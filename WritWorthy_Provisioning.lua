@@ -10,6 +10,14 @@ local Provisioning = WritWorthy.Provisioning
 local Util         = WritWorthy.Util
 local Fail         = WritWorthy.Util.Fail
 
+-- Recipe item_id list from @Phinix's most excellent ESO Master Recipe List
+-- which in turn got much of its data from @Sneak-Thief's ESO Master Provisioning Database
+-- and @Daveh's ESO Data Pages.
+--
+--  fooddrink  recipe
+--  item_id    item_id
+--  --------   -----
+--
 Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID = {
     [ 33526] = 45888
 ,   [ 28358] = 45911
