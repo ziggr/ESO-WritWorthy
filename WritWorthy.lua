@@ -159,7 +159,7 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
     control:AddLine(mat_text)
     if WritWorthy.savedVariables.enable_mat_list_chat then
         WritWorthy.MatRow.ListDump(mat_list)
-        WritWorthy.KnowDump(know_list)
+        --WritWorthy.KnowDump(know_list)
     end
     local know_text = WritWorthy.KnowTooltipText(know_list)
     if know_text then

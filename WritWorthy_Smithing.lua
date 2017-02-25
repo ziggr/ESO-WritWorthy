@@ -104,91 +104,91 @@ Smithing.SCHOOL_WOOD   = {
 -- and appear to match ITEM_TYPE_XXXX_XXXX constants
 --
 Smithing.TRAITS_WEAPON = {
-    [ITEM_TRAIT_TYPE_WEAPON_POWERED    ] = { mat_name = "chysolite"          , trait_index = 1 }
-,   [ITEM_TRAIT_TYPE_WEAPON_CHARGED    ] = { mat_name = "amethyst"           , trait_index = 2 }
-,   [ITEM_TRAIT_TYPE_WEAPON_PRECISE    ] = { mat_name = "ruby"               , trait_index = 3 }
-,   [ITEM_TRAIT_TYPE_WEAPON_INFUSED    ] = { mat_name = "jade"               , trait_index = 4 }
-,   [ITEM_TRAIT_TYPE_WEAPON_DEFENDING  ] = { mat_name = "turquoise"          , trait_index = 5 }
-,   [ITEM_TRAIT_TYPE_WEAPON_TRAINING   ] = { mat_name = "carnelian"          , trait_index = 6 }
-,   [ITEM_TRAIT_TYPE_WEAPON_SHARPENED  ] = { mat_name = "fire opal"          , trait_index = 7 }
-,   [ITEM_TRAIT_TYPE_WEAPON_DECISIVE   ] = { mat_name = "citrine"            , trait_index = 8 }  -- nee weighted
-,   [ITEM_TRAIT_TYPE_WEAPON_NIRNHONED  ] = { mat_name = "potent nirncrux"    , trait_index = 9 }
+    [ITEM_TRAIT_TYPE_WEAPON_POWERED    ] = { trait_name = "powered",      mat_name = "chysolite"          , trait_index = 1 }
+,   [ITEM_TRAIT_TYPE_WEAPON_CHARGED    ] = { trait_name = "charged",      mat_name = "amethyst"           , trait_index = 2 }
+,   [ITEM_TRAIT_TYPE_WEAPON_PRECISE    ] = { trait_name = "precise",      mat_name = "ruby"               , trait_index = 3 }
+,   [ITEM_TRAIT_TYPE_WEAPON_INFUSED    ] = { trait_name = "infused",      mat_name = "jade"               , trait_index = 4 }
+,   [ITEM_TRAIT_TYPE_WEAPON_DEFENDING  ] = { trait_name = "defending",    mat_name = "turquoise"          , trait_index = 5 }
+,   [ITEM_TRAIT_TYPE_WEAPON_TRAINING   ] = { trait_name = "training",     mat_name = "carnelian"          , trait_index = 6 }
+,   [ITEM_TRAIT_TYPE_WEAPON_SHARPENED  ] = { trait_name = "sharpened",    mat_name = "fire opal"          , trait_index = 7 }
+,   [ITEM_TRAIT_TYPE_WEAPON_DECISIVE   ] = { trait_name = "decisive",     mat_name = "citrine"            , trait_index = 8 }  -- nee weighted
+,   [ITEM_TRAIT_TYPE_WEAPON_NIRNHONED  ] = { trait_name = "nirnhoned",    mat_name = "potent nirncrux"    , trait_index = 9 }
 }
 Smithing.TRAITS_ARMOR    = {
-    [ITEM_TRAIT_TYPE_ARMOR_STURDY      ] = { mat_name = "quartz"             , trait_index = 1 }
-,   [ITEM_TRAIT_TYPE_ARMOR_IMPENETRABLE] = { mat_name = "diamond"            , trait_index = 2 }
-,   [ITEM_TRAIT_TYPE_ARMOR_REINFORCED  ] = { mat_name = "sardonyx"           , trait_index = 3 }
-,   [ITEM_TRAIT_TYPE_ARMOR_WELL_FITTED ] = { mat_name = "almandine"          , trait_index = 4 }
-,   [ITEM_TRAIT_TYPE_ARMOR_TRAINING    ] = { mat_name = "emerald"            , trait_index = 5 }
-,   [ITEM_TRAIT_TYPE_ARMOR_INFUSED     ] = { mat_name = "bloodstone"         , trait_index = 6 }
-,   [ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS  ] = { mat_name = "garnet"             , trait_index = 7 } -- nee exploration
-,   [ITEM_TRAIT_TYPE_ARMOR_DIVINES     ] = { mat_name = "sapphire"           , trait_index = 8 }
-,   [ITEM_TRAIT_TYPE_ARMOR_NIRNHONED   ] = { mat_name = "fortified nirncrux" , trait_index = 9 }
+    [ITEM_TRAIT_TYPE_ARMOR_STURDY      ] = { trait_name = "sturdy",       mat_name = "quartz"             , trait_index = 1 }
+,   [ITEM_TRAIT_TYPE_ARMOR_IMPENETRABLE] = { trait_name = "impenetrable", mat_name = "diamond"            , trait_index = 2 }
+,   [ITEM_TRAIT_TYPE_ARMOR_REINFORCED  ] = { trait_name = "reinforced",   mat_name = "sardonyx"           , trait_index = 3 }
+,   [ITEM_TRAIT_TYPE_ARMOR_WELL_FITTED ] = { trait_name = "well-fitted",  mat_name = "almandine"          , trait_index = 4 }
+,   [ITEM_TRAIT_TYPE_ARMOR_TRAINING    ] = { trait_name = "training",     mat_name = "emerald"            , trait_index = 5 }
+,   [ITEM_TRAIT_TYPE_ARMOR_INFUSED     ] = { trait_name = "infused",      mat_name = "bloodstone"         , trait_index = 6 }
+,   [ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS  ] = { trait_name = "propserous",   mat_name = "garnet"             , trait_index = 7 } -- nee exploration
+,   [ITEM_TRAIT_TYPE_ARMOR_DIVINES     ] = { trait_name = "divines",      mat_name = "sapphire"           , trait_index = 8 }
+,   [ITEM_TRAIT_TYPE_ARMOR_NIRNHONED   ] = { trait_name = "nirnhoned",    mat_name = "fortified nirncrux" , trait_index = 9 }
 }
 
 -- Motifs --------------------------------------------------------------------
 --
 Smithing.MOTIF = {
-    [ITEMSTYLE_RACIAL_BRETON        ]  = "molybdenum"           -- 01 Breton
-,   [ITEMSTYLE_RACIAL_REDGUARD      ]  = "starmetal"            -- 02 Redguard
-,   [ITEMSTYLE_RACIAL_ORC           ]  = "manganese"            -- 03 Orc
-,   [ITEMSTYLE_RACIAL_DARK_ELF      ]  = "obsidian"             -- 04 Dunmer
-,   [ITEMSTYLE_RACIAL_NORD          ]  = "corundum"             -- 05 Nord
-,   [ITEMSTYLE_RACIAL_ARGONIAN      ]  = "flint"                -- 06 Argonian
-,   [ITEMSTYLE_RACIAL_HIGH_ELF      ]  = "adamantite"           -- 07 Altmer
-,   [ITEMSTYLE_RACIAL_WOOD_ELF      ]  = "bone"                 -- 08 Bosmer
-,   [ITEMSTYLE_RACIAL_KHAJIIT       ]  = "moonstone"            -- 09 Khajiit
-,   [ITEMSTYLE_UNIQUE               ]  = nil                    -- 10 Unique
-,   [ITEMSTYLE_ORG_THIEVES_GUILD    ]  = "fine chalk"           -- 11 Thieves Guild
-,   [ITEMSTYLE_ORG_DARK_BROTHERHOOD ]  = "black beeswax"        -- 12 Dark Brotherhood
-,   [ITEMSTYLE_DEITY_MALACATH       ]  = "potash"               -- 13 Malacath
-,   [ITEMSTYLE_AREA_DWEMER          ]  = "dwemer frame"         -- 14 Dwemer
-,   [ITEMSTYLE_AREA_ANCIENT_ELF     ]  = "palladium"            -- 15 Ancient Elf
-,   [ITEMSTYLE_DEITY_AKATOSH        ]  = "pearl sand"           -- 16 Order of the Hour
-,   [ITEMSTYLE_AREA_REACH           ]  = "copper"               -- 17 Barbaric
-,   [ITEMSTYLE_ENEMY_BANDIT         ]  = nil                    -- 18 Bandit
-,   [ITEMSTYLE_ENEMY_PRIMITIVE      ]  = "argentum"             -- 19 Primal
-,   [ITEMSTYLE_ENEMY_DAEDRIC        ]  = "daedra heart"         -- 20 Daedric
-,   [ITEMSTYLE_DEITY_TRINIMAC       ]  = "auric tusk"           -- 21 Trinimac
-,   [ITEMSTYLE_AREA_ANCIENT_ORC     ]  = "cassiterite"          -- 22 Ancient Orc
-,   [ITEMSTYLE_ALLIANCE_DAGGERFALL  ]  = "lion fang"            -- 23 Daggerfall Covenant
-,   [ITEMSTYLE_ALLIANCE_EBONHEART   ]  = "dragon scute"         -- 24 Ebonheart Pact
-,   [ITEMSTYLE_ALLIANCE_ALDMERI     ]  = "eagle feather"        -- 25 Aldmeri Dominion
-,   [ITEMSTYLE_UNDAUNTED            ]  = "laurel"               -- 26 Mercenary
-,   [ITEMSTYLE_RAIDS_CRAGLORN       ]  = "star sapphire"        -- 27 Celestial
-,   [ITEMSTYLE_GLASS                ]  = "malachite"            -- 28 Glass
-,   [ITEMSTYLE_AREA_XIVKYN          ]  = "charcoal of remorse"  -- 29 Xivkyn
-,   [ITEMSTYLE_AREA_SOUL_SHRIVEN    ]  = "azure plasm"          -- 30 Soul-Shriven
-,   [ITEMSTYLE_ENEMY_DRAUGR         ]  = "pristine shroud"      -- 31 Draugr
-,   [ITEMSTYLE_ENEMY_MAORMER        ]  = nil                    -- 32 Maormer
-,   [ITEMSTYLE_AREA_AKAVIRI         ]  = "goldscale"            -- 33 Akaviri
-,   [ITEMSTYLE_RACIAL_IMPERIAL      ]  = "nickel"               -- 34 Imperial
-,   [ITEMSTYLE_AREA_YOKUDAN         ]  = "ferrous salts"        -- 35 Yokudan
-,   [ITEMSTYLE_UNIVERSAL            ]  = nil                    -- 36 unused
-,   [ITEMSTYLE_AREA_REACH_WINTER    ]  = nil                    -- 37 Reach Winter
-,   [ITEMSTYLE_ORG_WORM_CULT        ]  = nil                    -- 38 Worm Cult
-,   [ITEMSTYLE_ENEMY_MINOTAUR       ]  = "oxblood fungus"       -- 39 Minotaur
-,   [ITEMSTYLE_EBONY                ]  = "night pumice"         -- 40 Ebony
-,   [ITEMSTYLE_ORG_ABAHS_WATCH      ]  = "polished shilling"    -- 41 Abah's Watch
-,   [ITEMSTYLE_ENEMY_SKINCHANGER    ]  = "wolfsbane incense"    -- 42 Skinchanger
-,   [ITEMSTYLE_ORG_MORAG_TONG       ]  = nil                    -- 43 Morag Tong
-,   [ITEMSTYLE_AREA_RA_GADA         ]  = "ancient sandstone"    -- 44 Ra Gada
-,   [ITEMSTYLE_ENEMY_DROMOTHRA      ]  = "defiled whiskers"     -- 45 Dro-m'Athra
-,   [ITEMSTYLE_ORG_ASSASSINS        ]  = "tainted blood"        -- 46 Assassins League
-,   [ITEMSTYLE_ORG_OUTLAW           ]  = "rogue's soot"         -- 47 Outlaw
-,   [ITEMSTYLE_UNUSED11             ]  = nil                    -- 48 Unused 11
-,   [ITEMSTYLE_UNUSED12             ]  = nil                    -- 49 Unused 12
-,   [ITEMSTYLE_UNUSED13             ]  = nil                    -- 40 Unused 13
-,   [ITEMSTYLE_UNUSED14             ]  = nil                    -- 51 Unused 14
-,   [ITEMSTYLE_UNUSED15             ]  = nil                    -- 52 Unused 15
-,   [ITEMSTYLE_UNUSED16             ]  = "stahlrim shard"       -- 53 Stalhrim Frostcaster
-,   [ITEMSTYLE_UNUSED17             ]  = nil                    -- 54 Unused 17
-,   [ITEMSTYLE_UNUSED18             ]  = nil                    -- 55 Unused 18
-,   [ITEMSTYLE_UNUSED19             ]  = "distilled slowsilver" -- 56 Silken Ring
-,   [ITEMSTYLE_UNUSED20             ]  = "leviathan scrimshaw"  -- 57 Mazzatun
-,   [ITEMSTYLE_UNUSED21             ]  = "grinstones"           -- 58 Grim Harlequin
-,   [ITEMSTYLE_UNUSED22             ]  = "amber marble"         -- 59 Hollowjack
-,   [60                             ]  = nil                    -- 60
+    [ITEMSTYLE_RACIAL_BRETON        ] = { mat_name = "molybdenum"          , motif_name = "Breton"               } -- 01
+,   [ITEMSTYLE_RACIAL_REDGUARD      ] = { mat_name = "starmetal"           , motif_name = "Redguard"             } -- 02
+,   [ITEMSTYLE_RACIAL_ORC           ] = { mat_name = "manganese"           , motif_name = "Orc"                  } -- 03
+,   [ITEMSTYLE_RACIAL_DARK_ELF      ] = { mat_name = "obsidian"            , motif_name = "Dunmer"               } -- 04
+,   [ITEMSTYLE_RACIAL_NORD          ] = { mat_name = "corundum"            , motif_name = "Nord"                 } -- 05
+,   [ITEMSTYLE_RACIAL_ARGONIAN      ] = { mat_name = "flint"               , motif_name = "Argonian"             } -- 06
+,   [ITEMSTYLE_RACIAL_HIGH_ELF      ] = { mat_name = "adamantite"          , motif_name = "Altmer"               } -- 07
+,   [ITEMSTYLE_RACIAL_WOOD_ELF      ] = { mat_name = "bone"                , motif_name = "Bosmer"               } -- 08
+,   [ITEMSTYLE_RACIAL_KHAJIIT       ] = { mat_name = "moonstone"           , motif_name = "Khajiit"              } -- 09
+,   [ITEMSTYLE_UNIQUE               ] = nil --                             , motif_name = "Unique"               } -- 10
+,   [ITEMSTYLE_ORG_THIEVES_GUILD    ] = { mat_name = "fine chalk"          , motif_name = "Thieves Guild"        } -- 11
+,   [ITEMSTYLE_ORG_DARK_BROTHERHOOD ] = { mat_name = "black beeswax"       , motif_name = "Dark Brotherhood"     } -- 12
+,   [ITEMSTYLE_DEITY_MALACATH       ] = { mat_name = "potash"              , motif_name = "Malacath"             } -- 13
+,   [ITEMSTYLE_AREA_DWEMER          ] = { mat_name = "dwemer frame"        , motif_name = "Dwemer"               } -- 14
+,   [ITEMSTYLE_AREA_ANCIENT_ELF     ] = { mat_name = "palladium"           , motif_name = "Ancient Elf"          } -- 15
+,   [ITEMSTYLE_DEITY_AKATOSH        ] = { mat_name = "pearl sand"          , motif_name = "Order of the Hour"    } -- 16
+,   [ITEMSTYLE_AREA_REACH           ] = { mat_name = "copper"              , motif_name = "Barbaric"             } -- 17
+,   [ITEMSTYLE_ENEMY_BANDIT         ] = nil --                             , motif_name = "Bandit"               } -- 18
+,   [ITEMSTYLE_ENEMY_PRIMITIVE      ] = { mat_name = "argentum"            , motif_name = "Primal"               } -- 19
+,   [ITEMSTYLE_ENEMY_DAEDRIC        ] = { mat_name = "daedra heart"        , motif_name = "Daedric"              } -- 20
+,   [ITEMSTYLE_DEITY_TRINIMAC       ] = { mat_name = "auric tusk"          , motif_name = "Trinimac"             } -- 21
+,   [ITEMSTYLE_AREA_ANCIENT_ORC     ] = { mat_name = "cassiterite"         , motif_name = "Ancient Orc"          } -- 22
+,   [ITEMSTYLE_ALLIANCE_DAGGERFALL  ] = { mat_name = "lion fang"           , motif_name = "Daggerfall Covenant"  } -- 23
+,   [ITEMSTYLE_ALLIANCE_EBONHEART   ] = { mat_name = "dragon scute"        , motif_name = "Ebonheart Pact"       } -- 24
+,   [ITEMSTYLE_ALLIANCE_ALDMERI     ] = { mat_name = "eagle feather"       , motif_name = "Aldmeri Dominion"     } -- 25
+,   [ITEMSTYLE_UNDAUNTED            ] = { mat_name = "laurel"              , motif_name = "Mercenary"            } -- 26
+,   [ITEMSTYLE_RAIDS_CRAGLORN       ] = { mat_name = "star sapphire"       , motif_name = "Celestial"            } -- 27
+,   [ITEMSTYLE_GLASS                ] = { mat_name = "malachite"           , motif_name = "Glass"                } -- 28
+,   [ITEMSTYLE_AREA_XIVKYN          ] = { mat_name = "charcoal of remorse" , motif_name = "Xivkyn"               } -- 29
+,   [ITEMSTYLE_AREA_SOUL_SHRIVEN    ] = { mat_name = "azure plasm"         , motif_name = "Soul-Shriven"         } -- 30
+,   [ITEMSTYLE_ENEMY_DRAUGR         ] = { mat_name = "pristine shroud"     , motif_name = "Draugr"               } -- 31
+,   [ITEMSTYLE_ENEMY_MAORMER        ] = nil --                             , motif_name = "Maormer"              } -- 32
+,   [ITEMSTYLE_AREA_AKAVIRI         ] = { mat_name = "goldscale"           , motif_name = "Akaviri"              } -- 33
+,   [ITEMSTYLE_RACIAL_IMPERIAL      ] = { mat_name = "nickel"              , motif_name = "Imperial"             } -- 34
+,   [ITEMSTYLE_AREA_YOKUDAN         ] = { mat_name = "ferrous salts"       , motif_name = "Yokudan"              } -- 35
+,   [ITEMSTYLE_UNIVERSAL            ] = nil --                             , motif_name = "unused"               } -- 36
+,   [ITEMSTYLE_AREA_REACH_WINTER    ] = nil --                             , motif_name = "Reach Winter"         } -- 37
+,   [ITEMSTYLE_ORG_WORM_CULT        ] = nil --                             , motif_name = "Worm Cult"            } -- 38
+,   [ITEMSTYLE_ENEMY_MINOTAUR       ] = { mat_name = "oxblood fungus"      , motif_name = "Minotaur"             } -- 39
+,   [ITEMSTYLE_EBONY                ] = { mat_name = "night pumice"        , motif_name = "Ebony"                } -- 40
+,   [ITEMSTYLE_ORG_ABAHS_WATCH      ] = { mat_name = "polished shilling"   , motif_name = "Abah's Watch"         } -- 41
+,   [ITEMSTYLE_ENEMY_SKINCHANGER    ] = { mat_name = "wolfsbane incense"   , motif_name = "Skinchanger"          } -- 42
+,   [ITEMSTYLE_ORG_MORAG_TONG       ] = nil --                             , motif_name = "Morag Tong"           } -- 43
+,   [ITEMSTYLE_AREA_RA_GADA         ] = { mat_name = "ancient sandstone"   , motif_name = "Ra Gada"              } -- 44
+,   [ITEMSTYLE_ENEMY_DROMOTHRA      ] = { mat_name = "defiled whiskers"    , motif_name = "Dro-m'Athra"          } -- 45
+,   [ITEMSTYLE_ORG_ASSASSINS        ] = { mat_name = "tainted blood"       , motif_name = "Assassins League"     } -- 46
+,   [ITEMSTYLE_ORG_OUTLAW           ] = { mat_name = "rogue's soot"        , motif_name = "Outlaw"               } -- 47
+,   [ITEMSTYLE_UNUSED11             ] = nil --                             , motif_name = Unused 11"             } -- 48
+,   [ITEMSTYLE_UNUSED12             ] = nil --                             , motif_name = Unused 12"             } -- 49
+,   [ITEMSTYLE_UNUSED13             ] = nil --                             , motif_name = Unused 13"             } -- 40
+,   [ITEMSTYLE_UNUSED14             ] = nil --                             , motif_name = Unused 14"             } -- 51
+,   [ITEMSTYLE_UNUSED15             ] = nil --                             , motif_name = Unused 15"             } -- 52
+,   [ITEMSTYLE_UNUSED16             ] = { mat_name = "stahlrim shard"      , motif_name = "Stalhrim Frostcaster" } -- 53
+,   [ITEMSTYLE_UNUSED17             ] = nil --                             , motif_name = Unused 17"             } -- 54
+,   [ITEMSTYLE_UNUSED18             ] = nil --                             , motif_name = Unused 18"             } -- 55
+,   [ITEMSTYLE_UNUSED19             ] = { mat_name = "distilled slowsilver", motif_name = "Silken Ring"          } -- 56
+,   [ITEMSTYLE_UNUSED20             ] = { mat_name = "leviathan scrimshaw" , motif_name = "Mazzatun"             } -- 57
+,   [ITEMSTYLE_UNUSED21             ] = { mat_name = "grinstones"          , motif_name = "Grim Harlequin"       } -- 58
+,   [ITEMSTYLE_UNUSED22             ] = { mat_name = "amber marble"        , motif_name = "Hollowjack"           } -- 59
+,   [60                             ] = nil --                                                                   } -- 60
 }
 
 -- Motif page numbers --------------------------------------------------------
@@ -640,8 +640,6 @@ function Parser:New()
                                 -- " Style: Primal"
     ,   request_item    = nil   -- Smithing.REQUEST_ITEMS[n]
     ,   set_bonus       = nil   -- Smithing.SET_BONUS[n]
-    ,   trait_mat_name  = nil   -- "turquoise"
-    ,   trait_index     = nil   -- 5  (1..9, used as last arg to GetSmithingResearchLineTraitInfo())
     ,   trait_num       = nil   -- ITEM_TRAIT_TYPE_WEAPON_DEFENDING
     ,   motif_num       = nil   -- 19 ITEMSTYLE_ENEMY_PRIMITIVE
     ,   motif_mat_name  = nil   -- "argentum"
@@ -665,12 +663,11 @@ function Parser:ParseItemLink(item_link)
     self.request_item   = Smithing.REQUEST_ITEMS[item_num]
     self.set_bonus      = Smithing.SET_BONUS[set_num]
     if not self.set_bonus then return Fail("set not found "..tostring(set_num)) end
+    self.trait          = self.request_item.trait_set[trait_num]
     self.trait_num      = trait_num
-    self.trait_index    = self.request_item.trait_set[trait_num].trait_index
-    self.trait_mat_name = self.request_item.trait_set[trait_num].mat_name
     self.motif_num      = motif_num
-    self.motif_mat_name = Smithing.MOTIF[motif_num]
-    if not self.motif_mat_name then return Fail("motif not found "..tostring(motif_num)) end
+    self.motif          = Smithing.MOTIF[motif_num]
+    if not self.motif then return Fail("motif not found "..tostring(motif_num)) end
     self.improve_level  = Smithing.QUALITY[quality_num]
     if not self.improve_level then return Fail("quality not found "..tostring(quality_num)) end
     return self
@@ -682,8 +679,8 @@ function Parser:ToMatList()
     local ml = {}
     table.insert(ml, MatRow:FromName( self.request_item.school.base_mat_name
                                     , self.request_item.base_mat_ct ))
-    table.insert(ml, MatRow:FromName( self.trait_mat_name ))
-    table.insert(ml, MatRow:FromName( self.motif_mat_name ))
+    table.insert(ml, MatRow:FromName( self.trait.mat_name ))
+    table.insert(ml, MatRow:FromName( self.motif.mat_name ))
 
     table.insert(ml, MatRow:FromName( self.request_item.school.green_mat_name
                                     , self.improve_level.green_mat_ct ))
@@ -707,32 +704,28 @@ function Parser:ToKnowList()
                         -- NEEDS TESTING: non-paged motifs like Breton
     local motif_known = IsSmithingStyleKnown( self.motif_num
                                             , self.request_item.motif_page )
-d(string.format( "IsSmithingStyleKnown( %d , %d ) = %s"
-               , self.motif_num
-               , self.request_item.motif_page
-               , tostring(motif_known)
-               ))
-
-    table.insert(r, Know:New({ name     = "motif"
+    local title = string.format("motif %s", self.motif.motif_name)
+    local msg   = string.format("Motif %s not known", self.motif.motif_name)
+    table.insert(r, Know:New({ name     = title
                              , is_known = motif_known
-                             , lack_msg = "Motif not known"
+                             , lack_msg = msg
                              }))
 
                         -- Do you know this trait?
+    local line_name = GetSmithingResearchLineInfo(
+                              self.request_item.school.trade_skill_type
+                            , self.request_item.research_line )
+    line_name = line_name:lower()
+
     local _,_,trait_known = GetSmithingResearchLineTraitInfo(
                               self.request_item.school.trade_skill_type
                             , self.request_item.research_line
-                            , self.trait_index )
-d(string.format( "GetSmithingResearchLineTraitInfo( %d , %d , %d ) = %s"
-               , self.request_item.school.trade_skill_type
-               , self.request_item.research_line
-               , self.trait_index
-               , tostring(trait_known)
-               ))
-
-    table.insert(r, Know:New({ name     = "trait"
+                            , self.trait.trait_index )
+    local title = string.format("trait %s %s", self.trait.trait_name, line_name)
+    local msg   = string.format("Trait %s %s not known", self.trait.trait_name, line_name)
+    table.insert(r, Know:New({ name     = title
                              , is_known = trait_known
-                             , lack_msg = "Trait not known"
+                             , lack_msg = msg
                              }))
 
                         -- Do you know enough traits to craft this set bonus?
@@ -743,29 +736,19 @@ d(string.format( "GetSmithingResearchLineTraitInfo( %d , %d , %d ) = %s"
                                       self.request_item.school.trade_skill_type
                                     , self.request_item.research_line
                                     , trait.trait_index )
-d(string.format( "GetSmithingResearchLineTraitInfo( %d , %d , %d ) = %s    %d of %d"
-               , self.request_item.school.trade_skill_type
-               , self.request_item.research_line
-               , trait.trait_index
-               , tostring(known)
-               , known_trait_ct
-               , self.set_bonus.trait_ct
-               ))
             if known then
                 known_trait_ct = known_trait_ct + 1
             end
         end
-
-        local s = string.format( "%d of %d traits required for set %s"
+        local title = string.format( "%d traits for set bonus", self.set_bonus.trait_ct)
+        local msg   = string.format( "%d of %d traits required for set %s"
                                , known_trait_ct
                                , self.set_bonus.trait_ct
                                , tostring(self.set_bonus.name)
                                )
-        table.insert(r, Know:New({ name     = "traits for set bonus"
+        table.insert(r, Know:New({ name     = title
                                  , is_known = self.set_bonus.trait_ct <= known_trait_ct
-                                 , lack_msg = s }))
-    else
-        d("set_bonus:"..tostring(self.set_bonus))
+                                 , lack_msg = msg }))
     end
 
     return r

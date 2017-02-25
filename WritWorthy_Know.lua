@@ -26,6 +26,5 @@ end
 
 function Know:TooltipText()
     if self.is_known then return nil end
-    d(self.lack_msg)
     return WritWorthy.Util.red(self.lack_msg)
 end

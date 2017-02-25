@@ -663,11 +663,9 @@ end
 
 function Parser:ToKnowList()
     local Know = WritWorthy.Know
-    d("prov know " .. tostring(self.recipe.is_known))
     local k = Know:New({ name = "recipe"
                        , is_known = self.recipe.is_known
                        , lack_msg = "Recipe not known"
                        })
-    d(k.lack_msg)
     return { k }
 end
