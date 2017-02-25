@@ -1,3 +1,8 @@
+[B]2.7.6 2017-02-25[/B]
+[LIST]
+[*]Survive without Master Merchant. If missing, or if its database lacks some required materials, display "?g" for "unknown amount of gold" and don't count materials costs when calculating per-voucher cost.
+[/LIST]
+
 [B]2.7.5 2017-02-24[/B]
 [LIST]
 [*]Add big red text to tooltip if current character cannot craft the required item due to missing motif, traits or recipe.
