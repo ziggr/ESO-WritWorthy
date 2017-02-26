@@ -574,7 +574,7 @@ Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID = {
 ,   [112439] = 96961
 }
 
--- Recipe --------------------------------------------------------------------
+    -- Recipe --------------------------------------------------------------------
 
 Provisioning.Recipe  = {}
 local Recipe = Provisioning.Recipe
@@ -584,7 +584,7 @@ function Recipe:New(args)
     ,   recipe_item_id    = args.recipe_item_id     -- int(45888)
     ,   recipe_link       = args.recipe_link        -- "|H1:item:45888:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
     ,   is_known          = args.is_known           -- true
-    ,   mat_table         = {}                      -- "ingr_name" ==> int(ingr_ct)
+    ,   mat_list          = {}                      -- list of MatRow ingredients
     }
 
     setmetatable(o, self)
@@ -593,6 +593,8 @@ function Recipe:New(args)
 end
 
 function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
+    local MatRow = WritWorthy.MatRow
+
     local o = Recipe:New({ fooddrink_item_id= fooddrink_item_id })
     o.recipe_item_id = Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID[fooddrink_item_id]
     if not o.recipe_item_id then return nil end
@@ -604,12 +606,16 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
 
     local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
     for ingr_index = 1,mat_ct do
-        local ingr_name, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
+        local _, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
                               o.recipe_link
                             , ingr_index)
-        if 0 < ingr_ct and ingr_name ~= "" then
-            ingr_name = WritWorthy.ToLinkKey(ingr_name)
-            o.mat_table[ingr_name] = ingr_ct
+        local ingr_link = GetItemLinkRecipeIngredientItemLink(
+                              o.recipe_link
+                            , ingr_index
+                            , LINK_STYLE_DEFAULT)
+        if 0 < ingr_ct and ingr_link and ingr_link ~= "" then
+            local mr = MatRow:FromLink(ingr_link, ingr_ct)
+            table.insert(o.mat_list, mr)
         end
     end
     return o
@@ -655,18 +661,7 @@ function Parser:ParseItemLink(item_link)
 end
 
 function Parser:ToMatList()
-    local MatRow = WritWorthy.MatRow
-    if not self.recipe then return Fail("WritWorthy bug: self.recipe is nil") end
-    local ml     = {}
-    for ingr_name, ingr_ct in pairs(self.recipe.mat_table) do
-        local mr = MatRow:FromName(ingr_name, ingr_ct)
-        if not mr then
-            return Fail("WritWorthy: ingredient not known:".. tostring(ingr_name))
-        end
-        table.insert(ml, mr)
-    end
-    self.mat_list = ml
-    return ml
+    return self.recipe.mat_list
 end
 
 function Parser:ToKnowList()
