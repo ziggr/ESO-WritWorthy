@@ -1,5 +1,10 @@
 [B]2.7.6 2017-02-25[/B]
 [LIST]
+[*]Stop crashing auf Deutsch. When building recipe ingredient lists out of ZOS-returned data, use item links, not names, as element keys. All WritWorthy text is still in US English. The only change here is that it can run correctly when the ESO client is set to German.
+[/LIST]
+
+[B]2.7.6 2017-02-25[/B]
+[LIST]
 [*]Survive without Master Merchant. If missing, or if its database lacks some required materials, display "?g" for "unknown amount of gold" and don't count materials costs when calculating per-voucher cost.
 [/LIST]
 

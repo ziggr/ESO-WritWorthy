@@ -7,7 +7,7 @@ local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 local LAM2 = LibStub("LibAddonMenu-2.0")
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "2.7.6"
+WritWorthy.version         = "2.7.7"
 WritWorthy.savedVarVersion = 1
 WritWorthy.default = {
     enable_mat_list_chat = false
