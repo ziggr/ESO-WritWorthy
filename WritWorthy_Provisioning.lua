@@ -9,6 +9,7 @@ WritWorthy.Provisioning = {
 local Provisioning = WritWorthy.Provisioning
 local Util         = WritWorthy.Util
 local Fail         = WritWorthy.Util.Fail
+local Log          = WritWorthy.Log
 
 -- Recipe item_id list from @Phinix's most excellent ESO Master Recipe List
 -- which in turn got much of its data from @Sneak-Thief's ESO Master Provisioning Database
@@ -597,14 +598,17 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     local MatRow = WritWorthy.MatRow
 
     local o = Recipe:New({ fooddrink_item_id= fooddrink_item_id })
+    Log:Add("fooddrink_item_id:"..tostring(fooddrink_item_id))
     o.recipe_item_id = Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID[fooddrink_item_id]
+    Log:Add("recipe_item_id:"..tostring(o.recipe_item_id))
     if not o.recipe_item_id then return nil end
     o.recipe_link = string.format(
               "|H1:item:%d:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
             , o.recipe_item_id
             )
     o.is_known = IsItemLinkRecipeKnown(o.recipe_link)
-
+    Log:Add("recipe_link:"..tostring(o.recipe_link))
+    Log:Add("is_known:"..tostring(o.is_known))
     local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
     for ingr_index = 1,mat_ct do
         local _, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
@@ -647,7 +651,8 @@ local Parser = Provisioning.Parser
 
 function Parser:New()
     local o = {
-        recipe = nil -- Recipe{}
+        class           = "smithing"
+    ,   recipe          = nil -- Recipe{}
     }
     setmetatable(o, self)
     self.__index = self

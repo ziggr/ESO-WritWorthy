@@ -47,6 +47,7 @@ function WritWorthy.CreateParser(item_link)
     local parser_class = WritWorthy.ICON_TO_PARSER[icon]
     if not parser_class then return nil end
     Log:StartNewEvent()
+    Log:Add(GenerateMasterWritBaseText(item_link))
     Log:Add(item_link)
     return parser_class:New()
 end
