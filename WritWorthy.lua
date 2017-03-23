@@ -22,6 +22,7 @@ WritWorthy.default = {
 
 local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
+local Log  = WritWorthy.Log
 
 WritWorthy.ICON_TO_PARSER = {
     ["/esoui/art/icons/master_writ_blacksmithing.dds"] = WritWorthy.Smithing.Parser
@@ -45,6 +46,7 @@ function WritWorthy.CreateParser(item_link)
     local icon, _, _, _, item_style = GetItemLinkInfo(item_link)
     local parser_class = WritWorthy.ICON_TO_PARSER[icon]
     if not parser_class then return nil end
+    Log:StartNewEvent({item_link = item_link})
     return parser_class:New()
 end
 
@@ -265,6 +267,7 @@ function WritWorthy:Initialize()
                             , nil
                             , self.default
                             )
+    self.savedVariables.log = Log
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
