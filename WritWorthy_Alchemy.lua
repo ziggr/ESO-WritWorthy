@@ -10,6 +10,7 @@ WritWorthy.Alchemy = {
 local Alchemy = WritWorthy.Alchemy
 local Util    = WritWorthy.Util
 local Fail    = WritWorthy.Util.Fail
+local Log     = WritWorthy.Log
 
 WritWorthy.Alchemy.Effect  = {}
 WritWorthy.Alchemy.Reagent = {}
@@ -209,6 +210,20 @@ function Alchemy.Winner( effect1,  effect2,  effect3
     return false
 end
 
+-- Return a list of three reagents, sorted by name
+function Alchemy.NameLessThan(a, b)
+    if a and b then
+        return a.name < b.name
+    end
+    if b then           -- nil < non-nil
+        return true
+    end
+    if a then           -- non-nil > nil
+        return false
+    end
+    return false        -- nil == nil
+end
+
 -- A "reagent_three" or "r3" is a 3-tuple of Reagent.
 
 function Alchemy.ToReagentThreeList(effect1, effect2, effect3)
@@ -252,8 +267,14 @@ function Alchemy.ToReagentThreeList(effect1, effect2, effect3)
                         seen[rkey] = true
                         if Alchemy.Winner( effect1,  effect2,  effect3
                                          , reagent1, reagent2, reagent3 ) then
-
-                            table.insert(r3list, { reagent1, reagent2, reagent3 } )
+                                    -- Sorting here not required, just makes
+                                    -- display a bit tidier.
+                            local r3 = { reagent1, reagent2, reagent3 }
+                            table.sort(r3, Alchemy.NameLessThan)
+                            Log:Add("r3list:"..r3[1].name
+                                       .."  "..r3[2].name
+                                       .."  "..r3[3].name)
+                            table.insert(r3list, r3 )
                         end
                     end
                 end
@@ -270,12 +291,7 @@ local Parser = Alchemy.Parser
 
 function Parser:New()
     local o = {
-        base_text       = nil   -- "Consume to start quest"
-                                -- "\nCraft a Damage Stamina Poison IX"
-                                -- " with the following properties:"
-                                -- " Vitality,"
-                                -- " Increase Armor,"
-                                -- " Ravage Stamina
+        class           = "alchemy"
     ,   is_poison       = nil   -- if false, "Potion". If true, "Poison"
     ,   effects         = {}    -- { VITALITY, INCREASE_ARMOR, RAVAGE_STAMINA }
     ,   r3list          = {}    -- { list of { Reagent 3-tuple }, { Reagent 3-tuple} ... }
@@ -290,11 +306,22 @@ function Parser:ParseItemLink(item_link)
     local fields      = Util.ToWritFields(item_link)
     local solvent_id  = fields.writ1
     self.is_poison    = solvent_id == 239 -- Lorkhan's Tears
-    for _, effect_id in ipairs({ fields.writ2
+    Log:Add("solvent_id:"..tostring(solvent_id))
+    Log:Add("is_poison:"..tostring(self.is_poison))
+    for i, effect_id in ipairs({ fields.writ2
                                , fields.writ3
                                , fields.writ4 }) do
         local effect = Alchemy.Effects[effect_id]
-        table.insert(self.effects, effect)
+        if effect then
+            Log:Add("effect_id:"..tostring(effect_id)
+                    .." name:"..tostring(effect.name))
+            table.insert(self.effects, effect)
+        else
+            Log:Add("effect_id:"..tostring(effect_id)
+                    .." pos:"..tostring(i)
+                    .." unknown")
+            return Fail("Unknown potion effect:"..tostring(effect_id))
+        end
     end
     self.r3list = Alchemy.ToReagentThreeList( self.effects[1]
                                             , self.effects[2]
@@ -325,6 +352,7 @@ function Parser:ToMatList()
         local mat_list = { r3[1].mat, r3[2].mat, r3[3].mat }
         local mat_total = MatRow.ListTotal(mat_list)
         if not mat_total then
+            Log:Add("no total")
             min_gold = WritWorthy.GOLD_UNKNOWN
             min_r3   = r3
             break

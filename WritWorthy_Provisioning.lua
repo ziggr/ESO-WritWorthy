@@ -580,7 +580,8 @@ Provisioning.Recipe  = {}
 local Recipe = Provisioning.Recipe
 function Recipe:New(args)
     local o = {
-        fooddrink_item_id = args.fooddrink_item_id  -- int(33526)
+        class             = "provisioning"
+    ,   fooddrink_item_id = args.fooddrink_item_id  -- int(33526)
     ,   recipe_item_id    = args.recipe_item_id     -- int(45888)
     ,   recipe_link       = args.recipe_link        -- "|H1:item:45888:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
     ,   is_known          = args.is_known           -- true

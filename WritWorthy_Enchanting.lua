@@ -132,9 +132,7 @@ local Parser = Enchanting.Parser
 
 function Parser:New()
     local o = {
-        base_text       = nil   -- "Consume to start quest"
-                                -- "\nCraft a Superb Glyph of Absorb Health;"
-                                -- " Quality: Epic"
+        class           = "enchanting"
     ,   glyph           = nil   -- Glyph
     ,   aspect_rune     = nil   -- REKUTA
     ,   potency_rune    = nil   -- REJERA

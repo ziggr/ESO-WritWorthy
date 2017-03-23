@@ -46,7 +46,8 @@ function WritWorthy.CreateParser(item_link)
     local icon, _, _, _, item_style = GetItemLinkInfo(item_link)
     local parser_class = WritWorthy.ICON_TO_PARSER[icon]
     if not parser_class then return nil end
-    Log:StartNewEvent({item_link = item_link})
+    Log:StartNewEvent()
+    Log:Add(item_link)
     return parser_class:New()
 end
 
@@ -56,6 +57,7 @@ end
 function WritWorthy.ToMatKnowList(item_link)
     local parser = WritWorthy.CreateParser(item_link)
     if not parser then return nil end
+    Log:Add(parser.class)
     if not parser:ParseItemLink(item_link) then
         return Fail("WritWorthy: could not parse.")
     end
@@ -267,7 +269,10 @@ function WritWorthy:Initialize()
                             , nil
                             , self.default
                             )
-    self.savedVariables.log = Log
+    if self.savedVariables.log then
+        Log:LoadPreviousQueue(self.savedVariables.log)
+    end
+    self.savedVariables.log = Log.q
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)

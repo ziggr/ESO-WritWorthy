@@ -663,12 +663,7 @@ local Parser = Smithing.Parser
 
 function Parser:New()
     local o = {
-        base_text       = nil   -- "Consume to start quest"
-                                -- "\nCraft a Rubedite Sword;"
-                                -- " Quality: Legendary;"
-                                -- " Trait: Defending;"
-                                -- " Set: Way of the Arena;"
-                                -- " Style: Primal"
+        class           = "smithing"
     ,   request_item    = nil   -- Smithing.REQUEST_ITEMS[n]
     ,   set_bonus       = nil   -- Smithing.SET_BONUS[n]
     ,   trait_num       = nil   -- ITEM_TRAIT_TYPE_WEAPON_DEFENDING
