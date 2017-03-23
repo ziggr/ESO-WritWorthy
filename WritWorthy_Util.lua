@@ -7,6 +7,7 @@ WritWorthy.GOLD_UNKNOWN = nil
 
 function Util.Fail(msg)
     d(msg)
+    WritWorthy.Log:Add(msg)
 end
 
 -- Break an item_link string into its numeric pieces

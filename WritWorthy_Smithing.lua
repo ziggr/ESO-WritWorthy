@@ -7,6 +7,7 @@ WritWorthy.Smithing = {}
 local Smithing = WritWorthy.Smithing
 local Util     = WritWorthy.Util
 local Fail     = WritWorthy.Util.Fail
+local Log      = WritWorthy.Log
 
 -- Schools: HVY MED LGT WOOD -------------------------------------------------
 --
@@ -687,15 +688,26 @@ function Parser:ParseItemLink(item_link)
     local motif_num     = fields.writ6
 
     self.request_item   = Smithing.REQUEST_ITEMS[item_num]
+    Log:Add("request_item:"..tostring(item_num).." "
+            ..tostring(self.request_item.item_name))
     self.set_bonus      = Smithing.SET_BONUS[set_num]
     if not self.set_bonus then return Fail("set not found "..tostring(set_num)) end
+    Log:Add("set_bonus:"..tostring(set_num))
+    Log:Add(self.set_bonus)
     self.trait          = self.request_item.trait_set[trait_num]
     self.trait_num      = trait_num
+    Log:Add("trait:"..tostring(trait_num))
+    Log:Add(self.trait)
     self.motif_num      = motif_num
     self.motif          = Smithing.MOTIF[motif_num]
+    Log:Add("motif:"..tostring(motif_num))
+    Log:Add(self.motif)
     if not self.motif then return Fail("motif not found "..tostring(motif_num)) end
     self.improve_level  = Smithing.QUALITY[quality_num]
-    if not self.improve_level then return Fail("quality not found "..tostring(quality_num)) end
+    Log:Add("improve:"..tostring(quality_num))
+    Log:Add(self.improve_level)
+    if not self.improve_level then
+        return Fail("quality not found "..tostring(quality_num)) end
     return self
 end
 
@@ -740,8 +752,8 @@ function Parser:ToKnowList()
                         -- surprises us by subtracting 1 from its argument.
     local MYSTERY_OFFSET = 1
     local motif_known = IsSmithingStyleKnown(self.motif_num + MYSTERY_OFFSET)
-
-    -- d("IsSmithingStyleKnown("..tostring(self.motif_num).." +1) = "..tostring(motif_known))
+    Log:Add("motif book IsSmithingStyleKnown("
+            ..tostring(self.motif_num).."+1) = "..tostring(motif_known))
 
                         -- If the above check failed, and the motif has
                         -- individual pages, check those. For some reason,
@@ -752,8 +764,19 @@ function Parser:ToKnowList()
                                   self.motif.pages_id
                                 , self.request_item.motif_page)
         motif_known = 0 < completed_ct
-        -- d("GetAchievementCriterion("..tostring(self.motif.pages_id)
-        -- ..",  "..tostring(self.request_item.motif_page)..") = "..tostring(completed_ct))
+        Log:Add("motif page GetAchievementCriterion("
+                .."pages_id="..tostring(self.motif.pages_id)
+                ..", req.page="..tostring(self.request_item.motif_page)
+                ..") = "..tostring(completed_ct))
+                        -- Debug dump all 14 pages of this motif
+        local pg_known = {}
+        for pg = 1,14 do
+            local _, completed_ct = GetAchievementCriterion(
+                                  self.motif.pages_id
+                                , pg )
+            pg_known[pg] = completed_ct
+        end
+        Log:Add("pages known:"..table.concat(pg_known, " "))
     end
     local title = string.format("motif %s", self.motif.motif_name)
     local msg   = string.format("Motif %s not known", self.motif.motif_name)
@@ -767,11 +790,19 @@ function Parser:ToKnowList()
                               self.request_item.school.trade_skill_type
                             , self.request_item.research_line )
     line_name = line_name:lower()
-
+    Log:Add("GetSmithingResearchLineInfo("
+            .."skill="..tostring(self.request_item.school.trade_skill_type)
+            ..", line="..tostring(self.request_item.research_line)
+            ..") = " ..tostring(line_name))
     local _,_,trait_known = GetSmithingResearchLineTraitInfo(
                               self.request_item.school.trade_skill_type
                             , self.request_item.research_line
                             , self.trait.trait_index )
+    Log:Add("GetSmithingResearchLineTraitInfo("
+            .."skill="..tostring(self.request_item.school.trade_skill_type)
+            ..", line="..tostring(self.request_item.research_line)
+            ..", trait="..tostring(self.trait.trait_index)
+            ..") = " ..tostring(trait_known))
     local title = string.format("trait %s %s", self.trait.trait_name, line_name)
     local msg   = string.format("Trait %s %s not known", self.trait.trait_name, line_name)
     table.insert(r, Know:New({ name     = title
@@ -782,15 +813,23 @@ function Parser:ToKnowList()
                         -- Do you know enough traits to craft this set bonus?
     if self.set_bonus and self.set_bonus.trait_ct then
         local known_trait_ct = 0
+        local known_t = {}
         for trait_num, trait in pairs(self.request_item.trait_set) do
             local _,_,known = GetSmithingResearchLineTraitInfo(
                                       self.request_item.school.trade_skill_type
                                     , self.request_item.research_line
                                     , trait.trait_index )
+            local value = 0
             if known then
-                known_trait_ct = known_trait_ct + 1
+                value = 1
             end
+            known_trait_ct = known_trait_ct + value
+            known_t[trait.trait_index] = value
         end
+        Log:Add("known traits for "
+                .."GSRLTI(skill="..tostring(self.request_item.school.trade_skill_type)
+                ..", line="..tostring(self.request_item.research_line)
+                ..", trait_index=?):"..table.concat(known_t," "))
         local title = string.format( "%d traits for set bonus", self.set_bonus.trait_ct)
         local msg   = string.format( "%d of %d traits required for set %s"
                                , known_trait_ct

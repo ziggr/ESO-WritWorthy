@@ -3,6 +3,7 @@ local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
 
 WritWorthy.Know = {}
 local Know = WritWorthy.Know
+local Log  = WritWorthy.Log
 
 
 -- Know ====================================================================
@@ -17,6 +18,9 @@ function Know:New(args)
     }
     setmetatable(o, self)
     self.__index = self
+    Log:Add("is_known:"..tostring(args.is_known)
+            .." name:"..tostring(args.name)
+            .." lack_msg:"..tostring(args.lack_msg))
     return o
 end
 
