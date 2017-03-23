@@ -11,8 +11,16 @@ Not interested in writs that require something that you cannot craft?
 
 This add-on shows big red warnings when writ requires a motif, trait, or recipe that the current character does not yet know.
 
+It also optionally dumps a complete material list to chat. Surprisingly useful when filling Alchemy writs.
 
-It also dumps a complete material list to chat.
+
+[B]Reporting Errors[/B]
+WritWorthy now writes a small debugging log to [I]SavedVariables\WritWorthy.lua[/I]. This should help me identify what it is about the master writ that triggers a bug in WritWorthy. Please send (or upload to imgur or gist.github.com or whatever):
+[LIST=1]
+[*] screenshot of the offending writ. You might have to move a UI Error dialog out of the way to make the shot.
+[*] /reloadui to cause the log to write to SavedVariables
+[*] [I]SavedVariables\WritWorthy.lua[\I]
+[/LIST]
 
 
 Requires [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] for material prices.
