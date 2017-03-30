@@ -1,3 +1,8 @@
+[B]2.7.9 2017-03-22[/B]
+[LIST]
+[*]AHA Found the "Trait not known" bug for medium armor: when a writ required a trait for some medium armor piece (such as belt), WritWorthy erroneously checked the [I]light[/i] armor piece (such as sash).
+[/LIST]
+
 [B]2.7.8 2017-03-22[/B]
 [LIST]
 [*]Debug log: records details about the 20 most recent writs. If there's a problem with a writ, send a screenshot of the offending writ (or the UI error), and a screenshot of the writ that caused the problem. This ought to help me figure out what's going wrong.
