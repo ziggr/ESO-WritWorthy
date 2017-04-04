@@ -250,6 +250,20 @@ function WritWorthy:CreateSettingsWindow()
                         self.savedVariables.enable_mat_list_chat = e
                       end
         },
+
+
+        { type      = "checkbox"
+        , name      = "M.M. Fallback: hardcoded prices if no M.M. data"
+        , tooltip   = "If M.M. has no price average for some materials:"
+                      .."\n* use 15g for basic style materials such as Molybdenum"
+                      .."\n* use 5g for common trait materials such as Quartz."
+        , getFunc   = function()
+                        return self.savedVariables.enable_mm_fallback
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_mm_fallback = e
+                      end
+        },
     }
 
     LAM2:RegisterOptionControls("WritWorthy", optionsData)

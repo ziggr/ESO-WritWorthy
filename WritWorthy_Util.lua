@@ -109,9 +109,13 @@ function Util.MMPrice(link)
                         --
                         -- MasterMerchant lacks an API to control time range,
                         -- it does this internally by polling the state of
-                        -- control/shift-key modifiers (!) so we monkey-patch
-                        -- MM with our own code that ignores modifier keys
-                        -- and always returns a LOOONG time range
+                        -- control/shift-key modifiers (!).
+                        --
+                        -- So instead of using a non-existent API, we
+                        -- monkey-patch MM with our own code that ignores
+                        -- modifier keys and always returns a LOOONG time
+                        -- range.
+                        --
     local save_tc = MasterMerchant.TimeCheck
     MasterMerchant.TimeCheck
         = function(self)
@@ -120,6 +124,13 @@ function Util.MMPrice(link)
           end
     mm = MasterMerchant:itemStats(link, false)
     MasterMerchant.TimeCheck = save_tc
+
+                        -- No M.M. price? If permitted, look for a
+                        -- hardcoded price.
+    if (not mm) and WritWorthy.savedVariables.enable_mm_fallback then
+        local mm_fb = WritWorthy.FallbackPrice(link)
+        if mm_fb then return mm_fb end
+    end
 
     if not mm then return WritWorthy.GOLD_UNKNOWN end
     return mm.avgPrice

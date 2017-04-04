@@ -22,6 +22,7 @@ Libs/LibAddonMenu-2.0/controls/texture.lua
 Libs/LibAddonMenu-2.0/controls/iconpicker.lua
 
 WritWorthy_Define.lua
+WritWorthy_Price.lua
 WritWorthy_Util.lua
 WritWorthy_Log.lua
 WritWorthy_Smithing.lua
