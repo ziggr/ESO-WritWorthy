@@ -2,7 +2,7 @@
 --
 -- Operate as a fixed-length queue of the N most recent writs.
 
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 WritWorthy.Log = {
     q = {

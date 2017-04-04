@@ -1,6 +1,6 @@
 -- Parse a potion or poison request.
 
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 WritWorthy.Enchanting = {
     Glyphs = {} -- "Absorb Health"  --> Glyph("Absorb Health", OKO, SUB)

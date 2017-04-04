@@ -1,6 +1,6 @@
 -- Parse an alchemy request
 
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 WritWorthy.Alchemy = {
     Effects  = {} -- "Speed" --> SPEED

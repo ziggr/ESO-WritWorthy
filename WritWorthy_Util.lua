@@ -1,4 +1,5 @@
-WritWorthy = {}
+
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 WritWorthy.Util = {}
 local Util = WritWorthy.Util

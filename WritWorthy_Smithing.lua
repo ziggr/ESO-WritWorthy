@@ -1,6 +1,6 @@
 -- Parse a Blacksmithing/Clothier/Woodworking master writ.
 
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 WritWorthy.Smithing = {}
 

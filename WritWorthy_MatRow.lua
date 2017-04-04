@@ -1,5 +1,5 @@
 
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 WritWorthy.MatRow = {}
 local MatRow = WritWorthy.MatRow

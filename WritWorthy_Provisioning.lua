@@ -1,6 +1,6 @@
 -- Parse a food or dring request.
 
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 WritWorthy.Provisioning = {
     savedVarVersion = 2

@@ -1,4 +1,4 @@
-local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Util.lua
+local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
 -- A big table of links that lets me maintain all my OTHER data tables with
 -- nice human-readable strings like "dreugh wax" instead of
