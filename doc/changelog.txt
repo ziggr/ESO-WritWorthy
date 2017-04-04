@@ -1,3 +1,8 @@
+[B]2.7.10 2017-04-04[/B]
+[LIST]
+[*] Option to fall back to hardcoded prices for common style and trait materials.
+[/LIST]
+
 [B]2.7.9 2017-03-22[/B]
 [LIST]
 [*]AHA Found the "Trait not known" bug for medium armor: when a writ required a trait for some medium armor piece (such as belt), WritWorthy erroneously checked the [I]light[/i] armor piece (such as sash).
