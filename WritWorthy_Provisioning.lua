@@ -610,6 +610,7 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     Log:Add("recipe_link:"..tostring(o.recipe_link))
     Log:Add("is_known:"..tostring(o.is_known))
     local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
+    local cook_ct = 2 -- Usually need to craft 2x batches for master writs
     for ingr_index = 1,mat_ct do
         local _, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
                               o.recipe_link
@@ -619,7 +620,7 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
                             , ingr_index
                             , LINK_STYLE_DEFAULT)
         if 0 < ingr_ct and ingr_link and ingr_link ~= "" then
-            local mr = MatRow:FromLink(ingr_link, ingr_ct)
+            local mr = MatRow:FromLink(ingr_link, ingr_ct * cook_ct)
             table.insert(o.mat_list, mr)
         end
     end
