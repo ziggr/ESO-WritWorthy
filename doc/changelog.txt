@@ -1,3 +1,10 @@
+[B]3.0.1 2017-05-21[/B]
+[LIST]
+[*] ESO 3.0 Morrowind/API 19
+[*] Temporary workaround: some item style constants changed in the new API and until I can figure out the new ones, use magic numbers. WritWorthy might report incorrect known/unknown results for these three motifs: Skinchanger, Grim Harlequin, Hollowjack.
+[*] Provisioning: require 2x crafting attempts, since most Provisioning writs seem to require 8 servings. (I assume any character performing master writs will have Chef/Brewer/Chemistry passive skills maxxed out.)
+[/LIST]
+
 [B]2.7.10 2017-04-04[/B]
 [LIST]
 [*] Option to fall back to hardcoded prices for common style and trait materials.
