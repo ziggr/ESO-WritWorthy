@@ -186,33 +186,51 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_AREA_YOKUDAN         ] = { mat_name = "ferrous salts"       , motif_name = "Yokudan"              , pages_id  = 1713 } -- 35
 ,   [ITEMSTYLE_UNIVERSAL            ] = nil --                             , motif_name = "unused"               } -- 36
 ,   [ITEMSTYLE_AREA_REACH_WINTER    ] = nil --                             , motif_name = "Reach Winter"         } -- 37
-,   [ITEMSTYLE_ORG_WORM_CULT        ] = nil --                             , motif_name = "Worm Cult"            } -- 38
+,   [ITEMSTYLE_AREA_TSAESCI         ] = nil --                             , motif_name = "Worm Cult"            } -- 38
 ,   [ITEMSTYLE_ENEMY_MINOTAUR       ] = { mat_name = "oxblood fungus"      , motif_name = "Minotaur"             , pages_id  = 1662 } -- 39
 ,   [ITEMSTYLE_EBONY                ] = { mat_name = "night pumice"        , motif_name = "Ebony"                , pages_id  = 1798 } -- 40
 ,   [ITEMSTYLE_ORG_ABAHS_WATCH      ] = { mat_name = "polished shilling"   , motif_name = "Abah's Watch"         , pages_id  = 1422 } -- 41
---,   [ITEMSTYLE_ENEMY_SKINCHANGER    ] = { mat_name = "wolfsbane incense"   , motif_name = "Skinchanger"          , pages_id  = 1676 } -- 42
-,   [42                             ] = { mat_name = "wolfsbane incense"   , motif_name = "Skinchanger"          , pages_id  = 1676 } -- 42
-,   [ITEMSTYLE_ORG_MORAG_TONG       ] = nil --                             , motif_name = "Morag Tong"           } -- 43
+,   [ITEMSTYLE_HOLIDAY_SKINCHANGER  ] = { mat_name = "wolfsbane incense"   , motif_name = "Skinchanger"          , pages_id  = 1676 } -- 42
+,   [ITEMSTYLE_ORG_MORAG_TONG       ] = { mat_name = "boiled carapace"     , motif_name = "Morag Tong"                              } -- 43  PAGES
 ,   [ITEMSTYLE_AREA_RA_GADA         ] = { mat_name = "ancient sandstone"   , motif_name = "Ra Gada"              , pages_id  = 1797 } -- 44
 ,   [ITEMSTYLE_ENEMY_DROMOTHRA      ] = { mat_name = "defiled whiskers"    , motif_name = "Dro-m'Athra"          , pages_id  = 1659 } -- 45
 ,   [ITEMSTYLE_ORG_ASSASSINS        ] = { mat_name = "tainted blood"       , motif_name = "Assassins League"     , pages_id  = 1424 } -- 46
 ,   [ITEMSTYLE_ORG_OUTLAW           ] = { mat_name = "rogue's soot"        , motif_name = "Outlaw"               , pages_id  = 1417 } -- 47
 -- gap in numbering introduced in ESO 3.0.5 Morrowind
-,   [ITEMSTYLE_UNUSED11             ] = nil --                             , motif_name = Unused 11"             } -- 70
-,   [ITEMSTYLE_UNUSED12             ] = nil --                             , motif_name = Unused 12"             } -- 71
-,   [ITEMSTYLE_UNUSED13             ] = nil --                             , motif_name = Unused 13"             } -- 72
-,   [ITEMSTYLE_UNUSED14             ] = nil --                             , motif_name = Unused 14"             } -- 73
-,   [ITEMSTYLE_UNUSED15             ] = nil --                             , motif_name = Unused 15"             } -- 74
-,   [ITEMSTYLE_UNUSED16             ] = { mat_name = "stahlrim shard"      , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 75
-,   [ITEMSTYLE_UNUSED17             ] = nil --                             , motif_name = Unused 17"             } -- 76
-,   [ITEMSTYLE_UNUSED18             ] = nil --                             , motif_name = Unused 18"             } -- 77
-,   [ITEMSTYLE_UNUSED19             ] = { mat_name = "distilled slowsilver", motif_name = "Silken Ring"          , pages_id  = 1796 } -- 78
-,   [ITEMSTYLE_UNUSED20             ] = { mat_name = "leviathan scrimshaw" , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 79
---,   [ITEMSTYLE_UNUSED21             ] = { mat_name = "grinstones"          , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 80
-,   [80                             ] = { mat_name = "grinstones"          , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 80
---,   [ITEMSTYLE_UNUSED22             ] = { mat_name = "amber marble"        , motif_name = "Hollowjack"           , pages_id  = 1545 } -- 81
-,   [81                             ] = { mat_name = "amber marble"        , motif_name = "Hollowjack"           , pages_id  = 1545 } -- 81
-,   [82                             ] = nil --                                                                   } -- 60
+
+,   [ITEMSTYLE_ORG_REDORAN           ] = nil --                             , motif_name = Unused 11"             } -- 48
+,   [ITEMSTYLE_ORG_HLAALU            ] = nil --                             , motif_name = Unused 11"             } -- 49
+,   [ITEMSTYLE_ORG_ORDINATOR         ] = nil --                             , motif_name = Unused 11"             } -- 50
+,   [ITEMSTYLE_ORG_TELVANNI          ] = nil --                             , motif_name = Unused 11"             } -- 51
+,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER   ] = { mat_name = "volcanic viridian"   , motif_name = "Buoyant Armiger"                          } -- 52   PAGES
+,   [ITEMSTYLE_HOLIDAY_FROSTCASTER   ] = { mat_name = "stahlrim shard"      , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 53
+,   [ITEMSTYLE_AREA_ASHLANDER        ] = { mat_name = "ash canvas"          , motif_name = "Ashlander"                                } -- 54  PAGES
+,   [ITEMSTYLE_ORG_WORM_CULT         ] = nil --                             , motif_name = Unused 11"             } -- 55
+,   [ITEMSTYLE_ENEMY_SILKEN_RING     ] = { mat_name = "distilled slowsilver", motif_name = "Silken Ring"          , pages_id  = 1796 } -- 56
+,   [ITEMSTYLE_ENEMY_MAZZATUN        ] = { mat_name = "leviathan scrimshaw" , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 57
+,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN] = { mat_name = "grinstones"          , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 58
+,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK    ] = { mat_name = "amber marble"        , motif_name = "Hollowjack"           , pages_id  = 1545 } -- 59
+,   [ITEMSTYLE_UNUSED1               ] = nil --                             , motif_name = Unused 11"             } -- 60
+,   [ITEMSTYLE_UNUSED2               ] = nil --                             , motif_name = Unused 11"             } -- 61
+,   [ITEMSTYLE_UNUSED3               ] = nil --                             , motif_name = Unused 11"             } -- 62
+,   [ITEMSTYLE_UNUSED4               ] = nil --                             , motif_name = Unused 11"             } -- 63
+,   [ITEMSTYLE_UNUSED5               ] = nil --                             , motif_name = Unused 11"             } -- 64
+,   [ITEMSTYLE_UNUSED6               ] = nil --                             , motif_name = Unused 11"             } -- 65
+,   [ITEMSTYLE_UNUSED7               ] = nil --                             , motif_name = Unused 11"             } -- 66
+,   [ITEMSTYLE_UNUSED8               ] = nil --                             , motif_name = Unused 11"             } -- 67
+,   [ITEMSTYLE_UNUSED9               ] = nil --                             , motif_name = Unused 11"             } -- 68
+,   [ITEMSTYLE_UNUSED10              ] = nil --                             , motif_name = Unused 11"             } -- 69
+,   [ITEMSTYLE_UNUSED11              ] = nil --                             , motif_name = Unused 11"             } -- 70
+,   [ITEMSTYLE_UNUSED12              ] = nil --                             , motif_name = Unused 11"             } -- 71
+,   [ITEMSTYLE_UNUSED13              ] = nil --                             , motif_name = Unused 11"             } -- 72
+,   [ITEMSTYLE_UNUSED14              ] = nil --                             , motif_name = Unused 11"             } -- 73
+,   [ITEMSTYLE_UNUSED15              ] = nil --                             , motif_name = Unused 11"             } -- 74
+,   [ITEMSTYLE_UNUSED16              ] = nil --                             , motif_name = Unused 11"             } -- 75
+,   [ITEMSTYLE_UNUSED17              ] = nil --                             , motif_name = Unused 11"             } -- 76
+,   [ITEMSTYLE_UNUSED18              ] = nil --                             , motif_name = Unused 11"             } -- 77
+,   [ITEMSTYLE_UNUSED19              ] = nil --                             , motif_name = Unused 11"             } -- 78
+,   [ITEMSTYLE_UNUSED20              ] = nil --                             , motif_name = Unused 11"             } -- 79
+,   [ITEMSTYLE_MAX_VALUE             ] = nil --                             , motif_name = Unused 11"             } -- 79
 }
 
 -- Motif page numbers --------------------------------------------------------
