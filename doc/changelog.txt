@@ -1,3 +1,9 @@
+[B]3.0.2 2017-05-28[/B]
+[LIST]
+[*] Morrowind API: replace temporary workaround numbers with actual constants for new styles. Thank you @Rhyono for the CraftStore Morrowind update which had all the quest IDs I needed for the "which pages do you know?" query.
+[*] BugFix: never had a quest ID for the "Order of the Hour" motif. Now I do.
+[/LIST]
+
 [B]3.0.1 2017-05-21[/B]
 [LIST]
 [*] ESO 3.0 Morrowind/API 19
