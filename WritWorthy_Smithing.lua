@@ -164,7 +164,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_DEITY_MALACATH       ] = { mat_name = "potash"              , motif_name = "Malacath"             , pages_id  = 1412 } -- 13
 ,   [ITEMSTYLE_AREA_DWEMER          ] = { mat_name = "dwemer frame"        , motif_name = "Dwemer"               , pages_id  = 1144 } -- 14
 ,   [ITEMSTYLE_AREA_ANCIENT_ELF     ] = { mat_name = "palladium"           , motif_name = "Ancient Elf"          , is_simple = true } -- 15
-,   [ITEMSTYLE_DEITY_AKATOSH        ] = { mat_name = "pearl sand"          , motif_name = "Order of the Hour"    } -- 16
+,   [ITEMSTYLE_DEITY_AKATOSH        ] = { mat_name = "pearl sand"          , motif_name = "Order of the Hour"    , pages_id  = 1660 } -- 16
 ,   [ITEMSTYLE_AREA_REACH           ] = { mat_name = "copper"              , motif_name = "Barbaric"             , is_simple = true } -- 17
 ,   [ITEMSTYLE_ENEMY_BANDIT         ] = nil --                             , motif_name = "Bandit"               } -- 18
 ,   [ITEMSTYLE_ENEMY_PRIMITIVE      ] = { mat_name = "argentum"            , motif_name = "Primal"               , is_simple = true } -- 19
@@ -191,20 +191,18 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_EBONY                ] = { mat_name = "night pumice"        , motif_name = "Ebony"                , pages_id  = 1798 } -- 40
 ,   [ITEMSTYLE_ORG_ABAHS_WATCH      ] = { mat_name = "polished shilling"   , motif_name = "Abah's Watch"         , pages_id  = 1422 } -- 41
 ,   [ITEMSTYLE_HOLIDAY_SKINCHANGER  ] = { mat_name = "wolfsbane incense"   , motif_name = "Skinchanger"          , pages_id  = 1676 } -- 42
-,   [ITEMSTYLE_ORG_MORAG_TONG       ] = { mat_name = "boiled carapace"     , motif_name = "Morag Tong"                              } -- 43  PAGES
+,   [ITEMSTYLE_ORG_MORAG_TONG       ] = { mat_name = "boiled carapace"     , motif_name = "Morag Tong"           , pages_id  = 1933 } -- 43
 ,   [ITEMSTYLE_AREA_RA_GADA         ] = { mat_name = "ancient sandstone"   , motif_name = "Ra Gada"              , pages_id  = 1797 } -- 44
 ,   [ITEMSTYLE_ENEMY_DROMOTHRA      ] = { mat_name = "defiled whiskers"    , motif_name = "Dro-m'Athra"          , pages_id  = 1659 } -- 45
 ,   [ITEMSTYLE_ORG_ASSASSINS        ] = { mat_name = "tainted blood"       , motif_name = "Assassins League"     , pages_id  = 1424 } -- 46
 ,   [ITEMSTYLE_ORG_OUTLAW           ] = { mat_name = "rogue's soot"        , motif_name = "Outlaw"               , pages_id  = 1417 } -- 47
--- gap in numbering introduced in ESO 3.0.5 Morrowind
-
 ,   [ITEMSTYLE_ORG_REDORAN           ] = nil --                             , motif_name = Unused 11"             } -- 48
 ,   [ITEMSTYLE_ORG_HLAALU            ] = nil --                             , motif_name = Unused 11"             } -- 49
-,   [ITEMSTYLE_ORG_ORDINATOR         ] = nil --                             , motif_name = Unused 11"             } -- 50
+,   [ITEMSTYLE_ORG_ORDINATOR         ] = { mat_name = "lustrous sphalerite" , motif_name = "Militant Ordinator"  , pages_id   = 1935  } -- 50
 ,   [ITEMSTYLE_ORG_TELVANNI          ] = nil --                             , motif_name = Unused 11"             } -- 51
-,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER   ] = { mat_name = "volcanic viridian"   , motif_name = "Buoyant Armiger"                          } -- 52   PAGES
+,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER   ] = { mat_name = "volcanic viridian"   , motif_name = "Buoyant Armiger"      , pages_id  = 1934  } -- 52
 ,   [ITEMSTYLE_HOLIDAY_FROSTCASTER   ] = { mat_name = "stahlrim shard"      , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 53
-,   [ITEMSTYLE_AREA_ASHLANDER        ] = { mat_name = "ash canvas"          , motif_name = "Ashlander"                                } -- 54  PAGES
+,   [ITEMSTYLE_AREA_ASHLANDER        ] = { mat_name = "ash canvas"          , motif_name = "Ashlander"            , pages_id  = 1932  } -- 54
 ,   [ITEMSTYLE_ORG_WORM_CULT         ] = nil --                             , motif_name = Unused 11"             } -- 55
 ,   [ITEMSTYLE_ENEMY_SILKEN_RING     ] = { mat_name = "distilled slowsilver", motif_name = "Silken Ring"          , pages_id  = 1796 } -- 56
 ,   [ITEMSTYLE_ENEMY_MAZZATUN        ] = { mat_name = "leviathan scrimshaw" , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 57
