@@ -692,6 +692,7 @@ function Parser:New()
     ,   motif           = nil   -- Smithing.MOTIF[n]
     ,   improve_level   = nil   -- PURPLE, GOLD
     ,   mat_list        = {}    -- of MatRow
+    ,   can_dolgubon    = true
     }
     setmetatable(o, self)
     self.__index = self

@@ -33,3 +33,4 @@ WritWorthy_Link.lua
 WritWorthy_MatRow.lua
 WritWorthy_Know.lua
 WritWorthy.lua
+Bindings.xml

@@ -187,6 +187,40 @@ function WritWorthy.KnowDump(know_list)
     return table.concat(elements, "\n")
 end
 
+-- Dolgubon integration ------------------------------------------------------
+--
+-- If Dolgubon's Lazy Set (SET not Writ!) Crafter is installed, then enqueue
+-- a crafting request for each craftable BS/CL/WW master writ in our inventory.
+
+-- Scan inventory, return list of { link="xxx", parser=ParserXXX }
+-- one element for each master writ found.
+function WritWorthy:ScanInventoryForMasterWrits()
+    local result_list = {}
+
+    local bag_id = BAG_BACKPACK
+    local slot_ct = GetBagSize(bag_id)
+
+                        -- Temporarily suspend all "dump matlist to chat"
+                        -- to avoid scroll blindness
+    local save_mat_list_chat = self.savedVariables.enable_mat_list_chat
+
+    for slot_index = 0, slot_ct do
+        local item_link = GetItemLink(bag_id, slot_index, LINK_STYLE_DEFAULT)
+        local parser    = WritWorthy.CreateParser(item_link)
+        if not (parser and parser:ParseItemLink(item_link)) then
+            parser = nil
+        end
+        if parser then
+            table.insert(result_list, { item_link = item_link, parser = parser } )
+        end
+    end
+                        -- Restore mat list to chat setting now that we're
+                        -- done with chat-flooding scan.
+    self.savedVariables.enable_mat_list_chat = save_mat_list_chat
+    return result_list
+end
+
+
 -- Tooltip Intercept ---------------------------------------------------------
 
 -- Monkey-patch ZOS' ItemTooltip with our own after-overrides. Lets ZOS code
@@ -251,7 +285,6 @@ function WritWorthy:CreateSettingsWindow()
                       end
         },
 
-
         { type      = "checkbox"
         , name      = "M.M. Fallback: hardcoded prices if no M.M. data"
         , tooltip   = "If M.M. has no price average for some materials:"
@@ -267,6 +300,47 @@ function WritWorthy:CreateSettingsWindow()
     }
 
     LAM2:RegisterOptionControls("WritWorthy", optionsData)
+end
+
+-- Can we craft this item in Dolgubon's Lazy Set Crafter?
+function WritWorthy.Dol_IsQueueable(parser)
+    if not parser.can_dolgubon then return false end
+
+                        -- Some parsers do not have knowledge checks (alchemy).
+    if not parser.ToKnowList then return true end
+    local know_list = nil
+    if parser.ToKnowList then
+        know_list = parser:ToKnowList()
+    end
+    if know_list then
+        for _, know in ipairs(know_list) do
+            if not know.is_known then return false end
+        end
+    end
+    return true
+end
+
+
+-- If Dolgubon's Lazy Set Crafter is installed, enqueue one crafting request
+-- in Dolgubon's for each BS/CL/WW master writ in the current character's
+-- inventory.
+function WritWorthy_Dol_EnqueueAll()
+    if not DolgubonSetCrafter then
+        d("Requires Dolgubon's Lazy Set Crafter. Nothing enqueued.")
+    end
+    local DOL = DolgubonSetCrafter
+    d("WritWorthy: Scanning inventory for master writs...")
+
+    local rl = WritWorthy:ScanInventoryForMasterWrits()
+    local q_able_list = {}
+    local dol_ct = 0
+    for _, r in ipairs(rl) do
+        if WritWorthy.Dol_IsQueueable(r.parser) then
+            dol_ct = dol_ct + 1
+        end
+    end
+    d("WritWorthy: " ..tostring(dol_ct).." out of "
+      ..tostring(#rl).." master writs craftable by Dolgubon's Lazy Set Crafter.")
 end
 
 -- Init ----------------------------------------------------------------------
@@ -299,4 +373,6 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
                               , EVENT_ADD_ON_LOADED
                               , WritWorthy.OnAddOnLoaded
                               )
+
+ZO_CreateStringId("SI_BINDING_NAME_WritWorthy_Dol_EnqueueAll", "Enqueue All in Dolgubon's")
 
