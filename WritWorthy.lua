@@ -324,23 +324,74 @@ end
 -- If Dolgubon's Lazy Set Crafter is installed, enqueue one crafting request
 -- in Dolgubon's for each BS/CL/WW master writ in the current character's
 -- inventory.
+--
+-- Probably should not do this while AT a crafting station: will need to
+-- exit+re-enter that station to start crafting.
+--
 function WritWorthy_Dol_EnqueueAll()
-    if not DolgubonSetCrafter then
-        d("Requires Dolgubon's Lazy Set Crafter. Nothing enqueued.")
+    if not DolgubonSetCrafter and DolgubonSetCrafter.enqueueRequest then
+        d("Requires enhanced version of Dolgubon's that includes"
+          .." public API for queue insertion.")
+        return
     end
-    local DOL = DolgubonSetCrafter
-    d("WritWorthy: Scanning inventory for master writs...")
 
+                        -- Scan inventory and build a list of all
+                        -- that we can craft in Dolgubon's Lazy Set Crafter.
+    d("WritWorthy: Scanning inventory for master writs...")
     local rl = WritWorthy:ScanInventoryForMasterWrits()
     local q_able_list = {}
     local dol_ct = 0
     for _, r in ipairs(rl) do
         if WritWorthy.Dol_IsQueueable(r.parser) then
             dol_ct = dol_ct + 1
+            table.insert(q_able_list, rl)
         end
     end
     d("WritWorthy: " ..tostring(dol_ct).." out of "
       ..tostring(#rl).." master writs craftable by Dolgubon's Lazy Set Crafter.")
+
+                        -- Queue up all requests.
+    local DOL = DolgubonSetCrafter
+    for _, r in ipairs(q_able_list) do
+        local dol_request = r.parser:ToDolRequest()
+
+    end
+
+                        -- Now actually queue them up for lazy crafting.
+--[[
+
+See Crafter.lua's addPatternToQueue()
+pattern
+station
+weith
+trait
+isCP = true
+"Style"
+"styleIndex"
+"Set"
+"Quality"
+"Reference" = math.random
+shortenNames(requestTable)
+
+
+        LazyCrafter:CraftSmithingItemByLevel(pattern, isCP,tonumber(requestTable["Level"]),styleIndex,trait, false, station,  setIndex, quality, true, requestTable["Reference"]  )
+
+        local function LLC_CraftSmithingItemByLevel(self, patternIndex, isCP , level, styleIndex, traitIndex, useUniversalStyleItem, stationOverride, setIndex, quality, autocraft, reference)
+    local materialIndex = findMatIndex(level, isCP)
+
+    local materialQuantity = GetMatRequirements(patternIndex, materialIndex, stationOverride)
+
+    LLC_CraftSmithingItem(self, patternIndex, materialIndex, materialQuantity, styleIndex, traitIndex, useUniversalStyleItem, stationOverride, setIndex, quality, autocraft, reference)
+end
+
+
+To load UI into new row data
+    DolgubonSetCrafter.compileMatRequirements()
+
+To get the UI list to show new row:
+    DolgubonSetCrafter.manager:RefreshData()
+--]]
+
 end
 
 -- Init ----------------------------------------------------------------------

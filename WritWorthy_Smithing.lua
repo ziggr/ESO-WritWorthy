@@ -96,6 +96,192 @@ Smithing.SCHOOL_WOOD   = {
 ,   SHIELD              =  6
 }
 
+-- BEGIN DOLGUBON DATA copied from Dolugbon's Lazy Set Crafter Crafter.lua
+local DOL = {}
+
+SCRAPE FROM UI:
+- patternIndex
+
+DOL.PATTERN =
+{ CHEST           = { index = 01, name = "Chest"             }
+, FEET            = { index = 02, name = "Feet"              }
+, HANDS           = { index = 03, name = "Hands"             }
+, HEAD            = { index = 04, name = "Head"              }
+, LEGS            = { index = 05, name = "Legs"              }
+, SHOULDERS       = { index = 06, name = "Shoulders"         }
+, BELT            = { index = 07, name = "Belt"              }
+, JERKIN          = { index = 08, name = "Jerkin"            }
+, H1_AXE          = { index = 09, name = "Axe"               }
+, H1_MACE         = { index = 10, name = "Mace"              }
+, H1_SWORD        = { index = 11, name = "Sword"             }
+, H2_BATTLE_AXE   = { index = 12, name = "Battle Axe"        }
+, H2_MAUL         = { index = 13, name = "Maul"              }
+, H2_GREATSWORD   = { index = 14, name = "Greatsword"        }
+, DAGGER          = { index = 15, name = "Dagger"            }
+, BOW             = { index = 16, name = "Bow"               }
+, FIRE_STAFF      = { index = 17, name = "Fire Staff"        }
+, ICE_STAFF       = { index = 18, name = "Ice Staff"         }
+, LIGHTNING_STAFF = { index = 19, name = "Lightning Staff"   }
+, RESTO_STAFF     = { index = 20, name = "Restoration Staff" }
+, SHIELD          = { index = 21, name = "Shield"            }
+}
+
+UI requirements
+Style names from    DolgubonSetCrafter.styleNames
+Trait names from    DolgubonSetCrafter.armourTraits and .weaponTraits
+Quality names from  DolgubonSetCrafter.quality
+Set names from      DolgubonSetCrafter.setIndexes
+
+styleIndex from DSC.ComboBox.Style.(selected)[1]
+UI requires:
+
+LLC requires
+
+styleIndex = 8      Style   = "High Elf"
+                    Weight  = "Heavy"
+                    Pattern = "Chest"
+                    Quality = "(p)Epic"
+                    Trait   = "Divines"
+                    Set     = "Alessia's Bulwark"
+
+patternIndex (light/medium station = 2 clothier)
+1   light robe
+2   light jerkin
+3   light feet
+4   light hands
+5   light head
+6   light legs
+7   light shoulders
+8   light waist
+9   medium chest
+10  medium feet
+11  medium hands
+12  medium head
+13  medium legs
+14  medium shoulders
+15  medium waist
+
+patternIndex (heavy station = 1 blacksmithing)
+1   h1 axe
+2   h1 mace
+3   h1 sword
+4   h2 battle axe
+5   h2 maul
+6   h2 greatsword
+7   dagger
+8   heavy chest
+9   heavy feet
+10  heavy hands
+11  heavy head
+12  heavy legs
+13  heavy shoulders
+14  heavy waist
+
+patternIndex (station = 6 woodworking)
+1   bow
+2   shield
+3   flame staff
+4   ice staff
+5   lightning staff
+6   resto staff
+
+styleIndex
+ 7  Argonian             --  6 = ITEMSTYLE_RACIAL_ARGONIAN
+16  Ancient Elf          -- 15 = ITEMSTYLE_AREA_ANCIENT_ELF
+23  Ancient Orc          -- 22 = ITEMSTYLE_AREA_ANCIENT_ORC
+26  Aldmeri Dominion     -- 25 = ITEMSTYLE_ALLIANCE_ALDMERI
+34  Akaviri              -- 33 = ITEMSTYLE_AREA_AKAVIRI
+42  abahs watch          -- 42 = ITEMSTYLE_ORG_ABAHS_WATCH
+... so 1 more than the ITEMSTYLE_ constant. Okay.
+
+trait
+2   Powered
+3   Charged
+4   Precise
+5   Infused (weapon)
+6   Defending
+7   Training (weapon)
+8   Sharpened
+9   Decisive
+12  Sturdy
+13  Impenetrable
+14  Reinforced
+15  Well-Fitted
+16  Training (armor)
+17  Infused (armor)
+18  Prosperous
+19  Divines
+26  Nirnhoned (armor)
+27  Nirnhoned (weapon)
+
+station
+1   blacksmithing (both armor and weapons)
+2   clothier
+6   woodworking (weapon and shield)
+
+quality
+1 = normal white
+2 = fine green
+3 = superior blue
+4 = epic purple
+5 = legendary yellow
+
+setIndex
+ 2  Deaths Wind
+ 3  Nights Silence
+ 4  Ashen Grip
+ 5  Torugs Pact
+ 6  Twilights Embrace
+ 7  Seducer
+ 8  Magnus Gift
+ 9  Hist Bark
+10  Whitestrakes Retribution
+11  Vampires Kiss
+12  Song of Lamae
+13  Alessias Bulwark
+14  Night Mothers Gaze
+15  Willows Path
+16  Hundings Rage
+17  Kagrenacs Hope
+18  Orgnums Scales
+19  Eyes of Mara
+20  Shalidors Curse
+21  Oblivions Foe
+22  Spectres Eye
+23  Way of the Arena
+24  Twice-Born Star
+25  Nobles Conquest
+26  Redistributor
+27  Armor Master
+28  Trial by Fire
+29  Law of Julianos
+30  Morkuldin
+31  Tavas Favor
+32  Clever Alchemist
+33  Eternal Hunt
+34  Kvatch Gladiator
+35  Varens Legacy
+36  Pelinals Aptitude
+37  Assassins Guile
+38  Shacklebreaker
+39  Daedric Trickery
+
+CraftRequestTable[]
+[ 1 pattern    ] patternIndex above, 1..15
+[ 2 isCP       ] true
+[ 3 level      ] 150
+[ 4 styleIndex ] ITEMSTYLE_XXX + 1,
+[ 5 trait      ] trait above
+[ 6 false      ] false
+[ 7 station    ] station above 1, 2, or 6
+[ 8 setIndex   ] 13
+[ 9 quality    ] quality above 1..5
+[10 true       ] true
+
+
+-- END DOLGUBON DATA
+
+
 -- Traits --------------------------------------------------------------------
 --
 -- Weapon and Armor must be separate sets because "Nirnhoned" mats differ
@@ -864,3 +1050,42 @@ function Parser:ToKnowList()
 
     return r
 end
+
+-- Create a Dolgubon's Lazy Set Crafter request.
+function Parser:ToDolRequest()
+    local request = {}
+
+    -- armor
+    request["Pattern"    ] = "Chest" -- patternButton.tooltip
+    request["Weight"     ] = "Heavy" -- more tooltips
+    request["Trait"      ] = "Prosperous"
+    request["Level"      ] = "150"
+    request["Style"      ] = "Nord"  ???
+    request["styleIndex" ] = ???
+    request["Set"        ] = "Seducer"
+    request["Quality"    ] = "Epic"
+    request["Reference"  ] = math.random()
+    request["isCP"       ] = true
+
+
+    return request
+end
+
+1   bow
+2   shield
+
+local function LLC_CraftSmithingItemByLevel(
+        self
+        , patternIndex
+        , isCP
+        , level
+        , styleIndex
+        , traitIndex
+        , useUniversalStyleItem
+        , stationOverride
+        , setIndex
+        , quality
+        , autocraft
+        , reference)
+
+
