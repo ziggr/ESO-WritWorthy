@@ -345,7 +345,8 @@ end
 -- exit+re-enter that station to start crafting.
 --
 function WritWorthy_Dol_EnqueueAll()
-    if not DolgubonSetCrafter and DolgubonSetCrafter.savedVars.counter then
+    local DOL = DolgubonSetCrafter -- for less typing
+    if not DOL and DOL.savedVars.counter then
         d("WritWorthy: Cannot queue items for crafting."
           .." Requires Dolgubon's Lazy Set Crafter version 1.0.8 or later.")
         return
@@ -370,7 +371,10 @@ function WritWorthy_Dol_EnqueueAll()
         unique_ids[mw.parser.unique_id] = true
 
                         -- Skip if already queued.
-        if queued_id[mw.parser.unique_id] then
+        local dol_reference = queued_id[mw.parser.unique_id]
+        local dol_item_list = DOL.LazyCrafter:findItemByReference(dol_reference)
+
+        if dol_reference and (0 < #dol_item_list) then
             dup_ct = dup_ct + 1
 -- d("Already queued: id="..tostring(mw.parser.unique_id)
 --   .. " dol_reference="..tostring(queued_id[mw.parser.unique_id]))
@@ -396,7 +400,6 @@ function WritWorthy_Dol_EnqueueAll()
     WritWorthy:Dol_RemoveStaleQueuedIDs(unique_ids)
 
                         -- Queue up all requests.
-    local DOL = DolgubonSetCrafter
     for _, r in ipairs(q_able_list) do
         local dol_request = r.parser:ToDolRequest()
         table.insert(DOL.savedVars.queue, dol_request)
@@ -417,7 +420,7 @@ end
 -- Stop wasting memory on them.
 function WritWorthy:Dol_RemoveStaleQueuedIDs(current_unique_ids)
     if not self.savedVariables.dol_queued_ids then return end
-
+    local DOL = DolgubonSetCrafter
                         -- Build a list of the doomed.
                         -- Don't remove from a collection while iterating over
                         -- that collection: might be safe, but I really don't
@@ -425,8 +428,15 @@ function WritWorthy:Dol_RemoveStaleQueuedIDs(current_unique_ids)
                         -- sure.
     local remove_list = {}
     for unique_id, dol_reference in pairs(self.savedVariables.dol_queued_ids) do
+                        -- No longer in our inventory
         if not current_unique_ids[unique_id] then
             table.insert(remove_list, unique_id)
+        else
+                        -- No longer queued in Dolgubon.
+            local m = DolgubonSetCrafter.LazyCrafter:findItemByReference(dol_reference)
+            if #m <= 0 then
+                table.insert(remove_list, unique_id)
+            end
         end
     end
                         -- Remove.
