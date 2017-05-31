@@ -344,7 +344,7 @@ function WritWorthy_Dol_EnqueueAll()
     for _, r in ipairs(rl) do
         if WritWorthy.Dol_IsQueueable(r.parser) then
             dol_ct = dol_ct + 1
-            table.insert(q_able_list, rl)
+            table.insert(q_able_list, r)
         end
     end
     d("WritWorthy: " ..tostring(dol_ct).." out of "
@@ -354,44 +354,26 @@ function WritWorthy_Dol_EnqueueAll()
     local DOL = DolgubonSetCrafter
     for _, r in ipairs(q_able_list) do
         local dol_request = r.parser:ToDolRequest()
-
+d(dol_request)
+        table.insert(DOL.savedVars.queue, dol_request)
+        local o = dol_request.CraftRequestTable
+        DOL.LazyCrafter:CraftSmithingItemByLevel(
+              o[ 1] -- patternIndex
+            , o[ 2] -- isCP
+            , o[ 3] -- level
+            , o[ 4] -- styleIndex
+            , o[ 5] -- traitIndex
+            , o[ 6] -- useUniversalStyleItem
+            , o[ 7] -- station
+            , o[ 8] -- setIndex
+            , o[ 9] -- quality
+            , o[10] -- autocraft
+            , o[11] -- reference
+            )
     end
-
-                        -- Now actually queue them up for lazy crafting.
---[[
-
-See Crafter.lua's addPatternToQueue()
-pattern
-station
-weith
-trait
-isCP = true
-"Style"
-"styleIndex"
-"Set"
-"Quality"
-"Reference" = math.random
-shortenNames(requestTable)
-
-
-        LazyCrafter:CraftSmithingItemByLevel(pattern, isCP,tonumber(requestTable["Level"]),styleIndex,trait, false, station,  setIndex, quality, true, requestTable["Reference"]  )
-
-        local function LLC_CraftSmithingItemByLevel(self, patternIndex, isCP , level, styleIndex, traitIndex, useUniversalStyleItem, stationOverride, setIndex, quality, autocraft, reference)
-    local materialIndex = findMatIndex(level, isCP)
-
-    local materialQuantity = GetMatRequirements(patternIndex, materialIndex, stationOverride)
-
-    LLC_CraftSmithingItem(self, patternIndex, materialIndex, materialQuantity, styleIndex, traitIndex, useUniversalStyleItem, stationOverride, setIndex, quality, autocraft, reference)
-end
-
-
-To load UI into new row data
-    DolgubonSetCrafter.compileMatRequirements()
-
-To get the UI list to show new row:
-    DolgubonSetCrafter.manager:RefreshData()
---]]
-
+-- ZIG YOU LEFT OFF HERE
+-- Kaboom. Calling this function crashes
+    DOL.updateList()
 end
 
 -- Init ----------------------------------------------------------------------

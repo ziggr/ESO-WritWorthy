@@ -27,6 +27,7 @@ Smithing.SCHOOL_HEAVY =  {
 ,   blue_mat_name       = "dwarven oil"
 ,   purple_mat_name     = "grain solvent"
 ,   gold_mat_name       = "tempering alloy"
+,   armor_weight_name   = "Heavy"
     -- research lines
 ,   H1_AXE              =  1
 ,   H1_MACE             =  2
@@ -42,7 +43,6 @@ Smithing.SCHOOL_HEAVY =  {
 ,   LEGS                = 12
 ,   SHOULDERS           = 13
 ,   WAIST               = 14
-
 }
 
 Smithing.SCHOOL_MEDIUM = {
@@ -52,6 +52,7 @@ Smithing.SCHOOL_MEDIUM = {
 ,   blue_mat_name       = "embroidery"
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
+,   armor_weight_name   = "Medium"
     -- research lines
 ,   CHEST               =  8
 ,   FEET                =  9
@@ -60,7 +61,6 @@ Smithing.SCHOOL_MEDIUM = {
 ,   LEGS                = 12
 ,   SHOULDERS           = 13
 ,   WAIST               = 14
-
 }
 
 Smithing.SCHOOL_LIGHT  = {
@@ -70,6 +70,7 @@ Smithing.SCHOOL_LIGHT  = {
 ,   blue_mat_name       = "embroidery"
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
+,   armor_weight_name   = "Light"
     -- research lines
 ,   CHEST               =  1
 ,   FEET                =  2
@@ -87,6 +88,7 @@ Smithing.SCHOOL_WOOD   = {
 ,   blue_mat_name       = "turpen"
 ,   purple_mat_name     = "mastic"
 ,   gold_mat_name       = "rosin"
+,   armor_weight_name   = ""
     -- research lines
 ,   BOW                 =  1
 ,   FLAME_STAFF         =  2
@@ -95,192 +97,6 @@ Smithing.SCHOOL_WOOD   = {
 ,   RESTO_STAFF         =  5
 ,   SHIELD              =  6
 }
-
--- BEGIN DOLGUBON DATA copied from Dolugbon's Lazy Set Crafter Crafter.lua
-local DOL = {}
-
-SCRAPE FROM UI:
-- patternIndex
-
-DOL.PATTERN =
-{ CHEST           = { index = 01, name = "Chest"             }
-, FEET            = { index = 02, name = "Feet"              }
-, HANDS           = { index = 03, name = "Hands"             }
-, HEAD            = { index = 04, name = "Head"              }
-, LEGS            = { index = 05, name = "Legs"              }
-, SHOULDERS       = { index = 06, name = "Shoulders"         }
-, BELT            = { index = 07, name = "Belt"              }
-, JERKIN          = { index = 08, name = "Jerkin"            }
-, H1_AXE          = { index = 09, name = "Axe"               }
-, H1_MACE         = { index = 10, name = "Mace"              }
-, H1_SWORD        = { index = 11, name = "Sword"             }
-, H2_BATTLE_AXE   = { index = 12, name = "Battle Axe"        }
-, H2_MAUL         = { index = 13, name = "Maul"              }
-, H2_GREATSWORD   = { index = 14, name = "Greatsword"        }
-, DAGGER          = { index = 15, name = "Dagger"            }
-, BOW             = { index = 16, name = "Bow"               }
-, FIRE_STAFF      = { index = 17, name = "Fire Staff"        }
-, ICE_STAFF       = { index = 18, name = "Ice Staff"         }
-, LIGHTNING_STAFF = { index = 19, name = "Lightning Staff"   }
-, RESTO_STAFF     = { index = 20, name = "Restoration Staff" }
-, SHIELD          = { index = 21, name = "Shield"            }
-}
-
-UI requirements
-Style names from    DolgubonSetCrafter.styleNames
-Trait names from    DolgubonSetCrafter.armourTraits and .weaponTraits
-Quality names from  DolgubonSetCrafter.quality
-Set names from      DolgubonSetCrafter.setIndexes
-
-styleIndex from DSC.ComboBox.Style.(selected)[1]
-UI requires:
-
-LLC requires
-
-styleIndex = 8      Style   = "High Elf"
-                    Weight  = "Heavy"
-                    Pattern = "Chest"
-                    Quality = "(p)Epic"
-                    Trait   = "Divines"
-                    Set     = "Alessia's Bulwark"
-
-patternIndex (light/medium station = 2 clothier)
-1   light robe
-2   light jerkin
-3   light feet
-4   light hands
-5   light head
-6   light legs
-7   light shoulders
-8   light waist
-9   medium chest
-10  medium feet
-11  medium hands
-12  medium head
-13  medium legs
-14  medium shoulders
-15  medium waist
-
-patternIndex (heavy station = 1 blacksmithing)
-1   h1 axe
-2   h1 mace
-3   h1 sword
-4   h2 battle axe
-5   h2 maul
-6   h2 greatsword
-7   dagger
-8   heavy chest
-9   heavy feet
-10  heavy hands
-11  heavy head
-12  heavy legs
-13  heavy shoulders
-14  heavy waist
-
-patternIndex (station = 6 woodworking)
-1   bow
-2   shield
-3   flame staff
-4   ice staff
-5   lightning staff
-6   resto staff
-
-styleIndex
- 7  Argonian             --  6 = ITEMSTYLE_RACIAL_ARGONIAN
-16  Ancient Elf          -- 15 = ITEMSTYLE_AREA_ANCIENT_ELF
-23  Ancient Orc          -- 22 = ITEMSTYLE_AREA_ANCIENT_ORC
-26  Aldmeri Dominion     -- 25 = ITEMSTYLE_ALLIANCE_ALDMERI
-34  Akaviri              -- 33 = ITEMSTYLE_AREA_AKAVIRI
-42  abahs watch          -- 42 = ITEMSTYLE_ORG_ABAHS_WATCH
-... so 1 more than the ITEMSTYLE_ constant. Okay.
-
-trait
-2   Powered
-3   Charged
-4   Precise
-5   Infused (weapon)
-6   Defending
-7   Training (weapon)
-8   Sharpened
-9   Decisive
-12  Sturdy
-13  Impenetrable
-14  Reinforced
-15  Well-Fitted
-16  Training (armor)
-17  Infused (armor)
-18  Prosperous
-19  Divines
-26  Nirnhoned (armor)
-27  Nirnhoned (weapon)
-
-station
-1   blacksmithing (both armor and weapons)
-2   clothier
-6   woodworking (weapon and shield)
-
-quality
-1 = normal white
-2 = fine green
-3 = superior blue
-4 = epic purple
-5 = legendary yellow
-
-setIndex
- 2  Deaths Wind
- 3  Nights Silence
- 4  Ashen Grip
- 5  Torugs Pact
- 6  Twilights Embrace
- 7  Seducer
- 8  Magnus Gift
- 9  Hist Bark
-10  Whitestrakes Retribution
-11  Vampires Kiss
-12  Song of Lamae
-13  Alessias Bulwark
-14  Night Mothers Gaze
-15  Willows Path
-16  Hundings Rage
-17  Kagrenacs Hope
-18  Orgnums Scales
-19  Eyes of Mara
-20  Shalidors Curse
-21  Oblivions Foe
-22  Spectres Eye
-23  Way of the Arena
-24  Twice-Born Star
-25  Nobles Conquest
-26  Redistributor
-27  Armor Master
-28  Trial by Fire
-29  Law of Julianos
-30  Morkuldin
-31  Tavas Favor
-32  Clever Alchemist
-33  Eternal Hunt
-34  Kvatch Gladiator
-35  Varens Legacy
-36  Pelinals Aptitude
-37  Assassins Guile
-38  Shacklebreaker
-39  Daedric Trickery
-
-CraftRequestTable[]
-[ 1 pattern    ] patternIndex above, 1..15
-[ 2 isCP       ] true
-[ 3 level      ] 150
-[ 4 styleIndex ] ITEMSTYLE_XXX + 1,
-[ 5 trait      ] trait above
-[ 6 false      ] false
-[ 7 station    ] station above 1, 2, or 6
-[ 8 setIndex   ] 13
-[ 9 quality    ] quality above 1..5
-[10 true       ] true
-
-
--- END DOLGUBON DATA
-
 
 -- Traits --------------------------------------------------------------------
 --
@@ -452,6 +268,7 @@ Smithing.MOTIF_PAGE = {
 --                      GetSmithingResearchLineTraitInfo() to see if we know the
 --                      correct and enough traits.
 -- motif_page       is which of the 1..14 motif pages applies to this item.
+-- dol_pattern_index is a value for Dolgubon's Lazy Writ Crafter, patternIndex enum.
 --
                         -- abbreviations to make the table more concise.
 local HVY    = Smithing.SCHOOL_HEAVY
@@ -463,46 +280,46 @@ local ARMOR  = Smithing.TRAITS_ARMOR
 local PG     = Smithing.MOTIF_PAGE
 
 Smithing.REQUEST_ITEMS = {
-  [53] = { item_id = 53, item_name = "Rubedite Axe",                school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_AXE,         motif_page = PG.AXES    }
-, [56] = { item_id = 56, item_name = "Rubedite Mace",               school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_MACE,        motif_page = PG.MACES   }
-, [59] = { item_id = 59, item_name = "Rubedite Sword",              school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_SWORD,       motif_page = PG.SWORDS  }
-, [68] = { item_id = 68, item_name = "Rubedite Greataxe",           school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_BATTLE_AXE,  motif_page = PG.AXES    }
-, [67] = { item_id = 67, item_name = "Rubedite Greatsword",         school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_GREATSSWORD, motif_page = PG.SWORDS  }
-, [69] = { item_id = 69, item_name = "Rubedite Maul",               school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_MAUL,        motif_page = PG.MACES   }
-, [62] = { item_id = 62, item_name = "Rubedite Dagger",             school = HVY, base_mat_ct = 10, trait_set = WEAPON, research_line = HVY.DAGGER,         motif_page = PG.DAGGERS }
+  [53] = { item_id = 53, item_name = "Rubedite Axe",                school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_AXE,         motif_page = PG.AXES     , dol_pattern_index =  1 }
+, [56] = { item_id = 56, item_name = "Rubedite Mace",               school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_MACE,        motif_page = PG.MACES    , dol_pattern_index =  2 }
+, [59] = { item_id = 59, item_name = "Rubedite Sword",              school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_SWORD,       motif_page = PG.SWORDS   , dol_pattern_index =  3 }
+, [68] = { item_id = 68, item_name = "Rubedite Greataxe",           school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_BATTLE_AXE,  motif_page = PG.AXES     , dol_pattern_index =  4 }
+, [67] = { item_id = 67, item_name = "Rubedite Greatsword",         school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_GREATSSWORD, motif_page = PG.SWORDS   , dol_pattern_index =  5 }
+, [69] = { item_id = 69, item_name = "Rubedite Maul",               school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_MAUL,        motif_page = PG.MACES    , dol_pattern_index =  6 }
+, [62] = { item_id = 62, item_name = "Rubedite Dagger",             school = HVY, base_mat_ct = 10, trait_set = WEAPON, research_line = HVY.DAGGER,         motif_page = PG.DAGGERS  , dol_pattern_index =  7 }
 
-, [46] = { item_id = 46, item_name = "Rubedite Cuirass",            school = HVY, base_mat_ct = 15, trait_set = ARMOR , research_line = HVY.CHEST,          motif_page = PG.CHESTS  }
-, [50] = { item_id = 50, item_name = "Rubedite Sabatons",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.FEET,           motif_page = PG.BOOTS   }
-, [52] = { item_id = 52, item_name = "Rubedite Gauntlets",          school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HANDS,          motif_page = PG.GLOVES  }
-, [44] = { item_id = 44, item_name = "Rubedite Helm",               school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HEAD,           motif_page = PG.HELMETS }
-, [49] = { item_id = 49, item_name = "Rubedite Greaves",            school = HVY, base_mat_ct = 14, trait_set = ARMOR , research_line = HVY.LEGS,           motif_page = PG.LEGS    }
-, [47] = { item_id = 47, item_name = "Rubedite Pauldron",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.SHOULDERS,      motif_page = PG.SHOULDERS }
-, [48] = { item_id = 48, item_name = "Rubedite Girdle",             school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.WAIST,          motif_page = PG.BELTS   }
+, [46] = { item_id = 46, item_name = "Rubedite Cuirass",            school = HVY, base_mat_ct = 15, trait_set = ARMOR , research_line = HVY.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  8 }
+, [50] = { item_id = 50, item_name = "Rubedite Sabatons",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.FEET,           motif_page = PG.BOOTS    , dol_pattern_index =  9 }
+, [52] = { item_id = 52, item_name = "Rubedite Gauntlets",          school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index = 10 }
+, [44] = { item_id = 44, item_name = "Rubedite Helm",               school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index = 11 }
+, [49] = { item_id = 49, item_name = "Rubedite Greaves",            school = HVY, base_mat_ct = 14, trait_set = ARMOR , research_line = HVY.LEGS,           motif_page = PG.LEGS     , dol_pattern_index = 12 }
+, [47] = { item_id = 47, item_name = "Rubedite Pauldron",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index = 13 }
+, [48] = { item_id = 48, item_name = "Rubedite Girdle",             school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.WAIST,          motif_page = PG.BELTS    , dol_pattern_index = 14 }
 
-, [28] = { item_id = 28, item_name = "Ancestor Silk Robe",          school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS  }
-, [ 0] = { item_id =  0, item_name = "Ancestor Silk Jerkin",        school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS  }
-, [32] = { item_id = 32, item_name = "Ancestor Silk Shoes",         school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.FEET,           motif_page = PG.BOOTS   }
-, [34] = { item_id = 34, item_name = "Ancestor Silk Gloves",        school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HANDS,          motif_page = PG.GLOVES  }
-, [26] = { item_id = 26, item_name = "Ancestor Silk Hat",           school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HEAD,           motif_page = PG.HELMETS }
-, [31] = { item_id = 31, item_name = "Ancestor Silk Breeches",      school = LGT, base_mat_ct = 14, trait_set = ARMOR , research_line = LGT.LEGS,           motif_page = PG.LEGS    }
-, [29] = { item_id = 29, item_name = "Ancestor Silk Epaulets",      school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.SHOULDERS,      motif_page = PG.SHOULDERS }
-, [30] = { item_id = 30, item_name = "Ancestor Silk Sash",          school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.WAIST,          motif_page = PG.BELTS   }
+, [28] = { item_id = 28, item_name = "Ancestor Silk Robe",          school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  1 }
+, [ 0] = { item_id =  0, item_name = "Ancestor Silk Jerkin",        school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  2 }
+, [32] = { item_id = 32, item_name = "Ancestor Silk Shoes",         school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.FEET,           motif_page = PG.BOOTS    , dol_pattern_index =  3 }
+, [34] = { item_id = 34, item_name = "Ancestor Silk Gloves",        school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index =  4 }
+, [26] = { item_id = 26, item_name = "Ancestor Silk Hat",           school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index =  5 }
+, [31] = { item_id = 31, item_name = "Ancestor Silk Breeches",      school = LGT, base_mat_ct = 14, trait_set = ARMOR , research_line = LGT.LEGS,           motif_page = PG.LEGS     , dol_pattern_index =  6 }
+, [29] = { item_id = 29, item_name = "Ancestor Silk Epaulets",      school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index =  7 }
+, [30] = { item_id = 30, item_name = "Ancestor Silk Sash",          school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.WAIST,          motif_page = PG.BELTS    , dol_pattern_index =  8 }
 
-, [37] = { item_id = 37, item_name = "Rubedo Leather Jack",         school = MED, base_mat_ct = 15, trait_set = ARMOR , research_line = MED.CHEST,          motif_page = PG.CHESTS  }
-, [41] = { item_id = 41, item_name = "Rubedo Leather Boots",        school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.FEET,           motif_page = PG.BOOTS   }
-, [43] = { item_id = 43, item_name = "Rubedo Leather Bracers",      school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HANDS,          motif_page = PG.GLOVES  }
-, [35] = { item_id = 35, item_name = "Rubedo Leather Helmet",       school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HEAD,           motif_page = PG.HELMETS }
-, [40] = { item_id = 40, item_name = "Rubedo Leather Guards",       school = MED, base_mat_ct = 14, trait_set = ARMOR , research_line = MED.LEGS,           motif_page = PG.LEGS    }
-, [38] = { item_id = 38, item_name = "Rubedo Leather Arm Cops",     school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.SHOULDERS,      motif_page = PG.SHOULDERS }
-, [39] = { item_id = 39, item_name = "Rubedo Leather Belt",         school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.WAIST,          motif_page = PG.BELTS   }
+, [37] = { item_id = 37, item_name = "Rubedo Leather Jack",         school = MED, base_mat_ct = 15, trait_set = ARMOR , research_line = MED.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  9 }
+, [41] = { item_id = 41, item_name = "Rubedo Leather Boots",        school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.FEET,           motif_page = PG.BOOTS    , dol_pattern_index = 10 }
+, [43] = { item_id = 43, item_name = "Rubedo Leather Bracers",      school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index = 11 }
+, [35] = { item_id = 35, item_name = "Rubedo Leather Helmet",       school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index = 12 }
+, [40] = { item_id = 40, item_name = "Rubedo Leather Guards",       school = MED, base_mat_ct = 14, trait_set = ARMOR , research_line = MED.LEGS,           motif_page = PG.LEGS     , dol_pattern_index = 13 }
+, [38] = { item_id = 38, item_name = "Rubedo Leather Arm Cops",     school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index = 14 }
+, [39] = { item_id = 39, item_name = "Rubedo Leather Belt",         school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.WAIST,          motif_page = PG.BELTS    , dol_pattern_index = 15 }
 
-, [70] = { item_id = 70, item_name = "Ruby Ash Bow",                school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.BOW,             motif_page = PG.BOWS    }
-, [72] = { item_id = 72, item_name = "Ruby Ash Inferno Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.FLAME_STAFF,     motif_page = PG.STAVES  }
-, [73] = { item_id = 73, item_name = "Ruby Ash Frost Staff",        school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.ICE_STAFF,       motif_page = PG.STAVES  }
-, [74] = { item_id = 74, item_name = "Ruby Ash Lightning Staff",    school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.LIGHTNING_STAFF, motif_page = PG.STAVES  }
-, [71] = { item_id = 71, item_name = "Ruby Ash Healing Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.RESTO_STAFF,     motif_page = PG.STAVES  }
+, [70] = { item_id = 70, item_name = "Ruby Ash Bow",                school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.BOW,             motif_page = PG.BOWS     , dol_pattern_index =  1 }
+, [72] = { item_id = 72, item_name = "Ruby Ash Inferno Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.FLAME_STAFF,     motif_page = PG.STAVES   , dol_pattern_index =  3 }
+, [73] = { item_id = 73, item_name = "Ruby Ash Frost Staff",        school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.ICE_STAFF,       motif_page = PG.STAVES   , dol_pattern_index =  4 }
+, [74] = { item_id = 74, item_name = "Ruby Ash Lightning Staff",    school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.LIGHTNING_STAFF, motif_page = PG.STAVES   , dol_pattern_index =  5 }
+, [71] = { item_id = 71, item_name = "Ruby Ash Healing Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.RESTO_STAFF,     motif_page = PG.STAVES   , dol_pattern_index =  6 }
 
-, [65] = { item_id = 65, item_name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR , research_line = WW.SHIELD,          motif_page = PG.SHIELDS }
+, [65] = { item_id = 65, item_name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR , research_line = WW.SHIELD,          motif_page = PG.SHIELDS  , dol_pattern_index =  2 }
 }
 
 -- Set Bonus required trait counts -------------------------------------------
@@ -511,6 +328,11 @@ Smithing.REQUEST_ITEMS = {
 -- set bonus?
 --
 -- Table index is writ4 value for smithing writs.
+--
+-- dol_set_index is for Dolgubon's Lazy Set Crafter, an index into its own
+--              internal table of craftable sets.
+--              Brittle, likely to change. Could ask Dolgubon to publish
+--              its table so that we could connect it up programmatically.
 --
 -- Learned by iterating over itemLink strings and dumping their baseText.
 -- Dump still around somewhere in doc/item_link.txt.
@@ -534,306 +356,306 @@ Smithing.SET_BONUS = {
  ,  [ 16] = nil
  ,  [ 17] = nil
  ,  [ 18] = nil
- ,  [ 19] = { name = "Vestments of the Warlock",                     }
- ,  [ 20] = { name = "Witchman Armor",                               }
- ,  [ 21] = { name = "Akaviri Dragonguard",                          }
- ,  [ 22] = { name = "Dreamer's Mantle",                             }
- ,  [ 23] = { name = "Archer's Mind",                                }
- ,  [ 24] = { name = "Footman's Fortune",                            }
- ,  [ 25] = { name = "Desert Rose",                                  }
- ,  [ 26] = { name = "Prisoner's Rags",                              }
- ,  [ 27] = { name = "Fiord's Legacy",                               }
- ,  [ 28] = { name = "Barkskin",                                     }
- ,  [ 29] = { name = "Sergeant's Mail",                              }
- ,  [ 30] = { name = "Thunderbug's Carapace",                        }
- ,  [ 31] = { name = "Silks of the Sun",                             }
- ,  [ 32] = { name = "Healer's Habit",                               }
- ,  [ 33] = { name = "Viper's Sting",                                }
- ,  [ 34] = { name = "Night Mother's Embrace",                       }
- ,  [ 35] = { name = "Knightmare",                                   }
- ,  [ 36] = { name = "Armor of the Veiled Heritance",                }
- ,  [ 37] = { name = "Death's Wind",                    trait_ct = 2 }
- ,  [ 38] = { name = "Twilight's Embrace",              trait_ct = 3 }
+ ,  [ 19] = { name = "Vestments of the Warlock",                                         }
+ ,  [ 20] = { name = "Witchman Armor",                                                   }
+ ,  [ 21] = { name = "Akaviri Dragonguard",                                              }
+ ,  [ 22] = { name = "Dreamer's Mantle",                                                 }
+ ,  [ 23] = { name = "Archer's Mind",                                                    }
+ ,  [ 24] = { name = "Footman's Fortune",                                                }
+ ,  [ 25] = { name = "Desert Rose",                                                      }
+ ,  [ 26] = { name = "Prisoner's Rags",                                                  }
+ ,  [ 27] = { name = "Fiord's Legacy",                                                   }
+ ,  [ 28] = { name = "Barkskin",                                                         }
+ ,  [ 29] = { name = "Sergeant's Mail",                                                  }
+ ,  [ 30] = { name = "Thunderbug's Carapace",                                            }
+ ,  [ 31] = { name = "Silks of the Sun",                                                 }
+ ,  [ 32] = { name = "Healer's Habit",                                                   }
+ ,  [ 33] = { name = "Viper's Sting",                                                    }
+ ,  [ 34] = { name = "Night Mother's Embrace",                                           }
+ ,  [ 35] = { name = "Knightmare",                                                       }
+ ,  [ 36] = { name = "Armor of the Veiled Heritance",                                    }
+ ,  [ 37] = { name = "Death's Wind",                    trait_ct = 2, dol_set_index =  2 }
+ ,  [ 38] = { name = "Twilight's Embrace",              trait_ct = 3, dol_set_index =  6 }
  ,  [ 39] = { name = "Alessian Order",                               }
- ,  [ 40] = { name = "Night's Silence",                 trait_ct = 2 }
- ,  [ 41] = { name = "Whitestrake's Retribution",       trait_ct = 4 }
+ ,  [ 40] = { name = "Night's Silence",                 trait_ct = 2, dol_set_index =  3 }
+ ,  [ 41] = { name = "Whitestrake's Retribution",       trait_ct = 4, dol_set_index = 10 }
  ,  [ 42] = nil
- ,  [ 43] = { name = "Armor of the Seducer",            trait_ct = 3 }
- ,  [ 44] = { name = "Vampire's Kiss",                  trait_ct = 5 }
+ ,  [ 43] = { name = "Armor of the Seducer",            trait_ct = 3, dol_set_index =  7 }
+ ,  [ 44] = { name = "Vampire's Kiss",                  trait_ct = 5, dol_set_index = 11 }
  ,  [ 45] = nil
- ,  [ 46] = { name = "Noble Duelist's Silks",                        }
- ,  [ 47] = { name = "Robes of the Withered Hand",                   }
- ,  [ 48] = { name = "Magnus' Gift",                    trait_ct = 4 }
- ,  [ 49] = { name = "Shadow of the Red Mountain",                   }
- ,  [ 50] = { name = "The Morag Tong",                               }
- ,  [ 51] = { name = "Night Mother's Gaze",             trait_ct = 6 }
- ,  [ 52] = { name = "Beckoning Steel",                              }
- ,  [ 53] = { name = "The Ice Furnace",                              }
- ,  [ 54] = { name = "Ashen Grip",                      trait_ct = 2 }
- ,  [ 55] = { name = "Prayer Shawl",                                 }
- ,  [ 56] = { name = "Stendarr's Embrace",                           }
- ,  [ 57] = { name = "Syrabane's Grip",                              }
- ,  [ 58] = { name = "Hide of the Werewolf",                         }
- ,  [ 59] = { name = "Kyne's Kiss",                                  }
- ,  [ 60] = { name = "Darkstride",                                   }
- ,  [ 61] = { name = "Dreugh King Slayer",                           }
- ,  [ 62] = { name = "Hatchling's Shell",                            }
- ,  [ 63] = { name = "The Juggernaut",                               }
- ,  [ 64] = { name = "Shadow Dancer's Raiment",                      }
- ,  [ 65] = { name = "Bloodthorn's Touch",                           }
- ,  [ 66] = { name = "Robes of the Hist",                            }
- ,  [ 67] = { name = "Shadow Walker",                                }
- ,  [ 68] = { name = "Stygian",                                      }
- ,  [ 69] = { name = "Ranger's Gait",                                }
- ,  [ 70] = { name = "Seventh Legion Brute",                         }
- ,  [ 71] = { name = "Durok's Bane",                                 }
- ,  [ 72] = { name = "Nikulas' Heavy Armor",                         }
- ,  [ 73] = { name = "Oblivion's Foe",                  trait_ct = 8 }
- ,  [ 74] = { name = "Spectre's Eye",                   trait_ct = 8 }
- ,  [ 75] = { name = "Torug's Pact",                    trait_ct = 3 }
- ,  [ 76] = { name = "Robes of Alteration Mastery",                  }
- ,  [ 77] = { name = "Crusader",                                     }
- ,  [ 78] = { name = "Hist Bark",                       trait_ct = 4 }
- ,  [ 79] = { name = "Willow's Path",                   trait_ct = 6 }
- ,  [ 80] = { name = "Hunding's Rage",                  trait_ct = 6 }
- ,  [ 81] = { name = "Song of Lamae",                   trait_ct = 5 }
- ,  [ 82] = { name = "Alessia's Bulwark",               trait_ct = 5 }
- ,  [ 83] = { name = "Elf Bane",                                     }
- ,  [ 84] = { name = "Orgnum's Scales",                 trait_ct = 8 }
- ,  [ 85] = { name = "Almalexia's Mercy",                            }
- ,  [ 86] = { name = "Queen's Elegance",                             }
- ,  [ 87] = { name = "Eyes of Mara",                    trait_ct = 8 }
- ,  [ 88] = { name = "Robes of Destruction Mastery",                 }
- ,  [ 89] = { name = "Sentry",                                       }
- ,  [ 90] = { name = "Senche's Bite",                                }
- ,  [ 91] = { name = "Oblivion's Edge",                              }
- ,  [ 92] = { name = "Kagrenac's Hope",                 trait_ct = 8 }
- ,  [ 93] = { name = "Storm Knight's Plate",                         }
- ,  [ 94] = { name = "Meridia's Blessed Armor",                      }
- ,  [ 95] = { name = "Shalidor's Curse",                trait_ct = 8 }
- ,  [ 96] = { name = "Armor of Truth",                               }
- ,  [ 97] = { name = "The Arch-Mage",                                }
- ,  [ 98] = { name = "Necropotence",                                 }
- ,  [ 99] = { name = "Salvation",                                    }
-,   [100] = { name = "Hawk's Eye",                                   }
-,   [101] = { name = "Affliction",                                   }
-,   [102] = { name = "Duneripper's Scales",                          }
-,   [103] = { name = "Magicka Furnace",                              }
-,   [104] = { name = "Curse Eater",                                  }
-,   [105] = { name = "Twin Sisters",                                 }
-,   [106] = { name = "Wilderqueen's Arch",                           }
-,   [107] = { name = "Wyrd Tree's Blessing",                         }
-,   [108] = { name = "Ravager",                                      }
-,   [109] = { name = "Light of Cyrodiil",                            }
-,   [110] = { name = "Sanctuary",                                    }
-,   [111] = { name = "Ward of Cyrodiil",                             }
-,   [112] = { name = "Night Terror",                                 }
-,   [113] = { name = "Crest of Cyrodiil",                            }
-,   [114] = { name = "Soulshine",                                    }
+ ,  [ 46] = { name = "Noble Duelist's Silks",                                            }
+ ,  [ 47] = { name = "Robes of the Withered Hand",                                       }
+ ,  [ 48] = { name = "Magnus' Gift",                    trait_ct = 4, dol_set_index =  8 }
+ ,  [ 49] = { name = "Shadow of the Red Mountain",                                       }
+ ,  [ 50] = { name = "The Morag Tong",                                                   }
+ ,  [ 51] = { name = "Night Mother's Gaze",             trait_ct = 6, dol_set_index = 14 }
+ ,  [ 52] = { name = "Beckoning Steel",                                                  }
+ ,  [ 53] = { name = "The Ice Furnace",                                                  }
+ ,  [ 54] = { name = "Ashen Grip",                      trait_ct = 2, dol_set_index =  4 }
+ ,  [ 55] = { name = "Prayer Shawl",                                                     }
+ ,  [ 56] = { name = "Stendarr's Embrace",                                               }
+ ,  [ 57] = { name = "Syrabane's Grip",                                                  }
+ ,  [ 58] = { name = "Hide of the Werewolf",                                             }
+ ,  [ 59] = { name = "Kyne's Kiss",                                                      }
+ ,  [ 60] = { name = "Darkstride",                                                       }
+ ,  [ 61] = { name = "Dreugh King Slayer",                                               }
+ ,  [ 62] = { name = "Hatchling's Shell",                                                }
+ ,  [ 63] = { name = "The Juggernaut",                                                   }
+ ,  [ 64] = { name = "Shadow Dancer's Raiment",                                          }
+ ,  [ 65] = { name = "Bloodthorn's Touch",                                               }
+ ,  [ 66] = { name = "Robes of the Hist",                                                }
+ ,  [ 67] = { name = "Shadow Walker",                                                    }
+ ,  [ 68] = { name = "Stygian",                                                          }
+ ,  [ 69] = { name = "Ranger's Gait",                                                    }
+ ,  [ 70] = { name = "Seventh Legion Brute",                                             }
+ ,  [ 71] = { name = "Durok's Bane",                                                     }
+ ,  [ 72] = { name = "Nikulas' Heavy Armor",                                             }
+ ,  [ 73] = { name = "Oblivion's Foe",                  trait_ct = 8, dol_set_index = 21 }
+ ,  [ 74] = { name = "Spectre's Eye",                   trait_ct = 8, dol_set_index = 22 }
+ ,  [ 75] = { name = "Torug's Pact",                    trait_ct = 3, dol_set_index =  5 }
+ ,  [ 76] = { name = "Robes of Alteration Mastery",                                      }
+ ,  [ 77] = { name = "Crusader",                                                         }
+ ,  [ 78] = { name = "Hist Bark",                       trait_ct = 4, dol_set_index =  9 }
+ ,  [ 79] = { name = "Willow's Path",                   trait_ct = 6, dol_set_index = 15 }
+ ,  [ 80] = { name = "Hunding's Rage",                  trait_ct = 6, dol_set_index = 16 }
+ ,  [ 81] = { name = "Song of Lamae",                   trait_ct = 5, dol_set_index = 12 }
+ ,  [ 82] = { name = "Alessia's Bulwark",               trait_ct = 5, dol_set_index = 13 }
+ ,  [ 83] = { name = "Elf Bane",                                                         }
+ ,  [ 84] = { name = "Orgnum's Scales",                 trait_ct = 8, dol_set_index = 18 }
+ ,  [ 85] = { name = "Almalexia's Mercy",                                                }
+ ,  [ 86] = { name = "Queen's Elegance",                                                 }
+ ,  [ 87] = { name = "Eyes of Mara",                    trait_ct = 8, dol_set_index = 19 }
+ ,  [ 88] = { name = "Robes of Destruction Mastery",                                     }
+ ,  [ 89] = { name = "Sentry",                                                           }
+ ,  [ 90] = { name = "Senche's Bite",                                                    }
+ ,  [ 91] = { name = "Oblivion's Edge",                                                  }
+ ,  [ 92] = { name = "Kagrenac's Hope",                 trait_ct = 8, dol_set_index = 17 }
+ ,  [ 93] = { name = "Storm Knight's Plate",                                             }
+ ,  [ 94] = { name = "Meridia's Blessed Armor",                                          }
+ ,  [ 95] = { name = "Shalidor's Curse",                trait_ct = 8, dol_set_index = 20 }
+ ,  [ 96] = { name = "Armor of Truth",                                                   }
+ ,  [ 97] = { name = "The Arch-Mage",                                                    }
+ ,  [ 98] = { name = "Necropotence",                                                     }
+ ,  [ 99] = { name = "Salvation",                                                        }
+,   [100] = { name = "Hawk's Eye",                                                       }
+,   [101] = { name = "Affliction",                                                       }
+,   [102] = { name = "Duneripper's Scales",                                              }
+,   [103] = { name = "Magicka Furnace",                                                  }
+,   [104] = { name = "Curse Eater",                                                      }
+,   [105] = { name = "Twin Sisters",                                                     }
+,   [106] = { name = "Wilderqueen's Arch",                                               }
+,   [107] = { name = "Wyrd Tree's Blessing",                                             }
+,   [108] = { name = "Ravager",                                                          }
+,   [109] = { name = "Light of Cyrodiil",                                                }
+,   [110] = { name = "Sanctuary",                                                        }
+,   [111] = { name = "Ward of Cyrodiil",                                                 }
+,   [112] = { name = "Night Terror",                                                     }
+,   [113] = { name = "Crest of Cyrodiil",                                                }
+,   [114] = { name = "Soulshine",                                                        }
 ,   [115] = nil
-,   [116] = { name = "The Destruction Suite",                        }
-,   [117] = { name = "Relics of the Physician, Ansur",               }
-,   [118] = { name = "Treasures of the Earthforge",                  }
-,   [119] = { name = "Relics of the Rebellion",                      }
-,   [120] = { name = "Arms of Infernace",                            }
-,   [121] = { name = "Arms of the Ancestors",                        }
-,   [122] = { name = "Ebon Armory",                                  }
-,   [123] = { name = "Hircine's Veneer",                             }
-,   [124] = { name = "The Worm's Raiment",                           }
-,   [125] = { name = "Wrath of the Imperium",                        }
-,   [126] = { name = "Grace of the Ancients",                        }
-,   [127] = { name = "Deadly Strike",                                }
-,   [128] = { name = "Blessing of the Potentates",                   }
-,   [129] = { name = "Vengeance Leech",                              }
-,   [130] = { name = "Eagle Eye",                                    }
-,   [131] = { name = "Bastion of the Heartland",                     }
-,   [132] = { name = "Shield of the Valiant",                        }
-,   [133] = { name = "Buffer of the Swift",                          }
-,   [134] = { name = "Shroud of the Lich",                           }
-,   [135] = { name = "Draugr's Heritage",                            }
-,   [136] = { name = "Immortal Warrior",                             }
-,   [137] = { name = "Berserking Warrior",                           }
-,   [138] = { name = "Defending Warrior",                            }
-,   [139] = { name = "Wise Mage",                                    }
-,   [140] = { name = "Destructive Mage",                             }
-,   [141] = { name = "Healing Mage",                                 }
-,   [142] = { name = "Quick Serpent",                                }
-,   [143] = { name = "Poisonous Serpent",                            }
-,   [144] = { name = "Twice-Fanged Serpent",                         }
-,   [145] = { name = "Way of Fire",                                  }
-,   [146] = { name = "Way of Air",                                   }
-,   [147] = { name = "Way of Martial Knowledge",                     }
-,   [148] = { name = "Way of the Arena",                trait_ct = 8 }
+,   [116] = { name = "The Destruction Suite",                                            }
+,   [117] = { name = "Relics of the Physician, Ansur",                                   }
+,   [118] = { name = "Treasures of the Earthforge",                                      }
+,   [119] = { name = "Relics of the Rebellion",                                          }
+,   [120] = { name = "Arms of Infernace",                                                }
+,   [121] = { name = "Arms of the Ancestors",                                            }
+,   [122] = { name = "Ebon Armory",                                                      }
+,   [123] = { name = "Hircine's Veneer",                                                 }
+,   [124] = { name = "The Worm's Raiment",                                               }
+,   [125] = { name = "Wrath of the Imperium",                                            }
+,   [126] = { name = "Grace of the Ancients",                                            }
+,   [127] = { name = "Deadly Strike",                                                    }
+,   [128] = { name = "Blessing of the Potentates",                                       }
+,   [129] = { name = "Vengeance Leech",                                                  }
+,   [130] = { name = "Eagle Eye",                                                        }
+,   [131] = { name = "Bastion of the Heartland",                                         }
+,   [132] = { name = "Shield of the Valiant",                                            }
+,   [133] = { name = "Buffer of the Swift",                                              }
+,   [134] = { name = "Shroud of the Lich",                                               }
+,   [135] = { name = "Draugr's Heritage",                                                }
+,   [136] = { name = "Immortal Warrior",                                                 }
+,   [137] = { name = "Berserking Warrior",                                               }
+,   [138] = { name = "Defending Warrior",                                                }
+,   [139] = { name = "Wise Mage",                                                        }
+,   [140] = { name = "Destructive Mage",                                                 }
+,   [141] = { name = "Healing Mage",                                                     }
+,   [142] = { name = "Quick Serpent",                                                    }
+,   [143] = { name = "Poisonous Serpent",                                                }
+,   [144] = { name = "Twice-Fanged Serpent",                                             }
+,   [145] = { name = "Way of Fire",                                                      }
+,   [146] = { name = "Way of Air",                                                       }
+,   [147] = { name = "Way of Martial Knowledge",                                         }
+,   [148] = { name = "Way of the Arena",                trait_ct = 8, dol_set_index = 23 }
 ,   [149] = nil
 ,   [150] = nil
 ,   [151] = nil
 ,   [152] = nil
 ,   [153] = nil
 ,   [154] = nil
-,   [155] = { name = "Undaunted Bastion",                            }
-,   [156] = { name = "Undaunted Infiltrator",                        }
-,   [157] = { name = "Undaunted Unweaver",                           }
-,   [158] = { name = "Embershield",                                  }
-,   [159] = { name = "Sunderflame",                                  }
-,   [160] = { name = "Burning Spellweave",                           }
-,   [161] = { name = "Twice-Born Star",                 trait_ct = 9 }
-,   [162] = { name = "Spawn of Mephala",                             }
-,   [163] = { name = "Blood Spawn",                                  }
-,   [164] = { name = "Lord Warden",                                  }
-,   [165] = { name = "Scourge Harvester",                            }
-,   [166] = { name = "Engine Guardian",                              }
-,   [167] = { name = "Nightflame",                                   }
-,   [168] = { name = "Nerien'eth",                                   }
-,   [169] = { name = "Valkyn Skoria",                                }
-,   [170] = { name = "Maw of the Infernal",                          }
-,   [171] = { name = "Eternal Warrior",                              }
-,   [172] = { name = "Infallible Mage",                              }
-,   [173] = { name = "Vicious Serpent",                              }
+,   [155] = { name = "Undaunted Bastion",                                                }
+,   [156] = { name = "Undaunted Infiltrator",                                            }
+,   [157] = { name = "Undaunted Unweaver",                                               }
+,   [158] = { name = "Embershield",                                                      }
+,   [159] = { name = "Sunderflame",                                                      }
+,   [160] = { name = "Burning Spellweave",                                               }
+,   [161] = { name = "Twice-Born Star",                 trait_ct = 9, dol_set_index = 24 }
+,   [162] = { name = "Spawn of Mephala",                                                 }
+,   [163] = { name = "Blood Spawn",                                                      }
+,   [164] = { name = "Lord Warden",                                                      }
+,   [165] = { name = "Scourge Harvester",                                                }
+,   [166] = { name = "Engine Guardian",                                                  }
+,   [167] = { name = "Nightflame",                                                       }
+,   [168] = { name = "Nerien'eth",                                                       }
+,   [169] = { name = "Valkyn Skoria",                                                    }
+,   [170] = { name = "Maw of the Infernal",                                              }
+,   [171] = { name = "Eternal Warrior",                                                  }
+,   [172] = { name = "Infallible Mage",                                                  }
+,   [173] = { name = "Vicious Serpent",                                                  }
 ,   [174] = nil
 ,   [175] = nil
-,   [176] = { name = "Noble's Conquest",                trait_ct = 5 }
-,   [177] = { name = "Redistributor",                   trait_ct = 7 }
-,   [178] = { name = "Armor Master",                    trait_ct = 9 }
-,   [179] = { name = "Black Rose",                                   }
-,   [180] = { name = "Powerful Assault",                             }
-,   [181] = { name = "Meritorious Service",                          }
+,   [176] = { name = "Noble's Conquest",                trait_ct = 5, dol_set_index = 25 }
+,   [177] = { name = "Redistributor",                   trait_ct = 7, dol_set_index = 26 }
+,   [178] = { name = "Armor Master",                    trait_ct = 9, dol_set_index = 27 }
+,   [179] = { name = "Black Rose",                                                       }
+,   [180] = { name = "Powerful Assault",                                                 }
+,   [181] = { name = "Meritorious Service",                                              }
 ,   [182] = nil
-,   [183] = { name = "Molag Kena",                                   }
-,   [184] = { name = "Brands of Imperium",                           }
-,   [185] = { name = "Spell Power Cure",                             }
-,   [186] = { name = "Jolting Arms",                                 }
-,   [187] = { name = "Swamp Raider",                                 }
-,   [188] = { name = "Storm Master",                                 }
+,   [183] = { name = "Molag Kena",                                                       }
+,   [184] = { name = "Brands of Imperium",                                               }
+,   [185] = { name = "Spell Power Cure",                                                 }
+,   [186] = { name = "Jolting Arms",                                                     }
+,   [187] = { name = "Swamp Raider",                                                     }
+,   [188] = { name = "Storm Master",                                                     }
 ,   [189] = nil
-,   [190] = { name = "Scathing Mage",                                }
+,   [190] = { name = "Scathing Mage",                                                    }
 ,   [191] = nil
 ,   [192] = nil
-,   [193] = { name = "Overwhelming Surge",                           }
-,   [194] = { name = "Combat Physician",                             }
-,   [195] = { name = "Sheer Venom",                                  }
-,   [196] = { name = "Leeching Plate",                               }
-,   [197] = { name = "Tormentor",                                    }
-,   [198] = { name = "Essence Thief",                                }
-,   [199] = { name = "Shield Breaker",                               }
-,   [200] = { name = "Phoenix",                                      }
-,   [201] = { name = "Reactive Armor",                               }
+,   [193] = { name = "Overwhelming Surge",                                               }
+,   [194] = { name = "Combat Physician",                                                 }
+,   [195] = { name = "Sheer Venom",                                                      }
+,   [196] = { name = "Leeching Plate",                                                   }
+,   [197] = { name = "Tormentor",                                                        }
+,   [198] = { name = "Essence Thief",                                                    }
+,   [199] = { name = "Shield Breaker",                                                   }
+,   [200] = { name = "Phoenix",                                                          }
+,   [201] = { name = "Reactive Armor",                                                   }
 ,   [202] = nil
 ,   [203] = nil
-,   [204] = { name = "Endurance",                                    }
-,   [205] = { name = "Willpower",                                    }
-,   [206] = { name = "Agility",                                      }
-,   [207] = { name = "Law of Julianos",                 trait_ct = 6 }
-,   [208] = { name = "Trial by Fire",                   trait_ct = 3 }
-,   [209] = { name = "Armor of the Code",                            }
-,   [210] = { name = "Mark of the Pariah",                           }
-,   [211] = { name = "Permafrost",                                   }
-,   [212] = { name = "Briarheart",                                   }
-,   [213] = { name = "Glorious Defender",                            }
-,   [214] = { name = "Para Bellum",                                  }
-,   [215] = { name = "Elemental Succession",                         }
-,   [216] = { name = "Hunt Leader",                                  }
-,   [217] = { name = "Winterborn",                                   }
-,   [218] = { name = "Trinimac's Valor",                             }
-,   [219] = { name = "Morkuldin",                       trait_ct = 9 }
+,   [204] = { name = "Endurance",                                                        }
+,   [205] = { name = "Willpower",                                                        }
+,   [206] = { name = "Agility",                                                          }
+,   [207] = { name = "Law of Julianos",                 trait_ct = 6, dol_set_index = 29 }
+,   [208] = { name = "Trial by Fire",                   trait_ct = 3, dol_set_index = 28 }
+,   [209] = { name = "Armor of the Code",                                                }
+,   [210] = { name = "Mark of the Pariah",                                               }
+,   [211] = { name = "Permafrost",                                                       }
+,   [212] = { name = "Briarheart",                                                       }
+,   [213] = { name = "Glorious Defender",                                                }
+,   [214] = { name = "Para Bellum",                                                      }
+,   [215] = { name = "Elemental Succession",                                             }
+,   [216] = { name = "Hunt Leader",                                                      }
+,   [217] = { name = "Winterborn",                                                       }
+,   [218] = { name = "Trinimac's Valor",                                                 }
+,   [219] = { name = "Morkuldin",                       trait_ct = 9, dol_set_index = 30 }
 ,   [220] = nil
 ,   [221] = nil
 ,   [222] = nil
 ,   [223] = nil
-,   [224] = { name = "Tava's Favor",                    trait_ct = 5 }
-,   [225] = { name = "Clever Alchemist",                trait_ct = 7 }
-,   [226] = { name = "Eternal Hunt",                    trait_ct = 9 }
-,   [227] = { name = "Bahraha's Curse",                              }
-,   [228] = { name = "Syvarra's Scales",                             }
-,   [229] = { name = "Twilight Remedy",                              }
-,   [230] = { name = "Moondancer",                                   }
-,   [231] = { name = "Lunar Bastion",                                }
-,   [232] = { name = "Roar of Alkosh",                               }
+,   [224] = { name = "Tava's Favor",                    trait_ct = 5, dol_set_index = 31 }
+,   [225] = { name = "Clever Alchemist",                trait_ct = 7, dol_set_index = 32 }
+,   [226] = { name = "Eternal Hunt",                    trait_ct = 9, dol_set_index = 33 }
+,   [227] = { name = "Bahraha's Curse",                                                  }
+,   [228] = { name = "Syvarra's Scales",                                                 }
+,   [229] = { name = "Twilight Remedy",                                                  }
+,   [230] = { name = "Moondancer",                                                       }
+,   [231] = { name = "Lunar Bastion",                                                    }
+,   [232] = { name = "Roar of Alkosh",                                                   }
 ,   [233] = nil
-,   [234] = { name = "Marksman's Crest",                             }
-,   [235] = { name = "Robes of Transmutation",                       }
-,   [236] = { name = "Vicious Death",                                }
-,   [237] = { name = "Leki's Focus",                                 }
-,   [238] = { name = "Fasalla's Guile",                              }
-,   [239] = { name = "Warrior's Fury",                               }
-,   [240] = { name = "Kvatch Gladiator",                trait_ct = 6 }
-,   [241] = { name = "Varen's Legacy",                  trait_ct = 7 }
-,   [242] = { name = "Pelinal's Aptitude",              trait_ct = 9 }
-,   [243] = { name = "Hide of Morihaus",                             }
-,   [244] = { name = "Flanking Strategist",                          }
-,   [245] = { name = "Sithis' Touch",                                }
-,   [246] = { name = "Galerion's Revenge",                           }
-,   [247] = { name = "Vicecanon of Venom",                           }
-,   [248] = { name = "Thews of the Harbinger",                       }
+,   [234] = { name = "Marksman's Crest",                                                 }
+,   [235] = { name = "Robes of Transmutation",                                           }
+,   [236] = { name = "Vicious Death",                                                    }
+,   [237] = { name = "Leki's Focus",                                                     }
+,   [238] = { name = "Fasalla's Guile",                                                  }
+,   [239] = { name = "Warrior's Fury",                                                   }
+,   [240] = { name = "Kvatch Gladiator",                trait_ct = 6, dol_set_index = 34 }
+,   [241] = { name = "Varen's Legacy",                  trait_ct = 7, dol_set_index = 35 }
+,   [242] = { name = "Pelinal's Aptitude",              trait_ct = 9, dol_set_index = 36 }
+,   [243] = { name = "Hide of Morihaus",                                                 }
+,   [244] = { name = "Flanking Strategist",                                              }
+,   [245] = { name = "Sithis' Touch",                                                    }
+,   [246] = { name = "Galerion's Revenge",                                               }
+,   [247] = { name = "Vicecanon of Venom",                                               }
+,   [248] = { name = "Thews of the Harbinger",                                           }
 ,   [249] = nil
 ,   [250] = nil
 ,   [251] = nil
 ,   [252] = nil
-,   [253] = { name = "Imperial Physique",                            }
+,   [253] = { name = "Imperial Physique",                                                }
 ,   [254] = nil
 ,   [255] = nil
-,   [256] = { name = "Mighty Chudan",                                }
-,   [257] = { name = "Velidreth",                                    }
-,   [258] = { name = "Amber Plasm",                                  }
-,   [259] = { name = "Heem-Jas' Retribution",                        }
-,   [260] = { name = "Aspect of Mazzatun",                           }
-,   [261] = { name = "Gossamer",                                     }
-,   [262] = { name = "Widowmaker",                                   }
-,   [263] = { name = "Hand of Mephala",                              }
-,   [264] = { name = "Giant Spider",                                 }
-,   [265] = { name = "Shadowrend",                                   }
-,   [266] = { name = "Kra'gh",                                       }
-,   [267] = { name = "Swarm Mother",                                 }
-,   [268] = { name = "Sentinel of Rkugamz",                          }
-,   [269] = { name = "Chokethorn",                                   }
-,   [270] = { name = "Slimecraw",                                    }
-,   [271] = { name = "Sellistrix",                                   }
-,   [272] = { name = "Infernal Guardian",                            }
-,   [273] = { name = "Ilambris",                                     }
-,   [274] = { name = "Iceheart",                                     }
-,   [275] = { name = "Stormfist",                                    }
-,   [276] = { name = "Tremorscale",                                  }
-,   [277] = { name = "Pirate Skeleton",                              }
-,   [278] = { name = "The Troll King",                               }
-,   [279] = { name = "Selene",                                       }
-,   [280] = { name = "Grothdarr",                                    }
-,   [281] = { name = "Armor of the Trainee",                         }
-,   [282] = { name = "Vampire Cloak",                                }
-,   [283] = { name = "Sword-Singer",                                 }
-,   [284] = { name = "Order of Diagna",                              }
-,   [285] = { name = "Vampire Lord",                                 }
-,   [286] = { name = "Spriggan's Thorns",                            }
-,   [287] = { name = "Green Pact",                                   }
-,   [288] = { name = "Beekeeper's Gear",                             }
-,   [289] = { name = "Spinner's Garments",                           }
-,   [290] = { name = "Skooma Smuggler",                              }
-,   [291] = { name = "Shalk Exoskeleton",                            }
-,   [292] = { name = "Mother's Sorrow",                              }
-,   [293] = { name = "Plague Doctor",                                }
-,   [294] = { name = "Ysgramor's Birthright",                        }
-,   [295] = { name = "Jailbreaker",                                  }
-,   [296] = { name = "Spelunker",                                    }
-,   [297] = { name = "Spider Cultist Cowl",                          }
-,   [298] = { name = "Light Speaker",                                }
-,   [299] = { name = "Toothrow",                                     }
-,   [300] = { name = "Netch's Touch",                                }
-,   [301] = { name = "Strength of the Automaton",                    }
-,   [302] = { name = "Leviathan",                                    }
-,   [303] = { name = "Lamia's Song",                                 }
-,   [304] = { name = "Medusa",                                       }
-,   [305] = { name = "Treasure Hunter",                              }
+,   [256] = { name = "Mighty Chudan",                                                    }
+,   [257] = { name = "Velidreth",                                                        }
+,   [258] = { name = "Amber Plasm",                                                      }
+,   [259] = { name = "Heem-Jas' Retribution",                                            }
+,   [260] = { name = "Aspect of Mazzatun",                                               }
+,   [261] = { name = "Gossamer",                                                         }
+,   [262] = { name = "Widowmaker",                                                       }
+,   [263] = { name = "Hand of Mephala",                                                  }
+,   [264] = { name = "Giant Spider",                                                     }
+,   [265] = { name = "Shadowrend",                                                       }
+,   [266] = { name = "Kra'gh",                                                           }
+,   [267] = { name = "Swarm Mother",                                                     }
+,   [268] = { name = "Sentinel of Rkugamz",                                              }
+,   [269] = { name = "Chokethorn",                                                       }
+,   [270] = { name = "Slimecraw",                                                        }
+,   [271] = { name = "Sellistrix",                                                       }
+,   [272] = { name = "Infernal Guardian",                                                }
+,   [273] = { name = "Ilambris",                                                         }
+,   [274] = { name = "Iceheart",                                                         }
+,   [275] = { name = "Stormfist",                                                        }
+,   [276] = { name = "Tremorscale",                                                      }
+,   [277] = { name = "Pirate Skeleton",                                                  }
+,   [278] = { name = "The Troll King",                                                   }
+,   [279] = { name = "Selene",                                                           }
+,   [280] = { name = "Grothdarr",                                                        }
+,   [281] = { name = "Armor of the Trainee",                                             }
+,   [282] = { name = "Vampire Cloak",                                                    }
+,   [283] = { name = "Sword-Singer",                                                     }
+,   [284] = { name = "Order of Diagna",                                                  }
+,   [285] = { name = "Vampire Lord",                                                     }
+,   [286] = { name = "Spriggan's Thorns",                                                }
+,   [287] = { name = "Green Pact",                                                       }
+,   [288] = { name = "Beekeeper's Gear",                                                 }
+,   [289] = { name = "Spinner's Garments",                                               }
+,   [290] = { name = "Skooma Smuggler",                                                  }
+,   [291] = { name = "Shalk Exoskeleton",                                                }
+,   [292] = { name = "Mother's Sorrow",                                                  }
+,   [293] = { name = "Plague Doctor",                                                    }
+,   [294] = { name = "Ysgramor's Birthright",                                            }
+,   [295] = { name = "Jailbreaker",                                                      }
+,   [296] = { name = "Spelunker",                                                        }
+,   [297] = { name = "Spider Cultist Cowl",                                              }
+,   [298] = { name = "Light Speaker",                                                    }
+,   [299] = { name = "Toothrow",                                                         }
+,   [300] = { name = "Netch's Touch",                                                    }
+,   [301] = { name = "Strength of the Automaton",                                        }
+,   [302] = { name = "Leviathan",                                                        }
+,   [303] = { name = "Lamia's Song",                                                     }
+,   [304] = { name = "Medusa",                                                           }
+,   [305] = { name = "Treasure Hunter",                                                  }
 ,   [306] = nil
-,   [307] = { name = "Draugr Hulk",                                  }
-,   [308] = { name = "Bone Pirate's Tatters",                        }
-,   [309] = { name = "Knight-errant's Mail",                         }
-,   [310] = { name = "Sword Dancer",                                 }
-,   [311] = { name = "Rattlecage",                                   }
-,   [312] = { name = "Tremorscale",                                  }
-,   [313] = { name = "Masters Duel Wield",                           }
-,   [314] = { name = "Masters Two Handed",                           }
-,   [315] = { name = "Masters One Hand and Shield",                  }
-,   [316] = { name = "Masters Destruction Staff",                    }
-,   [317] = { name = "Masters Duel Wield",                           }
-,   [318] = { name = "Masters Restoration Staff",                    }
+,   [307] = { name = "Draugr Hulk",                                                      }
+,   [308] = { name = "Bone Pirate's Tatters",                                            }
+,   [309] = { name = "Knight-errant's Mail",                                             }
+,   [310] = { name = "Sword Dancer",                                                     }
+,   [311] = { name = "Rattlecage",                                                       }
+,   [312] = { name = "Tremorscale",                                                      }
+,   [313] = { name = "Masters Duel Wield",                                               }
+,   [314] = { name = "Masters Two Handed",                                               }
+,   [315] = { name = "Masters One Hand and Shield",                                      }
+,   [316] = { name = "Masters Destruction Staff",                                        }
+,   [317] = { name = "Masters Duel Wield",                                               }
+,   [318] = { name = "Masters Restoration Staff",                                        }
 ,   [319] = nil
 ,   [320] = nil
 ,   [321] = nil
@@ -844,14 +666,18 @@ Smithing.SET_BONUS = {
 -- Material counts for improving to purple or gold.
 --
 Smithing.PURPLE = {
-    green_mat_ct   = 2
+    index          = 4
+,   name           = "Epic"
+,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
 ,   gold_mat_ct    = 0
 }
 
 Smithing.GOLD = {
-    green_mat_ct   = 2
+    index          = 5
+,   name           = "Legendary"
+,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
 ,   gold_mat_ct    = 8
@@ -1051,41 +877,138 @@ function Parser:ToKnowList()
     return r
 end
 
+
+-- Dolgubon's Lazy Set Crafter integration -----------------------------------
+--[[
+UI requirements
+Style names from    DolgubonSetCrafter.styleNames
+Trait names from    DolgubonSetCrafter.armourTraits and .weaponTraits
+Quality names from  DolgubonSetCrafter.quality
+Set names from      DolgubonSetCrafter.setIndexes
+
+styleIndex from DSC.ComboBox.Style.(selected)[1]
+UI requires:
+
+LLC requires
+
+styleIndex = 8      Style   = "High Elf"
+                    Weight  = "Heavy"
+                    Pattern = "Chest"
+                    Quality = "(p)Epic"
+                    Trait   = "Divines"
+                    Set     = "Alessia's Bulwark"
+
+
+styleIndex = 1 + ITEMSTYLE_XXX
+ 7  Argonian             --  6 = ITEMSTYLE_RACIAL_ARGONIAN
+16  Ancient Elf          -- 15 = ITEMSTYLE_AREA_ANCIENT_ELF
+23  Ancient Orc          -- 22 = ITEMSTYLE_AREA_ANCIENT_ORC
+26  Aldmeri Dominion     -- 25 = ITEMSTYLE_ALLIANCE_ALDMERI
+34  Akaviri              -- 33 = ITEMSTYLE_AREA_AKAVIRI
+42  abahs watch          -- 42 = ITEMSTYLE_ORG_ABAHS_WATCH
+
+trait = 1 + ITEM_TRAIT_TYPE_XXX
+2   Powered
+3   Charged
+4   Precise
+5   Infused (weapon)
+6   Defending
+7   Training (weapon)
+8   Sharpened
+9   Decisive
+12  Sturdy
+13  Impenetrable
+14  Reinforced
+15  Well-Fitted
+16  Training (armor)
+17  Infused (armor)
+18  Prosperous
+19  Divines
+26  Nirnhoned (armor)
+27  Nirnhoned (weapon)
+
+station  == CRAFTING_TYPE_XXX
+1   blacksmithing (both armor and weapons)
+2   clothier
+6   woodworking (weapon and shield)
+
+quality
+1 = normal white
+2 = fine green
+3 = superior blue
+4 = epic purple
+5 = legendary yellow
+
+CraftRequestTable[]
+[ 1 pattern    ] patternIndex above, 1..15
+[ 2 isCP       ] true
+[ 3 level      ] 150
+[ 4 styleIndex ] ITEMSTYLE_XXX + 1,
+[ 5 trait      ] trait above
+[ 6 false      ] false
+[ 7 station    ] station above 1, 2, or 6
+[ 8 setIndex   ] 13
+[ 9 quality    ] quality above 1..5
+[10 true       ] true
+
+--]]
+
+
 -- Create a Dolgubon's Lazy Set Crafter request.
 function Parser:ToDolRequest()
-    local request = {}
 
-    -- armor
-    request["Pattern"    ] = "Chest" -- patternButton.tooltip
-    request["Weight"     ] = "Heavy" -- more tooltips
-    request["Trait"      ] = "Prosperous"
-    request["Level"      ] = "150"
-    request["Style"      ] = "Nord"  ???
-    request["styleIndex" ] = ???
-    request["Set"        ] = "Seducer"
-    request["Quality"    ] = "Epic"
-    request["Reference"  ] = math.random()
-    request["isCP"       ] = true
+                        -- a unique identifier within Dolgubon's
+                        -- enqueued requests. No, this is not really
+                        -- unique and neither Dolgubon nor Zig cares.
+                        -- Close enough.
+    local reference = math.random()
+
+                        -- API struct passed to LibLazyCrafter for
+                        -- eventual crafting.
+    local o = {}
+    o.patternIndex = self.request_item.dol_pattern_index
+    o.isCP         = true
+    o.level        = 150
+    o.styleIndex   = self.motif_num + 1
+    o.traitIndex   = self.trait_num + 1
+    o.useUniversalStyleItem = false
+    o.station      = self.request_item.school.trade_skill_type
+    o.setIndex     = self.set_bonus.dol_set_index
+    o.quality      = self.improve_level.index
+    o.autocraft    = true
+    o.reference    = reference
+    o[ 1] = o.patternIndex
+    o[ 2] = o.isCP
+    o[ 3] = o.level
+    o[ 4] = o.styleIndex
+    o[ 5] = o.traitIndex
+    o[ 6] = o.useUniversalStyleItem
+    o[ 7] = o.station
+    o[ 8] = o.setIndex
+    o[ 9] = o.quality
+    o[10] = o.autocraft
+    o[11] = o.reference
+    local craft_request_table = o
 
 
-    return request
+                        -- UI row with user-visible strings.
+                        -- This is just for display, so okay if strings
+                        -- mismatch something Dolgubon would supply. (For
+                        -- example, Dolgubon has a private shortening function
+                        -- to say "Seducer" instead of "Armor of the Seducer",
+                        -- but we don't get to call this.)
+    local request_table = {}
+    request_table.Pattern           = self.request_item.item_name
+    request_table.Weight            = self.request_item.school.armor_weight_name
+    request_table.Trait             = self.request_item.trait_set[self.trait_num]
+    request_table.isCP              = true
+    request_table.Level             = "CP150"
+    request_table.Style             = self.motif.motif_name
+    request_table.styleIndex        = self.motif_num + 1
+    request_table.Set               = self.set_bonus.name
+    request_table.Quality           = self.improve_level.name
+    request_table.Reference         = reference
+    request_table.CraftRequestTable = craft_request_table
+
+    return request_table
 end
-
-1   bow
-2   shield
-
-local function LLC_CraftSmithingItemByLevel(
-        self
-        , patternIndex
-        , isCP
-        , level
-        , styleIndex
-        , traitIndex
-        , useUniversalStyleItem
-        , stationOverride
-        , setIndex
-        , quality
-        , autocraft
-        , reference)
-
-
