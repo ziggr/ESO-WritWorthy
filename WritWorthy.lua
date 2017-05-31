@@ -329,9 +329,9 @@ end
 -- exit+re-enter that station to start crafting.
 --
 function WritWorthy_Dol_EnqueueAll()
-    if not DolgubonSetCrafter and DolgubonSetCrafter.enqueueRequest then
-        d("Requires enhanced version of Dolgubon's that includes"
-          .." public API for queue insertion.")
+    if not DolgubonSetCrafter and DolgubonSetCrafter.savedVars.counter then
+        d("WritWorthy: Cannot queue items for crafting."
+          .." Requires Dolgubon's Lazy Set Crafter version 1.0.8 or later.")
         return
     end
 
@@ -357,22 +357,8 @@ function WritWorthy_Dol_EnqueueAll()
 d(dol_request)
         table.insert(DOL.savedVars.queue, dol_request)
         local o = dol_request.CraftRequestTable
-        DOL.LazyCrafter:CraftSmithingItemByLevel(
-              o[ 1] -- patternIndex
-            , o[ 2] -- isCP
-            , o[ 3] -- level
-            , o[ 4] -- styleIndex
-            , o[ 5] -- traitIndex
-            , o[ 6] -- useUniversalStyleItem
-            , o[ 7] -- station
-            , o[ 8] -- setIndex
-            , o[ 9] -- quality
-            , o[10] -- autocraft
-            , o[11] -- reference
-            )
+        DOL.LazyCrafter:CraftSmithingItemByLevel(unpack(o))
     end
--- ZIG YOU LEFT OFF HERE
--- Kaboom. Calling this function crashes
     DOL.updateList()
 end
 
