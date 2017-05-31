@@ -211,7 +211,12 @@ function WritWorthy:ScanInventoryForMasterWrits()
             parser = nil
         end
         if parser then
-            table.insert(result_list, { item_link = item_link, parser = parser } )
+            local unique_id = WritWorthy.UniqueID(bag_id, slot_index)
+            parser.unique_id = unique_id
+            table.insert(result_list, { item_link  = item_link
+                                      , parser     = parser
+                                      , unique_id  = unique_id
+                                      } )
         end
     end
                         -- Restore mat list to chat setting now that we're
@@ -220,6 +225,17 @@ function WritWorthy:ScanInventoryForMasterWrits()
     return result_list
 end
 
+function WritWorthy.UniqueID(bag_id, slot_index)
+                        -- GetItemUniqueId(bag_id, slot_index) returns an id64
+                        -- that cannot be rendered directly in savedVariables
+                        -- or tostring(). Call ZOS function Id64ToString() to
+                        -- turn it into something usable and saveable and
+                        -- restorable. Do all our unique_id thinking in
+                        -- strings, not id64.
+    local id64 = GetItemUniqueId(bag_id, slot_index)
+    local unique_id = Id64ToString(id64)
+    return unique_id
+end
 
 -- Tooltip Intercept ---------------------------------------------------------
 
@@ -335,32 +351,101 @@ function WritWorthy_Dol_EnqueueAll()
         return
     end
 
+                        -- Avoid duplicate requests by keeping track of
+                        -- which writs we've already requested.
+    local queued_id = WritWorthy:Dol_QueuedIDs()
+
                         -- Scan inventory and build a list of all
                         -- that we can craft in Dolgubon's Lazy Set Crafter.
     d("WritWorthy: Scanning inventory for master writs...")
-    local rl = WritWorthy:ScanInventoryForMasterWrits()
+    local mw_list = WritWorthy:ScanInventoryForMasterWrits()
     local q_able_list = {}
+    local unique_ids = {}
     local dol_ct = 0
-    for _, r in ipairs(rl) do
-        if WritWorthy.Dol_IsQueueable(r.parser) then
+    local dup_ct = 0
+    for _, mw in ipairs(mw_list) do
+                        -- Accumulate a hashtable of all master writ IDs
+                        -- currently in our inventory. We'll use this
+                        -- later to accelerate removal of stale IDs.
+        unique_ids[mw.parser.unique_id] = true
+
+                        -- Skip if already queued.
+        if queued_id[mw.parser.unique_id] then
+            dup_ct = dup_ct + 1
+-- d("Already queued: id="..tostring(mw.parser.unique_id)
+--   .. " dol_reference="..tostring(queued_id[mw.parser.unique_id]))
+                        -- Skip if something that Lazy Set Crafter does not
+                        -- support (aka Consumables)
+        elseif not WritWorthy.Dol_IsQueueable(mw.parser) then
+            -- d("Consumable skipped.")
+        else
             dol_ct = dol_ct + 1
-            table.insert(q_able_list, r)
+            table.insert(q_able_list, mw)
         end
     end
-    d("WritWorthy: " ..tostring(dol_ct).." out of "
-      ..tostring(#rl).." master writs craftable by Dolgubon's Lazy Set Crafter.")
+    if 0 < dol_ct then
+        d("WritWorthy: queued requests for " ..tostring(dol_ct).." out of "
+          ..tostring(#mw_list).." master writs.")
+    end
+    if 0 < dup_ct then
+        d("WritWorthy: skipped requests for " ..tostring(dup_ct)
+          .." master writs already queued.")
+    end
+                        -- Purge old writs from our unique_id -> Dol reference
+                        -- deduplication table.
+    WritWorthy:Dol_RemoveStaleQueuedIDs(unique_ids)
 
                         -- Queue up all requests.
     local DOL = DolgubonSetCrafter
     for _, r in ipairs(q_able_list) do
         local dol_request = r.parser:ToDolRequest()
-d(dol_request)
         table.insert(DOL.savedVars.queue, dol_request)
         local o = dol_request.CraftRequestTable
         DOL.LazyCrafter:CraftSmithingItemByLevel(unpack(o))
     end
     DOL.updateList()
 end
+
+function WritWorthy:Dol_QueuedIDs()
+    if not self.savedVariables.dol_queued_ids then
+        self.savedVariables.dol_queued_ids = {}
+    end
+    return self.savedVariables.dol_queued_ids
+end
+
+-- Do we still have writ -> counter records for writs we no longer posess?
+-- Stop wasting memory on them.
+function WritWorthy:Dol_RemoveStaleQueuedIDs(current_unique_ids)
+    if not self.savedVariables.dol_queued_ids then return end
+
+                        -- Build a list of the doomed.
+                        -- Don't remove from a collection while iterating over
+                        -- that collection: might be safe, but I really don't
+                        -- want to have to pore over Lua library details to be
+                        -- sure.
+    local remove_list = {}
+    for unique_id, dol_reference in pairs(self.savedVariables.dol_queued_ids) do
+        if not current_unique_ids[unique_id] then
+            table.insert(remove_list, unique_id)
+        end
+    end
+                        -- Remove.
+    for _, unique_id in pairs(remove_list) do
+        self.savedVariables.dol_queued_ids[unique_id] = nil
+    end
+end
+
+function WritWorthy:Dol_AssignReference(unique_id)
+    local queued_ids = WritWorthy:Dol_QueuedIDs()
+    if queued_ids[unique_id] then
+        d("WritWorthy: unique_id already queued once? "..tostring(unique_id))
+    end
+    DolgubonSetCrafter.savedVars.counter = DolgubonSetCrafter.savedVars.counter + 1
+    local reference = DolgubonSetCrafter.savedVars.counter
+    queued_ids[unique_id] = reference
+    return reference
+end
+
 
 -- Init ----------------------------------------------------------------------
 

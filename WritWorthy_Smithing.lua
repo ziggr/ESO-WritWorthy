@@ -705,6 +705,8 @@ function Parser:New()
     ,   improve_level   = nil   -- PURPLE, GOLD
     ,   mat_list        = {}    -- of MatRow
     ,   can_dolgubon    = true
+    ,   unique_id       = nil   -- GetItemUniqueId(), set by
+                                -- WritWorthy:ScanInventoryForMasterWrits()
     }
     setmetatable(o, self)
     self.__index = self
@@ -956,13 +958,7 @@ CraftRequestTable[]
 
 -- Create a Dolgubon's Lazy Set Crafter request.
 function Parser:ToDolRequest()
-
-                        -- a unique identifier within Dolgubon's
-                        -- enqueued requests. No, this is not really
-                        -- unique and neither Dolgubon nor Zig cares.
-                        -- Close enough.
-    DolgubonSetCrafter.savedVars.counter = DolgubonSetCrafter.savedVars.counter + 1
-    local reference = DolgubonSetCrafter.savedVars.counter
+    local reference = WritWorthy:Dol_AssignReference(self.unique_id)
 
                         -- API struct passed to LibLazyCrafter for
                         -- eventual crafting.
