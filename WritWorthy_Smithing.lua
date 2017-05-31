@@ -961,7 +961,8 @@ function Parser:ToDolRequest()
                         -- enqueued requests. No, this is not really
                         -- unique and neither Dolgubon nor Zig cares.
                         -- Close enough.
-    local reference = math.random()
+    DolgubonSetCrafter.savedVars.counter = DolgubonSetCrafter.savedVars.counter + 1
+    local reference = DolgubonSetCrafter.savedVars.counter
 
                         -- API struct passed to LibLazyCrafter for
                         -- eventual crafting.
@@ -997,18 +998,81 @@ function Parser:ToDolRequest()
                         -- example, Dolgubon has a private shortening function
                         -- to say "Seducer" instead of "Armor of the Seducer",
                         -- but we don't get to call this.)
+    local C = Parser.ToDolCell   -- for less typing
     local request_table = {}
-    request_table.Pattern           = self.request_item.item_name
-    request_table.Weight            = self.request_item.school.armor_weight_name
-    request_table.Trait             = self.request_item.trait_set[self.trait_num].trait_name
-    --quest_table.isCP              = true
-    request_table.Level             = "CP150"
-    request_table.Style             = self.motif.motif_name
-    request_table.styleIndex        = self.motif_num + 1
-    request_table.Set               = self.set_bonus.name
-    request_table.Quality           = self.improve_level.name
-    request_table.Reference         = reference
-    request_table.CraftRequestTable = craft_request_table
+    request_table.Pattern           = C(o.patternIndex    , self.request_item.item_name                           )
+    request_table.Weight            = C(1                 , self.request_item.school.armor_weight_name            )
+    request_table.Trait             = C(o.traitIndex      , self.request_item.trait_set[self.trait_num].trait_name)
+    request_table.Level             = C(150               , "CP150"                                               )
+    request_table.Style             = C(o.styleIndex + 1  , self.motif.motif_name                                 )
+ -- request_table.styleIndex        =   self.motif_num + 1
+    request_table.Set               = C(o.setIndex        , self.set_bonus.name                                   )
+    request_table.Quality           = C(o.quality         , self.improve_level.name                               )
+    request_table.Reference         =   reference
+    request_table.CraftRequestTable =   craft_request_table
 
     return request_table
 end
+
+function Parser.ToDolCell(info, display_string)
+    local is_known = true
+    return { info
+           , Parser.ShortenDolText(display_string)
+           , is_known
+           }
+end
+
+local DOL_SHORTEN = {
+  ["Rubedite Axe"             ] = "1h axe"
+, ["Rubedite Mace"            ] = "1h mace"
+, ["Rubedite Sword"           ] = "1h sword"
+, ["Rubedite Greataxe"        ] = "2h battle axe"
+, ["Rubedite Greatsword"      ] = "2h greatsword"
+, ["Rubedite Maul"            ] = "2h maul"
+, ["Rubedite Dagger"          ] = "dagger"
+, ["Rubedite Cuirass"         ] = "chest"
+, ["Rubedite Sabatons"        ] = "feed"
+, ["Rubedite Gauntlets"       ] = "hands"
+, ["Rubedite Helm"            ] = "head"
+, ["Rubedite Greaves"         ] = "legs"
+, ["Rubedite Pauldron"        ] = "shoulders"
+, ["Rubedite Girdle"          ] = "waist"
+, ["Ancestor Silk Robe"       ] = "robe"
+, ["Ancestor Silk Jerkin"     ] = "shirt"
+, ["Ancestor Silk Shoes"      ] = "feet"
+, ["Ancestor Silk Gloves"     ] = "hands"
+, ["Ancestor Silk Hat"        ] = "head"
+, ["Ancestor Silk Breeches"   ] = "legs"
+, ["Ancestor Silk Epaulets"   ] = "shoulders"
+, ["Ancestor Silk Sash"       ] = "waist"
+, ["Rubedo Leather Jack"      ] = "chest"
+, ["Rubedo Leather Boots"     ] = "feet"
+, ["Rubedo Leather Bracers"   ] = "hands"
+, ["Rubedo Leather Helmet"    ] = "head"
+, ["Rubedo Leather Guards"    ] = "legs"
+, ["Rubedo Leather Arm Cops"  ] = "shoulders"
+, ["Rubedo Leather Belt"      ] = "waist"
+, ["Ruby Ash Bow"             ] = "bow"
+, ["Ruby Ash Inferno Staff"   ] = "flame"
+, ["Ruby Ash Frost Staff"     ] = "frost"
+, ["Ruby Ash Lightning Staff" ] = "lightning"
+, ["Ruby Ash Healing Staff"   ] = "resto"
+, ["Ruby Ash Shield"          ] = "shield"
+
+, ["Twilight's Embrace"       ] = "Twilight's"
+, ["Whitestrake's Retribution"] = "Whitestrake's"
+, ["Armor of the Seducer"     ] = "Seducer"
+, ["Night Mother's Gaze"      ] = "Night Mother's"
+, ["Alessia's Bulwark"        ] = "Alessia's"
+, ["Law of Julianos"          ] = "Julianos"
+, ["Pelinal's Aptitude"       ] = "Pelinal's"
+}
+
+function Parser.ShortenDolText(text)
+    if DOL_SHORTEN[text] then
+        return DOL_SHORTEN[text]
+    else
+        return text
+    end
+end
+
