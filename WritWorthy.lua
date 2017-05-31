@@ -346,7 +346,7 @@ end
 --
 function WritWorthy_Dol_EnqueueAll()
     local DOL = DolgubonSetCrafter -- for less typing
-    if not DOL and DOL.savedVars.counter then
+    if not (DOL and DOL.savedVars.counter) then
         d("WritWorthy: Cannot queue items for crafting."
           .." Requires Dolgubon's Lazy Set Crafter version 1.0.8 or later.")
         return
