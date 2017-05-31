@@ -977,19 +977,19 @@ function Parser:ToDolRequest()
     o.quality      = self.improve_level.index
     o.autocraft    = true
     o.reference    = reference
-    o[ 1] = o.patternIndex
-    o[ 2] = o.isCP
-    o[ 3] = o.level
-    o[ 4] = o.styleIndex
-    o[ 5] = o.traitIndex
-    o[ 6] = o.useUniversalStyleItem
-    o[ 7] = o.station
-    o[ 8] = o.setIndex
-    o[ 9] = o.quality
-    o[10] = o.autocraft
-    o[11] = o.reference
-    local craft_request_table = o
-
+    local craft_request_table = {
+      o.patternIndex            --  1
+    , o.isCP                    --  2
+    , o.level                   --  3
+    , o.styleIndex              --  4
+    , o.traitIndex              --  5
+    , o.useUniversalStyleItem   --  6
+    , o.station                 --  7
+    , o.setIndex                --  8
+    , o.quality                 --  9
+    , o.autocraft               -- 10
+    , o.reference               -- 11
+    }
 
                         -- UI row with user-visible strings.
                         -- This is just for display, so okay if strings
@@ -1000,8 +1000,8 @@ function Parser:ToDolRequest()
     local request_table = {}
     request_table.Pattern           = self.request_item.item_name
     request_table.Weight            = self.request_item.school.armor_weight_name
-    request_table.Trait             = self.request_item.trait_set[self.trait_num]
-    request_table.isCP              = true
+    request_table.Trait             = self.request_item.trait_set[self.trait_num].trait_name
+    --quest_table.isCP              = true
     request_table.Level             = "CP150"
     request_table.Style             = self.motif.motif_name
     request_table.styleIndex        = self.motif_num + 1
