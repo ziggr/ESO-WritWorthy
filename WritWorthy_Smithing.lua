@@ -952,9 +952,8 @@ CraftRequestTable[]
 [ 8 setIndex   ] 13
 [ 9 quality    ] quality above 1..5
 [10 true       ] true
-
+-- end notes -----------------------------------------------------------------
 --]]
-
 
 -- Create a Dolgubon's Lazy Set Crafter request.
 function Parser:ToDolRequest()
@@ -974,6 +973,7 @@ function Parser:ToDolRequest()
     o.quality      = self.improve_level.index
     o.autocraft    = true
     o.reference    = reference
+                        -- Positional arguments to LibLazyCrafter:CraftSmithingItemByLevel()
     local craft_request_table = {
       o.patternIndex            --  1
     , o.isCP                    --  2
@@ -987,7 +987,6 @@ function Parser:ToDolRequest()
     , o.autocraft               -- 10
     , o.reference               -- 11
     }
-
                         -- UI row with user-visible strings.
                         -- This is just for display, so okay if strings
                         -- mismatch something Dolgubon would supply. (For
@@ -1001,7 +1000,6 @@ function Parser:ToDolRequest()
     request_table.Trait             = C(o.traitIndex      , self.request_item.trait_set[self.trait_num].trait_name)
     request_table.Level             = C(150               , "CP150"                                               )
     request_table.Style             = C(o.styleIndex + 1  , self.motif.motif_name                                 )
- -- request_table.styleIndex        =   self.motif_num + 1
     request_table.Set               = C(o.setIndex        , self.set_bonus.name                                   )
     request_table.Quality           = C(o.quality         , self.improve_level.name                               )
     request_table.Reference         =   reference
