@@ -17,8 +17,15 @@ WritWorthy.default = {
                         -- Provisioning fields here are never read.
 ,   provisioning_recipes = {}
 ,   provisioning_ingredient_links = {}
+
+                        -- UI topleft
+,   position = { 50, 50 }
 }
 
+                        -- The header controls for each of our lists, recorded
+                        -- during WritWorthyHeaderInit().
+                        -- [column_name] = control
+WritWorthy.list_header_controls = {}
 
 local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
@@ -364,9 +371,85 @@ function WritWorthy.UniqueID(bag_id, slot_index)
     return unique_id
 end
 
+-- Inventory UI: Save/Restore UI Position --------------------------------------------------
+function WritWorthy:RestorePos()
+    pos = self.savedVariables.position
+    if not pos then
+        pos = self.default.position
+    end
+
+    WritWorthyUI:SetAnchor(
+             TOPLEFT
+            ,GuiRoot
+            ,TOPLEFT
+            ,pos[1]
+            ,pos[2]
+            )
+end
+
+function WritWorthy:OnMouseUp()
+    -- d("OnMouseUp")
+    local l = WritWorthyUI:GetLeft()
+    local t = WritWorthyUI:GetTop()
+    local r = WritWorthyUI:GetRight()
+    local b = WritWorthyUI:GetBottom()
+    -- d("OnMouseUp ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+end
+
+function WritWorthy:OnMoveStop()
+    local l = WritWorthyUI:GetLeft()
+    local t = WritWorthyUI:GetTop()
+    local r = WritWorthyUI:GetRight()
+    local b = WritWorthyUI:GetBottom()
+    -- d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    -- ### Save Bounds
+end
+
+function WritWorthy:OnResizeStop()
+    local l = WritWorthyUI:GetLeft()
+    local t = WritWorthyUI:GetTop()
+    local r = WritWorthyUI:GetRight()
+    local b = WritWorthyUI:GetBottom()
+    d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    WritWorthy.LotList:UpdateAllColumnWidths()
+    -- ### Save Bounds
+end
+
 -- Invetory UI ---------------------------------------------------------------
 function WritWorthy_ToggleUI()
     d("toggle ui")
+    ui = WritWorthyUI
+    if not ui then
+        d("No UI")
+        return
+    end
+    h = WritWorthyUI:IsHidden()
+    if h then
+        WritWorthy:RestorePos()
+    end
+    WritWorthyUI:SetHidden(not h)
+end
+
+function WritWorthyHeaderInit(control, text)
+    ZO_SortHeader_Initialize( control
+                            , text
+                            , string.lower(text)
+                            , ZO_SORT_ORDER_DOWN
+                            , align or TEXT_ALIGN_LEFT
+                            , "ZoFontWinT1"
+                            )
+
+                        -- Remember this control!
+                        --
+                        -- The header cell control that we get here, and which
+                        -- ZO_SortHeader_Initialize() fills in is NOT the same
+                        -- as the XML template control reachable from
+                        -- WritWorthyUILotListHeaders:GetNamedChild(). We need
+                        -- this actual header cell control, which has Text and
+                        -- alignment and live data, in addition to the XML
+                        -- template control (which has dynamic width, thanks to
+                        -- its two anchors).
+    WritWorthy.list_header_controls[text] = control
 end
 
 -- Tooltip Intercept ---------------------------------------------------------

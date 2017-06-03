@@ -1,0 +1,284 @@
+<!-- indent:2
+ Because XML as a layout language required deep nesting.
+-->
+
+<GuiXml>
+  <Controls>
+    <!-- lot list window ---------------------------------------------------->
+    <TopLevelControl
+        hidden="true"
+        name="WritWorthyUI"
+        movable="true"
+        mouseEnabled="true"
+        resizeHandleSize="2"
+        allowBringToTop="true"
+        clampedToScreen="true"
+        >
+      <Dimensions              x="800"      y="850" />
+      <DimensionConstraints minX="800"   minY="350"
+                  maxX="1900"  maxY="950" />
+
+            <!-- Positive LT/Negative RB offsets allow sliding
+               past edge of screen. Negative LT/Positive RB
+               offsets inset from edge of screen.
+               Neither affect resize. Grr.
+             -->
+      <ClampedToScreenInsets left="-20" top="-20" right="20" bottom="20" />
+
+      <!-- React to window move/resize -->
+      <OnMoveStop>WritWorthy:OnMoveStop()</OnMoveStop>
+      <!-- <OnMouseUp>WritWorthy:OnMouseUp()</OnMouseUp> -->
+      <OnResizeStop>WritWorthy:OnResizeStop()</OnResizeStop>
+      <!--
+
+      <OnUpdate>
+        WritWorthy_Update()
+      </OnUpdate>
+
+      <OnInitialized>
+        WritWorthy_Initialized()
+      </OnInitialized>
+      -->
+
+      <Controls>
+        <Backdrop name="$(parent)BG"
+            inherits="ZO_DefaultBackdrop"
+            />
+        <Label  name="$(parent)WindowTitle"
+            text="WritWorthy"
+            font="ZoFontWindowTitle"
+            color="CFDCBD"
+            wrapMode="ELLIPSIS"
+            verticalAlignment="TOP">
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPLEFT"
+              point="TOPLEFT"
+              offsetX="5"
+              offsetY="5" />
+        </Label>
+
+        <!-- lot list ----------------------------------------------->
+
+            <!-- Optional: anchor each resizable list's container
+               to the resizable TopLevelControl, to minimize
+               layout calculations during resize.
+               Then lay out list headers relative to that
+               container.
+            -->
+                          <!-- WritWorthyUIInventoryList -->
+        <Control name="$(parent)InventoryList"
+            inheritAlpha="true"
+            >
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPLEFT"
+              point="TOPLEFT"
+              offsetX="0"
+              offsetY="80" />
+          <Anchor relativeTo="$(parent)"
+              relativePoint="BOTTOMRIGHT"
+              point="BOTTOMRIGHT"
+              offsetX="0"
+              offsetY="-70" />
+          <Dimensions x="790" y="700" />
+          <Controls>
+                       <!-- WritWorthyUIInventoryListHeaders -->
+            <Control name="$(parent)Headers">
+              <Anchor relativeTo="$(parent)"
+                  relativePoint="TOPLEFT"
+                  point="TOPLEFT" />
+              <Anchor relativeTo="$(parent)"
+                  relativePoint="TOPRIGHT"
+                  point="TOPRIGHT" />
+              <Dimensions y="20" />
+              <Controls>
+                <Control name="$(parent)Type"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT"
+                      offsetX="0" />
+                  <Dimensions x="100" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "Type")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)VoucherCt"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)Type"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="100" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "VoucherCt")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)Detail1"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)VoucherCt"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="100" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "Detail1")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)Detail2"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)Detail1"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="100" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "Detail2")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)Detail3"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)Detail2"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="100" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "Detail3")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)Detail4"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)Detail3"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="100" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "Detail4")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)Detail5"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)Detail4"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="100" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "Detail5")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)QueueButton"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)Detail5"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="50" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "QueueButton")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)DequeueButton"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPLEFT"
+                      point="TOPLEFT" />
+                  <Anchor point="TOPLEFT"
+                      relativeTo="$(parent)QueueButton"
+                      relativePoint="TOPRIGHT"
+                      offsetX="5"
+                      />
+                  <Dimensions x="50" y="20" />
+                  <OnInitialized>
+                    WritWorthyHeaderInit(self, "DequeueButton")
+                  </OnInitialized>
+                </Control>
+              </Controls>
+            </Control>                  <!-- InventoryListHeaders -->
+
+                                        <!-- InventoryList itself -->
+            <Control name="$(parent)List"
+                inherits="ZO_ScrollList">
+              <Anchor point="TOPLEFT"
+                  relativeTo="$(parent)Headers"
+                  relativePoint="BOTTOMLEFT"
+                  offsetY="1"
+                  />
+              <Anchor point="BOTTOMRIGHT"
+                  offsetX="0"
+                  offsetY="0"
+                  />
+            </Control>
+          </Controls>
+        </Control>
+
+        <Label  name="$(parent)InventoryListTitle"
+            text="Writ Inventory"
+            font="ZoFontWinH5"
+            color="FFFFFF"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="TOPLEFT"
+              point="BOTTOMLEFT"
+              offsetX="0"
+              offsetY="-5" />
+          <Dimensions x="300" y="20" />
+        </Label>
+
+      </Controls>
+    </TopLevelControl>
+    <!-- rows ----------------------------------------------------------->
+    <Button name="WritWorthyInventoryListRow"
+        virtual="true">
+      <Dimensions y="20" />
+      <Anchor point="RIGHT"
+          relativeTo="$(parent)"
+          />
+      <Controls>
+      </Controls>
+    </Button>
+
+
+  </Controls>
+</GuiXml>
