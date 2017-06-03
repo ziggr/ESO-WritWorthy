@@ -387,31 +387,31 @@ function WritWorthy:RestorePos()
             )
 end
 
-function WritWorthy:OnMouseUp()
+function WritWorthy_OnMouseUp()
     -- d("OnMouseUp")
     local l = WritWorthyUI:GetLeft()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    -- d("OnMouseUp ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    d("OnMouseUp ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
 end
 
-function WritWorthy:OnMoveStop()
+function WritWorthy_OnMoveStop()
     local l = WritWorthyUI:GetLeft()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    -- d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
     -- ### Save Bounds
 end
 
-function WritWorthy:OnResizeStop()
+function WritWorthy_OnResizeStop()
     local l = WritWorthyUI:GetLeft()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
     d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
-    WritWorthy.LotList:UpdateAllColumnWidths()
+    -- WritWorthy.InventoryList:UpdateAllColumnWidths()
     -- ### Save Bounds
 end
 
@@ -430,7 +430,7 @@ function WritWorthy_ToggleUI()
     WritWorthyUI:SetHidden(not h)
 end
 
-function WritWorthyHeaderInit(control, text)
+function WritWorthy_HeaderInit(control, text)
     ZO_SortHeader_Initialize( control
                             , text
                             , string.lower(text)

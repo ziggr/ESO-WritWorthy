@@ -26,9 +26,9 @@
       <ClampedToScreenInsets left="-20" top="-20" right="20" bottom="20" />
 
       <!-- React to window move/resize -->
-      <OnMoveStop>WritWorthy:OnMoveStop()</OnMoveStop>
+      <OnMoveStop>WritWorthy_OnMoveStop()</OnMoveStop>
       <!-- <OnMouseUp>WritWorthy:OnMouseUp()</OnMouseUp> -->
-      <OnResizeStop>WritWorthy:OnResizeStop()</OnResizeStop>
+      <OnResizeStop>WritWorthy_OnResizeStop()</OnResizeStop>
       <!--
 
       <OnUpdate>
@@ -103,7 +103,7 @@
                       offsetX="0" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "Type")
+                    WritWorthy_HeaderInit(self, "Type")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)VoucherCt"
@@ -119,7 +119,7 @@
                       />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "VoucherCt")
+                    WritWorthy_HeaderInit(self, "VoucherCt")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail1"
@@ -135,7 +135,7 @@
                       />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "Detail1")
+                    WritWorthy_HeaderInit(self, "Detail1")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail2"
@@ -151,7 +151,7 @@
                       />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "Detail2")
+                    WritWorthy_HeaderInit(self, "Detail2")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail3"
@@ -167,7 +167,7 @@
                       />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "Detail3")
+                    WritWorthy_HeaderInit(self, "Detail3")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail4"
@@ -183,7 +183,7 @@
                       />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "Detail4")
+                    WritWorthy_HeaderInit(self, "Detail4")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail5"
@@ -199,7 +199,7 @@
                       />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "Detail5")
+                    WritWorthy_HeaderInit(self, "Detail5")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)QueueButton"
@@ -215,7 +215,7 @@
                       />
                   <Dimensions x="50" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "QueueButton")
+                    WritWorthy_HeaderInit(self, "QueueButton")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)DequeueButton"
@@ -231,7 +231,7 @@
                       />
                   <Dimensions x="50" y="20" />
                   <OnInitialized>
-                    WritWorthyHeaderInit(self, "DequeueButton")
+                    WritWorthy_HeaderInit(self, "DequeueButton")
                   </OnInitialized>
                 </Control>
               </Controls>
