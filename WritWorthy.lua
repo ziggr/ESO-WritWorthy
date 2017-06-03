@@ -364,6 +364,11 @@ function WritWorthy.UniqueID(bag_id, slot_index)
     return unique_id
 end
 
+-- Invetory UI ---------------------------------------------------------------
+function WritWorthy_ToggleUI()
+    d("toggle ui")
+end
+
 -- Tooltip Intercept ---------------------------------------------------------
 
 -- Monkey-patch ZOS' ItemTooltip with our own after-overrides. Lets ZOS code
@@ -477,4 +482,5 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
                               )
 
 ZO_CreateStringId("SI_BINDING_NAME_WritWorthy_Dol_EnqueueAll", "Enqueue All in Dolgubon's")
+ZO_CreateStringId("SI_BINDING_NAME_WritWorthy_ToggleUI",       "Show/Hide WritWorthy")
 

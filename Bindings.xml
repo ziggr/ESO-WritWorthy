@@ -4,6 +4,9 @@
             <Action name="WritWorthy_Dol_EnqueueAll">
                 <Up>WritWorthy_Dol_EnqueueAll()</Up>
             </Action>
+            <Action name="WritWorthy_ToggleUI">
+                <Up>WritWorthy_ToggleUI()</Up>
+            </Action>
         </Category>
     </Layer>
 </Bindings>
