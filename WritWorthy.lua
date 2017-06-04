@@ -373,9 +373,9 @@ end
 
 -- Inventory UI: Save/Restore UI Position --------------------------------------------------
 function WritWorthy:RestorePos()
-    pos = self.savedVariables.position
-    if not pos then
-        pos = self.default.position
+    local pos = self.default.position
+    if self and self.savedVariables and self.savedVariables.position then
+        pos = self.savedVariables.position
     end
 
     WritWorthyUI:SetAnchor(
@@ -444,13 +444,54 @@ function WritWorthy_HeaderInit(control, text)
                         -- The header cell control that we get here, and which
                         -- ZO_SortHeader_Initialize() fills in is NOT the same
                         -- as the XML template control reachable from
-                        -- WritWorthyUILotListHeaders:GetNamedChild(). We need
-                        -- this actual header cell control, which has Text and
-                        -- alignment and live data, in addition to the XML
-                        -- template control (which has dynamic width, thanks to
-                        -- its two anchors).
+                        -- WritWorthyUIInventoryListHeaders:GetNamedChild().
+                        -- We need this actual header cell control, which has
+                        -- Text and alignment and live data, in addition to the
+                        -- XML template control (which has dynamic width,
+                        -- thanks to its two anchors).
     WritWorthy.list_header_controls[text] = control
 end
+
+WritWorthyInventoryList = ZO_SortFilterList:Subclass()
+
+WritWorthyInventoryList.SORT_KEYS = {
+  ["type"]    = {}
+, ["detail1"] = {tiebreaker="type"}
+, ["detail2"] = {tiebreaker="type"}
+}
+
+
+                        -- Live row_control used to lay out rows. Remembered
+                        -- during SetupRowControl()
+WritWorthyInventoryList.row_control_list = {}
+
+function WritWorthyInventoryList:New()
+    local o = ZO_SortFilterList.New(self, WritWorthyUIInventoryList)
+    return o
+end
+
+function WritWorthyInventoryList:Initialize(control)
+    ZO_SortFilterList.Initialize(self, control)
+
+                        -- After ZO_SortFilterList:Initialize() we should
+                        -- have a sortHeaderGroup. At least, that's how it
+                        -- works in ScrollListExample.
+    self.sortHeaderGroup:SelectHeaderByKey("detail1")
+    ZO_SortHeader_OnMouseExit(WritWorthyUIInventoryListHeadersType)
+    self:RefreshData()
+end
+
+function WritWorthyInventoryList:BuildMasterlist()
+    self.master_list = {}
+end
+
+function WritWorthyInventoryList:FilterScrollList()
+end
+
+function WritWorthyInventoryList:Refresh()
+    self:RefreshData()
+end
+
 
 -- Tooltip Intercept ---------------------------------------------------------
 
@@ -554,6 +595,13 @@ function WritWorthy:Initialize()
     self.savedVariables.log = Log.q
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
+
+    self:RestorePos()
+
+    WritWorthy.InventoryList = WritWorthyInventoryList:New()
+    WritWorthy.InventoryList:BuildMasterlist()
+    WritWorthy.InventoryList:Refresh()
+
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
 
