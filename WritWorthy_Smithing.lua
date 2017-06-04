@@ -691,13 +691,14 @@ Smithing.QUALITY = {
 
 -- Parser ====================================================================
 
-Smithing.Parser = {}
+Smithing.Parser = {
+    class = "smithing"
+}
 local Parser = Smithing.Parser
 
 function Parser:New()
     local o = {
-        class           = "smithing"
-    ,   request_item    = nil   -- Smithing.REQUEST_ITEMS[n]
+        request_item    = nil   -- Smithing.REQUEST_ITEMS[n]
     ,   set_bonus       = nil   -- Smithing.SET_BONUS[n]
     ,   trait_num       = nil   -- ITEM_TRAIT_TYPE_WEAPON_DEFENDING
     ,   motif_num       = nil   -- 19 ITEMSTYLE_ENEMY_PRIMITIVE

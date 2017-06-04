@@ -587,6 +587,8 @@ function Recipe:New(args)
     ,   recipe_link       = args.recipe_link        -- "|H1:item:45888:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
     ,   is_known          = args.is_known           -- true
     ,   mat_list          = {}                      -- list of MatRow ingredients
+    ,   fooddrink_link    = nil
+    ,   fooddrink_name    = nil
     }
 
     setmetatable(o, self)
@@ -606,7 +608,12 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
               "|H1:item:%d:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
             , o.recipe_item_id
             )
+    o.fooddrink_link = GetItemLinkRecipeResultItemLink(
+                                      o.recipe_link
+                                    , LINK_STYLE_DEFAULT)
+    o.fooddrink_name    = GetItemLinkName(fooddrink_item_link)
     o.is_known = IsItemLinkRecipeKnown(o.recipe_link)
+
     Log:Add("recipe_link:"..tostring(o.recipe_link))
     Log:Add("is_known:"..tostring(o.is_known))
     local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
@@ -647,13 +654,14 @@ function Provisioning.FindRecipe(fooddrink_item_id)
     return recipe
 end
 
-Provisioning.Parser = {}
+Provisioning.Parser = {
+    class = "provisioning"
+}
 local Parser = Provisioning.Parser
 
 function Parser:New()
     local o = {
-        class           = "smithing"
-    ,   recipe          = nil -- Recipe{}
+        recipe          = nil -- Recipe{}
     }
     setmetatable(o, self)
     self.__index = self

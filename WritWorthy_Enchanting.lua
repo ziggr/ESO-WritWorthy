@@ -127,16 +127,18 @@ Glyph:New("Flame Resist"           , E.RAKEIPA    , SUB ,         26849 )
 Glyph:New("Increase Physical Harm" , E.TADERI     , ADD ,         45883 )
 Glyph:New("Decrease Physical Harm" , E.TADERI     , SUB ,         45885 )
 
-Enchanting.Parser = {}
+Enchanting.Parser = {
+    class = "enchanting"
+}
 local Parser = Enchanting.Parser
 
 function Parser:New()
     local o = {
-        class           = "enchanting"
-    ,   glyph           = nil   -- Glyph
+        glyph           = nil   -- Glyph
     ,   aspect_rune     = nil   -- REKUTA
     ,   potency_rune    = nil   -- REJERA
-
+    ,   level           = 0     -- 150 or 160
+    ,   quality_num     = 0     -- 4 or 5
     ,   mat_list        = {}    -- of MatRow
     }
     setmetatable(o, self)
@@ -149,6 +151,13 @@ function Parser:ParseItemLink(item_link)
     local glyph_id    = fields.writ1
     local level_num   = fields.writ2
     local quality_num = fields.writ3
+
+    if level_num == CP150 then
+        self.level = 150
+    else
+        self.level = 160
+    end
+    self.quality_num = quality_num
 
     self.glyph        = Enchanting.Glyphs[glyph_id]
     if not (    self.glyph

@@ -286,13 +286,14 @@ end
 
 -- Parser ====================================================================
 
-Alchemy.Parser = {}
+Alchemy.Parser = {
+    class = "alchemy"
+}
 local Parser = Alchemy.Parser
 
 function Parser:New()
     local o = {
-        class           = "alchemy"
-    ,   is_poison       = nil   -- if false, "Potion". If true, "Poison"
+        is_poison       = nil   -- if false, "Potion". If true, "Poison"
     ,   effects         = {}    -- { VITALITY, INCREASE_ARMOR, RAVAGE_STAMINA }
     ,   r3list          = {}    -- { list of { Reagent 3-tuple }, { Reagent 3-tuple} ... }
     ,   mat_list        = {}    -- of MatRow
