@@ -431,7 +431,7 @@ end
 -- Invetory UI ---------------------------------------------------------------
 function WritWorthy_ToggleUI()
     d("toggle ui")
-    ui = WritWorthyUI
+    local ui = WritWorthyUI
     if not ui then
         d("No UI")
         return
@@ -439,17 +439,15 @@ function WritWorthy_ToggleUI()
     h = WritWorthyUI:IsHidden()
     if h then
         WritWorthy:RestorePos()
-    end
-    WritWorthyUI:SetHidden(not h)
-
-                        -- Refresh the list NOW after showing it.
-                        -- I would prefer to refresh BEFORE showing, so once
-                        -- this all works, try to move this up before
-                        -- SetHidden(false).
-    if h then
+        local t = WritWorthyUIInventoryListTitle
+        if t then
+            t:SetText("Writ Inventory: "..GetUnitName("player"))
+        end
         WritWorthy.InventoryList:BuildMasterlist()
         WritWorthy.InventoryList:Refresh()
     end
+    WritWorthyUI:SetHidden(not h)
+
 end
 
 function WritWorthy_HeaderInit(control, text)
@@ -677,7 +675,11 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
 end
 
 local SHORTEN = {
-  ["Rubedite Axe"             ] = "1h axe"
+  ["Alchemy"                  ] = "Alchemy"
+, ["Enchanting"               ] = "Enchant"
+, ["Provisioning"             ] = "Provis"
+
+, ["Rubedite Axe"             ] = "1h axe"
 , ["Rubedite Mace"            ] = "1h mace"
 , ["Rubedite Sword"           ] = "1h sword"
 , ["Rubedite Greataxe"        ] = "2h battle axe"

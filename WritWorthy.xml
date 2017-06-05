@@ -265,7 +265,7 @@
               point="BOTTOMLEFT"
               offsetX="0"
               offsetY="-5" />
-          <Dimensions x="300" y="20" />
+          <Dimensions x="500" y="20" />
         </Label>
 
       </Controls>
