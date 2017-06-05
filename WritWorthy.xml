@@ -57,6 +57,20 @@
               offsetY="5" />
         </Label>
 
+        <Button name="$(parent)Close"
+              alpha="1">
+          <Textures normal="/esoui/art/hud/radialicon_cancel_up.dds"
+            mouseOver="/esoui/art/hud/radialicon_cancel_over.dds" />
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPRIGHT"
+              point="TOPRIGHT"
+              offsetX="0"
+              offsetY="0" />
+          <Dimensions x="48" y="48" />
+          <OnClicked>
+            WritWorthy_ToggleUI()
+          </OnClicked>
+        </Button>
         <!-- lot list ----------------------------------------------->
 
             <!-- Optional: anchor each resizable list's container

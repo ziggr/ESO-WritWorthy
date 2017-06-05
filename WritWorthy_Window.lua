@@ -323,7 +323,6 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
         hcl[cell_name] = WritWorthyUIInventoryListHeaders:GetNamedChild(cell_name)
     end
 
-    local want_width = hc:GetWidth()
     for cell_name, _ in pairs(WritWorthy.list_header_controls) do
         local cell_control = row_control:GetNamedChild(cell_name)
         local header_cell_control = hcl[cell_name]
