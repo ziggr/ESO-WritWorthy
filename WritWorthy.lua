@@ -483,6 +483,7 @@ WritWorthyInventoryList.SORT_KEYS = {
 , ["detail2"] = {tiebreaker="type"}
 }
 
+WritWorthyInventoryList.ROW_HEIGHT = 30
 
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
@@ -531,7 +532,7 @@ Log:Add("WritWorthyInventoryList:Initialize")
           self.list                     -- scroll list control
         , TYPE_ID                       -- row data type ID
         , "WritWorthyInventoryListRow"  -- tamplate: virtual button defined in XML
-        , 20                            -- row height
+        , self.ROW_HEIGHT               -- row height
                                         -- setupCallback
         , function(control, inventory_data)
              self:SetupRowControl(control, inventory_data)
@@ -575,10 +576,8 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
 Log:Add("WritWorthyInventoryList:CreateRowControlCells() rc="..tostring(row_control).." hc="..tostring(header_control))
     local prev_header_cell_control  = nil
     local prev_cell_control         = nil
-    local name_list                 = WritWorthyInventoryList.CELL_NAME_LIST
-    local row_height                = 20
 
-    for i, cell_name in ipairs(name_list) do
+    for i, cell_name in ipairs(self.CELL_NAME_LIST) do
         local header_cell_control = header_control:GetNamedChild(cell_name)
 if not header_cell_control then
 Log:Add("CreateRowControlCells() no header:"..tostring(cell_name))
@@ -613,7 +612,7 @@ end
 
         cell_control:SetFont("ZoFontGame")
         cell_control:SetWidth(header_cell_control:GetWidth())
-        cell_control:SetHeight(row_height)
+        cell_control:SetHeight(self.ROW_HEIGHT)
         cell_control:SetHidden(false)
         cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
         --cell_control:SetLinkEnabled(true)
