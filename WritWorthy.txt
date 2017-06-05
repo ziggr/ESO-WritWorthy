@@ -32,6 +32,7 @@ WritWorthy_Provisioning.lua
 WritWorthy_Link.lua
 WritWorthy_MatRow.lua
 WritWorthy_Know.lua
+WritWorthy_Window.lua
 WritWorthy.lua
 WritWorthy.xml
 Bindings.xml
