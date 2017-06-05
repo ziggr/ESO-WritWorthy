@@ -522,8 +522,6 @@ end
 
 function WritWorthyInventoryList:Initialize(control)
     ZO_SortFilterList.Initialize(self, control)
-Log:StartNewEvent()
-Log:Add("WritWorthyInventoryList:Initialize")
     self.inventory_data_list = {}
 
                         -- Tell ZO_ScrollList how it can ask us to
@@ -552,7 +550,6 @@ end
 -- Collect data that we'll eventually use to fill the inventory list UI.
 -- Just data, no UI code here (that's FilterScrollList()'s job).
 function WritWorthyInventoryList:BuildMasterlist()
-Log:Add("WritWorthyInventoryList:BuildMasterlist")
     self.inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
 end
 
@@ -573,18 +570,11 @@ end
 -- First time through a row's SetupRowControl(), create the individual label
 -- controls that will hold cell text.
 function WritWorthyInventoryList:CreateRowControlCells(row_control, header_control)
-Log:Add("WritWorthyInventoryList:CreateRowControlCells() rc="..tostring(row_control).." hc="..tostring(header_control))
     local prev_header_cell_control  = nil
     local prev_cell_control         = nil
 
     for i, cell_name in ipairs(self.CELL_NAME_LIST) do
         local header_cell_control = header_control:GetNamedChild(cell_name)
-if not header_cell_control then
-Log:Add("CreateRowControlCells() no header:"..tostring(cell_name))
-return
-else
-Log:Add("CreateRowControlCells() have header:"..tostring(cell_name))
-end
         local control_name = row_control:GetName() .. cell_name
         local cell_control = row_control:CreateControl(control_name, CT_LABEL)
         local horiz_align = TEXT_ALIGN_LEFT
@@ -640,8 +630,6 @@ end
         cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
 
         row_control[cell_name]   = cell_control
-Log:Add("CreateRowControlCells() rc="..tostring(row_control)
-        .." rc["..tostring(cell_name).."]="..tostring(cell_control))
         prev_cell_control        = cell_control
         prev_header_cell_control = header_cell_control
     end
@@ -796,16 +784,6 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
                         -- For less typing.
     local rc  = row_control
     local i_d = inventory_data
-
-d(rc)
-d(rc[self.CELL_TYPE])
-if not rc[self.CELL_TYPE] then
-    d("Uh, cell controls not yet instantiated.  rc="..tostring(rc).." rc["..self.CELL_TYPE.."]="..tostring(rc[self.CELL_TYPE]))
-    Log:Add("Uh, cell controls not yet instantiated.  rc="..tostring(rc).." rc["..self.CELL_TYPE.."]="..tostring(rc[self.CELL_TYPE]))
-    return
-else
-    Log:Add("SetupRowControl() rc="..tostring(rc).." rc["..self.CELL_TYPE.."]="..tostring(rc[self.CELL_TYPE]))
-end
 
                         -- Fill in the cells with data for this row.
     rc[self.CELL_TYPE         ]:SetText(i_d.ui_type)
