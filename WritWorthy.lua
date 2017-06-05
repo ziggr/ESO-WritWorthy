@@ -627,6 +627,9 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
 
                         -- Align all cells to top so that long/multiline text
                         -- still look acceptable.
+                        -- ### TEXT_ALIGN_CENTER seems to have no effect
+                        -- ### TEXT_ALIGN_BOTTOM does give a bit more margin
+                        --     between headers and top row text
         cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
 
         row_control[cell_name]   = cell_control
