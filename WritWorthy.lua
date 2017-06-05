@@ -782,7 +782,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         end
     elseif parser.class == WritWorthy.Provisioning.Parser.class then
         inventory_data.ui_type =  "Provisioning"
-        inventory_data.ui_detail1 = parser.fooddrink_name
+        inventory_data.ui_detail1 = parser.recipe.fooddrink_name
     end
 
                         -- Since the point of these UI fields is to  drive the

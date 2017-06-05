@@ -611,10 +611,12 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     o.fooddrink_link = GetItemLinkRecipeResultItemLink(
                                       o.recipe_link
                                     , LINK_STYLE_DEFAULT)
-    o.fooddrink_name    = GetItemLinkName(fooddrink_item_link)
+    o.fooddrink_name    = GetItemLinkName(o.fooddrink_link)
     o.is_known = IsItemLinkRecipeKnown(o.recipe_link)
 
     Log:Add("recipe_link:"..tostring(o.recipe_link))
+    Log:Add("fooddrink_link:"..tostring(o.fooddrink_link))
+    Log:Add("fooddrink_name:"..tostring(o.fooddrink_name))
     Log:Add("is_known:"..tostring(o.is_known))
     local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
     local cook_ct = 2 -- Usually need to craft 2x batches for master writs

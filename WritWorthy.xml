@@ -14,9 +14,9 @@
         allowBringToTop="true"
         clampedToScreen="true"
         >
-      <Dimensions              x="1000"      y="850" />
-      <DimensionConstraints minX="1000"   minY="350"
-                            maxX="1000"   maxY="950" />
+      <Dimensions              x="1100"      y="850" />
+      <DimensionConstraints minX="1100"   minY="350"
+                            maxX="1100"   maxY="950" />
 
             <!-- Positive LT/Negative RB offsets allow sliding
                past edge of screen. Negative LT/Positive RB
@@ -133,7 +133,7 @@
                       relativePoint="TOPRIGHT"
                       offsetX="5"
                       />
-                  <Dimensions x="150" y="20" />
+                  <Dimensions x="300" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail 1")
                   </OnInitialized>
@@ -197,7 +197,7 @@
                       relativePoint="TOPRIGHT"
                       offsetX="5"
                       />
-                  <Dimensions x="150" y="20" />
+                  <Dimensions x="100" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Quality")
                   </OnInitialized>
