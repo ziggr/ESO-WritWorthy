@@ -721,10 +721,16 @@ local SHORTEN = {
 , ["Alessia's Bulwark"        ] = "Alessia's"
 , ["Law of Julianos"          ] = "Julianos"
 , ["Pelinal's Aptitude"       ] = "Pelinal's"
+
+, ["Epic"                     ] = "|c973dd8Epic|r"
+, ["Legendary"                ] = "|ce6c859Legendary|r"
 }
 
 -- Abbreviate strings so that they fit in narrow columns.
 -- Increase data display density.
+--
+-- Also applies purple/gold color to epic/legendary
+--
 function WritWorthyInventoryList.Shorten(text)
     if not text then return "" end
     local s = SHORTEN[text]
@@ -754,14 +760,14 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         inventory_data.ui_detail4 = ri.trait_set[parser.trait_num].trait_name
         inventory_data.ui_detail5 = parser.improve_level.name
     elseif parser.class == WritWorthy.Alchemy.Parser.class then
-        inventory_data.ui_type =  "Alch"
+        inventory_data.ui_type =  "Alchemy"
         local mat_list = parser:ToMatList()
         inventory_data.ui_detail1 = mat_list[1].name
         inventory_data.ui_detail2 = mat_list[2].name
         inventory_data.ui_detail3 = mat_list[3].name
         inventory_data.ui_detail4 = mat_list[4].name
     elseif parser.class == WritWorthy.Enchanting.Parser.class then
-        inventory_data.ui_type =  "Ench"
+        inventory_data.ui_type =  "Enchanting"
         if parser.level == 150 then
             inventory_data.ui_detail1 = "Superb"
         else
@@ -775,7 +781,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
            inventory_data.ui_detail5 = "Legendary"
         end
     elseif parser.class == WritWorthy.Provisioning.Parser.class then
-        inventory_data.ui_type =  "Prov"
+        inventory_data.ui_type =  "Provisioning"
         inventory_data.ui_detail1 = parser.fooddrink_name
     end
 
