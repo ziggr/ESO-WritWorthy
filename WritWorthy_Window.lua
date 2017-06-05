@@ -25,6 +25,21 @@ local Log  = WritWorthy.Log
 -- a "quality" field...
 local TYPE_ID = 1
 
+WritWorthyInventoryList = ZO_SortFilterList:Subclass()
+-- inherits field "self.list" which is the scroll list control
+
+WritWorthyInventoryList.SORT_KEYS = {
+  ["ui_type"      ] = {tiebreaker="ui_voicher_ct"}
+, ["ui_voucher_ct"] = {tiebreaker="ui_detail1", isNumeric=true }
+, ["ui_detail1"   ] = {tiebreaker="ui_detail2"}
+, ["ui_detail2"   ] = {tiebreaker="ui_detail3"}
+, ["ui_detail3"   ] = {tiebreaker="ui_detail4"}
+, ["ui_detail4"   ] = {tiebreaker="ui_detail5"}
+, ["ui_detail5"   ] = {}
+}
+
+WritWorthyInventoryList.ROW_HEIGHT = 30
+
 function WritWorthy:RestorePos()
     local pos = self.default.position
     if self and self.savedVariables and self.savedVariables.position then
@@ -90,13 +105,14 @@ function WritWorthy_ToggleUI()
 
 end
 
-function WritWorthy_HeaderInit(control, text)
-    ZO_SortHeader_Initialize( control
-                            , text
-                            , string.lower(text)
-                            , ZO_SORT_ORDER_DOWN
-                            , align or TEXT_ALIGN_LEFT
-                            , "ZoFontWinT1"
+function WritWorthy_HeaderInit(control, text, key)
+    ZO_SortHeader_Initialize( control                   -- control
+                            , text                      -- name
+                            , key or string.lower(text) -- key
+                            , ZO_SORT_ORDER_DOWN        -- initialDirection
+                            , align or TEXT_ALIGN_LEFT  -- alignment
+                            , "ZoFontWinT1"             -- font
+                            , nil                       -- highlightTemplate
                             )
 
                         -- Remember this control!
@@ -112,16 +128,7 @@ function WritWorthy_HeaderInit(control, text)
     WritWorthy.list_header_controls[text] = control
 end
 
-WritWorthyInventoryList = ZO_SortFilterList:Subclass()
--- inherits field "self.list" which is the scroll list control
 
-WritWorthyInventoryList.SORT_KEYS = {
-  ["type"]    = {}
-, ["detail1"] = {tiebreaker="type"}
-, ["detail2"] = {tiebreaker="type"}
-}
-
-WritWorthyInventoryList.ROW_HEIGHT = 30
 
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
@@ -176,6 +183,15 @@ function WritWorthyInventoryList:Initialize(control)
         )
 
     ZO_ScrollList_EnableHighlight(self.list, "ZO_ThinListHighlight")
+    self.sortFunction
+        = function(row_a, row_b)
+            return ZO_TableOrderingFunction( row_a.data
+                                           , row_b.data
+                                           , self.currentSortKey
+                                           , WritWorthyInventoryList.SORT_KEYS
+                                           , self.currentSortOrder
+                                           )
+        end
 
                         -- After ZO_SortFilterList:Initialize() we should
                         -- have a sortHeaderGroup. At least, that's how it
@@ -199,6 +215,14 @@ function WritWorthyInventoryList:FilterScrollList()
         table.insert( scroll_data
                     , ZO_ScrollList_CreateDataEntry(TYPE_ID, inventory_data))
     end
+end
+
+function WritWorthyInventoryList:SortScrollList()
+    -- Original boilerplate SortScrollList() implementation that works
+    -- perfectly with the usual sortFunction
+    --
+    local scroll_data = ZO_ScrollList_GetDataList(self.list)
+    table.sort(scroll_data, self.sortFunction)
 end
 
 function WritWorthyInventoryList:Refresh()
