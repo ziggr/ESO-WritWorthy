@@ -47,6 +47,14 @@ function WritWorthy:RestorePos()
         pos = self.savedVariables.position
     end
 
+    if not WritWorthyUI then
+                        -- Common crash that occurs when I've messed up
+                        -- the XML somehow. Force it to crash here in this
+                        -- if block rather than mysteriously on the
+                        -- proper SetAnchor() line later.
+        d("Your XML probably did not load. Fix it.")
+        local _ = WritWorthyUI.SetAnchor
+    end
     WritWorthyUI:SetAnchor(
              TOPLEFT
             ,GuiRoot
@@ -86,10 +94,8 @@ end
 
 -- Invetory UI ---------------------------------------------------------------
 function WritWorthy_ToggleUI()
-    d("toggle ui")
     local ui = WritWorthyUI
     if not ui then
-        d("No UI")
         return
     end
     h = WritWorthyUI:IsHidden()
@@ -141,8 +147,8 @@ WritWorthyInventoryList.CELL_DETAIL2        = "Detail2"
 WritWorthyInventoryList.CELL_DETAIL3        = "Detail3"
 WritWorthyInventoryList.CELL_DETAIL4        = "Detail4"
 WritWorthyInventoryList.CELL_DETAIL5        = "Detail5"
-WritWorthyInventoryList.CELL_QUEUEBUTTON    = "QueueButton"
-WritWorthyInventoryList.CELL_DEQUEUEBUTTON  = "DequeueButton"
+WritWorthyInventoryList.CELL_ENQUEUE        = "Enqueue"
+WritWorthyInventoryList.CELL_DEQUEUE        = "Dequeue"
 WritWorthyInventoryList.CELL_NAME_LIST = {
   WritWorthyInventoryList.CELL_TYPE
 , WritWorthyInventoryList.CELL_VOUCHERCT
@@ -151,8 +157,13 @@ WritWorthyInventoryList.CELL_NAME_LIST = {
 , WritWorthyInventoryList.CELL_DETAIL3
 , WritWorthyInventoryList.CELL_DETAIL4
 , WritWorthyInventoryList.CELL_DETAIL5
-, WritWorthyInventoryList.CELL_QUEUEBUTTON
-, WritWorthyInventoryList.CELL_DEQUEUEBUTTON
+, WritWorthyInventoryList.CELL_ENQUEUE
+, WritWorthyInventoryList.CELL_DEQUEUE
+}
+-- Cells that are shown/hidden click buttons, not text data.
+WritWorthyInventoryList.CELL_XML_LIST = {
+  [WritWorthyInventoryList.CELL_ENQUEUE] = true
+, [WritWorthyInventoryList.CELL_DEQUEUE] = true
 }
 
 
@@ -239,62 +250,66 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
     for i, cell_name in ipairs(self.CELL_NAME_LIST) do
         local header_cell_control = header_control:GetNamedChild(cell_name)
         local control_name = row_control:GetName() .. cell_name
-        local cell_control = row_control:CreateControl(control_name, CT_LABEL)
-        local horiz_align = TEXT_ALIGN_LEFT
-
-        if i == 1 then
-                        -- Leftmost column is flush up against
-                        -- the left of the container
-            cell_control:SetAnchor( LEFT                -- point
-                                  , row_control         -- relativeTo
-                                  , LEFT                -- relativePoint
-                                  , 0                   -- offsetX
-                                  , 0 )                 -- offsetY
+        local cell_control = nil
+        if self.CELL_XML_LIST[cell_name] then
+            cell_control = row_control:GetNamedChild(cell_name)
         else
-                        -- 2nd and later columns are to the right of
-                        -- the previous column.
-            local offsetX = header_cell_control:GetLeft()
-                          - prev_header_cell_control:GetRight()
+            cell_control = row_control:CreateControl(control_name, CT_LABEL)
+            local horiz_align = TEXT_ALIGN_LEFT
 
-            cell_control:SetAnchor( LEFT                -- point
-                                  , prev_cell_control   -- relativeTo
-                                  , RIGHT               -- relativePoint
-                                  , offsetX             -- offsetX
-                                  , 0 )                 -- offsetY
-        end
+            if i == 1 then
+                            -- Leftmost column is flush up against
+                            -- the left of the container
+                cell_control:SetAnchor( LEFT                -- point
+                                      , row_control         -- relativeTo
+                                      , LEFT                -- relativePoint
+                                      , 0                   -- offsetX
+                                      , 0 )                 -- offsetY
+            else
+                            -- 2nd and later columns are to the right of
+                            -- the previous column.
+                local offsetX = header_cell_control:GetLeft()
+                              - prev_header_cell_control:GetRight()
 
-        cell_control:SetFont("ZoFontGame")
-        cell_control:SetWidth(header_cell_control:GetWidth())
-        cell_control:SetHeight(self.ROW_HEIGHT)
-        cell_control:SetHidden(false)
-        cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
-        --cell_control:SetLinkEnabled(true)
-        cell_control:SetMouseEnabled(true)
-
-                        -- Surprise! Headers:GetNamedChild() returns a
-                        -- control instance that lacks a "Name" sub-control,
-                        -- which we need if we want to match text alignment.
-                        -- Use the control we passed to
-                        -- ZO_SortHeader_Initialize().
-        local header_name_control = header_control:GetNamedChild("Name")
-        if not header_name_control then
-            local hc2 = WritWorthy.list_header_controls[cell_name]
-            if hc2 then
-                header_name_control = hc2:GetNamedChild("Name")
+                cell_control:SetAnchor( LEFT                -- point
+                                      , prev_cell_control   -- relativeTo
+                                      , RIGHT               -- relativePoint
+                                      , offsetX             -- offsetX
+                                      , 0 )                 -- offsetY
             end
-        end
-        if header_name_control then
-            horiz_align = header_name_control:GetHorizontalAlignment()
-        end
-        cell_control:SetHorizontalAlignment(horiz_align)
 
-                        -- Align all cells to top so that long/multiline text
-                        -- still look acceptable.
-                        -- ### TEXT_ALIGN_CENTER seems to have no effect
-                        -- ### TEXT_ALIGN_BOTTOM does give a bit more margin
-                        --     between headers and top row text
-        cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
+            cell_control:SetFont("ZoFontGame")
+            cell_control:SetWidth(header_cell_control:GetWidth())
+            cell_control:SetHeight(self.ROW_HEIGHT)
+            cell_control:SetHidden(false)
+            cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
+            --cell_control:SetLinkEnabled(true)
+            cell_control:SetMouseEnabled(true)
 
+                            -- Surprise! Headers:GetNamedChild() returns a
+                            -- control instance that lacks a "Name" sub-control,
+                            -- which we need if we want to match text alignment.
+                            -- Use the control we passed to
+                            -- ZO_SortHeader_Initialize().
+            local header_name_control = header_control:GetNamedChild("Name")
+            if not header_name_control then
+                local hc2 = WritWorthy.list_header_controls[cell_name]
+                if hc2 then
+                    header_name_control = hc2:GetNamedChild("Name")
+                end
+            end
+            if header_name_control then
+                horiz_align = header_name_control:GetHorizontalAlignment()
+            end
+            cell_control:SetHorizontalAlignment(horiz_align)
+
+                            -- Align all cells to top so that long/multiline text
+                            -- still look acceptable.
+                            -- ### TEXT_ALIGN_CENTER seems to have no effect
+                            -- ### TEXT_ALIGN_BOTTOM does give a bit more margin
+                            --     between headers and top row text
+            cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
+        end
         row_control[cell_name]   = cell_control
         prev_cell_control        = cell_control
         prev_header_cell_control = header_cell_control
@@ -408,6 +423,8 @@ end
 function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
     inventory_data.ui_is_queued  = false -- ###
+    inventory_data.ui_can_queue  = true  -- ###
+
 
                         -- For less typing.
     local parser = inventory_data.parser
@@ -447,8 +464,9 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
            inventory_data.ui_detail5 = "Legendary"
         end
     elseif parser.class == WritWorthy.Provisioning.Parser.class then
-        inventory_data.ui_type =  "Provisioning"
+        inventory_data.ui_type    = "Provisioning"
         inventory_data.ui_detail1 = parser.recipe.fooddrink_name
+        inventory_data.ui_can_queue  = false  -- ###
     end
 
                         -- Since the point of these UI fields is to  drive the
@@ -504,19 +522,14 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     local i_d = inventory_data
 
                         -- Fill in the cells with data for this row.
-    rc[self.CELL_TYPE         ]:SetText(i_d.ui_type)
-    rc[self.CELL_VOUCHERCT    ]:SetText(tostring(i_d.ui_voucher_ct))
-    rc[self.CELL_DETAIL1      ]:SetText(i_d.ui_detail1)
-    rc[self.CELL_DETAIL2      ]:SetText(i_d.ui_detail2)
-    rc[self.CELL_DETAIL3      ]:SetText(i_d.ui_detail3)
-    rc[self.CELL_DETAIL4      ]:SetText(i_d.ui_detail4)
-    rc[self.CELL_DETAIL5      ]:SetText(i_d.ui_detail5)
-    if i_d.ui_is_queued then
-        rc[self.CELL_QUEUEBUTTON  ]:SetText("-")  -- ###
-        rc[self.CELL_DEQUEUEBUTTON]:SetText("x")  -- ###
-    else
-        rc[self.CELL_QUEUEBUTTON  ]:SetText("v")  -- ###
-        rc[self.CELL_DEQUEUEBUTTON]:SetText("-")  -- ###
-    end
+    rc[self.CELL_TYPE     ]:SetText(i_d.ui_type)
+    rc[self.CELL_VOUCHERCT]:SetText(tostring(i_d.ui_voucher_ct))
+    rc[self.CELL_DETAIL1  ]:SetText(i_d.ui_detail1)
+    rc[self.CELL_DETAIL2  ]:SetText(i_d.ui_detail2)
+    rc[self.CELL_DETAIL3  ]:SetText(i_d.ui_detail3)
+    rc[self.CELL_DETAIL4  ]:SetText(i_d.ui_detail4)
+    rc[self.CELL_DETAIL5  ]:SetText(i_d.ui_detail5)
+    rc[self.CELL_ENQUEUE  ]:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
+    rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
 end
 
