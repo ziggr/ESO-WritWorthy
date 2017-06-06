@@ -35,7 +35,8 @@ WritWorthyInventoryList.SORT_KEYS = {
 , ["ui_detail2"   ] = {tiebreaker="ui_detail3"}
 , ["ui_detail3"   ] = {tiebreaker="ui_detail4"}
 , ["ui_detail4"   ] = {tiebreaker="ui_detail5"}
-, ["ui_detail5"   ] = {}
+, ["ui_detail5"   ] = {tiebreaker="ui_is_queued"}
+, ["ui_is_queued" ] = {}
 }
 
 WritWorthyInventoryList.ROW_HEIGHT = 30
@@ -406,6 +407,7 @@ end
                         -- list display.
 function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
+    inventory_data.ui_is_queued  = false -- ###
 
                         -- For less typing.
     local parser = inventory_data.parser
@@ -422,6 +424,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         inventory_data.ui_detail3 = parser.motif.motif_name
         inventory_data.ui_detail4 = ri.trait_set[parser.trait_num].trait_name
         inventory_data.ui_detail5 = parser.improve_level.name
+        inventory_data.ui_is_queued = true  -- ###
     elseif parser.class == WritWorthy.Alchemy.Parser.class then
         inventory_data.ui_type =  "Alchemy"
         local mat_list = parser:ToMatList()
@@ -508,7 +511,12 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     rc[self.CELL_DETAIL3      ]:SetText(i_d.ui_detail3)
     rc[self.CELL_DETAIL4      ]:SetText(i_d.ui_detail4)
     rc[self.CELL_DETAIL5      ]:SetText(i_d.ui_detail5)
-    rc[self.CELL_QUEUEBUTTON  ]:SetText("v")  -- ###
-    rc[self.CELL_DEQUEUEBUTTON]:SetText("x")  -- ###
+    if i_d.ui_is_queued then
+        rc[self.CELL_QUEUEBUTTON  ]:SetText("-")  -- ###
+        rc[self.CELL_DEQUEUEBUTTON]:SetText("x")  -- ###
+    else
+        rc[self.CELL_QUEUEBUTTON  ]:SetText("v")  -- ###
+        rc[self.CELL_DEQUEUEBUTTON]:SetText("-")  -- ###
+    end
 end
 

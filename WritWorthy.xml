@@ -14,9 +14,9 @@
         allowBringToTop="true"
         clampedToScreen="true"
         >
-      <Dimensions              x="1100"      y="850" />
-      <DimensionConstraints minX="1100"   minY="350"
-                            maxX="1100"   maxY="950" />
+      <Dimensions              x="1120"      y="850" />
+      <DimensionConstraints minX="1120"   minY="350"
+                            maxX="1120"   maxY="950" />
 
             <!-- Positive LT/Negative RB offsets allow sliding
                past edge of screen. Negative LT/Positive RB
@@ -237,7 +237,7 @@
                       />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Q", "ui_type")
+                    WritWorthy_HeaderInit(self, "Q", "ui_is_queued")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)DequeueButton"
@@ -251,9 +251,9 @@
                       relativePoint="TOPRIGHT"
                       offsetX="5"
                       />
-                  <Dimensions x="30" y="20" />
+                  <Dimensions x="40" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Z", "ui_type")
+                    WritWorthy_HeaderInit(self, "Z", "ui_is_queued")
                   </OnInitialized>
                 </Control>
               </Controls>
