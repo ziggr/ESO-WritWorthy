@@ -14,6 +14,17 @@ WritWorthy.list_header_controls = {}
                         -- in no particular order.
 WritWorthy.inventory_data_list = {}
 
+                        -- Dolgubon's LibLazyCrafting, which maintains
+                        -- a queue of "stuff to automatically craft next
+                        -- time you're at a appropriate station." Often
+                        -- called "LLC" for a shorter abbreviation.
+                        --
+                        -- Version 0.3 has BS/CL/WW + Enchanting
+                        -- Some later version might add Alchemy.
+                        -- Not sure if we'll EVER add Provisioning.
+                        --
+WritWorthy.LibLazyCrafting = LibStub:GetLibrary("LibLazyCrafting", 0.3)
+
 local Log  = WritWorthy.Log
 
 -- Inventory List UI, "row type".
