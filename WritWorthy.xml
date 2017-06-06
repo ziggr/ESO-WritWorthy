@@ -224,7 +224,7 @@
                     WritWorthy_HeaderInit(self, "Quality", "ui_detail5")
                   </OnInitialized>
                 </Control>
-                <Control name="$(parent)Queue"
+                <Control name="$(parent)Enqueue"
                     inherits="ZO_SortHeader"
                     >
                   <Anchor relativeTo="$(parent)"

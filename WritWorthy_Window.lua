@@ -258,41 +258,48 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
     local prev_header_cell_control  = nil
     local prev_cell_control         = nil
 
+Log:StartNewEvent()
     for i, cell_name in ipairs(self.CELL_NAME_LIST) do
         local header_cell_control = header_control:GetNamedChild(cell_name)
         local control_name = row_control:GetName() .. cell_name
         local cell_control = nil
+        local is_text      = true
         if self.CELL_XML_LIST[cell_name] then
             cell_control = row_control:GetNamedChild(cell_name)
+            is_text      = false
         else
             cell_control = row_control:CreateControl(control_name, CT_LABEL)
-            local horiz_align = TEXT_ALIGN_LEFT
+        end
 
-            if i == 1 then
-                            -- Leftmost column is flush up against
-                            -- the left of the container
-                cell_control:SetAnchor( LEFT                -- point
-                                      , row_control         -- relativeTo
-                                      , LEFT                -- relativePoint
-                                      , 0                   -- offsetX
-                                      , 0 )                 -- offsetY
-            else
-                            -- 2nd and later columns are to the right of
-                            -- the previous column.
-                local offsetX = header_cell_control:GetLeft()
-                              - prev_header_cell_control:GetRight()
+        if i == 1 then
+                        -- Leftmost column is flush up against
+                        -- the left of the container
+            cell_control:SetAnchor( LEFT                -- point
+                                  , row_control         -- relativeTo
+                                  , LEFT                -- relativePoint
+                                  , 0                   -- offsetX
+                                  , 0 )                 -- offsetY
+        else
+                        -- 2nd and later columns are to the right of
+                        -- the previous column.
+Log:Add("cn:"..tostring(cell_name)
+    .."  hcc:"..tostring(header_cell_control)
+    .."  prev:"..tostring(header_cell_control))
+            local offsetX = header_cell_control:GetLeft()
+                          - prev_header_cell_control:GetRight()
 
-                cell_control:SetAnchor( LEFT                -- point
-                                      , prev_cell_control   -- relativeTo
-                                      , RIGHT               -- relativePoint
-                                      , offsetX             -- offsetX
-                                      , 0 )                 -- offsetY
-            end
+            cell_control:SetAnchor( LEFT                -- point
+                                  , prev_cell_control   -- relativeTo
+                                  , RIGHT               -- relativePoint
+                                  , offsetX             -- offsetX
+                                  , 0 )                 -- offsetY
+        end
+        cell_control:SetWidth(header_cell_control:GetWidth())
+        cell_control:SetHeight(self.ROW_HEIGHT)
+        cell_control:SetHidden(false)
 
+        if is_text then
             cell_control:SetFont("ZoFontGame")
-            cell_control:SetWidth(header_cell_control:GetWidth())
-            cell_control:SetHeight(self.ROW_HEIGHT)
-            cell_control:SetHidden(false)
             cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
             --cell_control:SetLinkEnabled(true)
             cell_control:SetMouseEnabled(true)
@@ -309,6 +316,7 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                     header_name_control = hc2:GetNamedChild("Name")
                 end
             end
+            local horiz_align = TEXT_ALIGN_LEFT
             if header_name_control then
                 horiz_align = header_name_control:GetHorizontalAlignment()
             end
