@@ -300,6 +300,28 @@
           relativeTo="$(parent)"
           />
       <Controls>
+
+        <Button name="$(parent)DequeueButtonX"
+              alpha="1">
+          <Textures
+              normal="EsoUI/Art/Buttons/closeButton_up.dds"
+              pressed="EsoUI/Art/Buttons/closeButton_down.dds"
+              mouseOver="EsoUI/Art/Buttons/closeButton_mouseOver.dds"
+              disabled="EsoUI/Art/Buttons/closeButton_disabled.dds"
+              />
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPRIGHT"
+              point="TOPRIGHT"
+              offsetX="-40"
+              offsetY="0" />
+          <Dimensions x="20" y="20" />
+          <TextureCoords
+              left="0"      top="0"
+              right="0.625" bottom="0.625"
+              />
+        </Button>
+
+
       </Controls>
     </Button>
 
