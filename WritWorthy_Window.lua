@@ -264,6 +264,8 @@ Log:StartNewEvent()
         local control_name = row_control:GetName() .. cell_name
         local cell_control = nil
         local is_text      = true
+        local window_left = WritWorthyUI:GetLeft()
+Log:Add("window.l:"..tostring(window_left))
         if self.CELL_XML_LIST[cell_name] then
             cell_control = row_control:GetNamedChild(cell_name)
             is_text      = false
@@ -280,13 +282,26 @@ Log:StartNewEvent()
                                   , 0                   -- offsetX
                                   , 0 )                 -- offsetY
         else
-            local offsetX = header_cell_control:GetLeft()
 
+            local offsetX = header_cell_control:GetLeft()
+                          - window_left
+
+local hc2 = WritWorthy.list_header_controls[cell_name]
+if hc2 then
+Log:Add("i:"..tostring(i)
+    .."  cn:"..tostring(cell_name)
+    .."  hcc.l:"..tostring(header_cell_control:GetLeft())
+    .." .w:"..tostring(header_cell_control:GetWidth())
+    .."  hc2.l:"..tostring(hc2:GetLeft())
+    .." .w:"..tostring(hc2:GetWidth())
+    )
+else
 Log:Add("i:"..tostring(i)
     .."  cn:"..tostring(cell_name)
     .."  hcc.l:"..tostring(header_cell_control:GetLeft())
     .." .w:"..tostring(header_cell_control:GetWidth())
     )
+end
 
             cell_control:SetAnchor( LEFT                -- point
                                   , row_control         -- relativeTo
