@@ -280,22 +280,30 @@ Log:StartNewEvent()
                                   , 0                   -- offsetX
                                   , 0 )                 -- offsetY
         else
-                        -- 2nd and later columns are to the right of
-                        -- the previous column.
-Log:Add("cn:"..tostring(cell_name)
-    .."  hcc:"..tostring(header_cell_control)
-    .."  prev:"..tostring(header_cell_control))
             local offsetX = header_cell_control:GetLeft()
-                          - prev_header_cell_control:GetRight()
+
+Log:Add("i:"..tostring(i)
+    .."  cn:"..tostring(cell_name)
+    .."  hcc.l:"..tostring(header_cell_control:GetLeft())
+    .." .w:"..tostring(header_cell_control:GetWidth())
+    )
 
             cell_control:SetAnchor( LEFT                -- point
-                                  , prev_cell_control   -- relativeTo
-                                  , RIGHT               -- relativePoint
+                                  , row_control         -- relativeTo
+                                  , LEFT                -- relativePoint
                                   , offsetX             -- offsetX
                                   , 0 )                 -- offsetY
         end
-        cell_control:SetWidth(header_cell_control:GetWidth())
-        cell_control:SetHeight(self.ROW_HEIGHT)
+
+        if is_text then
+            cell_control:SetWidth(header_cell_control:GetWidth())
+            cell_control:SetHeight(self.ROW_HEIGHT)
+        else
+                        -- Lock our checkmark/cancel icons to 20x20
+            cell_control:SetWidth(20)
+            cell_control:SetHeight(20)
+        end
+
         cell_control:SetHidden(false)
 
         if is_text then
