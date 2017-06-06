@@ -255,23 +255,20 @@ end
 -- First time through a row's SetupRowControl(), create the individual label
 -- controls that will hold cell text.
 function WritWorthyInventoryList:CreateRowControlCells(row_control, header_control)
-    local prev_header_cell_control  = nil
-    local prev_cell_control         = nil
-
 Log:StartNewEvent()
     for i, cell_name in ipairs(self.CELL_NAME_LIST) do
         local header_cell_control = header_control:GetNamedChild(cell_name)
         local control_name = row_control:GetName() .. cell_name
         local cell_control = nil
         local is_text      = true
-        local window_left = WritWorthyUI:GetLeft()
-Log:Add("window.l:"..tostring(window_left))
+        local rel_to_left  = header_control:GetLeft()
         if self.CELL_XML_LIST[cell_name] then
             cell_control = row_control:GetNamedChild(cell_name)
             is_text      = false
         else
             cell_control = row_control:CreateControl(control_name, CT_LABEL)
         end
+        row_control[cell_name]   = cell_control
 
         if i == 1 then
                         -- Leftmost column is flush up against
@@ -284,24 +281,15 @@ Log:Add("window.l:"..tostring(window_left))
         else
 
             local offsetX = header_cell_control:GetLeft()
-                          - window_left
+                          - rel_to_left
 
-local hc2 = WritWorthy.list_header_controls[cell_name]
-if hc2 then
 Log:Add("i:"..tostring(i)
-    .."  cn:"..tostring(cell_name)
+    .."  rel_to.l:"..tostring(rel_to_left)
+    .."  offX:"..tostring(offsetX)
     .."  hcc.l:"..tostring(header_cell_control:GetLeft())
     .." .w:"..tostring(header_cell_control:GetWidth())
-    .."  hc2.l:"..tostring(hc2:GetLeft())
-    .." .w:"..tostring(hc2:GetWidth())
-    )
-else
-Log:Add("i:"..tostring(i)
     .."  cn:"..tostring(cell_name)
-    .."  hcc.l:"..tostring(header_cell_control:GetLeft())
-    .." .w:"..tostring(header_cell_control:GetWidth())
     )
-end
 
             cell_control:SetAnchor( LEFT                -- point
                                   , row_control         -- relativeTo
@@ -309,19 +297,16 @@ end
                                   , offsetX             -- offsetX
                                   , 0 )                 -- offsetY
         end
+        cell_control:SetHidden(false)
 
-        if is_text then
-            cell_control:SetWidth(header_cell_control:GetWidth())
-            cell_control:SetHeight(self.ROW_HEIGHT)
-        else
+        if not is_text then
                         -- Lock our checkmark/cancel icons to 20x20
             cell_control:SetWidth(20)
             cell_control:SetHeight(20)
-        end
+        else
+            cell_control:SetWidth(header_cell_control:GetWidth())
+            cell_control:SetHeight(self.ROW_HEIGHT)
 
-        cell_control:SetHidden(false)
-
-        if is_text then
             cell_control:SetFont("ZoFontGame")
             cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
             --cell_control:SetLinkEnabled(true)
@@ -352,9 +337,6 @@ end
                             --     between headers and top row text
             cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
         end
-        row_control[cell_name]   = cell_control
-        prev_cell_control        = cell_control
-        prev_header_cell_control = header_cell_control
     end
 end
 

@@ -99,7 +99,7 @@
           <Anchor relativeTo="$(parent)"
               relativePoint="BOTTOMRIGHT"
               point="BOTTOMRIGHT"
-              offsetX="-5"
+              offsetX="0"
               offsetY="-70" />
           <Dimensions x="990" y="700" />
           <Controls>
@@ -239,7 +239,7 @@
               <Anchor point="BOTTOMRIGHT"
                   relativeTo="$(parent)"
                   relativePoint="BOTTOMRIGHT"
-                  offsetX="-5"
+                  offsetX="0"
                   offsetY="-100"
                   />
             </Control>
@@ -277,11 +277,6 @@
               pressed="EsoUI/Art/Buttons/decline_down.dds"
               mouseOver="EsoUI/Art/Buttons/decline_over.dds"
               />
-          <Anchor relativeTo="$(parent)"
-              relativePoint="TOPRIGHT"
-              point="TOPRIGHT"
-              offsetX="-25"
-              offsetY="0" />
           <Dimensions x="20" y="20" />
           <TextureCoords
               left="0.0"  top="0.0"
@@ -296,11 +291,6 @@
               pressed="EsoUI/Art/Buttons/accept_down.dds"
               mouseOver="EsoUI/Art/Buttons/accept_over.dds"
               />
-          <Anchor relativeTo="$(parent)"
-              relativePoint="TOPRIGHT"
-              point="TOPRIGHT"
-              offsetX="-55"
-              offsetY="0" />
           <Dimensions x="20" y="20" />
           <TextureCoords
               left="0.0"  top="0.0"
