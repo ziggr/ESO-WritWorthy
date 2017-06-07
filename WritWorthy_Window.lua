@@ -99,7 +99,7 @@ function WritWorthy_OnResizeStop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
     d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
-    -- WritWorthy.InventoryList:UpdateAllCellWidths()
+    WritWorthy.InventoryList:UpdateAllCellWidths()
     -- ### Save Bounds
 end
 
@@ -123,7 +123,7 @@ function WritWorthy_ToggleUI()
 
 end
 
-function WritWorthy_HeaderInit(control, text, key)
+function WritWorthy_HeaderInit(control, name, text, key)
     ZO_SortHeader_Initialize( control                   -- control
                             , text                      -- name
                             , key or string.lower(text) -- key
@@ -143,7 +143,7 @@ function WritWorthy_HeaderInit(control, text, key)
                         -- Text and alignment and live data, in addition to the
                         -- XML template control (which has dynamic width,
                         -- thanks to its two anchors).
-    WritWorthy.list_header_controls[text] = control
+    WritWorthy.list_header_controls[name] = control
 end
 
 
@@ -352,6 +352,8 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
                         -- Do nothing if we have not yet fully initialized.
     local hc = WritWorthyUIInventoryListHeadersType
     if not hc then return end
+Log:StartNewEvent()
+    local rel_to_left = WritWorthyUIInventoryListHeaders:GetLeft()
 
                         -- Cache header cell controls from which we'll
                         -- gather column widths. We want the GetNamedChild()
@@ -361,12 +363,21 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
     local hcl = {}
     for cell_name, _ in pairs(WritWorthy.list_header_controls) do
         hcl[cell_name] = WritWorthyUIInventoryListHeaders:GetNamedChild(cell_name)
+Log:Add("hcl["..tostring(cell_name).."]:"..tostring(hcl[cell_name]))
     end
 
     for cell_name, _ in pairs(WritWorthy.list_header_controls) do
         local cell_control = row_control:GetNamedChild(cell_name)
         local header_cell_control = hcl[cell_name]
-        cell_control:SetWidth(header_cell_control:GetWidth())
+        if header_cell_control then
+            local offsetX = header_cell_control:GetLeft() - rel_to_left
+            cell_control:SetAnchor( LEFT                -- point
+                                  , row_control         -- relativeTo
+                                  , LEFT                -- relativePoint
+                                  , offsetX             -- offsetX
+                                  , 0 )                 -- offsetY
+            cell_control:SetWidth(header_cell_control:GetWidth())
+        end
     end
 
                         -- I don't always have a background, but when I do,

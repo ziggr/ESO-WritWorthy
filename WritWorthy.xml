@@ -122,7 +122,7 @@
                       offsetX="0" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Type", "ui_type")
+                    WritWorthy_HeaderInit(self, "Name", "Type", "ui_type")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)VoucherCt"
@@ -134,7 +134,7 @@
                       offsetX="105" />
                   <Dimensions x="50" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "V", "ui_voucher_ct")
+                    WritWorthy_HeaderInit(self, "VoucherCt", "V", "ui_voucher_ct")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail1"
@@ -150,7 +150,7 @@
                       offsetX="-640" />
                   <Dimensions x="300" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail 1", "ui_detail1")
+                    WritWorthy_HeaderInit(self, "Detail1", "Detail 1", "ui_detail1")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail2"
@@ -162,7 +162,7 @@
                       offsetX="-485" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail 2", "ui_detail2")
+                    WritWorthy_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail3"
@@ -174,7 +174,7 @@
                       offsetX="-330" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail 3", "ui_detail3")
+                    WritWorthy_HeaderInit(self, "Detail3", "Detail 3", "ui_detail3")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail4"
@@ -186,7 +186,7 @@
                       offsetX="-175" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail 4", "ui_detail4")
+                    WritWorthy_HeaderInit(self, "Detail4", "Detail 4", "ui_detail4")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail5"
@@ -198,7 +198,7 @@
                       offsetX="-70" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Quality", "ui_detail5")
+                    WritWorthy_HeaderInit(self, "Detail5", "Quality", "ui_detail5")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Enqueue"
@@ -210,7 +210,7 @@
                       offsetX="-35" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Q", "ui_is_queued")
+                    WritWorthy_HeaderInit(self, "Enqueue", "Q", "ui_is_queued")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Dequeue"
@@ -222,7 +222,7 @@
                       offsetX="0" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Z", "ui_is_queued")
+                    WritWorthy_HeaderInit(self, "Dequeue", "Z", "ui_is_queued")
                   </OnInitialized>
                 </Control>
               </Controls>
