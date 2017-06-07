@@ -122,7 +122,7 @@
                       offsetX="0" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Name", "Type", "ui_type")
+                    WritWorthy_HeaderInit(self, "Type", "Type", "ui_type")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)VoucherCt"
@@ -147,7 +147,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-640" />
+                      offsetX="-645" />
                   <Dimensions x="300" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail1", "Detail 1", "ui_detail1")
@@ -159,7 +159,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-485" />
+                      offsetX="-490" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
@@ -171,7 +171,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-330" />
+                      offsetX="-335" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail3", "Detail 3", "ui_detail3")
@@ -183,7 +183,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-175" />
+                      offsetX="-180" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail4", "Detail 4", "ui_detail4")
@@ -195,7 +195,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-70" />
+                      offsetX="-75" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail5", "Quality", "ui_detail5")
@@ -207,7 +207,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-35" />
+                      offsetX="-40" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Enqueue", "Q", "ui_is_queued")
@@ -219,7 +219,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="0" />
+                      offsetX="-4" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Dequeue", "Z", "ui_is_queued")
