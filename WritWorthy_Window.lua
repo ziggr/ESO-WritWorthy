@@ -376,7 +376,12 @@ Log:Add("hcl["..tostring(cell_name).."]:"..tostring(hcl[cell_name]))
                                   , LEFT                -- relativePoint
                                   , offsetX             -- offsetX
                                   , 0 )                 -- offsetY
-            cell_control:SetWidth(header_cell_control:GetWidth())
+                        -- Resize text cells, but leave button cells locked
+                        -- to whatever CreateRowControlCells() chose.
+            local is_text = not WritWorthyInventoryList.CELL_XML_LIST[cell_name]
+            if is_text then
+                cell_control:SetWidth(header_cell_control:GetWidth())
+            end
         end
     end
 
