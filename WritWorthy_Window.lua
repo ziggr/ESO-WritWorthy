@@ -52,6 +52,23 @@ WritWorthyInventoryList.SORT_KEYS = {
 
 WritWorthyInventoryList.ROW_HEIGHT = 30
 
+                        -- Icons we display in our Enqueue/De
+WritWorthyInventoryList.TEXTURE_SET_CHECKMARK = {
+    normal      = "EsoUI/Art/Buttons/accept_up.dds"
+,   pressed     = "EsoUI/Art/Buttons/accept_down.dds"
+,   mouseOver   = "EsoUI/Art/Buttons/accept_over.dds"
+}
+WritWorthyInventoryList.TEXTURE_SET_X = {
+    normal      = "EsoUI/Art/Buttons/checkbox_checked.dds"
+,   pressed     = "EsoUI/Art/Buttons/decline_down.dds"
+,   mouseOver   = "EsoUI/Art/Buttons/decline_over.dds"
+}
+WritWorthyInventoryList.TEXTURE_SET_X2 = {
+    normal      = "EsoUI/Art/Buttons/decline_up.dds"
+,   pressed     = "EsoUI/Art/Buttons/decline_down.dds"
+,   mouseOver   = "EsoUI/Art/Buttons/decline_over.dds"
+}
+
 function WritWorthy:RestorePos()
     local pos = self.default.position
     if self and self.savedVariables and self.savedVariables.position then
@@ -257,7 +274,17 @@ end
 function WritWorthyInventoryList_Cell_OnMouseEnter(cell_control)
     d("enter "..tostring(cell_control))
 
-    ZO_Tooltips_ShowTextTooltip(cell_control, TOP, "I am a tooltip.")
+                        -- .tooltip_text is our own field, not ZOS'.
+                        -- We set it in PopulateUIFields() with our
+                        -- own "reasons why you cannot queue this row"
+                        -- text (same red text that WritWorthy stuffs
+                        -- into sealed writ tooltips).
+    if cell_control.tooltip_text then
+        ZO_Tooltips_ShowTextTooltip(
+                  cell_control
+                , TOP
+                , cell_control.tooltip_text)
+    end
 end
 
 function WritWorthyInventoryList_Cell_OnMouseExit(cell_control)
@@ -512,7 +539,13 @@ end
 function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
     inventory_data.ui_is_queued  = self:IsQueued(inventory_data)
-    inventory_data.ui_can_queue  = self:CanQueue(inventory_data)
+    local can, why_not           = self:CanQueue(inventory_data)
+    inventory_data.ui_can_queue  = can
+    if can then
+        inventory_data.ui_can_queue_tooltip = nil
+    else
+        inventory_data.ui_can_queue_tooltip = why_not
+    end
 
 
                         -- For less typing.
@@ -616,13 +649,24 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     rc[self.CELL_DETAIL3  ]:SetText(i_d.ui_detail3)
     rc[self.CELL_DETAIL4  ]:SetText(i_d.ui_detail4)
     rc[self.CELL_DETAIL5  ]:SetText(i_d.ui_detail5)
-    -- rc[self.CELL_ENQUEUE  ]:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
-    rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
 
     local b = rc[self.CELL_ENQUEUE  ]
-    function b:onClicked() WritWorthyInventoryList_UIEnqueue(row_control, i_d) end
-    b = rc[self.CELL_ENQUEUE  ]
-    function b:onClicked() WritWorthyInventoryList_UIDequeue(row_control, i_d) end
+    -- ZO_CheckButton
+    -- local tex = self.TEXTURE_SET_X
+    -- b:SetNormalTexture      (tex.normal)
+    -- b:SetMouseOverTexture   (tex.mouseOver)
+    -- b:SetPressedTexture     (tex.pressed)
+    -- b:SetDisabledTexture    (tex.disabled)
+    -- b:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
+    b.tooltip_text = i_d.ui_can_queue_tooltip
+
+
+    rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
+
+    -- local b = rc[self.CELL_ENQUEUE  ]
+    -- function b:onClicked() WritWorthyInventoryList_UIEnqueue(row_control, i_d) end
+    -- b = rc[self.CELL_ENQUEUE  ]
+    -- function b:onClicked() WritWorthyInventoryList_UIDequeue(row_control, i_d) end
 end
 
 --[[

@@ -276,6 +276,7 @@
               normal="EsoUI/Art/Buttons/decline_up.dds"
               pressed="EsoUI/Art/Buttons/decline_down.dds"
               mouseOver="EsoUI/Art/Buttons/decline_over.dds"
+              disabled="EsoUI/Art/Buttons/decline_disabled.dds"
               />
           <Dimensions x="20" y="20" />
           <TextureCoords
@@ -285,13 +286,10 @@
         </Button>
 
         <Button name="$(parent)Enqueue"
-              alpha="1">
-          <Textures
-              normal="EsoUI/Art/Buttons/accept_up.dds"
-              pressed="EsoUI/Art/Buttons/accept_down.dds"
-              mouseOver="EsoUI/Art/Buttons/accept_over.dds"
-              />
-          <Dimensions x="20" y="20" />
+              alpha="1"
+              inherits="ZO_CheckButton"
+              >
+          <Dimensions x="16" y="16" />
           <TextureCoords
               left="0.0"  top="0.0"
               right="1.0" bottom="1.0"
