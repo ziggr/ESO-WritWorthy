@@ -249,13 +249,14 @@ function WritWorthyInventoryList:SortScrollList()
 end
 
 function WritWorthyInventoryList:Refresh()
+    Log:StartNewEvent()
+    Log:Add("WritWorthyInventoryList:Refresh")
     self:RefreshData()
 end
 
 -- First time through a row's SetupRowControl(), create the individual label
 -- controls that will hold cell text.
 function WritWorthyInventoryList:CreateRowControlCells(row_control, header_control)
-Log:StartNewEvent()
     for i, cell_name in ipairs(self.CELL_NAME_LIST) do
         local header_cell_control = header_control:GetNamedChild(cell_name)
         local control_name = row_control:GetName() .. cell_name
@@ -279,18 +280,8 @@ Log:StartNewEvent()
                                   , 0                   -- offsetX
                                   , 0 )                 -- offsetY
         else
-
             local offsetX = header_cell_control:GetLeft()
                           - rel_to_left
-
-Log:Add("i:"..tostring(i)
-    .."  rel_to.l:"..tostring(rel_to_left)
-    .."  offX:"..tostring(offsetX)
-    .."  hcc.l:"..tostring(header_cell_control:GetLeft())
-    .." .w:"..tostring(header_cell_control:GetWidth())
-    .."  cn:"..tostring(cell_name)
-    )
-
             cell_control:SetAnchor( LEFT                -- point
                                   , row_control         -- relativeTo
                                   , LEFT                -- relativePoint
@@ -352,7 +343,6 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
                         -- Do nothing if we have not yet fully initialized.
     local hc = WritWorthyUIInventoryListHeadersType
     if not hc then return end
-Log:StartNewEvent()
     local rel_to_left = WritWorthyUIInventoryListHeaders:GetLeft()
 
                         -- Cache header cell controls from which we'll
@@ -363,7 +353,6 @@ Log:StartNewEvent()
     local hcl = {}
     for cell_name, _ in pairs(WritWorthy.list_header_controls) do
         hcl[cell_name] = WritWorthyUIInventoryListHeaders:GetNamedChild(cell_name)
-Log:Add("hcl["..tostring(cell_name).."]:"..tostring(hcl[cell_name]))
     end
 
     for cell_name, _ in pairs(WritWorthy.list_header_controls) do
@@ -457,13 +446,59 @@ function WritWorthyInventoryList.Shorten(text)
     return text
 end
 
+
+function WritWorthyInventoryList:IsQueued(inventory_data)
+                        -- O(n) list scan instead of O(1) hash lookup.
+                        -- Calling repeatedly from inside a loop is O(n^2).
+                        -- Replace if noticeable (for large n, it will be).
+local xxx = nil
+if WritWorthy.LibLazyCrafting then xxx = WritWorthy.LibLazyCrafting.findItemByReference end
+Log:Add("llc:"..tostring(WritWorthy.LibLazyCrafting).." fi:"..tostring(xxx))
+if not xxx then return false end
+
+    local x = WritWorthy.LibLazyCrafting:dindItemByReference(inventory_data.unique_id)
+    if 0 < #x then
+        return true
+    else
+        return false
+    end
+end
+
+function WritWorthyInventoryList:CanQueue(inventory_data)
+    if not inventory_data.parser.can_dolgubon then
+        return false, "Not supported: Alchemy, Enchanting, Provisioning."
+    end
+    local text_list = {}
+    for _, know in ipairs(inventory_data.parser:ToMatList()) do
+        if not know.is_known then
+            table.insert(text_list, know.lack_msg)
+        end
+    end
+    if 0 < #text_list then
+        return false, table.concat(text_list, "\n")
+    end
+    return true, ""
+end
+
+function WritWorthyInventoryList_UIEnqueue(row_control, inventory_data)
+    d("Enqueuing:"..tostring(inventory_data.unique_id))
+    inventory_data.ui_is_queued = true
+                        -- ### How to refresh just this row's data, then update table UI?
+end
+
+function WritWorthyInventoryList_UIDequeue(row_control, inventory_data)
+    d("Dequeuing:"..tostring(inventory_data.unique_id))
+    inventory_data.ui_is_queued = true
+                        -- ### How to refresh just this row's data, then update table UI?
+end
+
                         -- Lazy-instantiate fields within our "data model"
                         -- that contain UI-centric user-visible text for
                         -- list display.
 function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
-    inventory_data.ui_is_queued  = false -- ###
-    inventory_data.ui_can_queue  = true  -- ###
+    inventory_data.ui_is_queued  = self:IsQueued(inventory_data)
+    inventory_data.ui_can_queue  = self:CanQueue(inventory_data)
 
 
                         -- For less typing.
@@ -481,7 +516,6 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         inventory_data.ui_detail3 = parser.motif.motif_name
         inventory_data.ui_detail4 = ri.trait_set[parser.trait_num].trait_name
         inventory_data.ui_detail5 = parser.improve_level.name
-        inventory_data.ui_is_queued = true  -- ###
     elseif parser.class == WritWorthy.Alchemy.Parser.class then
         inventory_data.ui_type =  "Alchemy"
         local mat_list = parser:ToMatList()
@@ -506,7 +540,6 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     elseif parser.class == WritWorthy.Provisioning.Parser.class then
         inventory_data.ui_type    = "Provisioning"
         inventory_data.ui_detail1 = parser.recipe.fooddrink_name
-        inventory_data.ui_can_queue  = false  -- ###
     end
 
                         -- Since the point of these UI fields is to  drive the
@@ -571,5 +604,10 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     rc[self.CELL_DETAIL5  ]:SetText(i_d.ui_detail5)
     rc[self.CELL_ENQUEUE  ]:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
     rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
+
+    local b = rc[self.CELL_ENQUEUE  ]
+    function b:onClicked() WritWorthyInventoryList_UIEnqueue(row_control, i_d) end
+    b = rc[self.CELL_ENQUEUE  ]
+    function b:onClicked() WritWorthyInventoryList_UIDequeue(row_control, i_d) end
 end
 

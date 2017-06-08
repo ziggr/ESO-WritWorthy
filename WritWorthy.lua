@@ -12,14 +12,19 @@ WritWorthy.savedVarVersion = 1
 WritWorthy.default = {
     enable_mat_list_chat = false
 
-                        -- Provisioning fields written when Provisioning.ZZ_SAVE_DATA = true.
-                        -- This is how Zig exports a table of recipe/ingredients.
-                        -- Provisioning fields here are never read.
-,   provisioning_recipes = {}
-,   provisioning_ingredient_links = {}
-
                         -- UI topleft
 ,   position = { 50, 50 }
+}
+                        -- Default savedChariables: per-character saved data.
+                        -- Initially just data about that character's inventory.
+WritWorthy.defaultChar = {
+
+                        -- key = Id64ToString() of a writ that the user has
+                        -- asked to enquque for later crafting.
+                        -- val = 0. I don't care, don't use. I just use
+                        -- queuedWritUIDSet as a hashed set for fast lookup.
+    queuedWritUIDset = {}
+
 }
 
 local Util = WritWorthy.Util
@@ -453,6 +458,7 @@ function WritWorthy.OnAddOnLoaded(event, addonName)
 end
 
 function WritWorthy:Initialize()
+                        -- Account-wide for most things
     self.savedVariables = ZO_SavedVars:NewAccountWide(
                               "WritWorthyVars"
                             , self.savedVarVersion
@@ -463,6 +469,16 @@ function WritWorthy:Initialize()
         Log:LoadPreviousQueue(self.savedVariables.log)
     end
     self.savedVariables.log = Log.q
+                        -- Per-character for each character's inventory list.
+    self.savedChariables = ZO_SavedVars:New("WritWorthyVars"
+                            , self.savedVarVersion
+                            , nil
+                            , self.defaultChar
+                            )
+
+    WritWorthy.LibLazyCrafting = LibStub("LibLazyCrafting", 0.3)
+
+
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
 
