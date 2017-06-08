@@ -254,6 +254,18 @@ function WritWorthyInventoryList:Refresh()
     self:RefreshData()
 end
 
+function WritWorthyInventoryList_Cell_OnMouseEnter(cell_control)
+    d("enter "..tostring(cell_control))
+
+    ZO_Tooltips_ShowTextTooltip(cell_control, TOP, "I am a tooltip.")
+end
+
+function WritWorthyInventoryList_Cell_OnMouseExit(cell_control)
+    d("exit "..tostring(cell_control))
+
+    ZO_Tooltips_HideTextTooltip()
+end
+
 -- First time through a row's SetupRowControl(), create the individual label
 -- controls that will hold cell text.
 function WritWorthyInventoryList:CreateRowControlCells(row_control, header_control)
@@ -289,6 +301,8 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                                   , 0 )                 -- offsetY
         end
         cell_control:SetHidden(false)
+        cell_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+        cell_control:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
 
         if not is_text then
                         -- Lock our checkmark/cancel icons to 20x20
@@ -456,7 +470,7 @@ if WritWorthy.LibLazyCrafting then xxx = WritWorthy.LibLazyCrafting.findItemByRe
 Log:Add("llc:"..tostring(WritWorthy.LibLazyCrafting).." fi:"..tostring(xxx))
 if not xxx then return false end
 
-    local x = WritWorthy.LibLazyCrafting:dindItemByReference(inventory_data.unique_id)
+    local x = WritWorthy.LibLazyCrafting:findItemByReference(inventory_data.unique_id)
     if 0 < #x then
         return true
     else
@@ -469,9 +483,9 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
         return false, "Not supported: Alchemy, Enchanting, Provisioning."
     end
     local text_list = {}
-    for _, know in ipairs(inventory_data.parser:ToMatList()) do
+    for _, know in ipairs(inventory_data.parser:ToKnowList()) do
         if not know.is_known then
-            table.insert(text_list, know.lack_msg)
+            table.insert(text_list, know:TooltipText())
         end
     end
     if 0 < #text_list then
@@ -602,7 +616,7 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     rc[self.CELL_DETAIL3  ]:SetText(i_d.ui_detail3)
     rc[self.CELL_DETAIL4  ]:SetText(i_d.ui_detail4)
     rc[self.CELL_DETAIL5  ]:SetText(i_d.ui_detail5)
-    rc[self.CELL_ENQUEUE  ]:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
+    -- rc[self.CELL_ENQUEUE  ]:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
     rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
 
     local b = rc[self.CELL_ENQUEUE  ]
@@ -610,4 +624,17 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     b = rc[self.CELL_ENQUEUE  ]
     function b:onClicked() WritWorthyInventoryList_UIDequeue(row_control, i_d) end
 end
+
+--[[
+
+How to tooltip?
+
+      btn:SetHandler('OnMouseEnter',function(self) CS.Tooltip(self,true,false,CraftStoreFixed_Rune,'tl') end)
+      btn:SetHandler('OnMouseExit',function(self) CS.Tooltip(self,false) end)
+      btn:SetHandler('OnMouseDown',function(self,button)
+
+            ACHIEVEMENTS:ShowAchievementPopup(unpack(popup))
+            ZO_PopupTooltip_Hide()
+
+--]]
 
