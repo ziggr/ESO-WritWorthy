@@ -650,6 +650,7 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     rc[self.CELL_DETAIL4  ]:SetText(i_d.ui_detail4)
     rc[self.CELL_DETAIL5  ]:SetText(i_d.ui_detail5)
 
+                        -- for less typing
     local b = rc[self.CELL_ENQUEUE  ]
     -- ZO_CheckButton
     -- local tex = self.TEXTURE_SET_X
@@ -658,10 +659,19 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     -- b:SetPressedTexture     (tex.pressed)
     -- b:SetDisabledTexture    (tex.disabled)
     -- b:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
-    b.tooltip_text = i_d.ui_can_queue_tooltip
+
+    if not i_d.ui_can_queue then
+        ZO_CheckButton_SetEnableState(b, false)
+        ZO_CheckButton_SetCheckState(b, false)
+        b.tooltip_text = i_d.ui_can_queue_tooltip
+    else
+        ZO_CheckButton_SetEnableState(b, true)
+        ZO_CheckButton_SetCheckState(b, i_d.ui_is_queued)
+        b.tooltip_text = nil
+    end
 
 
-    rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
+    -- rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
 
     -- local b = rc[self.CELL_ENQUEUE  ]
     -- function b:onClicked() WritWorthyInventoryList_UIEnqueue(row_control, i_d) end
