@@ -296,9 +296,8 @@
               />
         </Button>
 
-<!--
         <Texture name="$(parent)EnqueueMask"
-            color="FF0000"
+            color="000000"
             layer="OVERLAY"
             alpha="0.75"
             mouseEnabled="true"
@@ -311,7 +310,6 @@
               offsetY="0"
               />
         </Texture>
--->
 
       </Controls>
     </Button>

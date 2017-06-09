@@ -273,8 +273,7 @@ function WritWorthyInventoryList:Refresh()
 end
 
 function WritWorthyInventoryList_Cell_OnMouseEnter(cell_control)
-    d("enter "..tostring(cell_control))
-
+    -- d("enter "..tostring(cell_control))
                         -- .tooltip_text is our own field, not ZOS'.
                         -- We set it in PopulateUIFields() with our
                         -- own "reasons why you cannot queue this row"
@@ -289,8 +288,7 @@ function WritWorthyInventoryList_Cell_OnMouseEnter(cell_control)
 end
 
 function WritWorthyInventoryList_Cell_OnMouseExit(cell_control)
-    d("exit "..tostring(cell_control))
-
+    -- d("exit "..tostring(cell_control))
     ZO_Tooltips_HideTextTooltip()
 end
 
@@ -329,8 +327,11 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                                   , 0 )                 -- offsetY
         end
         cell_control:SetHidden(false)
-        cell_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
-        cell_control:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
+                        -- Don't waste CPU time checking for tooltips in EVERY
+                        -- cell. Only a couple columns have tooltips. Set the
+                        -- mouse enter/exit handlers on only those columns.
+        -- cell_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+        -- cell_control:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
 
         if not is_text then
                         -- Lock our checkmark/cancel icons to 20x20
@@ -345,11 +346,11 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
             --cell_control:SetLinkEnabled(true)
             cell_control:SetMouseEnabled(true)
 
-                            -- Surprise! Headers:GetNamedChild() returns a
-                            -- control instance that lacks a "Name" sub-control,
-                            -- which we need if we want to match text alignment.
-                            -- Use the control we passed to
-                            -- ZO_SortHeader_Initialize().
+                        -- Surprise! Headers:GetNamedChild() returns a
+                        -- control instance that lacks a "Name" sub-control,
+                        -- which we need if we want to match text alignment.
+                        -- Use the control we passed to
+                        -- ZO_SortHeader_Initialize().
             local header_name_control = header_control:GetNamedChild("Name")
             if not header_name_control then
                 local hc2 = WritWorthy.list_header_controls[cell_name]
@@ -378,9 +379,12 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
             WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
         end)
     end
+    checkbox:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+    checkbox:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
+
                             -- Not a cell control, but a mask that floats above
                             -- one. Hook that up for fast access and tooltips.
-    local mask_control = row_control:GetNamedChild(self.CELL_ENQUEUE)
+    local mask_control = row_control:GetNamedChild(self.CELL_ENQUEUE_MASK)
     d("setup mask_control:"..tostring(mask_control))
     row_control[self.CELL_ENQUEUE_MASK] = mask_control
     mask_control:SetHidden(false)
@@ -674,52 +678,23 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
                         -- The "Enqueue" checkbox and its mask that makes it
                         -- look dimmed out when we cannot enqueue this row
                         -- due to lack of knowledge or WritWorthy code.
+                        --
+                        -- The mask does a lot for us:
+                        -- 1. dims the checkbox
+                        -- 2. intercepts mouse events
+                        -- 3. provides tooltips
+                        -- So there's no need to disable or hide the checkbox.
+                        --
     local b      = rc[self.CELL_ENQUEUE     ]
-    -- local b_mask = rc[self.CELL_ENQUEUE_MASK]
+    local b_mask = rc[self.CELL_ENQUEUE_MASK]
     b.inventory_data      = inventory_data
-    -- b_mask.inventory_data = inventory_data
+    b_mask.inventory_data = inventory_data
     if i_d.ui_can_queue then
-        ZO_CheckButton_SetEnableState(b, true)
         ZO_CheckButton_SetCheckState(b, i_d.ui_is_queued)
-        b:SetHidden(false)
-        -- b_mask:SetHidden(true)
+        b_mask:SetHidden(true)
     else
-        -- ZO_CheckButton_SetEnableState(b, false)
         ZO_CheckButton_SetCheckState(b, false)
-        -- b:SetHidden(true)
-        -- b_mask:SetHidden(false)
-        b.tooltip_text = i_d.ui_can_queue_tooltip
-        -- b_mask.tooltip_text = i_d.ui_can_queue_tooltip
+        b_mask:SetHidden(false)
+        b_mask.tooltip_text = i_d.ui_can_queue_tooltip
     end
-
-if not b.tooltip_text then b.tooltip_text = "no tip" end
-
-    -- b.tooltip_text      = "button: Hi there!"
-    -- b_mask.tooltip_text = "mask: I like cheese!"
-
-    -- b:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
-    -- b:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
-    -- b_mask:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
-    -- b_mask:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
-
-    -- rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
-
-    -- local b = rc[self.CELL_ENQUEUE  ]
-    -- function b:onClicked() WritWorthyInventoryList_UIEnqueue(row_control, i_d) end
-    -- b = rc[self.CELL_ENQUEUE  ]
-    -- function b:onClicked() WritWorthyInventoryList_UIDequeue(row_control, i_d) end
 end
-
---[[
-
-How to tooltip?
-
-      btn:SetHandler('OnMouseEnter',function(self) CS.Tooltip(self,true,false,CraftStoreFixed_Rune,'tl') end)
-      btn:SetHandler('OnMouseExit',function(self) CS.Tooltip(self,false) end)
-      btn:SetHandler('OnMouseDown',function(self,button)
-
-            ACHIEVEMENTS:ShowAchievementPopup(unpack(popup))
-            ZO_PopupTooltip_Hide()
-
---]]
-
