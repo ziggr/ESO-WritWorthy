@@ -176,6 +176,7 @@ WritWorthyInventoryList.CELL_DETAIL3        = "Detail3"
 WritWorthyInventoryList.CELL_DETAIL4        = "Detail4"
 WritWorthyInventoryList.CELL_DETAIL5        = "Detail5"
 WritWorthyInventoryList.CELL_ENQUEUE        = "Enqueue"
+WritWorthyInventoryList.CELL_ENQUEUE_MASK   = "EnqueueMask" -- not a cell on its own.
 WritWorthyInventoryList.CELL_DEQUEUE        = "Dequeue"
 WritWorthyInventoryList.CELL_NAME_LIST = {
   WritWorthyInventoryList.CELL_TYPE
@@ -377,6 +378,10 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
             WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
         end)
     end
+                            -- Easier access to the mask that floats above
+                            -- our "Enqueue" checkbox.
+    row_control[WritWorthyInventoryList.CELL_ENQUEUE_MASK]
+         = row_control:GetNamedChild(WritWorthyInventoryList.CELL_ENQUEUE)
 end
 
 -- After a resize, widen our "detail1" column and nudge the others to its right.
@@ -662,7 +667,9 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     rc[self.CELL_DETAIL4  ]:SetText(i_d.ui_detail4)
     rc[self.CELL_DETAIL5  ]:SetText(i_d.ui_detail5)
 
-                        -- for less typing
+                        -- The "Enqueue" checkbox and its mask that makes it
+                        -- look dimmed out when we cannot enqueue this row
+                        -- for some reason.
     local b = rc[self.CELL_ENQUEUE  ]
     -- ZO_CheckButton
     -- local tex = self.TEXTURE_SET_X
