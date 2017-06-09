@@ -177,7 +177,6 @@ WritWorthyInventoryList.CELL_DETAIL4        = "Detail4"
 WritWorthyInventoryList.CELL_DETAIL5        = "Detail5"
 WritWorthyInventoryList.CELL_ENQUEUE        = "Enqueue"
 WritWorthyInventoryList.CELL_ENQUEUE_MASK   = "EnqueueMask" -- not a cell on its own.
-WritWorthyInventoryList.CELL_DEQUEUE        = "Dequeue"
 WritWorthyInventoryList.CELL_NAME_LIST = {
   WritWorthyInventoryList.CELL_TYPE
 , WritWorthyInventoryList.CELL_VOUCHERCT
@@ -187,12 +186,10 @@ WritWorthyInventoryList.CELL_NAME_LIST = {
 , WritWorthyInventoryList.CELL_DETAIL4
 , WritWorthyInventoryList.CELL_DETAIL5
 , WritWorthyInventoryList.CELL_ENQUEUE
-, WritWorthyInventoryList.CELL_DEQUEUE
 }
 -- Cells that are shown/hidden click buttons, not text data.
 WritWorthyInventoryList.CELL_XML_LIST = {
   [WritWorthyInventoryList.CELL_ENQUEUE] = true
-, [WritWorthyInventoryList.CELL_DEQUEUE] = true
 }
 
 
@@ -539,18 +536,6 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
         return false, table.concat(text_list, "\n")
     end
     return true, ""
-end
-
-function WritWorthyInventoryList_UIEnqueue(row_control, inventory_data)
-    d("Enqueuing:"..tostring(inventory_data.unique_id))
-    inventory_data.ui_is_queued = true
-                        -- ### How to refresh just this row's data, then update table UI?
-end
-
-function WritWorthyInventoryList_UIDequeue(row_control, inventory_data)
-    d("Dequeuing:"..tostring(inventory_data.unique_id))
-    inventory_data.ui_is_queued = true
-                        -- ### How to refresh just this row's data, then update table UI?
 end
 
                         -- Lazy-instantiate fields within our "data model"

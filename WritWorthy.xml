@@ -14,8 +14,8 @@
         allowBringToTop="true"
         clampedToScreen="true"
         >
-      <Dimensions              x="1105"      y="850" />
-      <DimensionConstraints minX="1105"   minY="350"
+      <Dimensions              x="1075"      y="850" />
+      <DimensionConstraints minX="1075"   minY="350"
                             maxX="1505"   maxY="950" />
 
             <!-- Positive LT/Negative RB offsets allow sliding
@@ -147,7 +147,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-645" />
+                      offsetX="-615" />
                   <Dimensions x="300" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail1", "Detail 1", "ui_detail1")
@@ -159,7 +159,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-490" />
+                      offsetX="-460" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
@@ -171,7 +171,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-335" />
+                      offsetX="-305" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail3", "Detail 3", "ui_detail3")
@@ -183,7 +183,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-180" />
+                      offsetX="-150" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail4", "Detail 4", "ui_detail4")
@@ -195,7 +195,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-75" />
+                      offsetX="-45" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Detail5", "Quality", "ui_detail5")
@@ -207,22 +207,10 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-40" />
+                      offsetX="-10" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
                     WritWorthy_HeaderInit(self, "Enqueue", "Q", "ui_is_queued")
-                  </OnInitialized>
-                </Control>
-                <Control name="$(parent)Dequeue"
-                    inherits="ZO_SortHeader"
-                    >
-                  <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-4" />
-                  <Dimensions x="30" y="20" />
-                  <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Dequeue", "Z", "ui_is_queued")
                   </OnInitialized>
                 </Control>
               </Controls>
@@ -269,22 +257,6 @@
           relativeTo="$(parent)"
           />
       <Controls>
-
-        <Button name="$(parent)Dequeue"
-              alpha="1">
-          <Textures
-              normal="EsoUI/Art/Buttons/decline_up.dds"
-              pressed="EsoUI/Art/Buttons/decline_down.dds"
-              mouseOver="EsoUI/Art/Buttons/decline_over.dds"
-              disabled="EsoUI/Art/Buttons/decline_disabled.dds"
-              />
-          <Dimensions x="20" y="20" />
-          <TextureCoords
-              left="0.0"  top="0.0"
-              right="1.0" bottom="1.0"
-              />
-        </Button>
-
         <Button name="$(parent)Enqueue"
               alpha="1"
               inherits="ZO_CheckButton"
