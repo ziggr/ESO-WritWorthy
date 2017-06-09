@@ -370,6 +370,13 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
             cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
         end
     end
+
+    local checkbox = row_control:GetNamedChild(WritWorthyInventoryList.CELL_ENQUEUE)
+    if checkbox then
+        ZO_CheckButton_SetToggleFunction(checkbox, function(is_checked)
+            WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
+        end)
+    end
 end
 
 -- After a resize, widen our "detail1" column and nudge the others to its right.
@@ -606,6 +613,11 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_detail5    = self.Shorten(inventory_data.ui_detail5   )
 end
 
+-- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
+function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
+    d("Toggled:"..tostring(checked).."  i_d:"..tostring(cell_control.inventory_data))
+end
+
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
 -- WritWorthyInventoryListRow row_control to display some inventory_data. But
 -- it's our job to fill in that control's nested labels with the appropriate
@@ -660,10 +672,19 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     -- b:SetDisabledTexture    (tex.disabled)
     -- b:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
 
+    b.inventory_data = inventory_data
     if not i_d.ui_can_queue then
         ZO_CheckButton_SetEnableState(b, false)
         ZO_CheckButton_SetCheckState(b, false)
+b:SetMouseEnabled(true) -- just so that tooltips can appear
         b.tooltip_text = i_d.ui_can_queue_tooltip
+
+                        -- "Disabled" checkboxes lack a visual indicator of
+                        -- their disabled state (grr.) Dim/mask them with a
+                        -- blank label over them with a tooltip
+                        -- explaining why.
+        -- ### NEED mask cell.
+
     else
         ZO_CheckButton_SetEnableState(b, true)
         ZO_CheckButton_SetCheckState(b, i_d.ui_is_queued)
