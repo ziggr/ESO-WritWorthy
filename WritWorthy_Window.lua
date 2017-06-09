@@ -372,16 +372,20 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
         end
     end
 
-    local checkbox = row_control:GetNamedChild(WritWorthyInventoryList.CELL_ENQUEUE)
+    local checkbox = row_control:GetNamedChild(self.CELL_ENQUEUE)
     if checkbox then
         ZO_CheckButton_SetToggleFunction(checkbox, function(is_checked)
             WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
         end)
     end
-                            -- Easier access to the mask that floats above
-                            -- our "Enqueue" checkbox.
-    row_control[WritWorthyInventoryList.CELL_ENQUEUE_MASK]
-         = row_control:GetNamedChild(WritWorthyInventoryList.CELL_ENQUEUE)
+                            -- Not a cell control, but a mask that floats above
+                            -- one. Hook that up for fast access and tooltips.
+    local mask_control = row_control:GetNamedChild(self.CELL_ENQUEUE)
+    d("setup mask_control:"..tostring(mask_control))
+    row_control[self.CELL_ENQUEUE_MASK] = mask_control
+    mask_control:SetHidden(false)
+    mask_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+    mask_control:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
 end
 
 -- After a resize, widen our "detail1" column and nudge the others to its right.
@@ -669,35 +673,34 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
 
                         -- The "Enqueue" checkbox and its mask that makes it
                         -- look dimmed out when we cannot enqueue this row
-                        -- for some reason.
-    local b = rc[self.CELL_ENQUEUE  ]
-    -- ZO_CheckButton
-    -- local tex = self.TEXTURE_SET_X
-    -- b:SetNormalTexture      (tex.normal)
-    -- b:SetMouseOverTexture   (tex.mouseOver)
-    -- b:SetPressedTexture     (tex.pressed)
-    -- b:SetDisabledTexture    (tex.disabled)
-    -- b:SetHidden(    i_d.ui_is_queued or not i_d.ui_can_queue)
-
-    b.inventory_data = inventory_data
-    if not i_d.ui_can_queue then
-        ZO_CheckButton_SetEnableState(b, false)
-        ZO_CheckButton_SetCheckState(b, false)
-b:SetMouseEnabled(true) -- just so that tooltips can appear
-        b.tooltip_text = i_d.ui_can_queue_tooltip
-
-                        -- "Disabled" checkboxes lack a visual indicator of
-                        -- their disabled state (grr.) Dim/mask them with a
-                        -- blank label over them with a tooltip
-                        -- explaining why.
-        -- ### NEED mask cell.
-
-    else
+                        -- due to lack of knowledge or WritWorthy code.
+    local b      = rc[self.CELL_ENQUEUE     ]
+    -- local b_mask = rc[self.CELL_ENQUEUE_MASK]
+    b.inventory_data      = inventory_data
+    -- b_mask.inventory_data = inventory_data
+    if i_d.ui_can_queue then
         ZO_CheckButton_SetEnableState(b, true)
         ZO_CheckButton_SetCheckState(b, i_d.ui_is_queued)
-        b.tooltip_text = nil
+        b:SetHidden(false)
+        -- b_mask:SetHidden(true)
+    else
+        -- ZO_CheckButton_SetEnableState(b, false)
+        ZO_CheckButton_SetCheckState(b, false)
+        -- b:SetHidden(true)
+        -- b_mask:SetHidden(false)
+        b.tooltip_text = i_d.ui_can_queue_tooltip
+        -- b_mask.tooltip_text = i_d.ui_can_queue_tooltip
     end
 
+if not b.tooltip_text then b.tooltip_text = "no tip" end
+
+    -- b.tooltip_text      = "button: Hi there!"
+    -- b_mask.tooltip_text = "mask: I like cheese!"
+
+    -- b:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+    -- b:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
+    -- b_mask:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+    -- b_mask:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
 
     -- rc[self.CELL_DEQUEUE  ]:SetHidden(not i_d.ui_is_queued)
 

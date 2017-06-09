@@ -296,12 +296,14 @@
               />
         </Button>
 
+<!--
         <Texture name="$(parent)EnqueueMask"
-            color="000000"
+            color="FF0000"
             layer="OVERLAY"
             alpha="0.75"
+            mouseEnabled="true"
             >
-          <Dimensions x="18" y="18" />
+          <Dimensions x="20" y="20" />
           <Anchor relativeTo="$(parent)Enqueue"
               relativePoint="TOPLEFT"
               point="TOPLEFT"
@@ -309,6 +311,7 @@
               offsetY="0"
               />
         </Texture>
+-->
 
       </Controls>
     </Button>
