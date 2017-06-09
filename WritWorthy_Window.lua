@@ -40,14 +40,15 @@ WritWorthyInventoryList = ZO_SortFilterList:Subclass()
 -- inherits field "self.list" which is the scroll list control
 
 WritWorthyInventoryList.SORT_KEYS = {
-  ["ui_type"      ] = {tiebreaker="ui_voicher_ct"}
+  ["ui_type"      ] = {tiebreaker="ui_voucher_ct"}
 , ["ui_voucher_ct"] = {tiebreaker="ui_detail1", isNumeric=true }
 , ["ui_detail1"   ] = {tiebreaker="ui_detail2"}
 , ["ui_detail2"   ] = {tiebreaker="ui_detail3"}
 , ["ui_detail3"   ] = {tiebreaker="ui_detail4"}
 , ["ui_detail4"   ] = {tiebreaker="ui_detail5"}
 , ["ui_detail5"   ] = {tiebreaker="ui_is_queued"}
-, ["ui_is_queued" ] = {}
+, ["ui_is_queued" ] = {tiebreaker="ui_can_queue"}
+, ["ui_can_queue" ] = {} -- Not a visible column, but does have visible effect on "is_queued" column.
 }
 
 WritWorthyInventoryList.ROW_HEIGHT = 30
