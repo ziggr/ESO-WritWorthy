@@ -139,32 +139,6 @@ function WritWorthy_ToggleUI()
     WritWorthyUI:SetHidden(not h)
 
 end
-
-function WritWorthy_HeaderInit(control, name, text, key)
-    ZO_SortHeader_Initialize( control                   -- control
-                            , text                      -- name
-                            , key or string.lower(text) -- key
-                            , ZO_SORT_ORDER_DOWN        -- initialDirection
-                            , align or TEXT_ALIGN_LEFT  -- alignment
-                            , "ZoFontWinT1"             -- font
-                            , nil                       -- highlightTemplate
-                            )
-
-                        -- Remember this control!
-                        --
-                        -- The header cell control that we get here, and which
-                        -- ZO_SortHeader_Initialize() fills in is NOT the same
-                        -- as the XML template control reachable from
-                        -- WritWorthyUIInventoryListHeaders:GetNamedChild().
-                        -- We need this actual header cell control, which has
-                        -- Text and alignment and live data, in addition to the
-                        -- XML template control (which has dynamic width,
-                        -- thanks to its two anchors).
-    WritWorthy.list_header_controls[name] = control
-end
-
-
-
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
                         -- Useful when iterating through columns/cells.
@@ -191,7 +165,44 @@ WritWorthyInventoryList.CELL_NAME_LIST = {
 WritWorthyInventoryList.CELL_XML_LIST = {
   [WritWorthyInventoryList.CELL_ENQUEUE] = true
 }
+WritWorthyInventoryList.HEADER_TOOLTIPS = {
+  [WritWorthyInventoryList.CELL_TYPE      ] = nil
+, [WritWorthyInventoryList.CELL_VOUCHERCT ] = "Voucher count"
+, [WritWorthyInventoryList.CELL_DETAIL1   ] = nil
+, [WritWorthyInventoryList.CELL_DETAIL2   ] = nil
+, [WritWorthyInventoryList.CELL_DETAIL3   ] = nil
+, [WritWorthyInventoryList.CELL_DETAIL4   ] = nil
+, [WritWorthyInventoryList.CELL_DETAIL5   ] = nil
+, [WritWorthyInventoryList.CELL_ENQUEUE   ] = "Enqueued for crafting"
+}
 
+function WritWorthy_HeaderInit(control, name, text, key)
+    ZO_SortHeader_Initialize( control                   -- control
+                            , text                      -- name
+                            , key or string.lower(text) -- key
+                            , ZO_SORT_ORDER_DOWN        -- initialDirection
+                            , align or TEXT_ALIGN_LEFT  -- alignment
+                            , "ZoFontWinT1"             -- font
+                            , nil                       -- highlightTemplate
+                            )
+
+                        -- Remember this control!
+                        --
+                        -- The header cell control that we get here, and which
+                        -- ZO_SortHeader_Initialize() fills in is NOT the same
+                        -- as the XML template control reachable from
+                        -- WritWorthyUIInventoryListHeaders:GetNamedChild().
+                        -- We need this actual header cell control, which has
+                        -- Text and alignment and live data, in addition to the
+                        -- XML template control (which has dynamic width,
+                        -- thanks to its two anchors).
+    WritWorthy.list_header_controls[name] = control
+
+    local tooltip_text = WritWorthyInventoryList.HEADER_TOOLTIPS[name]
+    if tooltip_text then
+        ZO_SortHeader_SetTooltip(control, tooltip_text)
+    end
+end
 
                         -- Live row_control used to lay out rows. Remembered
                         -- during SetupRowControl()
