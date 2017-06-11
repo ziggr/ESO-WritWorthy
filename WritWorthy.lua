@@ -343,10 +343,12 @@ function WritWorthy:Dol_RemoveStaleQueuedIDs(current_unique_ids)
     end
 end
 
+-- @deprecated
+-- Still used by old Smithing Parser:ToDolRequest() but will eventually go away.
 function WritWorthy:Dol_AssignReference(unique_id)
     local queued_ids = WritWorthy:Dol_QueuedIDs()
     if queued_ids[unique_id] then
-        d("WritWorthy: unique_id already queued once? "..tostring(unique_id))
+        -- d("WritWorthy: unique_id already queued once? "..tostring(unique_id))
     end
     DolgubonSetCrafter.savedVars.counter = DolgubonSetCrafter.savedVars.counter + 1
     local reference = DolgubonSetCrafter.savedVars.counter

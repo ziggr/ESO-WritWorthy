@@ -384,14 +384,14 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
         end
     end
 
-    local checkbox = row_control:GetNamedChild(self.CELL_ENQUEUE)
-    if checkbox then
-        ZO_CheckButton_SetToggleFunction(checkbox, function(is_checked)
+    local cb = row_control:GetNamedChild(self.CELL_ENQUEUE)
+    if cb then
+        ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
             WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
         end)
     end
-    checkbox:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
-    checkbox:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
+    cb:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+    cb:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
 
                             -- Not a cell control, but a mask that floats above
                             -- one. Hook that up for fast access and tooltips.
@@ -622,7 +622,6 @@ end
 
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
 function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
-d("toggle checked:"..tostring(checked))
     if checked then
         WritWorthyInventoryList:Enqueue(cell_control.inventory_data)
     else
@@ -743,21 +742,7 @@ function WritWorthy:GetLLC()
                         -- Also record queue contents. I suspect this is
                         -- always initially empty.
     if self.LibLazyCrafting.personalQueue then
-        for kk,vv in pairs(self.LibLazyCrafting.personalQueue) do
-            local vstr = tostring(vv)
-            if type(vv) == "table" then
-                vstr = vstr.."  ct:"..tostring(#vv)
-            end
-            Log:Add("LibLazyCrafting queue k:"..tostring(kk)
-                    .."  v:"..vstr)
-            if type(vv) == "table" then
-                for k,v in pairs(vv) do
-                    Log:Add("LibLazyCrafting queue k:"..tostring(kk)
-                            ..","..tostring(k)
-                            .."    v:"..tostring(v))
-                end
-            end
-        end
+        self:LogLLCQueue(self.LibLazyCrafting.personalQueue)
     end
 
     return self.LibLazyCrafting
@@ -766,8 +751,6 @@ end
 -- Add the given item to LibLazyCrafting's queue of stuff
 -- to be automatically crafted later.
 function WritWorthyInventoryList:Enqueue(inventory_data)
-
-
                         -- Use the ZOS-assigned GetItemUniqueId() for
                         -- this sealed writ.
                         -- We previously relied on an internal counter from
@@ -775,6 +758,9 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
                         -- from Lazy Set Crafter and no longer wish to us that
                         -- counter.
     local unique_id = inventory_data.parser.unique_id
+
+    Log:StartNewEvent()
+    Log:Add("Enqueue "..tostring(unique_id))
 
                         -- Avoid enqueing the same writ twice: If we already
                         -- enqueued this specific writ, do nothing.
@@ -806,12 +792,41 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
         , o[10]     -- autocraft
         , unique_id -- reference (o[11] is Lazy Set Crafter counter, trying not to use that anymore)
         )
+
+    WritWorthy:LogLLCQueue(LLC.personalQueue)
 end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
     local unique_id = inventory_data.parser.unique_id
     local LLC = WritWorthy:GetLLC()
     LLC:cancelItemByReference(unique_id)
+    WritWorthy:LogLLCQueue(LLC.personalQueue)
 end
 
+function WritWorthy:LogLLCQueue(queue)
+    if not queue then return end
 
+    for kk,vv in pairs(queue) do
+        local vstr = tostring(vv)
+        if type(vv) == "table" then
+            vstr = vstr.."  ct:"..tostring(#vv)
+        end
+        Log:Add("LibLazyCrafting queue k:"..tostring(kk)
+                .."  v:"..vstr)
+        if type(vv) == "table" then
+            for k,v in pairs(vv) do
+                Log:Add("LibLazyCrafting queue k:"..tostring(kk)
+                        ..","..tostring(k)
+                        .."    v:"..tostring(v))
+                if type(v) == "table" then
+                    for k3, v3 in pairs(v) do
+                        Log:Add("LibLazyCrafting queue k:"..tostring(kk)
+                                ..","..tostring(k)
+                                ..","..tostring(k3)
+                                .."    v:"..tostring(v3))
+                    end
+                end
+            end
+        end
+    end
+end
