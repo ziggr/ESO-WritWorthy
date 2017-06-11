@@ -476,7 +476,7 @@ function WritWorthy:Initialize()
                             , self.defaultChar
                             )
 
-    WritWorthy.LibLazyCrafting = LibStub("LibLazyCrafting", 0.3)
+    WritWorthy.LibLazyCrafting = nil    -- lazy initialized in :GetLLC()
 
 
     WritWorthy.TooltipInterceptInstall()

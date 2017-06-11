@@ -23,7 +23,7 @@ WritWorthy.inventory_data_list = {}
                         -- Some later version might add Alchemy.
                         -- Not sure if we'll EVER add Provisioning.
                         --
-WritWorthy.LibLazyCrafting = LibStub:GetLibrary("LibLazyCrafting", 0.3)
+WritWorthy.LibLazyCrafting = nil
 
 local Log  = WritWorthy.Log
 
@@ -121,7 +121,6 @@ function WritWorthy_OnResizeStop()
     -- ### Save Bounds
 end
 
--- Invetory UI ---------------------------------------------------------------
 function WritWorthy_ToggleUI()
     local ui = WritWorthyUI
     if not ui then
@@ -140,6 +139,9 @@ function WritWorthy_ToggleUI()
     WritWorthyUI:SetHidden(not h)
 
 end
+
+-- Inventory List ------------------------------------------------------------
+
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
                         -- Useful when iterating through columns/cells.
@@ -394,7 +396,6 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                             -- Not a cell control, but a mask that floats above
                             -- one. Hook that up for fast access and tooltips.
     local mask_control = row_control:GetNamedChild(self.CELL_ENQUEUE_MASK)
-    d("setup mask_control:"..tostring(mask_control))
     row_control[self.CELL_ENQUEUE_MASK] = mask_control
     mask_control:SetHidden(false)
     mask_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
@@ -521,12 +522,8 @@ function WritWorthyInventoryList:IsQueued(inventory_data)
                         -- O(n) list scan instead of O(1) hash lookup.
                         -- Calling repeatedly from inside a loop is O(n^2).
                         -- Replace if noticeable (for large n, it will be).
-local xxx = nil
-if WritWorthy.LibLazyCrafting then xxx = WritWorthy.LibLazyCrafting.findItemByReference end
-Log:Add("llc:"..tostring(WritWorthy.LibLazyCrafting).." fi:"..tostring(xxx))
-if not xxx then return false end
-
-    local x = WritWorthy.LibLazyCrafting:findItemByReference(inventory_data.unique_id)
+    local LLC = WritWorthy:GetLLC()
+    local x = LLC:findItemByReference(inventory_data.unique_id)
     if 0 < #x then
         return true
     else
@@ -625,7 +622,13 @@ end
 
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
 function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
-    d("Toggled:"..tostring(checked).."  i_d:"..tostring(cell_control.inventory_data))
+d("toggle checked:"..tostring(checked))
+    if checked then
+        WritWorthyInventoryList:Enqueue(cell_control.inventory_data)
+    else
+        WritWorthyInventoryList:Dequeue(cell_control.inventory_data)
+    end
+    -- ### If we want to update a summary, now would be a good time to do so.
 end
 
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
@@ -695,3 +698,120 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
         b_mask.tooltip_text = i_d.ui_can_queue_tooltip
     end
 end
+
+-- LibLazyCrafting API k:addonName                "WritWorthy"
+-- LibLazyCrafting API k:autocraft                true
+-- LibLazyCrafting API k:personalQueue            {}
+-- LibLazyCrafting API k:ImproveSmithingItem()
+-- LibLazyCrafting API k:CraftSmithingItem()
+-- LibLazyCrafting API k:craftItem()
+-- LibLazyCrafting API k:CraftEnchantingItemId()
+-- LibLazyCrafting API k:CraftEnchantingGlyph()
+-- LibLazyCrafting API k:GetCurrentSetInteractionIndex()
+-- LibLazyCrafting API k:findItemByReference()
+-- LibLazyCrafting API k:cancelItemByReference()
+-- LibLazyCrafting API k:findItemLocationById()
+-- LibLazyCrafting API k:CraftAllItems()
+-- LibLazyCrafting API k:cancelItem()
+-- LibLazyCrafting API k:CraftSmithingItemByLevel()
+
+function WritWorthy:GetLLC()
+    if self.LibLazyCrafting then
+        return self.LibLazyCrafting
+    end
+
+    d("WritWorthy: Initializing LibLazyCrafting... self:"..tostring(self)
+                .."  bob_ct:"..tostring(BOB_CT))
+    local lib = LibStub:GetLibrary("LibLazyCrafting", 0.3)
+    self.LibLazyCrafting = lib:AddRequestingAddon(
+         self.name      -- name
+       , true           -- autocraft
+       , nil            -- functionCallback
+       )
+
+    if not self.LibLazyCrafting then
+        d("Unable to load LibLazyCrafting 0.3")
+    end
+                        -- Record API names to log so that I have them handy
+                        -- rather than  spending any time asking "is Xxx()
+                        -- available?"
+    Log:StartNewEvent()
+    Log:Add("LibLazyCrafting LLC:"..tostring(self.LibLazyCrafting))
+    for k,v in pairs(self.LibLazyCrafting) do
+        Log:Add("LibLazyCrafting API k:"..tostring(k).."  v:"..tostring(v))
+    end
+                        -- Also record queue contents. I suspect this is
+                        -- always initially empty.
+    if self.LibLazyCrafting.personalQueue then
+        for kk,vv in pairs(self.LibLazyCrafting.personalQueue) do
+            local vstr = tostring(vv)
+            if type(vv) == "table" then
+                vstr = vstr.."  ct:"..tostring(#vv)
+            end
+            Log:Add("LibLazyCrafting queue k:"..tostring(kk)
+                    .."  v:"..vstr)
+            if type(vv) == "table" then
+                for k,v in pairs(vv) do
+                    Log:Add("LibLazyCrafting queue k:"..tostring(kk)
+                            ..","..tostring(k)
+                            .."    v:"..tostring(v))
+                end
+            end
+        end
+    end
+
+    return self.LibLazyCrafting
+end
+
+-- Add the given item to LibLazyCrafting's queue of stuff
+-- to be automatically crafted later.
+function WritWorthyInventoryList:Enqueue(inventory_data)
+
+
+                        -- Use the ZOS-assigned GetItemUniqueId() for
+                        -- this sealed writ.
+                        -- We previously relied on an internal counter from
+                        -- Dolgubon's Lazy Set Crafter, but we're decoupling
+                        -- from Lazy Set Crafter and no longer wish to us that
+                        -- counter.
+    local unique_id = inventory_data.parser.unique_id
+
+                        -- Avoid enqueing the same writ twice: If we already
+                        -- enqueued this specific writ, do nothing.
+    if self:IsQueued(inventory_data) then
+        d("BUG: Already enqueued. UI incorrectly showed item as not enqueued."
+            .." Sealed writ unique_id:"..tostring(unique_id))
+        return
+    end
+                        -- ### This section is all Smithing-specific.
+                        -- ### Will need rewrite once we support consumables.
+    local dol_req = inventory_data.parser:ToDolRequest()
+                        -- I _hate_ long lists of positional arguments.
+                        -- Far too dangerous and prone to mixing up the
+                        -- arguments. Better to use a named parameter block.
+                        -- I'll likely do so for a mroe generic API when
+                        -- I add consumable support to LLC later.
+    local o       = dol_req.CraftRequestTable
+    local LLC     = WritWorthy:GetLLC()
+    LLC:CraftSmithingItemByLevel(
+          o[ 1]     -- patternIndex
+        , o[ 2]     -- isCP
+        , o[ 3]     -- level
+        , o[ 4]     -- styleIndex
+        , o[ 5]     -- traitIndex
+        , o[ 6]     -- useUniversalStyleItem
+        , o[ 7]     -- station
+        , o[ 8]     -- setIndex
+        , o[ 9]     -- quality
+        , o[10]     -- autocraft
+        , unique_id -- reference (o[11] is Lazy Set Crafter counter, trying not to use that anymore)
+        )
+end
+
+function WritWorthyInventoryList:Dequeue(inventory_data)
+    local unique_id = inventory_data.parser.unique_id
+    local LLC = WritWorthy:GetLLC()
+    LLC:cancelItemByReference(unique_id)
+end
+
+
