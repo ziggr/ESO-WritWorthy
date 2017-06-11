@@ -14,7 +14,7 @@
         allowBringToTop="true"
         clampedToScreen="true"
         >
-      <Dimensions              x="1075"      y="850" />
+      <Dimensions              x="1075"      y="550" />
       <DimensionConstraints minX="1075"   minY="350"
                             maxX="1505"   maxY="950" />
 
@@ -95,12 +95,12 @@
               relativePoint="TOPLEFT"
               point="TOPLEFT"
               offsetX="5"
-              offsetY="80" />
+              offsetY="85" />
           <Anchor relativeTo="$(parent)"
               relativePoint="BOTTOMRIGHT"
               point="BOTTOMRIGHT"
               offsetX="0"
-              offsetY="-70" />
+              offsetY="-80" />
           <Dimensions x="990" y="700" />
           <Controls>
                        <!-- WritWorthyUIInventoryListHeaders -->
@@ -236,16 +236,96 @@
 
         <Label  name="$(parent)InventoryListTitle"
             text="Writ Inventory"
-            font="ZoFontWinH5"
+            font="ZoFontGame"
             color="FFFFFF"
             >
           <Anchor relativeTo="$(parent)InventoryList"
               relativePoint="TOPLEFT"
               point="BOTTOMLEFT"
               offsetX="0"
-              offsetY="-5" />
+              offsetY="-10" />
           <Dimensions x="500" y="20" />
         </Label>
+
+        <Label  name="$(parent)SummaryVoucherCtLabel"
+            text="Total Vouchers Queued:"
+            font="ZoFontGame"
+            color="FFFFFF"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMLEFT"
+              point="TOPLEFT"
+              offsetX="0"
+              offsetY="5" />
+          <Dimensions x="200" y="20" />
+        </Label>
+
+        <Label  name="$(parent)SummaryVoucherCt"
+            text="0v"
+            font="ZoFontGame"
+            color="FFFFFF"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMLEFT"
+              point="TOPLEFT"
+              offsetX="200"
+              offsetY="5" />
+          <Dimensions x="100" y="20" />
+        </Label>
+
+        <Label  name="$(parent)SummaryMatCostLabel"
+            text="Total Materials Queued:"
+            font="ZoFontGame"
+            color="FFFFFF"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMLEFT"
+              point="TOPLEFT"
+              offsetX="0"
+              offsetY="30" />
+          <Dimensions x="200" y="20" />
+        </Label>
+
+        <Label  name="$(parent)SummaryMatCost"
+            text="0g"
+            font="ZoFontGame"
+            color="FFFFFF"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMLEFT"
+              point="TOPLEFT"
+              offsetX="200"
+              offsetY="30" />
+          <Dimensions x="100" y="20" />
+        </Label>
+
+        <Label  name="$(parent)SummaryVoucherCostLabel"
+            text="Average Voucher Cost:"
+            font="ZoFontGame"
+            color="FFFFFF"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMLEFT"
+              point="TOPLEFT"
+              offsetX="0"
+              offsetY="55" />
+          <Dimensions x="200" y="20" />
+        </Label>
+
+        <Label  name="$(parent)SummaryVoucherCost"
+            text="0g/v"
+            font="ZoFontGame"
+            color="FFFFFF"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMLEFT"
+              point="TOPLEFT"
+              offsetX="200"
+              offsetY="55" />
+          <Dimensions x="100" y="20" />
+        </Label>
+
+
 
       </Controls>
     </TopLevelControl>

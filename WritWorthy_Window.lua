@@ -798,11 +798,16 @@ end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
     local unique_id = inventory_data.parser.unique_id
+    Log:StartNewEvent()
+    Log:Add("Dequeue "..tostring(unique_id))
     local LLC = WritWorthy:GetLLC()
     LLC:cancelItemByReference(unique_id)
     WritWorthy:LogLLCQueue(LLC.personalQueue)
 end
 
+-- Dump LibLazyCrafting's entire queue to log file.
+-- This can be HUGE if you have dozens of sealed writs in inventory, so
+-- comment this out before shipping.
 function WritWorthy:LogLLCQueue(queue)
     if not queue then return end
 
