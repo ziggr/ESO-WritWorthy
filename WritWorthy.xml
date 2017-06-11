@@ -335,6 +335,9 @@
               offsetX="0"
               offsetY="5" />
           <Dimensions x="200" y="25" />
+          <OnClicked>
+            WritWorthyInventoryList_EnqueueAll()
+          </OnClicked>
         </Button>
 
         <Button   name="$(parent)DequeueAll"
@@ -347,6 +350,9 @@
               offsetX="0"
               offsetY="35" />
           <Dimensions x="200" y="25" />
+          <OnClicked>
+            WritWorthyInventoryList_DequeueAll()
+          </OnClicked>
         </Button>
 
       </Controls>

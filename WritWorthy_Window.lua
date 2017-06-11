@@ -136,6 +136,7 @@ function WritWorthy_ToggleUI()
         end
         WritWorthy.InventoryList:BuildMasterlist()
         WritWorthy.InventoryList:Refresh()
+        WritWorthy.InventoryList:UpdateSummaryAndQButtons()
     end
     WritWorthyUI:SetHidden(not h)
 
@@ -634,6 +635,21 @@ function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     self:UpdateSummaryAndQButtons()
 end
 
+-- Called by ZOS code after user clicks "Enqueue All"
+function WritWorthyInventoryList_EnqueueAll()
+    self = WritWorthyInventoryList.singleton
+    self:EnqueueAll()
+    self:Refresh()
+    self:UpdateSummaryAndQButtons()
+end
+
+-- Called by ZOS code after user clicks "Dequeue All"
+function WritWorthyInventoryList_DequeueAll()
+    self = WritWorthyInventoryList.singleton
+    self:DequeueAll()
+    self:UpdateSummaryAndQButtons()
+end
+
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
 -- WritWorthyInventoryListRow row_control to display some inventory_data. But
 -- it's our job to fill in that control's nested labels with the appropriate
@@ -904,3 +920,20 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
     WritWorthyUIEnqueueAll:SetEnabled(can_enqueue_any)
     WritWorthyUIDequeueAll:SetEnabled(can_dequeue_any)
 end
+
+function WritWorthyInventoryList:EnqueueAll()
+    for _, inventory_data in ipairs(self.inventory_data_list) do
+        if inventory_data.ui_can_queue and not inventory_data.ui_is_queued then
+            self:Enqueue(inventory_data)
+        end
+    end
+end
+
+function WritWorthyInventoryList:DequeueAll()
+    for _, inventory_data in ipairs(self.inventory_data_list) do
+        if inventory_data.ui_is_queued then
+            self:Dequeue(inventory_data)
+        end
+    end
+end
+
