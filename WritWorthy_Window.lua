@@ -26,6 +26,7 @@ WritWorthy.inventory_data_list = {}
 WritWorthy.LibLazyCrafting = nil
 
 local Log  = WritWorthy.Log
+local Util = WritWorthy.Util
 
 -- Inventory List UI, "row type".
 --
@@ -214,6 +215,7 @@ WritWorthyInventoryList.row_control_list = {}
 
 function WritWorthyInventoryList:New()
     local o = ZO_SortFilterList.New(self, WritWorthyUIInventoryList)
+    WritWorthyInventoryList.singleton = o
     return o
 end
 
@@ -622,12 +624,14 @@ end
 
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
 function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
+    self = WritWorthyInventoryList.singleton
     if checked then
-        WritWorthyInventoryList:Enqueue(cell_control.inventory_data)
+        self:Enqueue(cell_control.inventory_data)
     else
-        WritWorthyInventoryList:Dequeue(cell_control.inventory_data)
+        self:Dequeue(cell_control.inventory_data)
     end
-    -- ### If we want to update a summary, now would be a good time to do so.
+    WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
+    self:UpdateSummaryAndQButtons()
 end
 
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
@@ -654,8 +658,9 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
                   row_control
                 , header_control
                 )
-                        -- Not sure we need to retain pointers to
-                        -- our row_control instances.
+                        -- Retain pointers to our row_control instances so that
+                        -- we can update all their cell wides later upon window
+                        -- resize.
         table.insert(self.row_control_list, row_control)
     end
 
@@ -792,8 +797,6 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
         , o[10]     -- autocraft
         , unique_id -- reference (o[11] is Lazy Set Crafter counter, trying not to use that anymore)
         )
-
-    WritWorthy:LogLLCQueue(LLC.personalQueue)
 end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
@@ -802,7 +805,6 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     Log:Add("Dequeue "..tostring(unique_id))
     local LLC = WritWorthy:GetLLC()
     LLC:cancelItemByReference(unique_id)
-    WritWorthy:LogLLCQueue(LLC.personalQueue)
 end
 
 -- Dump LibLazyCrafting's entire queue to log file.
@@ -834,4 +836,71 @@ function WritWorthy:LogLLCQueue(queue)
             end
         end
     end
+end
+
+-- O(n) scan to collect a hash of unique item ids of items actually
+-- in LibLazyCrafter's queue.
+function WritWorthyInventoryList:QueuedReferenceList()
+    local queued_ids = {}
+    for station, queued in ipairs(WritWorthy:GetLLC().personalQueue) do
+        if type(queued) == "table" then
+            for i, request in ipairs(queued) do
+                if request.reference then
+                    queued_ids[request.reference] = true
+                end
+            end
+        end
+    end
+    return queued_ids
+end
+
+-- Fill our summary with actual data from our enqueued items.
+-- Enable/disable "Enqueue All"/"Dequeue All" buttons depending on
+-- whether we've any more to enqueue or dequeue.
+function WritWorthyInventoryList:UpdateSummaryAndQButtons()
+                        -- Collect hashtable of all queued unique_ids
+                        -- so that we can use it later in an O(n) loop
+                        -- for O(1) lookups.
+    local queued_ids = self.QueuedReferenceList()
+
+                        -- Accumulators
+    local can_enqueue_any  = false
+    local can_dequeue_any  = false
+    local total_voucher_ct = 0
+    local total_mat_gold   = 0
+
+                        -- Scan our master request list, accumulate voucher
+                        -- and mat totals for each request in LLC's queue.
+                        -- While scanning, also notice if any of these can
+                        -- be enqueued.
+    for _, inventory_data in ipairs(self.inventory_data_list) do
+        if inventory_data.parser.unique_id then
+            if queued_ids[inventory_data.parser.unique_id] then
+                local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
+                total_voucher_ct = total_voucher_ct + voucher_ct
+                local mat_list = inventory_data.parser:ToMatList()
+                local mat_gold = WritWorthy.MatRow.ListTotal(mat_list)
+                total_mat_gold = total_mat_gold + mat_gold
+                can_dequeue_any = true
+            elseif inventory_data.ui_can_queue
+                   and not inventory_data.ui_is_queued then
+                can_enqueue_any = true
+            end
+        end
+    end
+
+    local mat_per_v      = 0
+    if total_voucher_ct then
+        mat_per_v = total_mat_gold / total_voucher_ct
+    end
+
+    local voucher_string = Util.ToMoney(total_voucher_ct).."v"
+    local mat_string     = Util.ToMoney(total_mat_gold).."g"
+    local mat_per_string = Util.ToMoney(mat_per_v).."g/v"
+    WritWorthyUISummaryVoucherCt:SetText(voucher_string)
+    WritWorthyUISummaryMatCost:SetText(mat_string)
+    WritWorthyUISummaryVoucherCost:SetText(mat_per_string)
+
+    WritWorthyUIEnqueueAll:SetEnabled(can_enqueue_any)
+    WritWorthyUIDequeueAll:SetEnabled(can_dequeue_any)
 end
