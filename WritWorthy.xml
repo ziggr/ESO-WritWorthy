@@ -325,7 +325,29 @@
           <Dimensions x="100" y="20" />
         </Label>
 
+        <Button   name="$(parent)EnqueueAll"
+            inherits="ZO_DefaultButton"
+            text="Enqueue All"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMRIGHT"
+              point="TOPRIGHT"
+              offsetX="0"
+              offsetY="5" />
+          <Dimensions x="200" y="25" />
+        </Button>
 
+        <Button   name="$(parent)DequeueAll"
+            inherits="ZO_DefaultButton"
+            text="Dequeue All"
+            >
+          <Anchor relativeTo="$(parent)InventoryList"
+              relativePoint="BOTTOMRIGHT"
+              point="TOPRIGHT"
+              offsetX="0"
+              offsetY="35" />
+          <Dimensions x="200" y="25" />
+        </Button>
 
       </Controls>
     </TopLevelControl>
