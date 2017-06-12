@@ -281,7 +281,6 @@ function WritWorthyInventoryList:SortScrollList()
 end
 
 function WritWorthyInventoryList:Refresh()
-    Log:StartNewEvent()
     Log:Add("WritWorthyInventoryList:Refresh")
     self:RefreshData()
 end
@@ -621,22 +620,37 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_detail3    = self.Shorten(inventory_data.ui_detail3   )
     inventory_data.ui_detail4    = self.Shorten(inventory_data.ui_detail4   )
     inventory_data.ui_detail5    = self.Shorten(inventory_data.ui_detail5   )
+
+Log:Add("unique_id   :"..tostring(inventory_data.unique_id))
+Log:Add("ui_is_queued:"..tostring(inventory_data.ui_is_queued))
+Log:Add("ui_can_queue:"..tostring(inventory_data.ui_can_queue))
 end
 
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
 function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
+    Log:StartNewEvent()
+    Log:Add("WritWorthyInventoryList_EnqueueToggled() checked:"..tostring(checked)
+            .." unique_id:"..tostring(cell_control.inventory_data.unique_id))
     self = WritWorthyInventoryList.singleton
     if checked then
         self:Enqueue(cell_control.inventory_data)
     else
         self:Dequeue(cell_control.inventory_data)
     end
+                        -- Do I REALLY need to call this separately after each
+                        -- checkbox toggle? Or does the ZOS code already do
+                        -- something for this?
+Log:Add("-> PopulateUIFields")
+    self:PopulateUIFields(cell_control.inventory_data)
+Log:Add("-> LogLLCQueue")
     WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
+Log:Add("-> UpdateSummaryAndQButtons")
     self:UpdateSummaryAndQButtons()
 end
 
 -- Called by ZOS code after user clicks "Enqueue All"
 function WritWorthyInventoryList_EnqueueAll()
+    Log:StartNewEvent()
     self = WritWorthyInventoryList.singleton
     self:EnqueueAll()
     self:Refresh()
@@ -645,8 +659,10 @@ end
 
 -- Called by ZOS code after user clicks "Dequeue All"
 function WritWorthyInventoryList_DequeueAll()
+    Log:StartNewEvent()
     self = WritWorthyInventoryList.singleton
     self:DequeueAll()
+    self:Refresh()
     self:UpdateSummaryAndQButtons()
 end
 
@@ -780,7 +796,6 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
                         -- counter.
     local unique_id = inventory_data.parser.unique_id
 
-    Log:StartNewEvent()
     Log:Add("Enqueue "..tostring(unique_id))
 
                         -- Avoid enqueing the same writ twice: If we already
@@ -817,7 +832,6 @@ end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
     local unique_id = inventory_data.parser.unique_id
-    Log:StartNewEvent()
     Log:Add("Dequeue "..tostring(unique_id))
     local LLC = WritWorthy:GetLLC()
     LLC:cancelItemByReference(unique_id)
