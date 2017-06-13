@@ -71,6 +71,16 @@ WritWorthyInventoryList.TEXTURE_SET_X2 = {
 ,   mouseOver   = "EsoUI/Art/Buttons/decline_over.dds"
 }
 
+
+-- Values written to savedChariables
+WritWorthy.STATE_QUEUED    = "queued"
+WritWorthy.STATE_COMPLETED = "completed"
+
+WritWorthyInventoryList.COLOR_TEXT_CANNOT_QUEUE = "CC3333"
+WritWorthyInventoryList.COLOR_TEXT_CAN_QUEUE    = "CCCCCC"
+WritWorthyInventoryList.COLOR_TEXT_QUEUED       = "FFFFFF"
+WritWorthyInventoryList.COLOR_TEXT_COMPLETED    = "AAAAAA"
+
 function WritWorthy:RestorePos()
     local pos = self.default.position
     if self and self.savedVariables and self.savedVariables.position then
@@ -533,9 +543,21 @@ function WritWorthyInventoryList:IsQueued(inventory_data)
     end
 end
 
+function WritWorthyInventoryList:IsCompleted(inventory_data)
+    if not (    WritWorthy.savedChariables
+            and WritWorthy.savedChariables.writ_unique_id) then
+        return false
+    end
+    return WritWorthy.savedChariables.writ_unique_id[inventory_data]
+             == WritWorthy.STATE_COMPLETED
+end
+
 function WritWorthyInventoryList:CanQueue(inventory_data)
     if not inventory_data.parser.can_dolgubon then
         return false, "Not supported: Alchemy, Enchanting, Provisioning."
+    end
+    if self.IsCompleted(inventory_data) then
+        return false, "completed"
     end
     local text_list = {}
     for _, know in ipairs(inventory_data.parser:ToKnowList()) do
@@ -553,16 +575,16 @@ end
                         -- that contain UI-centric user-visible text for
                         -- list display.
 function WritWorthyInventoryList:PopulateUIFields(inventory_data)
-    inventory_data.ui_voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
-    inventory_data.ui_is_queued  = self:IsQueued(inventory_data)
-    local can, why_not           = self:CanQueue(inventory_data)
-    inventory_data.ui_can_queue  = can
+    inventory_data.ui_voucher_ct   = WritWorthy.ToVoucherCount(inventory_data.item_link)
+    inventory_data.ui_is_queued    = self:IsQueued(inventory_data)
+    inventory_data.ui_is_completed = self:IsCompleted(inventory_data)
+    local can, why_not             = self:CanQueue(inventory_data)
+    inventory_data.ui_can_queue    = can
     if can then
         inventory_data.ui_can_queue_tooltip = nil
     else
         inventory_data.ui_can_queue_tooltip = why_not
     end
-
 
                         -- For less typing.
     local parser = inventory_data.parser
@@ -637,15 +659,7 @@ function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     else
         self:Dequeue(cell_control.inventory_data)
     end
-                        -- Do I REALLY need to call this separately after each
-                        -- checkbox toggle? Or does the ZOS code already do
-                        -- something for this?
-Log:Add("-> PopulateUIFields")
-    self:PopulateUIFields(cell_control.inventory_data)
-Log:Add("-> LogLLCQueue")
-    WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
-Log:Add("-> UpdateSummaryAndQButtons")
-    self:UpdateSummaryAndQButtons()
+    self:UpdateUISoon(cell_control.inventory_data)
 end
 
 -- Called by ZOS code after user clicks "Enqueue All"
@@ -702,14 +716,25 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     local rc  = row_control
     local i_d = inventory_data
 
+                        -- Apply text color to entire row.
+    local fn = Util.color
+    local c  = WritWorthyInventoryList.COLOR_TEXT_CAN_QUEUE
+    if inventory_data.ui_is_completed then
+        c = WritWorthyInventoryList.COLOR_TEXT_COMPLETED
+    elseif not inventory_data.ui_can_queue then
+        c = WritWorthyInventoryList.COLOR_TEXT_CANNOT_QUEUE
+    elseif inventory_data.ui_is_queued then
+        c = WritWorthyInventoryList.COLOR_TEXT_QUEUED
+    end
+
                         -- Fill in the cells with data for this row.
-    rc[self.CELL_TYPE     ]:SetText(i_d.ui_type)
-    rc[self.CELL_VOUCHERCT]:SetText(tostring(i_d.ui_voucher_ct))
-    rc[self.CELL_DETAIL1  ]:SetText(i_d.ui_detail1)
-    rc[self.CELL_DETAIL2  ]:SetText(i_d.ui_detail2)
-    rc[self.CELL_DETAIL3  ]:SetText(i_d.ui_detail3)
-    rc[self.CELL_DETAIL4  ]:SetText(i_d.ui_detail4)
-    rc[self.CELL_DETAIL5  ]:SetText(i_d.ui_detail5)
+    rc[self.CELL_TYPE     ]:SetText(fn(c, i_d.ui_type))
+    rc[self.CELL_VOUCHERCT]:SetText(fn(c, tostring(i_d.ui_voucher_ct)))
+    rc[self.CELL_DETAIL1  ]:SetText(fn(c, i_d.ui_detail1))
+    rc[self.CELL_DETAIL2  ]:SetText(fn(c, i_d.ui_detail2))
+    rc[self.CELL_DETAIL3  ]:SetText(fn(c, i_d.ui_detail3))
+    rc[self.CELL_DETAIL4  ]:SetText(fn(c, i_d.ui_detail4))
+    rc[self.CELL_DETAIL5  ]:SetText(fn(c, i_d.ui_detail5))
 
                         -- The "Enqueue" checkbox and its mask that makes it
                         -- look dimmed out when we cannot enqueue this row
@@ -734,6 +759,67 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
         b_mask.tooltip_text = i_d.ui_can_queue_tooltip
     end
 end
+
+-- Callback from LibLazyCrafter into our code upon completion of a single
+-- queued request.
+--  - event is "success" or "not enough mats" or some other string.
+--          We COULD key off of "success" and display error redness if fail.
+--  - llc_result is a table with bag/slot id of the crafted item and
+--          its unique_id reference.
+function WritWorthy_LLCCompleted(event, station, llc_result)
+    Log:StartNewEvent()
+    local unique_id = nil
+    if llc_result then
+        unique_id = llc_result.reference
+    end
+    Log:Add("LibLazyCrafting completed"
+            .." unique_id:"..tostring(unique_id)
+            .." event:"..tostring(event)
+            .." station:"..tostring(station)
+            .." llc_result:"..tostring(llc_result))
+
+                        -- Remove the completed request from "queued" and
+                        -- move it to "completed".
+    if unique_id
+        and WritWorthy.savedChariables
+        and WritWorthy.savedChariables.writ_unique_id then
+        WritWorthy.savedChariables.writ_unique_id[unique_id] = WritWorthy.STATE_COMPLETED
+    end
+
+    if WritWorthyInventoryList and WritWorthyInventoryList.singleton then
+        self = WritWorthyInventoryList.singleton
+        inventory_data = self:UniqueIDToInventoryData(unique_id)
+        if inventory_data then
+            self:UpdateUISoon(inventory_data)
+        end
+    end
+end
+
+-- O(n) scan for an inventory_data with a matching unique_id
+function WritWorthyInventoryList:UniqueIDToInventoryData(unique_id)
+    for _, inventory_data in self.inventory_data_list do
+        if inventory_data.unique_id == unique_id then
+            return inventory_data
+        end
+    end
+    return nil
+end
+
+-- Queued state for one or more rows has changed. Propagate that change through
+-- our .inventory_data_list and into the UI.
+--
+-- Eventually this may move to a zo_callLater() function that NOPs for 0.1 seconds
+-- and then updates only after we've stopped calling it for 0.1 seconds.
+--
+function WritWorthyInventoryList:UpdateUISoon(inventory_data)
+    Log:Add("WritWorthyInventoryList:UpdateUISoon  unique_id:"
+            ..tostring(inventory_data.unique_id))
+    self:PopulateUIFields(inventory_data)
+    WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
+    self:UpdateSummaryAndQButtons()
+    self:Refresh()
+end
+
 
 -- LibLazyCrafting API k:addonName                "WritWorthy"
 -- LibLazyCrafting API k:autocraft                true
@@ -760,9 +846,9 @@ function WritWorthy:GetLLC()
                 .."  bob_ct:"..tostring(BOB_CT))
     local lib = LibStub:GetLibrary("LibLazyCrafting", 0.3)
     self.LibLazyCrafting = lib:AddRequestingAddon(
-         self.name      -- name
-       , true           -- autocraft
-       , nil            -- functionCallback
+         self.name                  -- name
+       , true                       -- autocraft
+       , WritWorthy_LLCCompleted    -- functionCallback
        )
 
     if not self.LibLazyCrafting then
@@ -805,6 +891,19 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
             .." Sealed writ unique_id:"..tostring(unique_id))
         return
     end
+    WritWorthy:Enqueue(unique_id, inventory_data)
+
+                        -- Remember this in savedChariables so that
+                        -- we can restore checkbox state after /reloadui.
+    if not WritWorthy.savedChariables.writ_unique_id then
+        WritWorthy.savedChariables.writ_unique_id = {}
+    end
+    WritWorthy.savedChariables.writ_unique_id[unique_id] = WritWorthy.STATE_QUEUED
+end
+
+-- The Dolgubon-only portion of enqueing a request, no list UI work here.
+-- Called from WritWorthy itself during RestoreFromSavedChariables()
+function WritWorthy:Enqueue(unique_id, inventory_data)
                         -- ### This section is all Smithing-specific.
                         -- ### Will need rewrite once we support consumables.
     local dol_req = inventory_data.parser:ToDolRequest()
@@ -835,6 +934,32 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     Log:Add("Dequeue "..tostring(unique_id))
     local LLC = WritWorthy:GetLLC()
     LLC:cancelItemByReference(unique_id)
+
+                        -- Remove from savedChariables so that we do not
+                        -- re-check this row upon /reloadui.
+    if WritWorthy.savedChariables.writ_unique_id then
+        WritWorthy.savedChariables.writ_unique_id[unique_id] = nil
+    end
+end
+
+-- Reload the LibLazyCrafting queue from savedChariables
+function WritWorthy:RestoreFromSavedChariables()
+                        -- Do nothing if nothing to restore.
+    if    (not self.savedChariables)
+       or (not self.savedChariables.writ_unique_id)
+       or (#self.savedChariables.writ_unique_id <= 0) then
+        return
+    end
+
+    local inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
+
+    for _, inventory_data in pairs(inventory_data_list) do
+        local unique_id = inventory_data.unique_id
+        local state = self.savedChariables.writ_unique_id[unique_id]
+        if state and state == WritWorthy.STATE_QUEUED then
+            self:Enqueue(unique_id, inventory_data)
+        end
+    end
 end
 
 -- Dump LibLazyCrafting's entire queue to log file.

@@ -21,9 +21,10 @@ WritWorthy.defaultChar = {
 
                         -- key = Id64ToString() of a writ that the user has
                         -- asked to enquque for later crafting.
-                        -- val = 0. I don't care, don't use. I just use
-                        -- queuedWritUIDSet as a hashed set for fast lookup.
-    queuedWritUIDset = {}
+                        -- val = "queued" or "completed"
+                        -- Yes we keep the "completed" rows around to
+                        -- provide some UI feedback.
+    writ_unique_id = {}
 
 }
 
