@@ -555,15 +555,17 @@ end
 
 function WritWorthyInventoryList:CanQueue(inventory_data)
     if not inventory_data.parser.can_dolgubon then
-        return false, "Not supported: Alchemy, Enchanting, Provisioning."
+        return false, "Not supported: Alchemy, Provisioning."
     end
     if self:IsCompleted(inventory_data) then
         return false, "completed"
     end
     local text_list = {}
-    for _, know in ipairs(inventory_data.parser:ToKnowList()) do
-        if not know.is_known then
-            table.insert(text_list, know:TooltipText())
+    if inventory_data.parser.ToKnowList then
+        for _, know in ipairs(inventory_data.parser:ToKnowList()) do
+            if not know.is_known then
+                table.insert(text_list, know:TooltipText())
+            end
         end
     end
     if 0 < #text_list then
@@ -660,6 +662,7 @@ function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     else
         self:Dequeue(cell_control.inventory_data)
     end
+    -- WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
     self:UpdateUISoon(cell_control.inventory_data)
 end
 

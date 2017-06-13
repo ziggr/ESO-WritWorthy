@@ -12,30 +12,30 @@ local Util       = WritWorthy.Util
 local Fail       = WritWorthy.Util.Fail
 
 -- Runes
-Enchanting.REJERA   = { name="Rejera"  }
-Enchanting.REPORA   = { name="Repora"  }
-Enchanting.JEHADE   = { name="Jehade"  }
-Enchanting.ITADE    = { name="Itade"   }
-Enchanting.DEKEIPA  = { name="Dekeipa" }
-Enchanting.DENI     = { name="Deni"    }
-Enchanting.DENIMA   = { name="Denima"  }
-Enchanting.DETERI   = { name="Deteri"  }
-Enchanting.HAOKO    = { name="Haoko"   }
-Enchanting.HAKEIJO  = { name="Hakeijo" }
-Enchanting.KADERI   = { name="Kaderi"  }
-Enchanting.KUOKO    = { name="Kuoko"   }
-Enchanting.MAKDERI  = { name="Makderi" }
-Enchanting.MAKKO    = { name="Makko"   }
-Enchanting.MAKKOMA  = { name="Makkoma" }
-Enchanting.MEIP     = { name="Meip"    }
-Enchanting.OKO      = { name="Oko"     }
-Enchanting.OKOMA    = { name="Okoma"   }
-Enchanting.OKORI    = { name="Okori"   }
-Enchanting.ORU      = { name="Oru"     }
-Enchanting.RAKEIPA  = { name="Rakeipa" }
-Enchanting.TADERI   = { name="Taderi"  }
-Enchanting.REKUTA   = { name="Rekuta"  }
-Enchanting.KUTA     = { name="Kuta"    }
+Enchanting.REJERA   = { name="Rejera"  , item_id = 64509 }
+Enchanting.REPORA   = { name="Repora"  , item_id = 68341 }
+Enchanting.JEHADE   = { name="Jehade"  , item_id = 64508 }
+Enchanting.ITADE    = { name="Itade"   , item_id = 68340 }
+Enchanting.DEKEIPA  = { name="Dekeipa" , item_id = 45839 }
+Enchanting.DENI     = { name="Deni"    , item_id = 45833 }
+Enchanting.DENIMA   = { name="Denima"  , item_id = 45836 }
+Enchanting.DETERI   = { name="Deteri"  , item_id = 45842 }
+Enchanting.HAOKO    = { name="Haoko"   , item_id = 45841 }
+Enchanting.HAKEIJO  = { name="Hakeijo" , item_id = 68342 }
+Enchanting.KADERI   = { name="Kaderi"  , item_id = 45849 }
+Enchanting.KUOKO    = { name="Kuoko"   , item_id = 45837 }
+Enchanting.MAKDERI  = { name="Makderi" , item_id = 45848 }
+Enchanting.MAKKO    = { name="Makko"   , item_id = 45832 }
+Enchanting.MAKKOMA  = { name="Makkoma" , item_id = 45835 }
+Enchanting.MEIP     = { name="Meip"    , item_id = 45840 }
+Enchanting.OKO      = { name="Oko"     , item_id = 45831 }
+Enchanting.OKOMA    = { name="Okoma"   , item_id = 45834 }
+Enchanting.OKORI    = { name="Okori"   , item_id = 45843 }
+Enchanting.ORU      = { name="Oru"     , item_id = 45846 }
+Enchanting.RAKEIPA  = { name="Rakeipa" , item_id = 45838 }
+Enchanting.TADERI   = { name="Taderi"  , item_id = 45847 }
+Enchanting.REKUTA   = { name="Rekuta"  , item_id = 45853 }
+Enchanting.KUTA     = { name="Kuta"    , item_id = 45854 }
 
 local ADD   = "add"
 local SUB   = "sub"
@@ -140,6 +140,9 @@ function Parser:New()
     ,   level           = 0     -- 150 or 160
     ,   quality_num     = 0     -- 4 or 5
     ,   mat_list        = {}    -- of MatRow
+    ,   can_dolgubon    = true
+    ,   unique_id       = nil   -- GetItemUniqueId(), set by
+                                -- WritWorthy:ScanInventoryForMasterWrits()
     }
     setmetatable(o, self)
     self.__index = self
@@ -184,3 +187,18 @@ function Parser:ToMatList()
     }
     return ml
 end
+
+function Parser:ToDolRequest()
+    local o = {}
+    o[1] = self.potency_rune.item_id        -- potency_item_id
+    o[2] = self.glyph.essence_rune.item_id  -- essence_item_id
+    o[3] = self.aspect_rune.item_id         -- aspect_item_id
+    o[4] = true                             -- autocraft
+    o[5] = self.unique_id                   -- reference
+
+    return { ["function"] = "CraftEnchantingItemId"
+           , ["args"    ] = o
+           }
+end
+
+
