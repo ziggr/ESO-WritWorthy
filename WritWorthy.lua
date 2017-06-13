@@ -486,6 +486,7 @@ function WritWorthy:Initialize()
     self:CreateSettingsWindow()
 
     self:RestorePos()
+    self:RestoreFromSavedChariables()
 
     WritWorthy.InventoryList = WritWorthyInventoryList:New()
     WritWorthy.InventoryList:BuildMasterlist()

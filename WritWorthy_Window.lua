@@ -642,10 +642,6 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_detail3    = self.Shorten(inventory_data.ui_detail3   )
     inventory_data.ui_detail4    = self.Shorten(inventory_data.ui_detail4   )
     inventory_data.ui_detail5    = self.Shorten(inventory_data.ui_detail5   )
-
-Log:Add("unique_id   :"..tostring(inventory_data.unique_id))
-Log:Add("ui_is_queued:"..tostring(inventory_data.ui_is_queued))
-Log:Add("ui_can_queue:"..tostring(inventory_data.ui_can_queue))
 end
 
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
@@ -946,13 +942,11 @@ end
 function WritWorthy:RestoreFromSavedChariables()
                         -- Do nothing if nothing to restore.
     if    (not self.savedChariables)
-       or (not self.savedChariables.writ_unique_id)
-       or (#self.savedChariables.writ_unique_id <= 0) then
+       or (not self.savedChariables.writ_unique_id) then
         return
     end
 
     local inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
-
     for _, inventory_data in pairs(inventory_data_list) do
         local unique_id = inventory_data.unique_id
         local state = self.savedChariables.writ_unique_id[unique_id]
