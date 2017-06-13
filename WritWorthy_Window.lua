@@ -905,30 +905,11 @@ end
 
 -- The Dolgubon-only portion of enqueing a request, no list UI work here.
 -- Called from WritWorthy itself during RestoreFromSavedChariables()
+-- and also after the user selects a checkbox.
 function WritWorthy:Enqueue(unique_id, inventory_data)
-                        -- ### This section is all Smithing-specific.
-                        -- ### Will need rewrite once we support consumables.
     local dol_req = inventory_data.parser:ToDolRequest()
-                        -- I _hate_ long lists of positional arguments.
-                        -- Far too dangerous and prone to mixing up the
-                        -- arguments. Better to use a named parameter block.
-                        -- I'll likely do so for a mroe generic API when
-                        -- I add consumable support to LLC later.
-    local o       = dol_req.CraftRequestTable
     local LLC     = WritWorthy:GetLLC()
-    LLC:CraftSmithingItemByLevel(
-          o[ 1]     -- patternIndex
-        , o[ 2]     -- isCP
-        , o[ 3]     -- level
-        , o[ 4]     -- styleIndex
-        , o[ 5]     -- traitIndex
-        , o[ 6]     -- useUniversalStyleItem
-        , o[ 7]     -- station
-        , o[ 8]     -- setIndex
-        , o[ 9]     -- quality
-        , o[10]     -- autocraft
-        , unique_id -- reference (o[11] is Lazy Set Crafter counter, trying not to use that anymore)
-        )
+    LLC[dol_req["function"]](LLC, unpack(dol_req.args))
 end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
