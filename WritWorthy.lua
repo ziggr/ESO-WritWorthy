@@ -220,6 +220,7 @@ function WritWorthy:ScanInventoryForMasterWrits()
                                       } )
         end
     end
+
                         -- Restore mat list to chat setting now that we're
                         -- done with chat-flooding scan.
     self.savedVariables.enable_mat_list_chat = save_mat_list_chat

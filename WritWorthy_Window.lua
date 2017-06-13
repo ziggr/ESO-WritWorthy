@@ -71,7 +71,6 @@ WritWorthyInventoryList.TEXTURE_SET_X2 = {
 ,   mouseOver   = "EsoUI/Art/Buttons/decline_over.dds"
 }
 
-
 -- Values written to savedChariables
 WritWorthy.STATE_QUEUED    = "queued"
 WritWorthy.STATE_COMPLETED = "completed"
@@ -79,7 +78,7 @@ WritWorthy.STATE_COMPLETED = "completed"
 WritWorthyInventoryList.COLOR_TEXT_CANNOT_QUEUE = "CC3333"
 WritWorthyInventoryList.COLOR_TEXT_CAN_QUEUE    = "CCCCCC"
 WritWorthyInventoryList.COLOR_TEXT_QUEUED       = "FFFFFF"
-WritWorthyInventoryList.COLOR_TEXT_COMPLETED    = "AAAAAA"
+WritWorthyInventoryList.COLOR_TEXT_COMPLETED    = "33AA33"
 
 function WritWorthy:RestorePos()
     local pos = self.default.position
@@ -544,11 +543,13 @@ function WritWorthyInventoryList:IsQueued(inventory_data)
 end
 
 function WritWorthyInventoryList:IsCompleted(inventory_data)
-    if not (    WritWorthy.savedChariables
+    if not (    inventory_data
+            and inventory_data.unique_id
+            and WritWorthy.savedChariables
             and WritWorthy.savedChariables.writ_unique_id) then
         return false
     end
-    return WritWorthy.savedChariables.writ_unique_id[inventory_data]
+    return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id]
              == WritWorthy.STATE_COMPLETED
 end
 
@@ -556,7 +557,7 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
     if not inventory_data.parser.can_dolgubon then
         return false, "Not supported: Alchemy, Enchanting, Provisioning."
     end
-    if self.IsCompleted(inventory_data) then
+    if self:IsCompleted(inventory_data) then
         return false, "completed"
     end
     local text_list = {}
@@ -585,7 +586,11 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     else
         inventory_data.ui_can_queue_tooltip = why_not
     end
-
+    -- Log:Add("PopUI uid:"..tostring(inventory_data.unique_id)
+    --         .." can_q:"..tostring(inventory_data.ui_can_queue)
+    --         .." is_q:"..tostring(inventory_data.ui_is_queued)
+    --         .." is_comp:"..tostring(inventory_data.ui_is_completed)
+    --         )
                         -- For less typing.
     local parser = inventory_data.parser
     if parser.class == WritWorthy.Smithing.Parser.class then
@@ -773,15 +778,16 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
             .." event:"..tostring(event)
             .." station:"..tostring(station)
             .." llc_result:"..tostring(llc_result))
+    for k,v in pairs(llc_result) do
+        Log:Add("llc_result k:"..tostring(k).." v:"..tostring(v))
+    end
 
                         -- Remove the completed request from "queued" and
                         -- move it to "completed".
-    if unique_id
-        and WritWorthy.savedChariables
-        and WritWorthy.savedChariables.writ_unique_id then
-        WritWorthy.savedChariables.writ_unique_id[unique_id] = WritWorthy.STATE_COMPLETED
-    end
-
+    if not unique_id then return end
+    if not WritWorthy.savedChariables then return end
+    if not WritWorthy.savedChariables.writ_unique_id then return end
+    WritWorthy.savedChariables.writ_unique_id[unique_id] = WritWorthy.STATE_COMPLETED
     if WritWorthyInventoryList and WritWorthyInventoryList.singleton then
         self = WritWorthyInventoryList.singleton
         inventory_data = self:UniqueIDToInventoryData(unique_id)
@@ -793,7 +799,7 @@ end
 
 -- O(n) scan for an inventory_data with a matching unique_id
 function WritWorthyInventoryList:UniqueIDToInventoryData(unique_id)
-    for _, inventory_data in self.inventory_data_list do
+    for _, inventory_data in pairs(self.inventory_data_list) do
         if inventory_data.unique_id == unique_id then
             return inventory_data
         end
