@@ -802,14 +802,24 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
     if not WritWorthy.savedChariables.writ_unique_id then return end
                         -- Update the saved data tracking this request.
     local sav = WritWorthy.savedChariables.writ_unique_id[unique_id]
-    sav.completed_ct = sav.completed_ct + 1
-    if sav.request_ct <= sav.completed_ct then
-        sav.status = WritWorthy.STATE_COMPLETED
+    if not sav then sav = {} end
+for k,v in pairs(sav) do
+    Log:Add("WritWorthy_LLCCompleted initial sav k:"..tostring(k).." v:"..tostring(v))
+end
+    sav.complete_ct = sav.complete_ct + 1
+    if sav.request_ct <= sav.complete_ct then
+        sav.state = WritWorthy.STATE_COMPLETED
     end
+for k,v in pairs(sav) do
+    Log:Add("WritWorthy_LLCCompleted final sav k:"..tostring(k).." v:"..tostring(v))
+end
+    WritWorthy.savedChariables.writ_unique_id[unique_id] = sav
+
     if WritWorthyInventoryList and WritWorthyInventoryList.singleton then
         self = WritWorthyInventoryList.singleton
         inventory_data = self:UniqueIDToInventoryData(unique_id)
         if inventory_data then
+            inventory_data.complete_ct = sav.complete_ct
             self:UpdateUISoon(inventory_data)
         end
     end
@@ -922,7 +932,7 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
     end
     sav.state       = WritWorthy.STATE_QUEUED
     sav.request_ct  = inventory_data.request_ct or 1
-    sav.complete_ct = sav.complete_ct or  0
+    sav.complete_ct = sav.complete_ct or 0
     WritWorthy.savedChariables.writ_unique_id[unique_id] = sav
 
 -- nur zum Testen
@@ -1032,19 +1042,19 @@ function WritWorthy:RestoreFromSavedChariables()
         local sav       = self.savedChariables.writ_unique_id[unique_id]
 
 --------------------
-                        -- Auto-upgrade older values from "just the state" scalar
-                        -- to "state and requested/completed" struct
-        if sav and type(sav) == "string" then
-            local o = { state        = sav
-                      , request_ct   = 1
-                      , completed_ct = 0
-                      }
-            if sav == WritWorthy.STATE_COMPLETED then
-                o.completed_ct = 1
-            end
-            sav = o
-            self.savedChariables.writ_unique_id[unique_id] = sav
-        end
+        --                 -- Auto-upgrade older values from "just the state" scalar
+        --                 -- to "state and requested/completed" struct
+        -- if sav and type(sav) == "string" then
+        --     local o = { state        = sav
+        --               , request_ct   = 1
+        --               , complete_ct = 0
+        --               }
+        --     if sav == WritWorthy.STATE_COMPLETED then
+        --         o.complete_ct = 1
+        --     end
+        --     sav = o
+        --     self.savedChariables.writ_unique_id[unique_id] = sav
+        -- end
 --------------------
 
         if sav and sav.state == WritWorthy.STATE_QUEUED then
