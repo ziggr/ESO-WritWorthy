@@ -140,9 +140,6 @@ function Parser:New()
     ,   level           = 0     -- 150 or 160
     ,   quality_num     = 0     -- 4 or 5
     ,   mat_list        = {}    -- of MatRow
-    ,   can_dolgubon    = true
-    ,   unique_id       = nil   -- GetItemUniqueId(), set by
-                                -- WritWorthy:ScanInventoryForMasterWrits()
     }
     setmetatable(o, self)
     self.__index = self
@@ -194,10 +191,12 @@ function Parser:ToDolRequest()
     o[2] = self.glyph.essence_rune.item_id  -- essence_item_id
     o[3] = self.aspect_rune.item_id         -- aspect_item_id
     o[4] = true                             -- autocraft
-    o[5] = self.unique_id                   -- reference
+    o[5] = nil                              -- reference
 
-    return { ["function"] = "CraftEnchantingItemId"
-           , ["args"    ] = o
+    return { ["function"        ] = "CraftEnchantingItemId"
+           , ["args"            ] = o
+           , ["request_ct"      ] = 1
+           , ["reference_index" ] = 5  -- where in args[n] to store unique_id
            }
 end
 

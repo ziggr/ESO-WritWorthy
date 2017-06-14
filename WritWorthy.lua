@@ -195,14 +195,6 @@ function WritWorthy.KnowDump(know_list)
     return table.concat(elements, "\n")
 end
 
--- Inventory Data
--- o = {
-item_link
-parser
-unique_id
-request_ct
-reference_index
-
 
 -- Scan inventory, return list of { link="xxx", parser=ParserXXX }
 -- one element for each master writ found.
@@ -222,21 +214,23 @@ function WritWorthy:ScanInventoryForMasterWrits()
         end
         if parser then
             local unique_id = WritWorthy.UniqueID(bag_id, slot_index)
-            parser.unique_id = unique_id
-            table.insert(result_list,
-                { item_link        = item_link
-                , parser           = parser
-                , unique_id        = unique_id
-                            -- These fields filled in by WritWorthy:Enqueue()
-                , dol_req          = nil
-                , complete_ct      = 0   -- Increment when we get completion callbacks.
-                -- Do NOT duplicate data, use in-place from dol_req:
-                -- request_ct      = dol_req.request_ct
-                -- reference_index =  dol_req.reference_index
-                } )
+            local llc_req   = {}
+            if parser.ToDolRequest then
+                llc_req = parser:ToDolRequest()
+            end
+            local inventory_data =
+                { item_link           = item_link
+                , parser              = parser
+                , unique_id           = unique_id
+                , llc_func            = llc_req["function"]
+                , llc_args            = llc_req.args
+                , llc_reference_index = llc_req.reference_index
+                , request_ct          = llc_req.request_ct or 1
+                , complete_ct         = 0
+                }
+            table.insert(result_list, inventory_data)
         end
     end
-
                         -- Restore mat list to chat setting now that we're
                         -- done with chat-flooding scan.
     self.savedVariables.enable_mat_list_chat = save_mat_list_chat

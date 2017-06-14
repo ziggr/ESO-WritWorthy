@@ -705,9 +705,6 @@ function Parser:New()
     ,   motif           = nil   -- Smithing.MOTIF[n]
     ,   improve_level   = nil   -- PURPLE, GOLD
     ,   mat_list        = {}    -- of MatRow
-    ,   can_dolgubon    = true
-    ,   unique_id       = nil   -- GetItemUniqueId(), set by
-                                -- WritWorthy:ScanInventoryForMasterWrits()
     }
     setmetatable(o, self)
     self.__index = self
@@ -953,7 +950,7 @@ function Parser:ToDolRequest()
     o.setIndex     = self.set_bonus.dol_set_index
     o.quality      = self.improve_level.index
     o.autocraft    = true
-    o.reference    = self.unique_id
+    o.reference    = nil
                         -- Positional arguments to LibLazyCrafter:CraftSmithingItemByLevel()
     local args = {
       o.patternIndex            --  1
@@ -968,7 +965,9 @@ function Parser:ToDolRequest()
     , o.autocraft               -- 10
     , o.reference               -- 11
     }
-    return { ["function"] = "CraftSmithingItemByLevel"
-           , ["args"    ] = args
+    return { ["function"]        = "CraftSmithingItemByLevel"
+           , ["args"    ]        = args
+           , ["request_ct"]      = 1
+           , ["reference_index"] = 11
            }
 end

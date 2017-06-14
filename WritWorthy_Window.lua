@@ -530,23 +530,27 @@ end
 
 
 function WritWorthyInventoryList:IsQueued(inventory_data)
+    local LLC = WritWorthy:GetLLC()
+    for i = 1, inventory_data.request_ct do
+        local reference = WritWorthy.ToReference(inventory_data.unique_id, i)
                         -- O(n) list scan instead of O(1) hash lookup.
                         -- Calling repeatedly from inside a loop is O(n^2).
                         -- Replace if noticeable (for large n, it will be).
-    local LLC = WritWorthy:GetLLC()
-    local x = LLC:findItemByReference(inventory_data.unique_id)
-    if 0 < #x then
-        return true
-    else
-        return false
+        local x = LLC:findItemByReference(inventory_data.unique_id)
+        if 0 < #x then
+            return true
+        end
     end
+    return false
 end
 
 function WritWorthyInventoryList:IsCompleted(inventory_data)
     if not (    inventory_data
             and inventory_data.unique_id
             and WritWorthy.savedChariables
-            and WritWorthy.savedChariables.writ_unique_id) then
+            and WritWorthy.savedChariables.writ_unique_id
+            and WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id]
+            ) then
         return false
     end
     return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].state
@@ -554,12 +558,16 @@ function WritWorthyInventoryList:IsCompleted(inventory_data)
 end
 
 function WritWorthyInventoryList:CanQueue(inventory_data)
-    if not inventory_data.parser.can_dolgubon then
+    if not inventory_data.parser.ToDolRequest then
         return false, "Not supported: Provisioning."
     end
     if self:IsCompleted(inventory_data) then
         return false, "completed"
     end
+    if not inventory_data.llc_func then
+        return false, "WritWorthy bug: Missing LLC data"
+    end
+
     local text_list = {}
     if inventory_data.parser.ToKnowList then
         for _, know in ipairs(inventory_data.parser:ToKnowList()) do
@@ -892,7 +900,7 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
                         -- Dolgubon's Lazy Set Crafter, but we're decoupling
                         -- from Lazy Set Crafter and no longer wish to us that
                         -- counter.
-    local unique_id = inventory_data.parser.unique_id
+    local unique_id = inventory_data.unique_id
 
     Log:Add("Enqueue "..tostring(unique_id))
 
@@ -918,6 +926,9 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
     sav.request_ct  = inventory_data.request_ct or 1
     sav.complete_ct = sav.complete_ct or  0
     WritWorthy.savedChariables.writ_unique_id[unique_id] = sav
+
+-- nur zum Testen
+WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
 end
 
 -- Return ""42000", "42000.2", "42000.3", "42000.4", and so on.
@@ -944,39 +955,69 @@ end
 -- Enqueues one or more copies of inventory_data's request.
 --
 function WritWorthy:Enqueue(unique_id, inventory_data)
-    local dol_req, req_ct, reference_index
-         = inventory_data.parser:ToDolRequest()
+    if not inventory_data.llc_func then
+                        -- Either this row should not have had its
+                        -- "Enqueue" checkbox enabled, or this row
+                        -- should have stored its LibLazyCrafting data
+                        -- in its inventory_data slots before calling us.
+        d("WritWorthy bug: cannot enqueue, lacks LibLazyCrafting values:")
+        Log:Add("WritWorthy:Enqueue() Cannot enqueue, lacks LibLazyCrafting values:")
+        for k,v in pairs(inventory_data) do
+            Log:Add("i_d k:"..tostring(k).."  v:"..tostring(v))
+        end
+        return
+    end
+                        -- Make sure this version of LibLazyCrafting
+                        -- supports the required API. We might get stuck
+                        -- with some other add-on's older version.
+    local i_d = inventory_data
+    local LLC = WritWorthy:GetLLC()
+    if not LLC[i_d.llc_func] then
+        d("LibLazyCrafter function missing:"..tostring(i_d.llc_func))
+        d("LibLazyCrafter version:"..tostring(LLC.version))
+        return
+    end
 
-    inventory_data.reference_index = reference_index
-    inventory_data.request_ct      = req_ct
+                        -- Loop over how ever many copies of this
+                        -- crafting request we need.
+    for i = 1+i_d.complete_ct, i_d.request_ct do
 
-    local LLC     = WritWorthy:GetLLC()
-    LLC[dol_req["function"]](LLC, unpack(dol_req.args))
+                        -- Assign a unique reference to each copy of
+                        -- this request.
+        local reference = WritWorthy.ToReference(
+                          i_d.unique_id
+                        , 1 + i_d.complete_ct)
+        i_d.llc_args[i_d.llc_reference_index] = reference
 
-                        -- Alchemy and Provisioning require multiple
-                        -- crafting attempts. Queue those up, too.
-    if req_ct and 2 <= req_ct and reference_index then
-        inventory_data.request_ct = req_ct
-        local unique_id = inventory_data.unique_id
-        for i = 2, req_ct do
-                        -- Maintain invariant: LLC reference is unique.
-                        -- Append ".2" or ".3" or whatever.
-                        -- No we do not yet track these references
-                        -- for "partially complete" status or display.
-            dol_req["args"][reference_index] = WritWorthy.ToUniqueId(unique_id, i)
-            LLC[dol_req["function"]](LLC, unpack(dol_req.args))
+                        -- Call LibLazyCrafting to queue it up for later.
+        if not LLC[i_d.llc_func] then
+            d("LibLazyCrafter function missing:"..tostring(i_d.llc_func))
+        else
+            LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
         end
     end
 end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
-    local unique_id = inventory_data.parser.unique_id
+    local unique_id = inventory_data.unique_id
     Log:Add("Dequeue "..tostring(unique_id))
-    local LLC = WritWorthy:GetLLC()
-    LLC:cancelItemByReference(unique_id)
 
+                        -- Remove all requested copies.
+                        -- It's possible that not all copies are still
+                        -- enqueued, some might have be previously complted.
+                        -- That's okay, cancelItemByReference() silently skips
+                        -- any misses.
+    local LLC = WritWorthy:GetLLC()
+    for i = 1, inventory_data.request_ct do
+        local reference = WritWorthy.ToReference(inventory_data.unique_id, i)
+        LLC:cancelItemByReference(reference)
+    end
                         -- Remove from savedChariables so that we do not
                         -- re-check this row upon /reloadui.
+                        --
+                        -- Note that this destroys any history of any
+                        -- previous complete_ct. Oh well. Hope you like
+                        -- extra potions and Orzorga-chow laying about.
     if WritWorthy.savedChariables.writ_unique_id then
         WritWorthy.savedChariables.writ_unique_id[unique_id] = nil
     end
@@ -995,11 +1036,12 @@ function WritWorthy:RestoreFromSavedChariables()
         local unique_id = inventory_data.unique_id
         local sav       = self.savedChariables.writ_unique_id[unique_id]
 
+--------------------
                         -- Auto-upgrade older values from "just the state" scalar
                         -- to "state and requested/completed" struct
-        if type(sav) == "string" then
-            local o = { state = sav
-                      , request_ct = 1
+        if sav and type(sav) == "string" then
+            local o = { state        = sav
+                      , request_ct   = 1
                       , completed_ct = 0
                       }
             if sav == WritWorthy.STATE_COMPLETED then
@@ -1008,8 +1050,9 @@ function WritWorthy:RestoreFromSavedChariables()
             sav = o
             self.savedChariables.writ_unique_id[unique_id] = sav
         end
+--------------------
 
-        if sav.state == WritWorthy.STATE_QUEUED then
+        if sav and sav.state == WritWorthy.STATE_QUEUED then
             self:Enqueue(unique_id, inventory_data)
         end
     end
@@ -1054,7 +1097,9 @@ function WritWorthyInventoryList:QueuedReferenceList()
         if type(queued) == "table" then
             for i, request in ipairs(queued) do
                 if request.reference then
-                    queued_ids[request.reference] = true
+                    local unique_id, request_index
+                        = WritWorthy.FromReference(request.reference)
+                    queued_ids[unique_id] = true
                 end
             end
         end
@@ -1082,8 +1127,8 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
                         -- While scanning, also notice if any of these can
                         -- be enqueued.
     for _, inventory_data in ipairs(self.inventory_data_list) do
-        if inventory_data.parser.unique_id then
-            if queued_ids[inventory_data.parser.unique_id] then
+        if inventory_data.unique_id then
+            if queued_ids[inventory_data.unique_id] then
                 local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
                 total_voucher_ct = total_voucher_ct + voucher_ct
                 local mat_list = inventory_data.parser:ToMatList()

@@ -297,9 +297,6 @@ function Parser:New()
     ,   effects         = {}    -- { VITALITY, INCREASE_ARMOR, RAVAGE_STAMINA }
     ,   r3list          = {}    -- { list of { Reagent 3-tuple }, { Reagent 3-tuple} ... }
     ,   mat_list        = {}    -- of MatRow
-    ,   can_dolgubon    = true
-    ,   unique_id       = nil   -- GetItemUniqueId(), set by
-                                -- WritWorthy:ScanInventoryForMasterWrits()
     }
     setmetatable(o, self)
     self.__index = self
@@ -381,21 +378,18 @@ function Parser:ToMatList()
     return self.mat_list
 end
 
--- ### THIS FUNCTION FAILS TO ACCOUNT FOR multiple crafting attempts required.
--- ### need to include a multiplier loop somewhere
 function Parser:ToDolRequest()
     local mat_list = self:ToMatList()
-    local request_ct = mat_list[1].ct
     local o = {}
-    o[1] = GetItemIDFromLink(mat_list[1].item_link) -- solvent
-    o[2] = GetItemIDFromLink(mat_list[2].item_link) -- reagent1
-    o[3] = GetItemIDFromLink(mat_list[3].item_link) -- reagent2
-    o[4] = GetItemIDFromLink(mat_list[4].item_link) -- reagent3 (optional, nilable)
-    o[5] = true                                     -- autocraft
-    o[6] = self.unique_id                           -- reference
+    o[1] = GetItemIDFromLink(mat_list[1].link) -- solvent
+    o[2] = GetItemIDFromLink(mat_list[2].link) -- reagent1
+    o[3] = GetItemIDFromLink(mat_list[3].link) -- reagent2
+    o[4] = GetItemIDFromLink(mat_list[4].link) -- reagent3 (optional, nilable)
+    o[5] = true                                -- autocraft
+    o[6] = nil                                 -- reference
     return { ["function"       ] = "CraftAlchemy"
            , ["args"           ] = o
-           , ["request_ct"     ] = request_ct
+           , ["request_ct"     ] = mat_list[1].ct
            , ["reference_index"] = 6 -- where in args[n] is the reference/unique_id
            }
 end
