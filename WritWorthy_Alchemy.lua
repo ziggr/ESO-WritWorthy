@@ -366,6 +366,7 @@ function Parser:ToMatList()
         end
     end
                         -- Return materials for one batch of potion or poison.
+    self.mat_list = {}
     if self.is_poison then
         table.insert(self.mat_list, MatRow:FromName("Alkahest", mat_ct))
     else
