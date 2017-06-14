@@ -1,7 +1,7 @@
 --[[
 Author: Dolgubon
 Filename: LibLazyCrafting.lua
-Version: 0.4
+Version: 0.1
 
 This is a work in progress.
 ]]--
@@ -15,6 +15,7 @@ This is a work in progress.
 -- Initialize libraries
 
 local function dbug(...)
+	if not DolgubonDebugRunningDebugString then return end
 	DolgubonDebugRunningDebugString(...)
 end
 local libLoaded
@@ -179,6 +180,96 @@ end
 
 
 LibLazyCrafting.functionTable.findItemLocationById = findItemLocationById
+
+-- Returns a table of [slot_index] --> stack count for each bag slot that holds
+-- the requested item.
+--
+-- ALSO includes the first empty slot in bag, since there is still a chance
+-- that this crafting attempt might start a new stack.
+--
+function LibLazyCrafting.findSlotsContaining(itemLink, alsoIncludeFirstEmpty)
+	local wantItemName = GetItemLinkName(itemLink)
+	local wantQuality = GetItemLinkQuality(itemLink)
+
+	local r = {}
+	local bagId = BAG_BACKPACK
+	local maxSlotId = GetBagSize(bagId)
+	for slotIndex = 1, maxSlotId do
+		local slotLink = GetItemLink(bagId, slotIndex, LINK_STYLE_DEFAULT)
+		if GetItemLinkName(slotLink) == wantItemName and GetItemLinkQuality(slotLink) == wantQuality then
+			r[slotIndex] = GetSlotStackSize(bagId, slotIndex)
+		end
+	end
+
+	if alsoIncludeFirstEmpty then
+		local emptySlotIndex = FindFirstEmptySlotInBag(bagId)
+		r[emptySlotIndex] = 0
+	end
+	return r
+end
+
+-- Return the first slot index of a stack of items that grew.
+-- Return nil if no stacks grew.
+--
+-- prevSlotsContaining and newSlotsContaining are expected to be
+-- results from findSlotsContaining().
+function LibLazyCrafting.findIncreasedSlotIndex(prevSlotsContaining, newSlotsContaining)
+	for slotIndex, prevStackSize in pairs(prevSlotsContaining) do
+		local new = newSlotsContaining[slotIndex]
+		if new and prevStackSize < new then
+			return slotIndex
+		end
+	end
+	return nil
+end
+
+function LibLazyCrafting.tableShallowCopy(t)
+	local a = {}
+	for k, v in pairs(t) do
+		a[k] = v
+	end
+	return a
+end
+
+-- Common code called by Alchemy and Provisioning crafting complete handlers.
+function LibLazyCrafting.stackableCraftingComplete(event, station, lastCheck, craftingType, currentCraftAttempt)
+	dbug("EVENT:CraftComplete")
+	if not currentCraftAttempt.addon then return end
+
+	-- Because alchemy potions stack, cannot trust .slot field here, so
+	-- just assume it worked without checking for item name matches.
+
+	local newSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link)
+	local grewSlotIndex = LibLazyCrafting.findIncreasedSlotIndex(currentCraftAttempt.prevSlots, newSlots)
+	if grewSlotIndex then
+		dbug("ACTION:RemoveQueueItem")
+		craftingQueue[currentCraftAttempt.addon][craftingType][currentCraftAttempt.position] = nil
+		LibLazyCrafting.sortCraftQueue()
+		local resultTable =
+		{
+			["bag"] = BAG_BACKPACK,
+			["slot"] = grewSlotIndex,
+			['link'] = currentCraftAttempt.link,
+			['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
+			["quantity"] = 1,
+			["reference"] = currentCraftAttempt.reference,
+		}
+		currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, craftingType, resultTable)
+		currentCraftAttempt = {}
+
+	elseif lastCheck then
+
+		-- give up on finding it.
+		for k,_ in ipairs(currentCraftAttempt) do
+			currentCraftAttempt[k] = nil
+		end
+	else
+
+		-- further search
+		-- search again later
+		if GetCraftingInteractionType()==0 then zo_callLater(function() LibLazyCrafting.StackableCraftingComplete(event, station, true, craftingType, currentCraftAttempt) end,100) end
+	end
+end
 
 
 -------------------------------------
