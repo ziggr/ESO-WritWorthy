@@ -49,14 +49,13 @@ end
 --
 local function LLC_FindSlotsContaining(itemLink)
 	local wantItemName = GetItemLinkName(itemLink)
-	local wantQuality = GetItemLinkQuality(itemLink)
 
 	local r = {}
 	local bagId = BAG_BACKPACK
 	local maxSlotId = GetBagSize(bagId)
-	for slotIndex = 1, maxSlotId do
+	for slotIndex = 0, maxSlotId do
 		local slotLink = GetItemLink(bagId, slotIndex, LINK_STYLE_DEFAULT)
-		if GetItemLinkName(slotLink) == wantItemName and GetItemLinkQuality(slotLink) == wantQuality then
+		if GetItemLinkName(slotLink) == wantItemName then
 			r[slotIndex] = GetSlotStackSize(bagId, slotIndex)
 		end
 	end
@@ -97,7 +96,7 @@ local function LLC_AlchemyCraftInteraction(event, station)
 		reagent2BagId, reagent2SlotIndex,
 		reagent3BagId, reagent3SlotIndex,
 	}
-	if not (solventSlotIndex and reagent1SlotIndex and reagent2SlotIndex) then return end
+	if not (solventSlotIndex and reagent1SlotIndex and reagent2SlotIndex and (not earliest["reagentId3"] or reagent3SlotIndex)) then return end
 
 	dbug("CALL:ZOAlchemyCraft")
 	CraftAlchemyItem(unpack(locations))
