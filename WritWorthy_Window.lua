@@ -864,7 +864,7 @@ function WritWorthy:GetLLC()
 
     d("WritWorthy: Initializing LibLazyCrafting... self:"..tostring(self)
                 .."  bob_ct:"..tostring(BOB_CT))
-    local lib = LibStub:GetLibrary("LibLazyCrafting", 0.3)
+    local lib = LibStub:GetLibrary("LibLazyCrafting", 0.4)
     self.LibLazyCrafting = lib:AddRequestingAddon(
          self.name                  -- name
        , true                       -- autocraft
@@ -872,7 +872,7 @@ function WritWorthy:GetLLC()
        )
 
     if not self.LibLazyCrafting then
-        d("Unable to load LibLazyCrafting 0.3")
+        d("Unable to load LibLazyCrafting 0.4")
     end
                         -- Record API names to log so that I have them handy
                         -- rather than  spending any time asking "is Xxx()
