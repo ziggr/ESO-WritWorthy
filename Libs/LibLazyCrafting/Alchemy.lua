@@ -19,7 +19,7 @@ local function LLC_CraftAlchemy(self, solventId, reagentId1, reagentId2, reagent
 		["reagentId1"] = reagentId1,
 		["reagentId2"] = reagentId2,
 		["reagentId3"] = reagentId3,
-		["timestamp"] = GetTimeStampreagentId3,
+		["timestamp"] = GetTimeStamp(),
 		["autocraft"] = autocraft,
 		["Requester"] = self.addonName,
 		["reference"] = reference,
@@ -47,10 +47,10 @@ local function LLC_AlchemyCraftInteraction(event, station)
 		reagent3BagId, reagent3SlotIndex = findItemLocationById(earliest["reagentId3"])
 	end
 	local locations = {
-		solventBagId, solventSlotIndex
-		reagent1BagId, reagent1SlotIndex
-		reagent2BagId, reagent2SlotIndex
-		reagent3BagId, reagent3SlotIndex
+		solventBagId, solventSlotIndex,
+		reagent1BagId, reagent1SlotIndex,
+		reagent2BagId, reagent2SlotIndex,
+		reagent3BagId, reagent3SlotIndex,
 	}
 	if not (solventSlotIndex and reagent1SlotIndex and reagent2SlotIndex) then return end
 

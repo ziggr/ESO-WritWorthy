@@ -1,7 +1,7 @@
 --[[
 Author: Dolgubon
 Filename: LibLazyCrafting.lua
-Version: 0.1
+Version: 0.4
 
 This is a work in progress.
 ]]--
@@ -18,7 +18,7 @@ local function dbug(...)
 	DolgubonDebugRunningDebugString(...)
 end
 local libLoaded
-local LIB_NAME, VERSION = "LibLazyCrafting", 0.3
+local LIB_NAME, VERSION = "LibLazyCrafting", 0.4
 local LibLazyCrafting, oldminor = LibStub:NewLibrary(LIB_NAME, VERSION)
 if not LibLazyCrafting then return end
 
