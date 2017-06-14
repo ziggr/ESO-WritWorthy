@@ -41,6 +41,43 @@ local function copy(t)
 	return a
 end
 
+-- Returns a table of [slot_index] --> stack count for each bag slot that holds
+-- the requested item.
+--
+-- ALSO includes the first empty slot in bag, since there is still a chance
+-- that this crafting attempt might start a new stack.
+--
+local function LLC_FindSlotsContaining(itemLink)
+	local wantItemName = GetItemLinkName(itemLink)
+	local wantQuality = GetItemLinkQuality(itemLink)
+
+	local r = {}
+	local bagId = BAG_BACKPACK
+	local maxSlotId = GetBagSize(bagId)
+	for slotIndex = 1, maxSlotId do
+		local slotLink = GetItemLink(bagId, slotIndex, LINK_STYLE_DEFAULT)
+		if GetItemLinkName(slotLink) == wantItemName and GetItemLinkQuality(slotLink) == wantQuality then
+			r[slotIndex] = GetSlotStackSize(bagId, slotIndex)
+		end
+	end
+
+	local emptySlotIndex = FindFirstEmptySlotInBag(bagId)
+	r[emptySlotIndex] = 0
+	return r
+end
+
+-- Return the first slot index of a stack of items that grew.
+-- Return nil if no stacks grew.
+local function LLC_FindIncreasedSlotIndex(prevSlotsContaining, newSlotsContaining)
+	for slotIndex, prevStackSize in pairs(prevSlotsContaining) do
+		local new = newSlotsContaining[slotIndex]
+		if new and prevStackSize < new then
+			return slotIndex
+		end
+	end
+	return nil
+end
+
 local function LLC_AlchemyCraftInteraction(event, station)
 	dbug("FUNCTION:LLCAlchemyCraft")
 	local earliest, addon , position = LibLazyCrafting.findEarliestRequest(CRAFTING_TYPE_ALCHEMY)
@@ -86,6 +123,7 @@ local function LLC_AlchemyCraftInteraction(event, station)
 	currentCraftAttempt.position = position
 	currentCraftAttempt.timestamp = GetTimeStamp()
 	currentCraftAttempt.addon = addon
+	currentCraftAttempt.prevSlots = LLC_FindSlotsContaining(currentCraftAttempt.link)
 end
 
 local function LLC_AlchemyCraftingComplete(event, station, lastCheck)
@@ -95,20 +133,35 @@ local function LLC_AlchemyCraftingComplete(event, station, lastCheck)
 	-- Because alchemy potions stack, cannot trust .slot field here, so
 	-- just assume it worked without checking for item name matches.
 
-	dbug("ACTION:RemoveQueueItem")
-	craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position] = nil
-	sortCraftQueue()
-	local resultTable =
-	{
-		["bag"] = BAG_BACKPACK,
-		["slot"] = currentCraftAttempt.slot, --ZZ nil
-		['link'] = currentCraftAttempt.link,
-		['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
-		["quantity"] = 1,
-		["reference"] = currentCraftAttempt.reference,
-	}
-	currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, CRAFTING_TYPE_ALCHEMY, resultTable)
-	currentCraftAttempt = {}
+	local newSlots = LLC_FindSlotsContaining(currentCraftAttempt.link)
+	local grewSlotIndex = LLC_FindIncreasedSlotIndex(currentCraftAttempt.prevSlots, newSlots)
+	if grewSlotIndex then
+		dbug("ACTION:RemoveQueueItem")
+		craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position] = nil
+		sortCraftQueue()
+		local resultTable =
+		{
+			["bag"] = BAG_BACKPACK,
+			["slot"] = grewSlotIndex,
+			['link'] = currentCraftAttempt.link,
+			['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
+			["quantity"] = 1,
+			["reference"] = currentCraftAttempt.reference,
+		}
+		currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, CRAFTING_TYPE_ALCHEMY, resultTable)
+		currentCraftAttempt = {}
+
+	elseif lastCheck then
+
+		-- give up on finding it.
+		currentCraftAttempt = {}
+	else
+
+		-- further search
+		-- search again later
+		if GetCraftingInteractionType()==0 then zo_callLater(function() LLC_EnchantingCraftingComplete(event, station, true) end,100) end
+	end
+
 end
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ALCHEMY] =
