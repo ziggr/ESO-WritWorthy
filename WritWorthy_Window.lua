@@ -862,8 +862,6 @@ function WritWorthy:GetLLC()
         return self.LibLazyCrafting
     end
 
-    d("WritWorthy: Initializing LibLazyCrafting... self:"..tostring(self)
-                .."  bob_ct:"..tostring(BOB_CT))
     local lib = LibStub:GetLibrary("LibLazyCrafting", 0.4)
     self.LibLazyCrafting = lib:AddRequestingAddon(
          self.name                  -- name
@@ -977,16 +975,13 @@ function WritWorthy:Enqueue(unique_id, inventory_data)
         d("LibLazyCrafter version:"..tostring(LLC.version))
         return
     end
-
                         -- Loop over how ever many copies of this
                         -- crafting request we need.
     for i = 1+i_d.complete_ct, i_d.request_ct do
 
                         -- Assign a unique reference to each copy of
                         -- this request.
-        local reference = WritWorthy.ToReference(
-                          i_d.unique_id
-                        , 1 + i_d.complete_ct)
+        local reference = WritWorthy.ToReference(i_d.unique_id, i)
         i_d.llc_args[i_d.llc_reference_index] = reference
 
                         -- Call LibLazyCrafting to queue it up for later.
