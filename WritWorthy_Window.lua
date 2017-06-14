@@ -104,12 +104,11 @@ function WritWorthy:RestorePos()
 end
 
 function WritWorthy_OnMouseUp()
-    -- d("OnMouseUp")
     local l = WritWorthyUI:GetLeft()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    d("OnMouseUp ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    -- d("OnMouseUp ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
 end
 
 function WritWorthy_OnMoveStop()
@@ -117,7 +116,7 @@ function WritWorthy_OnMoveStop()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    -- d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
     -- ### Save Bounds
 end
 
@@ -126,7 +125,7 @@ function WritWorthy_OnResizeStop()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    -- d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
     WritWorthy.InventoryList:UpdateAllCellWidths()
     -- ### Save Bounds
 end
@@ -785,15 +784,15 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
     if llc_result then
         unique_id, request_index = WritWorthy.FromReference(llc_result.reference)
     end
-    Log:Add("LibLazyCrafting completed"
-            .." unique_id:"..tostring(unique_id)
-            .." request_index:"..tostring(request_index)
-            .." event:"..tostring(event)
-            .." station:"..tostring(station)
-            .." llc_result:"..tostring(llc_result))
-    for k,v in pairs(llc_result) do
-        Log:Add("llc_result k:"..tostring(k).." v:"..tostring(v))
-    end
+    -- Log:Add("LibLazyCrafting completed"
+    --         .." unique_id:"..tostring(unique_id)
+    --         .." request_index:"..tostring(request_index)
+    --         .." event:"..tostring(event)
+    --         .." station:"..tostring(station)
+    --         .." llc_result:"..tostring(llc_result))
+    -- for k,v in pairs(llc_result) do
+    --     Log:Add("llc_result k:"..tostring(k).." v:"..tostring(v))
+    -- end
 
                         -- Remove the completed request from "queued" and
                         -- move it to "completed".
@@ -803,16 +802,10 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
                         -- Update the saved data tracking this request.
     local sav = WritWorthy.savedChariables.writ_unique_id[unique_id]
     if not sav then sav = {} end
-for k,v in pairs(sav) do
-    Log:Add("WritWorthy_LLCCompleted initial sav k:"..tostring(k).." v:"..tostring(v))
-end
     sav.complete_ct = sav.complete_ct + 1
     if sav.request_ct <= sav.complete_ct then
         sav.state = WritWorthy.STATE_COMPLETED
     end
-for k,v in pairs(sav) do
-    Log:Add("WritWorthy_LLCCompleted final sav k:"..tostring(k).." v:"..tostring(v))
-end
     WritWorthy.savedChariables.writ_unique_id[unique_id] = sav
 
     if WritWorthyInventoryList and WritWorthyInventoryList.singleton then
@@ -997,6 +990,7 @@ function WritWorthy:Enqueue(unique_id, inventory_data)
                         -- Call LibLazyCrafting to queue it up for later.
         if not LLC[i_d.llc_func] then
             d("LibLazyCrafter function missing:"..tostring(i_d.llc_func))
+            d("LibLazyCrafter version:"..tostring(LLC.version))
         else
             LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
         end
