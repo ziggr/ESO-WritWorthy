@@ -33,6 +33,14 @@ local function LLC_CraftAlchemy(self, solventId, reagentId1, reagentId2, reagent
 	end
 end
 
+local function copy(t)
+	local a = {}
+	for k, v in pairs(t) do
+		a[k] = v
+	end
+	return a
+end
+
 local function LLC_AlchemyCraftInteraction(event, station)
 	dbug("FUNCTION:LLCAlchemyCraft")
 	local earliest, addon , position = LibLazyCrafting.findEarliestRequest(CRAFTING_TYPE_ALCHEMY)
@@ -59,49 +67,48 @@ local function LLC_AlchemyCraftInteraction(event, station)
 
 	currentCraftAttempt= copy(earliest)
 	currentCraftAttempt.callback = LibLazyCrafting.craftResultFunctions[addon]
-	currentCraftAttempt.slot = FindFirstEmptySlotInBag(BAG_BACKPACK)
+
+						-- ZZ: This .slot field is INCORRECT when crafting
+						-- multiple copies of the same stackable item such as
+						-- alchemy potions or provisioning food/dring. In such
+						-- a case, we'd have to scan the entire backback
+						-- looking for our expected result, and record
+						-- before/after totals to see if the total jumped by at
+						-- least 1.
+						-- We'd also need to deal with stacking limits: maybe
+						-- we just crafted the 98th, 99th, 100th, and 101th
+						-- copy of a potion and so the resulting 4 potions
+						-- actually straddle two slots.
+						--
+						-- Maybe later. For now, no slot for you!
+	currentCraftAttempt.slot = nil -- FindFirstEmptySlotInBag(BAG_BACKPACK)
 	currentCraftAttempt.link = GetAlchemyResultingItemLink(unpack(locations))
 	currentCraftAttempt.position = position
 	currentCraftAttempt.timestamp = GetTimeStamp()
 	currentCraftAttempt.addon = addon
 end
 
-local function LLC_GenericCraftingComplete(event, station, lastCheck, craftingType, lastCheckFunction)
+local function LLC_AlchemyCraftingComplete(event, station, lastCheck)
 	dbug("EVENT:CraftComplete")
 	if not currentCraftAttempt.addon then return end
-	if GetItemLinkName(GetItemLink(BAG_BACKPACK, currentCraftAttempt.slot,0)) == GetItemLinkName(currentCraftAttempt.link)
-		and GetItemLinkQuality(GetItemLink(BAG_BACKPACK, currentCraftAttempt.slot,0)) == GetItemLinkQuality(currentCraftAttempt.link)
-	then
-		-- We found it!
-		dbug("ACTION:RemoveQueueItem")
-		craftingQueue[currentCraftAttempt.addon][craftingType][currentCraftAttempt.position] = nil
-		sortCraftQueue()
-		local resultTable =
-		{
-			["bag"] = BAG_BACKPACK,
-			["slot"] = currentCraftAttempt.slot,
-			['link'] = currentCraftAttempt.link,
-			['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
-			["quantity"] = 1,
-			["reference"] = currentCraftAttempt.reference,
-		}
-		currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, craftingType, resultTable)
-		currentCraftAttempt = {}
 
-	elseif lastCheck then
+	-- Because alchemy potions stack, cannot trust .slot field here, so
+	-- just assume it worked without checking for item name matches.
 
-		-- give up on finding it.
-		currentCraftAttempt = {}
-	else
-
-		-- further search
-		-- search again later
-		if GetCraftingInteractionType()==0 then zo_callLater(function() lastCheckFunction(event, station, true) end,100) end
-	end
-end
-
-local function LLC_AlchemyCraftingComplete(event, station, lastCheck)
-	LLC_GenericCraftingComplete(event, station, lastCheck, CRAFTING_TYPE_ALCHEMY, LLC_AlchemyCraftingComplete)
+	dbug("ACTION:RemoveQueueItem")
+	craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position] = nil
+	sortCraftQueue()
+	local resultTable =
+	{
+		["bag"] = BAG_BACKPACK,
+		["slot"] = currentCraftAttempt.slot, --ZZ nil
+		['link'] = currentCraftAttempt.link,
+		['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
+		["quantity"] = 1,
+		["reference"] = currentCraftAttempt.reference,
+	}
+	currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, CRAFTING_TYPE_ALCHEMY, resultTable)
+	currentCraftAttempt = {}
 end
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ALCHEMY] =
