@@ -20,7 +20,7 @@ WritWorthy.inventory_data_list = {}
                         -- called "LLC" for a shorter abbreviation.
                         --
                         -- Version 0.3 has BS/CL/WW + Enchanting
-                        -- Some later version might add Alchemy.
+                        -- version 0.4 has Alchemy
                         -- Not sure if we'll EVER add Provisioning.
                         --
 WritWorthy.LibLazyCrafting = nil
@@ -549,13 +549,13 @@ function WritWorthyInventoryList:IsCompleted(inventory_data)
             and WritWorthy.savedChariables.writ_unique_id) then
         return false
     end
-    return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id]
+    return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].state
              == WritWorthy.STATE_COMPLETED
 end
 
 function WritWorthyInventoryList:CanQueue(inventory_data)
     if not inventory_data.parser.can_dolgubon then
-        return false, "Not supported: Alchemy, Provisioning."
+        return false, "Not supported: Provisioning."
     end
     if self:IsCompleted(inventory_data) then
         return false, "completed"
@@ -773,11 +773,13 @@ end
 function WritWorthy_LLCCompleted(event, station, llc_result)
     Log:StartNewEvent()
     local unique_id = nil
+    local request_index = nil
     if llc_result then
-        unique_id = llc_result.reference
+        unique_id, request_index = WritWorthy.FromReference(llc_result.reference)
     end
     Log:Add("LibLazyCrafting completed"
             .." unique_id:"..tostring(unique_id)
+            .." request_index:"..tostring(request_index)
             .." event:"..tostring(event)
             .." station:"..tostring(station)
             .." llc_result:"..tostring(llc_result))
@@ -790,7 +792,12 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
     if not unique_id then return end
     if not WritWorthy.savedChariables then return end
     if not WritWorthy.savedChariables.writ_unique_id then return end
-    WritWorthy.savedChariables.writ_unique_id[unique_id] = WritWorthy.STATE_COMPLETED
+                        -- Update the saved data tracking this request.
+    local sav = WritWorthy.savedChariables.writ_unique_id[unique_id]
+    sav.completed_ct = sav.completed_ct + 1
+    if sav.request_ct <= sav.completed_ct then
+        sav.status = WritWorthy.STATE_COMPLETED
+    end
     if WritWorthyInventoryList and WritWorthyInventoryList.singleton then
         self = WritWorthyInventoryList.singleton
         inventory_data = self:UniqueIDToInventoryData(unique_id)
@@ -903,16 +910,63 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
     if not WritWorthy.savedChariables.writ_unique_id then
         WritWorthy.savedChariables.writ_unique_id = {}
     end
-    WritWorthy.savedChariables.writ_unique_id[unique_id] = WritWorthy.STATE_QUEUED
+    local sav = {}
+    if WritWorthy.savedChariables.writ_unique_id[unique_id] then
+        sav = WritWorthy.savedChariables.writ_unique_id[unique_id]
+    end
+    sav.state       = WritWorthy.STATE_QUEUED
+    sav.request_ct  = inventory_data.request_ct or 1
+    sav.complete_ct = sav.complete_ct or  0
+    WritWorthy.savedChariables.writ_unique_id[unique_id] = sav
+end
+
+-- Return ""42000", "42000.2", "42000.3", "42000.4", and so on.
+function WritWorthy.ToReference(unique_id, request_index)
+    if not request_index or request_index < 2 then
+        return tostring(unique_id)
+    end
+    return tostring(unique_id).."."..tostring(request_index)
+end
+
+-- Return string(unique_id), integer(request_index)
+-- If no ".n" suffix found, return integer(1) for request_index
+function WritWorthy.FromReference(llc_reference)
+    local sep_index = llc_reference:find("%.")
+    if not sep_index then return llc_reference, 1 end
+    return llc_reference:sub(1, sep_index-1)
+         , tonumber(llc_reference:sub(sep_index+1))
 end
 
 -- The Dolgubon-only portion of enqueing a request, no list UI work here.
 -- Called from WritWorthy itself during RestoreFromSavedChariables()
 -- and also after the user selects a checkbox.
+--
+-- Enqueues one or more copies of inventory_data's request.
+--
 function WritWorthy:Enqueue(unique_id, inventory_data)
-    local dol_req = inventory_data.parser:ToDolRequest()
+    local dol_req, req_ct, reference_index
+         = inventory_data.parser:ToDolRequest()
+
+    inventory_data.reference_index = reference_index
+    inventory_data.request_ct      = req_ct
+
     local LLC     = WritWorthy:GetLLC()
     LLC[dol_req["function"]](LLC, unpack(dol_req.args))
+
+                        -- Alchemy and Provisioning require multiple
+                        -- crafting attempts. Queue those up, too.
+    if req_ct and 2 <= req_ct and reference_index then
+        inventory_data.request_ct = req_ct
+        local unique_id = inventory_data.unique_id
+        for i = 2, req_ct do
+                        -- Maintain invariant: LLC reference is unique.
+                        -- Append ".2" or ".3" or whatever.
+                        -- No we do not yet track these references
+                        -- for "partially complete" status or display.
+            dol_req["args"][reference_index] = WritWorthy.ToUniqueId(unique_id, i)
+            LLC[dol_req["function"]](LLC, unpack(dol_req.args))
+        end
+    end
 end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
@@ -939,8 +993,23 @@ function WritWorthy:RestoreFromSavedChariables()
     local inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
     for _, inventory_data in pairs(inventory_data_list) do
         local unique_id = inventory_data.unique_id
-        local state = self.savedChariables.writ_unique_id[unique_id]
-        if state and state == WritWorthy.STATE_QUEUED then
+        local sav       = self.savedChariables.writ_unique_id[unique_id]
+
+                        -- Auto-upgrade older values from "just the state" scalar
+                        -- to "state and requested/completed" struct
+        if type(sav) == "string" then
+            local o = { state = sav
+                      , request_ct = 1
+                      , completed_ct = 0
+                      }
+            if sav == WritWorthy.STATE_COMPLETED then
+                o.completed_ct = 1
+            end
+            sav = o
+            self.savedChariables.writ_unique_id[unique_id] = sav
+        end
+
+        if sav.state == WritWorthy.STATE_QUEUED then
             self:Enqueue(unique_id, inventory_data)
         end
     end

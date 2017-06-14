@@ -195,6 +195,15 @@ function WritWorthy.KnowDump(know_list)
     return table.concat(elements, "\n")
 end
 
+-- Inventory Data
+-- o = {
+item_link
+parser
+unique_id
+request_ct
+reference_index
+
+
 -- Scan inventory, return list of { link="xxx", parser=ParserXXX }
 -- one element for each master writ found.
 function WritWorthy:ScanInventoryForMasterWrits()
@@ -214,10 +223,17 @@ function WritWorthy:ScanInventoryForMasterWrits()
         if parser then
             local unique_id = WritWorthy.UniqueID(bag_id, slot_index)
             parser.unique_id = unique_id
-            table.insert(result_list, { item_link  = item_link
-                                      , parser     = parser
-                                      , unique_id  = unique_id
-                                      } )
+            table.insert(result_list,
+                { item_link        = item_link
+                , parser           = parser
+                , unique_id        = unique_id
+                            -- These fields filled in by WritWorthy:Enqueue()
+                , dol_req          = nil
+                , complete_ct      = 0   -- Increment when we get completion callbacks.
+                -- Do NOT duplicate data, use in-place from dol_req:
+                -- request_ct      = dol_req.request_ct
+                -- reference_index =  dol_req.reference_index
+                } )
         end
     end
 
