@@ -10,7 +10,7 @@ local function toRecipeLink(recipeId)
     return string.format("|H1:item:%s:3:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h", tostring(recipeId))
 end
 
-local function LLC_CraftProvisioning(self, recipeId, autocraft, reference)
+local function LLC_CraftProvisioningItemByRecipeId(self, recipeId, timesToMake, autocraft, reference)
     dbug('FUNCTION:LLCCraftProvisioning')
     if reference == nil then reference = "" end
     if not self then d("Please call with colon notation") end
@@ -33,6 +33,7 @@ local function LLC_CraftProvisioning(self, recipeId, autocraft, reference)
         ["Requester"] = self.addonName,
         ["reference"] = reference,
         ["station"] = CRAFTING_TYPE_PROVISIONING,
+        ["timesToMake"] = timesToMake or 1
     }
     )
 
@@ -74,4 +75,4 @@ LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_PROVISIONING] =
     ["isItemCraftable"] = function(station) if station == CRAFTING_TYPE_PROVISIONING then return true else return false end end,
 }
 
-LibLazyCrafting.functionTable.CraftProvisioning = LLC_CraftProvisioning
+LibLazyCrafting.functionTable.CraftProvisioningItemByRecipeId = LLC_CraftProvisioningItemByRecipeId

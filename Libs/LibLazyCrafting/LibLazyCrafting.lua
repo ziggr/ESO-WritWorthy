@@ -242,9 +242,6 @@ function LibLazyCrafting.stackableCraftingComplete(event, station, lastCheck, cr
 	dbug("EVENT:CraftComplete")
 	if not currentCraftAttempt.addon then return end
 
-	-- Because alchemy potions stack, cannot trust .slot field here, so
-	-- just assume it worked without checking for item name matches.
-
 	local newSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link, true)
 	local grewSlotIndex = LibLazyCrafting.findIncreasedSlotIndex(currentCraftAttempt.prevSlots, newSlots)
 

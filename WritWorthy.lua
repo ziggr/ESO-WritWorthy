@@ -225,8 +225,6 @@ function WritWorthy:ScanInventoryForMasterWrits()
                 , llc_func            = llc_req["function"]
                 , llc_args            = llc_req.args
                 , llc_reference_index = llc_req.reference_index
-                , request_ct          = llc_req.request_ct or 1
-                , complete_ct         = 0
                 }
             table.insert(result_list, inventory_data)
         end

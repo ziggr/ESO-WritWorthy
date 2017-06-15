@@ -694,11 +694,11 @@ function Parser:ToDolRequest()
     local mat_list = self:ToMatList()
     local o = {}
     o[1] = self.recipe.recipe_item_id -- recipeId
-    o[2] = true                       -- autocraft
-    o[3] = nil                        -- reference
-    return { ["function"       ] = "CraftProvisioning"
+    o[2] = 2                          -- timesToMake
+    o[3] = true                       -- autocraft
+    o[4] = nil                        -- reference
+    return { ["function"       ] = "CraftProvisioningItemByRecipeId"
            , ["args"           ] = o
-           , ["request_ct"     ] = 2
-           , ["reference_index"] = 3 -- where in args[n] is the reference/unique_id
+           , ["reference_index"] = 4 -- where in args[n] is the reference/unique_id
            }
 end

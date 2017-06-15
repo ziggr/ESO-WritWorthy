@@ -391,7 +391,6 @@ function Parser:ToDolRequest()
     o[7] = nil                                 -- reference
     return { ["function"       ] = "CraftAlchemyItemByItemId"
            , ["args"           ] = o
-           , ["request_ct"     ] = 1 -- ### was mat_list[1].ct (let LibLazyCrafting do the loop, not WritWorthy)
            , ["reference_index"] = 7 -- where in args[n] is the reference/unique_id
            }
 end

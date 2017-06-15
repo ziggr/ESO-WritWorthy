@@ -195,7 +195,6 @@ function Parser:ToDolRequest()
 
     return { ["function"        ] = "CraftEnchantingItemId"
            , ["args"            ] = o
-           , ["request_ct"      ] = 1
            , ["reference_index" ] = 5  -- where in args[n] to store unique_id
            }
 end

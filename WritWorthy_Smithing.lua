@@ -967,7 +967,6 @@ function Parser:ToDolRequest()
     }
     return { ["function"]        = "CraftSmithingItemByLevel"
            , ["args"    ]        = args
-           , ["request_ct"]      = 1
            , ["reference_index"] = 11
            }
 end
