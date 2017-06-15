@@ -28,6 +28,11 @@ WritWorthyInventoryList.inventory_data_list = {}
                         -- version 0.4 has Alchemy and Provisioning.
 WritWorthyInventoryList.LibLazyCrafting = nil
 
+                        -- Live row_control used to lay out rows. Remembered
+                        -- during SetupRowControl(). Used in
+                        -- UpdateAllCellWidths().
+WritWorthyInventoryList.row_control_list = {}
+
 local Log  = WritWorthy.Log
 local Util = WritWorthy.Util
 
@@ -63,82 +68,6 @@ WritWorthyInventoryList.COLOR_TEXT_CANNOT_QUEUE = "CC3333"
 WritWorthyInventoryList.COLOR_TEXT_CAN_QUEUE    = "CCCCCC"
 WritWorthyInventoryList.COLOR_TEXT_QUEUED       = "FFFFFF"
 WritWorthyInventoryList.COLOR_TEXT_COMPLETED    = "33AA33"
-
-function WritWorthyInventoryList.RestorePos()
-    local pos = WritWorthy.default.position
-    if      WritWorthy
-        and WritWorthy.savedVariables
-        and WritWorthy.savedVariables.position then
-        pos = WritWorthy.savedVariables.position
-    end
-
-    if not WritWorthyUI then
-                        -- Common crash that occurs when I've messed up
-                        -- the XML somehow. Force it to crash here in this
-                        -- if block rather than mysteriously on the
-                        -- proper SetAnchor() line later.
-        d("Your XML probably did not load. Fix it.")
-        local _ = WritWorthyUI.SetAnchor
-    end
-    WritWorthyUI:SetAnchor(
-             TOPLEFT
-            ,GuiRoot
-            ,TOPLEFT
-            ,pos[1]
-            ,pos[2]
-            )
-
-                        -- ### restore width, too, if set.
-end
-
-function WritWorthy_OnMouseUp()
-    local l = WritWorthyUI:GetLeft()
-    local t = WritWorthyUI:GetTop()
-    local r = WritWorthyUI:GetRight()
-    local b = WritWorthyUI:GetBottom()
-    -- d("OnMouseUp ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
-end
-
-function WritWorthy_OnMoveStop()
-    local l = WritWorthyUI:GetLeft()
-    local t = WritWorthyUI:GetTop()
-    local r = WritWorthyUI:GetRight()
-    local b = WritWorthyUI:GetBottom()
-    -- d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
-    -- ### Save Bounds
-end
-
-function WritWorthy_OnResizeStop()
-    local l = WritWorthyUI:GetLeft()
-    local t = WritWorthyUI:GetTop()
-    local r = WritWorthyUI:GetRight()
-    local b = WritWorthyUI:GetBottom()
-    -- d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
-    WritWorthy.InventoryList:UpdateAllCellWidths()
-    -- ### Save Bounds
-end
-
-function WritWorthy_ToggleUI()
-    local ui = WritWorthyUI
-    if not ui then
-        return
-    end
-    h = WritWorthyUI:IsHidden()
-    if h then
-        list = WritWorthyInventoryList.singleton
-        list.RestorePos()
-        local t = WritWorthyUIInventoryListTitle
-        if t then
-            t:SetText("Writ Inventory: "..GetUnitName("player"))
-        end
-        list:BuildMasterlist()
-        list:Refresh()
-        list:UpdateSummaryAndQButtons()
-    end
-    WritWorthyUI:SetHidden(not h)
-end
-
--- Inventory List ------------------------------------------------------------
 
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
@@ -177,7 +106,76 @@ WritWorthyInventoryList.HEADER_TOOLTIPS = {
 , [WritWorthyInventoryList.CELL_ENQUEUE   ] = "Enqueued for crafting"
 }
 
-function WritWorthy_HeaderInit(control, name, text, key)
+-- WritWorthyUI: The window around the inventory list ------------------------
+
+function WritWorthyUI_RestorePos()
+    local pos = WritWorthy.default.position
+    if      WritWorthy
+        and WritWorthy.savedVariables
+        and WritWorthy.savedVariables.position then
+        pos = WritWorthy.savedVariables.position
+    end
+
+    if not WritWorthyUI then
+                        -- Common crash that occurs when I've messed up
+                        -- the XML somehow. Force it to crash here in this
+                        -- if block rather than mysteriously on the
+                        -- proper SetAnchor() line later.
+        d("Your XML probably did not load. Fix it.")
+        local _ = WritWorthyUI.SetAnchor
+    end
+    WritWorthyUI:SetAnchor(
+             TOPLEFT
+            ,GuiRoot
+            ,TOPLEFT
+            ,pos[1]
+            ,pos[2]
+            )
+-- ### restore width, too, if set.
+end
+
+function WritWorthyUI_OnMoveStop()
+    local l = WritWorthyUI:GetLeft()
+    local t = WritWorthyUI:GetTop()
+    local r = WritWorthyUI:GetRight()
+    local b = WritWorthyUI:GetBottom()
+    -- d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    -- ### Save Bounds
+end
+
+function WritWorthyUI_OnResizeStop()
+    local l = WritWorthyUI:GetLeft()
+    local t = WritWorthyUI:GetTop()
+    local r = WritWorthyUI:GetRight()
+    local b = WritWorthyUI:GetBottom()
+    -- d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    WritWorthy.InventoryList:UpdateAllCellWidths()
+    -- ### Save Bounds
+end
+
+function WritWorthyUI_ToggleUI()
+    local ui = WritWorthyUI
+    if not ui then
+        return
+    end
+    h = WritWorthyUI:IsHidden()
+    if h then
+        WritWorthyUI_RestorePos()
+        local t = WritWorthyUIInventoryListTitle
+        if t then
+            t:SetText("Writ Inventory: "..GetUnitName("player"))
+        end
+        list = WritWorthyInventoryList.singleton
+        list:BuildMasterlist()
+        list:Refresh()
+        list:UpdateSummaryAndQButtons()
+    end
+    WritWorthyUI:SetHidden(not h)
+end
+
+-- Inventory List ------------------------------------------------------------
+
+function WritWorthyInventoryList_HeaderInit(control, name, text, key)
     ZO_SortHeader_Initialize( control                   -- control
                             , text                      -- name
                             , key or string.lower(text) -- key
@@ -204,11 +202,6 @@ function WritWorthy_HeaderInit(control, name, text, key)
         ZO_SortHeader_SetTooltip(control, tooltip_text)
     end
 end
-
-                        -- Live row_control used to lay out rows. Remembered
-                        -- during SetupRowControl(). Used in
-                        -- UpdateAllCellWidths().
-WritWorthyInventoryList.row_control_list = {}
 
 function WritWorthyInventoryList:New()
     local o = ZO_SortFilterList.New(self, WritWorthyUIInventoryList)
@@ -271,7 +264,7 @@ function WritWorthyInventoryList:BuildMasterlist()
                         -- This seems as good a place as any to
                         -- make this once-a-day-or-so call.
                         -- Certainly do not want it once-per-init().
-    WritWorthy:PurgeAncientSavedChariables()
+    self:PurgeAncientSavedChariables()
 end
 
 -- Populate the ScrollList's rows, using our data model as a source.
@@ -533,7 +526,7 @@ function WritWorthyInventoryList.Shorten(text)
 end
 
 function WritWorthyInventoryList:IsQueued(inventory_data)
-    local LLC = WritWorthy:GetLLC()
+    local LLC = self:GetLLC()
     local x = LLC:findItemByReference(inventory_data.unique_id)
     if 0 < #x then
         return true
@@ -662,7 +655,7 @@ function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     else
         self:Dequeue(cell_control.inventory_data)
     end
-    -- WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
+    -- self.LogLLCQueue(self:GetLLC().personalQueue)
     self:UpdateUISoon(cell_control.inventory_data)
 end
 
@@ -700,7 +693,7 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
                         -- ZO_SortList reuses row_control instances, so there
                         -- is a good chance we've already created these cell
                         -- controls.
-    local already_created = row_control[WritWorthyInventoryList.CELL_TYPE]
+    local already_created = row_control[self.CELL_TYPE]
     if not already_created then
         local header_control = WritWorthyUIInventoryListHeaders
         self:CreateRowControlCells(row_control, header_control)
@@ -718,13 +711,13 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
 
                         -- Apply text color to entire row.
     local fn = Util.color
-    local c  = WritWorthyInventoryList.COLOR_TEXT_CAN_QUEUE
+    local c  = self.COLOR_TEXT_CAN_QUEUE
     if inventory_data.ui_is_completed then
-        c = WritWorthyInventoryList.COLOR_TEXT_COMPLETED
+        c = self.COLOR_TEXT_COMPLETED
     elseif not inventory_data.ui_can_queue then
-        c = WritWorthyInventoryList.COLOR_TEXT_CANNOT_QUEUE
+        c = self.COLOR_TEXT_CANNOT_QUEUE
     elseif inventory_data.ui_is_queued then
-        c = WritWorthyInventoryList.COLOR_TEXT_QUEUED
+        c = self.COLOR_TEXT_QUEUED
     end
 
                         -- Fill in the cells with data for this row.
@@ -766,10 +759,10 @@ end
 --
 -- There's no point in doing this every time we load UI, just do it once
 -- a day, maybe once per window toggle.
-function WritWorthy:PurgeAncientSavedChariables()
+function WritWorthyInventoryList:PurgeAncientSavedChariables()
                         -- Build a fast O(1) lookup table of
                         -- current sealed writs.
-    local inventory_data_list = self:ScanInventoryForMasterWrits()
+    local inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
     local current = {}
     for _, inventory_data in pairs(inventory_data_list) do
         current[inventory_data.unique_id] = inventory_data
@@ -779,7 +772,7 @@ function WritWorthy:PurgeAncientSavedChariables()
     local DAY_SECS = 24 * 3600
     local too_old = now - 3 * DAY_SECS -- "a while" is "3 days"
     local doomed = {}
-    for unique_id, sav in pairs(self.savedChariables.writ_unique_id) do
+    for unique_id, sav in pairs(WritWorthy.savedChariables.writ_unique_id) do
                         -- Continue to update timestamps of any writs that we
                         -- still possess.
                         --
@@ -796,7 +789,7 @@ function WritWorthy:PurgeAncientSavedChariables()
     end
                         -- Delete the unworthy.
     for _, unique_id in ipairs(doomed) do
-        self.savedChariables.writ_unique_id[unique_id] = nil
+        WritWorthy.savedChariables.writ_unique_id[unique_id] = nil
     end
     if 0 < #doomed then
         Log:Add("PurgeAncientSavedChariables() purged writ_unique_id count:"
@@ -810,7 +803,7 @@ end
 --          We COULD key off of "success" and display error redness if fail.
 --  - llc_result is a table with bag/slot id of the crafted item and
 --          its unique_id reference.
-function WritWorthy_LLCCompleted(event, station, llc_result)
+function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     Log:StartNewEvent()
     local unique_id = nil
     local request_index = nil
@@ -826,20 +819,20 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
     -- for k,v in pairs(llc_result) do
     --     Log:Add("llc_result k:"..tostring(k).." v:"..tostring(v))
     -- end
+    local self = WritWorthyInventoryList.singleton
+    if not self then return end
+
                         -- Remember that this writ is noe "completed", no
                         -- longer "queued".
-    WritWorthyInventoryList.SaveChariableState(
+    self.SaveChariableState(
           unique_id
         , WritWorthyInventoryList.STATE_COMPLETED )
 
                         -- Upate UI to display new "completed" state that we
                         -- just recorded.
-    if WritWorthyInventoryList and WritWorthyInventoryList.singleton then
-        self = WritWorthyInventoryList.singleton
-        inventory_data = self:UniqueIDToInventoryData(unique_id)
-        if inventory_data then
-            self:UpdateUISoon(inventory_data)
-        end
+    inventory_data = self:UniqueIDToInventoryData(unique_id)
+    if inventory_data then
+        self:UpdateUISoon(inventory_data)
     end
 end
 
@@ -864,7 +857,7 @@ function WritWorthyInventoryList:UpdateUISoon(inventory_data)
     Log:Add("WritWorthyInventoryList:UpdateUISoon  unique_id:"
             ..tostring(inventory_data.unique_id))
     self:PopulateUIFields(inventory_data)
-    WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
+    self.LogLLCQueue(self:GetLLC().personalQueue)
     self:UpdateSummaryAndQButtons()
     self:Refresh()
 end
@@ -900,24 +893,27 @@ function WritWorthyInventoryList:GetLLC()
         return self.LibLazyCrafting
     end
 
+
     local lib = LibStub:GetLibrary("LibLazyCrafting", 0.4)
     self.LibLazyCrafting = lib:AddRequestingAddon(
-         self.name                  -- name
+         WritWorthy.name            -- name
        , true                       -- autocraft
-       , WritWorthy_LLCCompleted    -- functionCallback
+       , WritWorthyInventoryList_LLCCompleted    -- functionCallback
        )
 
+    Log:StartNewEvent()
     if not self.LibLazyCrafting then
-        d("Unable to load LibLazyCrafting 0.4")
+        d("WritWorthy: Unable to load LibLazyCrafting 0.4")
+        Log:Add("Unable to load LibLazyCrafting 0.4")
     end
+    Log:Add("LibLazyCrafting LLC:"..tostring(self.LibLazyCrafting))
+
                         -- Record API names to log so that I have them handy
                         -- rather than spending any time asking "is Xxx()
                         -- available?"
                         -- No need to log .personalQueue contents here: the
                         -- LLC queue is always initially empty. It has no
                         -- savedVariables of its own; we control that.
-    Log:StartNewEvent()
-    Log:Add("LibLazyCrafting LLC:"..tostring(self.LibLazyCrafting))
     for k,v in pairs(self.LibLazyCrafting) do
         Log:Add("LibLazyCrafting API k:"..tostring(k).."  v:"..tostring(v))
     end
@@ -963,25 +959,25 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
         return
     end
 
-    WritWorthy:Enqueue(unique_id, inventory_data)
+    self.EnqueueLLC(unique_id, inventory_data)
 
                         -- Remember this in savedChariables so that
                         -- we can restore checkbox state after /reloadui.
-    WritWorthyInventoryList.SaveChariableState(
+    self.SaveChariableState(
               unique_id
             , WritWorthyInventoryList.STATE_QUEUED)
 
     -- nur zum Testen
-    -- WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
+    -- self.LogLLCQueue(self:GetLLC().personalQueue)
 end
 
--- The Dolgubon-only portion of enqueing a request, no list UI work here.
--- Called from WritWorthy itself during RestoreFromSavedChariables()
--- and also after the user selects a checkbox.
+-- The LazyLibCrafting-only portion of enqueing a request, no list UI work
+-- here because this is also called during initialization time, from
+-- RestoreFromSavedChariables(). Also called after the user selects a checkbox.
 --
 -- Enqueues one or more copies of inventory_data's request.
 --
-function WritWorthy:Enqueue(unique_id, inventory_data)
+function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
     if not inventory_data.llc_func then
                         -- Either this row should not have had its
                         -- "Enqueue" checkbox enabled, or this row
@@ -998,7 +994,7 @@ function WritWorthy:Enqueue(unique_id, inventory_data)
                         -- supports the required API. We might get stuck
                         -- with some other add-on's older version.
     local i_d = inventory_data
-    local LLC = WritWorthyInventoryList:GetLLC()
+    local LLC = self:GetLLC()
     if not LLC[i_d.llc_func] then
         d("LibLazyCrafter function missing:"..tostring(i_d.llc_func))
         d("LibLazyCrafter version:"..tostring(LLC.version))
@@ -1021,7 +1017,7 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     local unique_id = inventory_data.unique_id
     Log:Add("Dequeue "..tostring(unique_id))
 
-    local LLC = WritWorthy:GetLLC()
+    local LLC = self:GetLLC()
     LLC:cancelItemByReference(inventory_data.unique_id)
                         -- Remove from savedChariables so that we do not
                         -- re-queue this row upon /reloadui.
@@ -1031,19 +1027,20 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
 end
 
 -- Reload the LibLazyCrafting queue from savedChariables
-function WritWorthy:RestoreFromSavedChariables()
+function WritWorthyInventoryList.RestoreFromSavedChariables()
                         -- Do nothing if nothing to restore.
-    if not (    self.savedChariables
-            and self.savedChariables.writ_unique_id) then
+    savedChariables = WritWorthy.savedChariables
+    if not (    savedChariables
+            and savedChariables.writ_unique_id) then
         return
     end
 
     local inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
     for _, inventory_data in pairs(inventory_data_list) do
         local unique_id = inventory_data.unique_id
-        local sav       = self.savedChariables.writ_unique_id[unique_id]
+        local sav       = savedChariables.writ_unique_id[unique_id]
         if sav and sav.state == WritWorthyInventoryList.STATE_QUEUED then
-            self:Enqueue(unique_id, inventory_data)
+            WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
         end
     end
 end
@@ -1051,7 +1048,7 @@ end
 -- Dump LibLazyCrafting's entire queue to log file.
 -- This can be HUGE if you have dozens of sealed writs in inventory, so
 -- comment this out before shipping.
-function WritWorthy:LogLLCQueue(queue)
+function WritWorthyInventoryList.LogLLCQueue(queue)
     if not queue then return end
 
     for kk,vv in pairs(queue) do
@@ -1083,7 +1080,7 @@ end
 -- in LibLazyCrafter's queue.
 function WritWorthyInventoryList:QueuedReferenceList()
     local queued_ids = {}
-    for station, queued in ipairs(WritWorthy:GetLLC().personalQueue) do
+    for station, queued in ipairs(self:GetLLC().personalQueue) do
         if type(queued) == "table" then
             for i, request in ipairs(queued) do
                 if request.reference then
@@ -1103,7 +1100,7 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
                         -- Collect hashtable of all queued unique_ids
                         -- so that we can use it later in an O(n) loop
                         -- for O(1) lookups.
-    local queued_ids = self.QueuedReferenceList()
+    local queued_ids = self:QueuedReferenceList()
 
                         -- Accumulators
     local can_enqueue_any  = false

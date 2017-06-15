@@ -26,9 +26,8 @@
       <ClampedToScreenInsets left="-20" top="-20" right="20" bottom="20" />
 
       <!-- React to window move/resize -->
-      <OnMoveStop>WritWorthy_OnMoveStop()</OnMoveStop>
-      <!-- <OnMouseUp>WritWorthy:OnMouseUp()</OnMouseUp> -->
-      <OnResizeStop>WritWorthy_OnResizeStop()</OnResizeStop>
+      <OnMoveStop>WritWorthyUI_OnMoveStop()</OnMoveStop>
+      <OnResizeStop>WritWorthyUI_OnResizeStop()</OnResizeStop>
       <!--
 
       <OnUpdate>
@@ -76,7 +75,7 @@
               right="0.625" bottom="0.625"
               />
           <OnClicked>
-            WritWorthy_ToggleUI()
+            WritWorthyUI_ToggleUI()
           </OnClicked>
         </Button>
         <!-- lot list ----------------------------------------------->
@@ -122,7 +121,7 @@
                       offsetX="0" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Type", "Type", "ui_type")
+                    WritWorthyInventoryList_HeaderInit(self, "Type", "Type", "ui_type")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)VoucherCt"
@@ -134,7 +133,7 @@
                       offsetX="105" />
                   <Dimensions x="50" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "VoucherCt", "V", "ui_voucher_ct")
+                    WritWorthyInventoryList_HeaderInit(self, "VoucherCt", "V", "ui_voucher_ct")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail1"
@@ -150,7 +149,7 @@
                       offsetX="-615" />
                   <Dimensions x="300" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail1", "Detail 1", "ui_detail1")
+                    WritWorthyInventoryList_HeaderInit(self, "Detail1", "Detail 1", "ui_detail1")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail2"
@@ -162,7 +161,7 @@
                       offsetX="-460" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
+                    WritWorthyInventoryList_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail3"
@@ -174,7 +173,7 @@
                       offsetX="-305" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail3", "Detail 3", "ui_detail3")
+                    WritWorthyInventoryList_HeaderInit(self, "Detail3", "Detail 3", "ui_detail3")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail4"
@@ -186,7 +185,7 @@
                       offsetX="-150" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail4", "Detail 4", "ui_detail4")
+                    WritWorthyInventoryList_HeaderInit(self, "Detail4", "Detail 4", "ui_detail4")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail5"
@@ -198,7 +197,7 @@
                       offsetX="-45" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Detail5", "Quality", "ui_detail5")
+                    WritWorthyInventoryList_HeaderInit(self, "Detail5", "Quality", "ui_detail5")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Enqueue"
@@ -210,7 +209,7 @@
                       offsetX="-10" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
-                    WritWorthy_HeaderInit(self, "Enqueue", "Q", "ui_is_queued")
+                    WritWorthyInventoryList_HeaderInit(self, "Enqueue", "Q", "ui_is_queued")
                   </OnInitialized>
                 </Control>
               </Controls>

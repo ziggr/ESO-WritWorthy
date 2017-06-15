@@ -356,13 +356,15 @@ function WritWorthy:Initialize()
                             , self.defaultChar
                             )
 
-    WritWorthy.LibLazyCrafting = nil    -- lazy initialized in :GetLLC()
-
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
 
-    self:RestorePos()
-    self:RestoreFromSavedChariables()
+    WritWorthyUI_RestorePos()
+                        -- Load the LibLazyCrafting queue BEFORE we start up
+                        -- the list UI. This gives the list UI actual queue
+                        -- data to consume when deciding which checkboxes to
+                        -- initially mark checked.
+    WritWorthyInventoryList.RestoreFromSavedChariables()
 
     WritWorthy.InventoryList = WritWorthyInventoryList:New()
     WritWorthy.InventoryList:BuildMasterlist()
@@ -378,5 +380,5 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
                               , WritWorthy.OnAddOnLoaded
                               )
 
-ZO_CreateStringId("SI_BINDING_NAME_WritWorthy_ToggleUI",       "Show/Hide WritWorthy")
+ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",       "Show/Hide WritWorthy")
 

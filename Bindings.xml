@@ -1,8 +1,8 @@
 <Bindings>
     <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
         <Category name="WritWorthy">
-            <Action name="WritWorthy_ToggleUI">
-                <Up>WritWorthy_ToggleUI()</Up>
+            <Action name="WritWorthyUI_ToggleUI">
+                <Up>WritWorthyUI_ToggleUI()</Up>
             </Action>
         </Category>
     </Layer>
