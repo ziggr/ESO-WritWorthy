@@ -1,6 +1,6 @@
 -- WritWorthy UI window
 --
--- NOT putting tooltip or settings UI code here. Just the big list-of-writs
+-- Do NOT put tooltip or settings UI code here. Just the big list-of-writs
 -- window.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
@@ -10,7 +10,7 @@ local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
                         -- [column_name] = control
 WritWorthy.list_header_controls = {}
 
-                        -- The master list of rows for the inventory list UI
+                        -- The master list of row data for the inventory list
                         -- in no particular order.
 WritWorthy.inventory_data_list = {}
 
@@ -20,9 +20,7 @@ WritWorthy.inventory_data_list = {}
                         -- called "LLC" for a shorter abbreviation.
                         --
                         -- Version 0.3 has BS/CL/WW + Enchanting
-                        -- version 0.4 has Alchemy
-                        -- Not sure if we'll EVER add Provisioning.
-                        --
+                        -- version 0.4 has Alchemy and Provisioning.
 WritWorthy.LibLazyCrafting = nil
 
 local Log  = WritWorthy.Log
@@ -34,11 +32,13 @@ local Util = WritWorthy.Util
 -- smithing) but that's more complexity than I want today. Sticking with
 -- homogeneous data and a single data type. The list UI doesn't need to know or
 -- care that some rows leave their cells blank because Provisioning writs lack
--- a "quality" field...
+-- a "quality" field.
 local TYPE_ID = 1
 
 WritWorthyInventoryList = ZO_SortFilterList:Subclass()
--- inherits field "self.list" which is the scroll list control
+-- Inherits field "self.list" which is the scroll list control.
+-- "WritWorthyInventoryList" is NOT the actual list control that has useful
+-- "data members. Use WritWorthyInventoryList.singleton for that.
 
 WritWorthyInventoryList.SORT_KEYS = {
   ["ui_type"      ] = {tiebreaker="ui_voucher_ct"}
@@ -49,27 +49,11 @@ WritWorthyInventoryList.SORT_KEYS = {
 , ["ui_detail4"   ] = {tiebreaker="ui_detail5"}
 , ["ui_detail5"   ] = {tiebreaker="ui_is_queued"}
 , ["ui_is_queued" ] = {tiebreaker="ui_can_queue"}
-, ["ui_can_queue" ] = {} -- Not a visible column, but does have visible effect on "is_queued" column.
+, ["ui_can_queue" ] = {} -- Not a visible column, but does have visible
+                         -- effect on "is_queued" column.
 }
 
 WritWorthyInventoryList.ROW_HEIGHT = 30
-
-                        -- Icons we display in our Enqueue/De
-WritWorthyInventoryList.TEXTURE_SET_CHECKMARK = {
-    normal      = "EsoUI/Art/Buttons/accept_up.dds"
-,   pressed     = "EsoUI/Art/Buttons/accept_down.dds"
-,   mouseOver   = "EsoUI/Art/Buttons/accept_over.dds"
-}
-WritWorthyInventoryList.TEXTURE_SET_X = {
-    normal      = "EsoUI/Art/Buttons/checkbox_checked.dds"
-,   pressed     = "EsoUI/Art/Buttons/decline_down.dds"
-,   mouseOver   = "EsoUI/Art/Buttons/decline_over.dds"
-}
-WritWorthyInventoryList.TEXTURE_SET_X2 = {
-    normal      = "EsoUI/Art/Buttons/decline_up.dds"
-,   pressed     = "EsoUI/Art/Buttons/decline_down.dds"
-,   mouseOver   = "EsoUI/Art/Buttons/decline_over.dds"
-}
 
 -- Values written to savedChariables
 WritWorthy.STATE_QUEUED    = "queued"
@@ -147,7 +131,6 @@ function WritWorthy_ToggleUI()
         WritWorthy.InventoryList:UpdateSummaryAndQButtons()
     end
     WritWorthyUI:SetHidden(not h)
-
 end
 
 -- Inventory List ------------------------------------------------------------
@@ -175,7 +158,7 @@ WritWorthyInventoryList.CELL_NAME_LIST = {
 , WritWorthyInventoryList.CELL_ENQUEUE
 }
 -- Cells that are shown/hidden click buttons, not text data.
-WritWorthyInventoryList.CELL_XML_LIST = {
+WritWorthyInventoryList.CELL_UNTEXT_LIST = {
   [WritWorthyInventoryList.CELL_ENQUEUE] = true
 }
 WritWorthyInventoryList.HEADER_TOOLTIPS = {
@@ -218,8 +201,8 @@ function WritWorthy_HeaderInit(control, name, text, key)
 end
 
                         -- Live row_control used to lay out rows. Remembered
-                        -- during SetupRowControl()
-                        -- ZZ not sure if I need anymore
+                        -- during SetupRowControl(). Used in
+                        -- UpdateAllCellWidths().
 WritWorthyInventoryList.row_control_list = {}
 
 function WritWorthyInventoryList:New()
@@ -237,15 +220,23 @@ function WritWorthyInventoryList:Initialize(control)
     ZO_ScrollList_AddDataType(
           self.list                     -- scroll list control
         , TYPE_ID                       -- row data type ID
-        , "WritWorthyInventoryListRow"  -- tamplate: virtual button defined in XML
+        , "WritWorthyInventoryListRow"  -- template: virtual button defined in XML
         , self.ROW_HEIGHT               -- row height
                                         -- setupCallback
         , function(control, inventory_data)
              self:SetupRowControl(control, inventory_data)
          end
         )
-
+                        -- This call to ZO_ScrollList_EnableHighlight() seems
+                        -- to do nothing. I have yet to get this working
+                        -- correctly. Would be interesting to see row
+                        -- highlighting during mouseover.
     ZO_ScrollList_EnableHighlight(self.list, "ZO_ThinListHighlight")
+
+                        -- How to order our table rows. Probably doesn't need
+                        -- to be a specific data member with a specific name,
+                        -- we just need to know how to find it and pass it to
+                        -- table.sort() from within FilterScrollList() below.
     self.sortFunction
         = function(row_a, row_b)
             return ZO_TableOrderingFunction( row_a.data
@@ -255,10 +246,13 @@ function WritWorthyInventoryList:Initialize(control)
                                            , self.currentSortOrder
                                            )
         end
-
-                        -- After ZO_SortFilterList:Initialize() we should
-                        -- have a sortHeaderGroup. At least, that's how it
-                        -- works in ScrollListExample.
+                        -- Set our initial sort key. Not sure this actually
+                        -- works. And if it does, wouldn't it be polite to
+                        -- save/restore the sort index in savedVariables?
+                        --
+                        -- After ZO_SortFilterList:Initialize() we  have a
+                        -- sortHeaderGroup. At least, that's how it works in
+                        -- ScrollListExample.
     self.sortHeaderGroup:SelectHeaderByKey("detail1")
     ZO_SortHeader_OnMouseExit(WritWorthyUIInventoryListHeadersType)
     self:RefreshData()
@@ -299,7 +293,6 @@ function WritWorthyInventoryList:Refresh()
 end
 
 function WritWorthyInventoryList_Cell_OnMouseEnter(cell_control)
-    -- d("enter "..tostring(cell_control))
                         -- .tooltip_text is our own field, not ZOS'.
                         -- We set it in PopulateUIFields() with our
                         -- own "reasons why you cannot queue this row"
@@ -314,23 +307,32 @@ function WritWorthyInventoryList_Cell_OnMouseEnter(cell_control)
 end
 
 function WritWorthyInventoryList_Cell_OnMouseExit(cell_control)
-    -- d("exit "..tostring(cell_control))
     ZO_Tooltips_HideTextTooltip()
 end
 
--- First time through a row's SetupRowControl(), create the individual label
--- controls that will hold cell text.
+-- First time through a row's SetupRowControl(), programmatically create the
+-- individual label controls that will hold cell text. Doing so
+-- programmatically here is less maintenance work than  trying to keep the XML
+-- "virtual" row in sync with the XML headers.
+--
+-- Do not fill labels with live text: that's SetupRowControl()'s job.
 function WritWorthyInventoryList:CreateRowControlCells(row_control, header_control)
     for i, cell_name in ipairs(self.CELL_NAME_LIST) do
         local header_cell_control = header_control:GetNamedChild(cell_name)
-        local control_name = row_control:GetName() .. cell_name
-        local cell_control = nil
-        local is_text      = true
-        local rel_to_left  = header_control:GetLeft()
-        if self.CELL_XML_LIST[cell_name] then
+        local control_name        = row_control:GetName() .. cell_name
+        local cell_control        = nil
+        local is_text             = true
+        local rel_to_left         = header_control:GetLeft()
+        if self.CELL_UNTEXT_LIST[cell_name] then
+                        -- Non-text cells (aka the "Enqueue" checkbox button
+                        -- are not created programmatically, they are already
+                        -- created for us via XML. Find and use the existing
+                        -- control.
             cell_control = row_control:GetNamedChild(cell_name)
             is_text      = false
         else
+                        -- Text cells are programmatically created here, not
+                        -- created by XML. Create now.
             cell_control = row_control:CreateControl(control_name, CT_LABEL)
         end
         row_control[cell_name]   = cell_control
@@ -353,14 +355,9 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                                   , 0 )                 -- offsetY
         end
         cell_control:SetHidden(false)
-                        -- Don't waste CPU time checking for tooltips in EVERY
-                        -- cell. Only a couple columns have tooltips. Set the
-                        -- mouse enter/exit handlers on only those columns.
-        -- cell_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
-        -- cell_control:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
 
         if not is_text then
-                        -- Lock our checkmark/cancel icons to 20x20
+                        -- Lock our "Enqueue" checkbox to 20x20
             cell_control:SetWidth(20)
             cell_control:SetHeight(20)
         else
@@ -372,10 +369,10 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
             --cell_control:SetLinkEnabled(true)
             cell_control:SetMouseEnabled(true)
 
-                        -- Surprise! Headers:GetNamedChild() returns a
-                        -- control instance that lacks a "Name" sub-control,
-                        -- which we need if we want to match text alignment.
-                        -- Use the control we passed to
+                        -- Surprise! Headers:GetNamedChild() returns a control
+                        -- instance that lacks a "Name" sub-control, which we
+                        -- need if we want to match text alignment. Fall back
+                        -- to the control we passed to
                         -- ZO_SortHeader_Initialize().
             local header_name_control = header_control:GetNamedChild("Name")
             if not header_name_control then
@@ -390,11 +387,10 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
             end
             cell_control:SetHorizontalAlignment(horiz_align)
 
-                            -- Align all cells to top so that long/multiline text
-                            -- still look acceptable.
-                            -- ### TEXT_ALIGN_CENTER seems to have no effect
-                            -- ### TEXT_ALIGN_BOTTOM does give a bit more margin
-                            --     between headers and top row text
+                            -- Align all cells to top so that long/multiline
+                            -- text still look acceptable. But hopefully we'll
+                            -- never need this because TEXT_WRAP_MODE_ELLIPSIS
+                            -- above should prevent multiline text.
             cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
         end
     end
@@ -453,13 +449,12 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
                                   , 0 )                 -- offsetY
                         -- Resize text cells, but leave button cells locked
                         -- to whatever CreateRowControlCells() chose.
-            local is_text = not WritWorthyInventoryList.CELL_XML_LIST[cell_name]
+            local is_text = not WritWorthyInventoryList.CELL_UNTEXT_LIST[cell_name]
             if is_text then
                 cell_control:SetWidth(header_cell_control:GetWidth())
             end
         end
     end
-
                         -- I don't always have a background, but when I do,
                         -- I want it to stretch all the way across this row.
     local background_control = GetControl(row_control, "BG")
@@ -532,7 +527,6 @@ function WritWorthyInventoryList.Shorten(text)
     return text
 end
 
-
 function WritWorthyInventoryList:IsQueued(inventory_data)
     local LLC = WritWorthy:GetLLC()
     local x = LLC:findItemByReference(inventory_data.unique_id)
@@ -555,10 +549,12 @@ function WritWorthyInventoryList:IsCompleted(inventory_data)
              == WritWorthy.STATE_COMPLETED
 end
 
+-- Can this row be queued in LibLazyCrafting?
+--
+-- If so, return true, "". If not, return false, "why not".  "Why not" here is
+-- often the same red text that WritWorthy inserts into the sealed master
+-- writ's tooltip.
 function WritWorthyInventoryList:CanQueue(inventory_data)
-    if not inventory_data.parser.ToDolRequest then
-        return false, "Not supported: Provisioning."
-    end
     if self:IsCompleted(inventory_data) then
         return false, "completed"
     end
@@ -580,9 +576,8 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
     return true, ""
 end
 
-                        -- Lazy-instantiate fields within our "data model"
-                        -- that contain UI-centric user-visible text for
-                        -- list display.
+-- Fill in all inventory_data.ui_xxx fields.
+-- Here is where our data gets translated into user-visible text.
 function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_voucher_ct   = WritWorthy.ToVoucherCount(inventory_data.item_link)
     inventory_data.ui_is_queued    = self:IsQueued(inventory_data)
@@ -594,20 +589,15 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     else
         inventory_data.ui_can_queue_tooltip = why_not
     end
-    -- Log:Add("PopUI uid:"..tostring(inventory_data.unique_id)
-    --         .." can_q:"..tostring(inventory_data.ui_can_queue)
-    --         .." is_q:"..tostring(inventory_data.ui_is_queued)
-    --         .." is_comp:"..tostring(inventory_data.ui_is_completed)
-    --         )
+
                         -- For less typing.
     local parser = inventory_data.parser
     if parser.class == WritWorthy.Smithing.Parser.class then
-        local ri     = parser.request_item  -- For less typing.
-        local school = ri.school
-        if school == WritWorthy.Smithing.SCHOOL_WOOD then
+        local ri = parser.request_item  -- For less typing.
+        if ri.school == WritWorthy.Smithing.SCHOOL_WOOD then
             inventory_data.ui_type = "Wood"
         else
-            inventory_data.ui_type = school.armor_weight_name
+            inventory_data.ui_type = ri.school.armor_weight_name
         end
         inventory_data.ui_detail1 = parser.set_bonus.name
         inventory_data.ui_detail2 = ri.item_name
@@ -639,7 +629,6 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         inventory_data.ui_type    = "Provisioning"
         inventory_data.ui_detail1 = parser.recipe.fooddrink_name
     end
-
                         -- Since the point of these UI fields is to  drive the
                         -- UI, we might as well shorten them here, once, rather
                         -- than over and over again later during display and
@@ -701,7 +690,6 @@ end
 -- FilterScrollList(), is an element of master list
 -- WritWorthy.inventory_data_list.
 function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
-
     row_control.inventory_data = inventory_data
 
                         -- ZO_SortList reuses row_control instances, so there
@@ -710,13 +698,10 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     local already_created = row_control[WritWorthyInventoryList.CELL_TYPE]
     if not already_created then
         local header_control = WritWorthyUIInventoryListHeaders
-        self:CreateRowControlCells(
-                  row_control
-                , header_control
-                )
+        self:CreateRowControlCells(row_control, header_control)
                         -- Retain pointers to our row_control instances so that
-                        -- we can update all their cell wides later upon window
-                        -- resize.
+                        -- we can update all their cell widths later upon
+                        -- window resize.
         table.insert(self.row_control_list, row_control)
     end
 
@@ -748,7 +733,7 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
 
                         -- The "Enqueue" checkbox and its mask that makes it
                         -- look dimmed out when we cannot enqueue this row
-                        -- due to lack of knowledge or WritWorthy code.
+                        -- due to lack of knowledge or WritWorthy code:
                         --
                         -- The mask does a lot for us:
                         -- 1. dims the checkbox
@@ -775,7 +760,7 @@ end
 -- a while.
 --
 -- There's no point in doing this every time we load UI, just do it once
--- a day, maybe once per window toggle?
+-- a day, maybe once per window toggle.
 function WritWorthy:PurgeAncientSavedChariables()
                         -- Build a fast O(1) lookup table of
                         -- current sealed writs.
@@ -787,16 +772,17 @@ function WritWorthy:PurgeAncientSavedChariables()
 
     local now = GetTimeStamp()
     local DAY_SECS = 24 * 3600
-    local too_old = now - 3 * DAY_SECS
+    local too_old = now - 3 * DAY_SECS -- "a while" is "3 days"
     local doomed = {}
     for unique_id, sav in pairs(self.savedChariables.writ_unique_id) do
-                        -- Continue to update timestamps of any writs
-                        -- we still possess. Also update any ancient data
-                        -- that lacks any timestamp at all (should no longer
-                        -- occur, that's from older unreleased code).
+                        -- Continue to update timestamps of any writs that we
+                        -- still possess.
+                        --
+                        -- Also update any ancient data that lacks any
+                        -- timestamp at all (should no longer occur, such data
+                        -- is leftovers from older unreleased code).
         if current[unique_id] or not sav.last_seen_ts then
             sav.last_seen_ts = now
-
                         -- Schedule for deletion any records whose writ
                         -- we've not seen in a long time.
         elseif sav.last_seen_ts and sav.last_seen_ts < too_old then
@@ -813,7 +799,6 @@ function WritWorthy:PurgeAncientSavedChariables()
     end
 end
 
-
 -- Callback from LibLazyCrafter into our code upon completion of a single
 -- queued request.
 --  - event is "success" or "not enough mats" or some other string.
@@ -827,6 +812,7 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
     if llc_result then
         unique_id, request_index = WritWorthy.FromReference(llc_result.reference)
     end
+    if not unique_id then return end
     -- Log:Add("LibLazyCrafting completed"
     --         .." unique_id:"..tostring(unique_id)
     --         .." request_index:"..tostring(request_index)
@@ -836,18 +822,13 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
     -- for k,v in pairs(llc_result) do
     --     Log:Add("llc_result k:"..tostring(k).." v:"..tostring(v))
     -- end
+                        -- Remember that this writ is noe "completed", no
+                        -- longer "queued".
+    WritWorthyInventoryList.SaveChariableState( unique_id
+                                              , WritWorthy.STATE_COMPLETED )
 
-                        -- Remove the completed request from "queued" and
-                        -- move it to "completed".
-    if not unique_id then return end
-    if not WritWorthy.savedChariables then return end
-    if not WritWorthy.savedChariables.writ_unique_id then return end
-                        -- Update the saved data tracking this request.
-    local sav = WritWorthy.savedChariables.writ_unique_id[unique_id]
-    if not sav then sav = {} end
-    sav.state = WritWorthy.STATE_COMPLETED
-    WritWorthy.savedChariables.writ_unique_id[unique_id] = sav
-
+                        -- Upate UI to display new "completed" state that we
+                        -- just recorded.
     if WritWorthyInventoryList and WritWorthyInventoryList.singleton then
         self = WritWorthyInventoryList.singleton
         inventory_data = self:UniqueIDToInventoryData(unique_id)
@@ -870,8 +851,9 @@ end
 -- Queued state for one or more rows has changed. Propagate that change through
 -- our .inventory_data_list and into the UI.
 --
--- Eventually this may move to a zo_callLater() function that NOPs for 0.1 seconds
--- and then updates only after we've stopped calling it for 0.1 seconds.
+-- Eventually this may move to a zo_callLater() function that NOPs for 0.1
+-- seconds and then updates only after we've stopped calling it for 0.1
+-- seconds.
 --
 function WritWorthyInventoryList:UpdateUISoon(inventory_data)
     Log:Add("WritWorthyInventoryList:UpdateUISoon  unique_id:"
@@ -882,23 +864,32 @@ function WritWorthyInventoryList:UpdateUISoon(inventory_data)
     self:Refresh()
 end
 
-
--- LibLazyCrafting API k:addonName                "WritWorthy"
--- LibLazyCrafting API k:autocraft                true
--- LibLazyCrafting API k:personalQueue            {}
--- LibLazyCrafting API k:ImproveSmithingItem()
--- LibLazyCrafting API k:CraftSmithingItem()
--- LibLazyCrafting API k:craftItem()
--- LibLazyCrafting API k:CraftEnchantingItemId()
--- LibLazyCrafting API k:CraftEnchantingGlyph()
--- LibLazyCrafting API k:GetCurrentSetInteractionIndex()
--- LibLazyCrafting API k:findItemByReference()
--- LibLazyCrafting API k:cancelItemByReference()
--- LibLazyCrafting API k:findItemLocationById()
--- LibLazyCrafting API k:CraftAllItems()
--- LibLazyCrafting API k:cancelItem()
--- LibLazyCrafting API k:CraftSmithingItemByLevel()
-
+-- Return our LibLazyCrafting API.
+--
+-- The returned API is a table with members set to the public API functions and
+-- values. It is NOT the same as LibLazyCrafting's internal instance: that's
+-- private to LLC.
+--
+-- LibLazyCrafting API k:addonName          v:WritWorthy
+-- LibLazyCrafting API k:version            v:0.4
+-- LibLazyCrafting API k:autocraft          v:true
+-- LibLazyCrafting API k:personalQueue      v:table: 00000093E1DF47C8
+-- LibLazyCrafting API k:cancelItem
+-- LibLazyCrafting API k:cancelItemByReference
+-- LibLazyCrafting API k:findItemByReference
+-- LibLazyCrafting API k:findItemLocationById
+-- LibLazyCrafting API k:craftItem
+-- LibLazyCrafting API k:GetCurrentSetInteractionIndex
+-- LibLazyCrafting API k:CraftAllItems
+-- LibLazyCrafting API k:CraftSmithingItem
+-- LibLazyCrafting API k:CraftSmithingItemByLevel
+-- LibLazyCrafting API k:ImproveSmithingItem
+-- LibLazyCrafting API k:CraftEnchantingItemId
+-- LibLazyCrafting API k:CraftEnchantingGlyph
+-- LibLazyCrafting API k:CraftAlchemyItem
+-- LibLazyCrafting API k:CraftAlchemyItemByItemId
+-- LibLazyCrafting API k:CraftProvisioningItemByRecipeId
+--
 function WritWorthy:GetLLC()
     if self.LibLazyCrafting then
         return self.LibLazyCrafting
@@ -915,20 +906,41 @@ function WritWorthy:GetLLC()
         d("Unable to load LibLazyCrafting 0.4")
     end
                         -- Record API names to log so that I have them handy
-                        -- rather than  spending any time asking "is Xxx()
+                        -- rather than spending any time asking "is Xxx()
                         -- available?"
+                        -- No need to log .personalQueue contents here: the
+                        -- LLC queue is always initially empty. It has no
+                        -- savedVariables of its own; we control that.
     Log:StartNewEvent()
     Log:Add("LibLazyCrafting LLC:"..tostring(self.LibLazyCrafting))
     for k,v in pairs(self.LibLazyCrafting) do
         Log:Add("LibLazyCrafting API k:"..tostring(k).."  v:"..tostring(v))
     end
-                        -- Also record queue contents. I suspect this is
-                        -- always initially empty.
-    if self.LibLazyCrafting.personalQueue then
-        self:LogLLCQueue(self.LibLazyCrafting.personalQueue)
-    end
 
     return self.LibLazyCrafting
+end
+
+-- Record a "queued" or "completed" state to per-character savedVariables. If
+-- we do not yet have a savedChariable entry for this unique_id, force one into
+-- existence.
+--
+-- Return the savedChariable record for this unique_id, guaranteed to be non-nil.
+--
+function WritWorthyInventoryList.SaveChariableState(unique_id, state)
+                        -- Force-create the outer writ_unique_id collection to
+                        -- house all our per-writ records.
+    if not WritWorthy.savedChariables.writ_unique_id then
+        WritWorthy.savedChariables.writ_unique_id = {}
+    end
+                        -- Force-create the record itself.
+    if not WritWorthy.savedChariables.writ_unique_id[unique_id] then
+        WritWorthy.savedChariables.writ_unique_id[unique_id] = {}
+    end
+                        -- Now that we know that we have an existing record,
+                        -- fill it with data.
+    WritWorthy.savedChariables.writ_unique_id[unique_id].state = state
+
+    return WritWorthy.savedChariables.writ_unique_id[unique_id]
 end
 
 -- Add the given item to LibLazyCrafting's queue of stuff
@@ -936,39 +948,34 @@ end
 function WritWorthyInventoryList:Enqueue(inventory_data)
                         -- Use the ZOS-assigned GetItemUniqueId() for
                         -- this sealed writ.
-                        -- We previously relied on an internal counter from
-                        -- Dolgubon's Lazy Set Crafter, but we're decoupling
-                        -- from Lazy Set Crafter and no longer wish to us that
-                        -- counter.
     local unique_id = inventory_data.unique_id
-
     Log:Add("Enqueue "..tostring(unique_id))
-
                         -- Avoid enqueing the same writ twice: If we already
                         -- enqueued this specific writ, do nothing.
     if self:IsQueued(inventory_data) then
-        d("BUG: Already enqueued. UI incorrectly showed item as not enqueued."
-            .." Sealed writ unique_id:"..tostring(unique_id))
+        d("WritWorthy bug: Already enqueued. UI incorrectly showed item as"
+            .. " not enqueued. Sealed writ unique_id:"..tostring(unique_id))
         return
     end
+
     WritWorthy:Enqueue(unique_id, inventory_data)
 
                         -- Remember this in savedChariables so that
                         -- we can restore checkbox state after /reloadui.
-    if not WritWorthy.savedChariables.writ_unique_id then
-        WritWorthy.savedChariables.writ_unique_id = {}
-    end
-    local sav = {}
-    if WritWorthy.savedChariables.writ_unique_id[unique_id] then
-        sav = WritWorthy.savedChariables.writ_unique_id[unique_id]
-    end
-    sav.state       = WritWorthy.STATE_QUEUED
-    WritWorthy.savedChariables.writ_unique_id[unique_id] = sav
+    WritWorthyInventoryList.SaveChariableState(
+              unique_id
+            , WritWorthy.STATE_QUEUED)
 
--- nur zum Testen
-WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
+    -- nur zum Testen
+    -- WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
 end
 
+-- @deprecated
+-- Leftovers from when we would make multiple LibLazyCrafter requests to craft
+-- multiple copies of the same stackable item. Now that LibLazyCrafter supports
+-- "timesToMake", we no longer use result_index and this function is scheduled
+-- for termination.
+--
 -- Return ""42000", "42000.2", "42000.3", "42000.4", and so on.
 function WritWorthy.ToReference(unique_id, request_index)
     if not request_index or request_index < 2 then
@@ -977,6 +984,12 @@ function WritWorthy.ToReference(unique_id, request_index)
     return tostring(unique_id).."."..tostring(request_index)
 end
 
+-- @deprecated
+-- Leftovers from when we would make multiple LibLazyCrafter requests to craft
+-- multiple copies of the same stackable item. Now that LibLazyCrafter supports
+-- "timesToMake", we no longer use result_index and this function is scheduled
+-- for termination.
+--
 -- Return string(unique_id), integer(request_index)
 -- If no ".n" suffix found, return integer(1) for request_index
 function WritWorthy.FromReference(llc_reference)
@@ -1015,17 +1028,25 @@ function WritWorthy:Enqueue(unique_id, inventory_data)
         d("LibLazyCrafter version:"..tostring(LLC.version))
         return
     end
-                        -- Assign a unique reference to each copy of
-                        -- this request.
+
+                        -- Fill in the reference with our unique_id.
+                        -- Parser could not do this for us becaue
+                        -- Parsers know nothing of our id.
+                        -- We really should expand the ToDolRequest() API
+                        -- to include the unique_id to use as a LLC reference.
     local reference = WritWorthy.ToReference(i_d.unique_id)
     i_d.llc_args[i_d.llc_reference_index] = reference
 
                         -- Call LibLazyCrafting to queue it up for later.
-    if not LLC[i_d.llc_func] then
+    if LLC[i_d.llc_func] then
+        LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
+    else
+                        -- Oops! This version of LibLazyCrafting lacks the
+                        -- required function. Should not happen, but did
+                        -- while Zig was developing WritWorthy with
+                        -- unpublished versions of LibLazyCrafting.
         d("LibLazyCrafter function missing:"..tostring(i_d.llc_func))
         d("LibLazyCrafter version:"..tostring(LLC.version))
-    else
-        LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
     end
 end
 
@@ -1033,16 +1054,11 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     local unique_id = inventory_data.unique_id
     Log:Add("Dequeue "..tostring(unique_id))
 
-                        -- Remove all requested copies.
-                        -- It's possible that not all copies are still
-                        -- enqueued, some might have be previously complted.
-                        -- That's okay, cancelItemByReference() silently skips
-                        -- any misses.
     local LLC = WritWorthy:GetLLC()
     local reference = WritWorthy.ToReference(inventory_data.unique_id)
     LLC:cancelItemByReference(reference)
                         -- Remove from savedChariables so that we do not
-                        -- re-check this row upon /reloadui.
+                        -- re-queue this row upon /reloadui.
     if WritWorthy.savedChariables.writ_unique_id then
         WritWorthy.savedChariables.writ_unique_id[unique_id] = nil
     end
@@ -1051,8 +1067,8 @@ end
 -- Reload the LibLazyCrafting queue from savedChariables
 function WritWorthy:RestoreFromSavedChariables()
                         -- Do nothing if nothing to restore.
-    if    (not self.savedChariables)
-       or (not self.savedChariables.writ_unique_id) then
+    if not (    self.savedChariables
+            and self.savedChariables.writ_unique_id) then
         return
     end
 
