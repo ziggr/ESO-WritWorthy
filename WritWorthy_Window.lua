@@ -268,6 +268,11 @@ end
 -- Just data, no UI code here (that's FilterScrollList()'s job).
 function WritWorthyInventoryList:BuildMasterlist()
     self.inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
+
+                        -- This seems as good a place as any to
+                        -- make this once-a-day-or-so call.
+                        -- Certainly do not want it once-per-init().
+    WritWorthy:PurgeAncientSavedChariables()
 end
 
 -- Populate the ScrollList's rows, using our data model as a source.
@@ -764,6 +769,50 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
         b_mask.tooltip_text = i_d.ui_can_queue_tooltip
     end
 end
+
+-- savedChariables will slowly accumulate an ever-growing list of completed
+-- sealed master writs. Discard any writ that has not been in inventory for
+-- a while.
+--
+-- There's no point in doing this every time we load UI, just do it once
+-- a day, maybe once per window toggle?
+function WritWorthy:PurgeAncientSavedChariables()
+                        -- Build a fast O(1) lookup table of
+                        -- current sealed writs.
+    local inventory_data_list = self:ScanInventoryForMasterWrits()
+    local current = {}
+    for _, inventory_data in pairs(inventory_data_list) do
+        current[inventory_data.unique_id] = inventory_data
+    end
+
+    local now = GetTimeStamp()
+    local DAY_SECS = 24 * 3600
+    local too_old = now - 3 * DAY_SECS
+    local doomed = {}
+    for unique_id, sav in pairs(self.savedChariables.writ_unique_id) do
+                        -- Continue to update timestamps of any writs
+                        -- we still possess. Also update any ancient data
+                        -- that lacks any timestamp at all (should no longer
+                        -- occur, that's from older unreleased code).
+        if current[unique_id] or not sav.last_seen_ts then
+            sav.last_seen_ts = now
+
+                        -- Schedule for deletion any records whose writ
+                        -- we've not seen in a long time.
+        elseif sav.last_seen_ts and sav.last_seen_ts < too_old then
+            table.insert(doomed, unique_id)
+        end
+    end
+                        -- Delete the unworthy.
+    for _, unique_id in ipairs(doomed) do
+        self.savedChariables.writ_unique_id[unique_id] = nil
+    end
+    if 0 < #doomed then
+        Log:Add("PurgeAncientSavedChariables() purged writ_unique_id count:"
+                ..tostring(#doomed))
+    end
+end
+
 
 -- Callback from LibLazyCrafter into our code upon completion of a single
 -- queued request.
