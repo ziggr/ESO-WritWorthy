@@ -12,7 +12,7 @@ WritWorthy.savedVarVersion = 1
 WritWorthy.default = {
     enable_mat_list_chat = false
 
-                        -- UI topleft
+                        -- UI topleft, used by WritWorthyInventoryList.
 ,   position = { 50, 50 }
 }
                         -- Default savedChariables: per-character saved data.
