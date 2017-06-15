@@ -6,12 +6,13 @@ local function dbug(...)
 	DolgubonGlobalDebugOutput(...)
 end
 
-local function LLC_CraftAlchemy(self, solventId, reagentId1, reagentId2, reagentId3, autocraft, reference)
+local function LLC_CraftAlchemyPotionItemByItemId(self, solventId, reagentId1, reagentId2, reagentId3, timesToMake, autocraft, reference)
 	dbug('FUNCTION:LLCCraftAlchemy')
 	if reference == nil then reference = "" end
 	if not self then d("Please call with colon notation") end
 	if autocraft==nil then autocraft = self.autocraft end
 	if not solventId and reagentId1 and reagentId2 then return end -- reagentId3 optional, nil okay.
+	if timesToMake == nil then timesToMake = 1 end
 
 	table.insert(craftingQueue[self.addonName][CRAFTING_TYPE_ALCHEMY],
 	{
@@ -24,6 +25,7 @@ local function LLC_CraftAlchemy(self, solventId, reagentId1, reagentId2, reagent
 		["Requester"] = self.addonName,
 		["reference"] = reference,
 		["station"] = CRAFTING_TYPE_ALCHEMY,
+		["timesToMake"] = timesToMake,
 	}
 	)
 
@@ -31,6 +33,16 @@ local function LLC_CraftAlchemy(self, solventId, reagentId1, reagentId2, reagent
 	if GetCraftingInteractionType()==CRAFTING_TYPE_ALCHEMY then
 		LibLazyCrafting.craftInteract(event, CRAFTING_TYPE_ALCHEMY)
 	end
+end
+
+local function LLC_CraftAlchemyItem(self, selventBagId, solventSlotId, reagent1BagId, reagent1SlotId, reagent2BagId, reagent2SlotId, reagent3BagId, reagent3SlotId, timesToMake, autocraft, reference)
+	local reagent3itemId
+	if reagent3SlotId==nil then
+		reagent3itemId = nil
+	else
+		reagent3itemId = GetItemId(reagent3BagId, reagent3SlotId)
+	end
+	LLC_CraftEnchantingGlyphItemID(self, GetItemId(selventBagId, solventSlotId),GetItemId( reagent1BagId, reagent1SlotId),GetItemId(reagent2BagId, reagent2SlotId), reagent3itemId, timesToMake,autocraft, reference)
 end
 
 local function copy(t)
@@ -49,14 +61,13 @@ end
 --
 local function LLC_FindSlotsContaining(itemLink)
 	local wantItemName = GetItemLinkName(itemLink)
-	local wantQuality = GetItemLinkQuality(itemLink)
 
 	local r = {}
 	local bagId = BAG_BACKPACK
 	local maxSlotId = GetBagSize(bagId)
-	for slotIndex = 1, maxSlotId do
+	for slotIndex = 0, maxSlotId do
 		local slotLink = GetItemLink(bagId, slotIndex, LINK_STYLE_DEFAULT)
-		if GetItemLinkName(slotLink) == wantItemName and GetItemLinkQuality(slotLink) == wantQuality then
+		if GetItemLinkName(slotLink) == wantItemName then
 			r[slotIndex] = GetSlotStackSize(bagId, slotIndex)
 		end
 	end
@@ -97,7 +108,7 @@ local function LLC_AlchemyCraftInteraction(event, station)
 		reagent2BagId, reagent2SlotIndex,
 		reagent3BagId, reagent3SlotIndex,
 	}
-	if not (solventSlotIndex and reagent1SlotIndex and reagent2SlotIndex) then return end
+	if not (solventSlotIndex and reagent1SlotIndex and reagent2SlotIndex and (not earliest["reagentId3"] or reagent3SlotIndex)) then return end
 
 	dbug("CALL:ZOAlchemyCraft")
 	CraftAlchemyItem(unpack(locations))
@@ -136,20 +147,27 @@ local function LLC_AlchemyCraftingComplete(event, station, lastCheck)
 	local newSlots = LLC_FindSlotsContaining(currentCraftAttempt.link)
 	local grewSlotIndex = LLC_FindIncreasedSlotIndex(currentCraftAttempt.prevSlots, newSlots)
 	if grewSlotIndex then
-		dbug("ACTION:RemoveQueueItem")
-		craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position] = nil
-		sortCraftQueue()
-		local resultTable =
-		{
-			["bag"] = BAG_BACKPACK,
-			["slot"] = grewSlotIndex,
-			['link'] = currentCraftAttempt.link,
-			['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
-			["quantity"] = 1,
-			["reference"] = currentCraftAttempt.reference,
-		}
-		currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, CRAFTING_TYPE_ALCHEMY, resultTable)
-		currentCraftAttempt = {}
+		dbug("RESULT:PotionMade")
+		if currentCraftAttempt["timesToMake"] < 2 then
+			dbug("ACTION:RemoveQueueItem")
+			craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position] = nil
+			sortCraftQueue()
+			local resultTable =
+			{
+				["bag"] = BAG_BACKPACK,
+				["slot"] = grewSlotIndex,
+				['link'] = currentCraftAttempt.link,
+				['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
+				["quantity"] = 1,
+				["reference"] = currentCraftAttempt.reference,
+			}
+
+			currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, CRAFTING_TYPE_ALCHEMY, resultTable)
+			currentCraftAttempt = {}
+		else
+			craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position]["timesToMake"] = craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position]["timesToMake"] - 1
+			if GetCraftingInteractionType()==0 then zo_callLater(function() LLC_EnchantingCraftingComplete(event, station, true) end,100) end
+		end
 
 	elseif lastCheck then
 
@@ -173,4 +191,5 @@ LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ALCHEMY] =
 	["isItemCraftable"] = function(station) if station == CRAFTING_TYPE_ALCHEMY then return true else return false end end,
 }
 
-LibLazyCrafting.functionTable.CraftAlchemy = LLC_CraftAlchemy
+LibLazyCrafting.functionTable.CraftAlchemyItem = LLC_CraftAlchemyItem
+LibLazyCrafting.functionTable.CraftAlchemyItemByItemId = LLC_CraftAlchemyItemByItemId
