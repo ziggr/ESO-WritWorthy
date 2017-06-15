@@ -379,7 +379,7 @@ function Parser:ToMatList()
     return self.mat_list
 end
 
-function Parser:ToDolRequest()
+function Parser:ToDolRequest(unique_id)
     local mat_list = self:ToMatList()
     local o = {}
     o[1] = GetItemIDFromLink(mat_list[1].link) -- solvent
@@ -388,9 +388,8 @@ function Parser:ToDolRequest()
     o[4] = GetItemIDFromLink(mat_list[4].link) -- reagent3 (optional, nilable)
     o[5] = mat_list[1].ct                      -- timesToMake
     o[6] = true                                -- autocraft
-    o[7] = nil                                 -- reference
+    o[7] = unique_id                           -- reference
     return { ["function"       ] = "CraftAlchemyItemByItemId"
            , ["args"           ] = o
-           , ["reference_index"] = 7 -- where in args[n] is the reference/unique_id
            }
 end

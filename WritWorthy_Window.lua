@@ -998,14 +998,6 @@ function WritWorthy:Enqueue(unique_id, inventory_data)
         d("LibLazyCrafter version:"..tostring(LLC.version))
         return
     end
-
-                        -- Fill in the reference with our unique_id.
-                        -- Parser could not do this for us becaue
-                        -- Parsers know nothing of our id.
-                        -- We really should expand the ToDolRequest() API
-                        -- to include the unique_id to use as a LLC reference.
-    i_d.llc_args[i_d.llc_reference_index] = i_d.unique_id
-
                         -- Call LibLazyCrafting to queue it up for later.
     if LLC[i_d.llc_func] then
         LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))

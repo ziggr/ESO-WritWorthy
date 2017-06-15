@@ -936,7 +936,7 @@ CraftRequestTable[]
 --]]
 
 -- Create a Dolgubon's Lazy Set Crafter request.
-function Parser:ToDolRequest()
+function Parser:ToDolRequest(unique_id)
                         -- API struct passed to LibLazyCrafter for
                         -- eventual crafting.
     local o = {}
@@ -950,7 +950,7 @@ function Parser:ToDolRequest()
     o.setIndex     = self.set_bonus.dol_set_index
     o.quality      = self.improve_level.index
     o.autocraft    = true
-    o.reference    = nil
+    o.reference    = unique_id
                         -- Positional arguments to LibLazyCrafter:CraftSmithingItemByLevel()
     local args = {
       o.patternIndex            --  1
@@ -967,6 +967,5 @@ function Parser:ToDolRequest()
     }
     return { ["function"]        = "CraftSmithingItemByLevel"
            , ["args"    ]        = args
-           , ["reference_index"] = 11
            }
 end

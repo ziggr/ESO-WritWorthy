@@ -216,7 +216,7 @@ function WritWorthy:ScanInventoryForMasterWrits()
             local unique_id = WritWorthy.UniqueID(bag_id, slot_index)
             local llc_req   = {}
             if parser.ToDolRequest then
-                llc_req = parser:ToDolRequest()
+                llc_req = parser:ToDolRequest(unique_id)
             end
             local inventory_data =
                 { item_link           = item_link
@@ -224,7 +224,6 @@ function WritWorthy:ScanInventoryForMasterWrits()
                 , unique_id           = unique_id
                 , llc_func            = llc_req["function"]
                 , llc_args            = llc_req.args
-                , llc_reference_index = llc_req.reference_index
                 }
             table.insert(result_list, inventory_data)
         end
@@ -358,7 +357,6 @@ function WritWorthy:Initialize()
                             )
 
     WritWorthy.LibLazyCrafting = nil    -- lazy initialized in :GetLLC()
-
 
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()

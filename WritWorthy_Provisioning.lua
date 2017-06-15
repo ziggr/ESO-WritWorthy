@@ -690,15 +690,14 @@ function Parser:ToKnowList()
     return { k }
 end
 
-function Parser:ToDolRequest()
+function Parser:ToDolRequest(unique_id)
     local mat_list = self:ToMatList()
     local o = {}
     o[1] = self.recipe.recipe_item_id -- recipeId
     o[2] = 2                          -- timesToMake
     o[3] = true                       -- autocraft
-    o[4] = nil                        -- reference
+    o[4] = unique_id                  -- reference
     return { ["function"       ] = "CraftProvisioningItemByRecipeId"
            , ["args"           ] = o
-           , ["reference_index"] = 4 -- where in args[n] is the reference/unique_id
            }
 end

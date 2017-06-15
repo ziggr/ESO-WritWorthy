@@ -185,17 +185,16 @@ function Parser:ToMatList()
     return ml
 end
 
-function Parser:ToDolRequest()
+function Parser:ToDolRequest(unique_id)
     local o = {}
     o[1] = self.potency_rune.item_id        -- potency_item_id
     o[2] = self.glyph.essence_rune.item_id  -- essence_item_id
     o[3] = self.aspect_rune.item_id         -- aspect_item_id
     o[4] = true                             -- autocraft
-    o[5] = nil                              -- reference
+    o[5] = unique_id                        -- reference
 
     return { ["function"        ] = "CraftEnchantingItemId"
            , ["args"            ] = o
-           , ["reference_index" ] = 5  -- where in args[n] to store unique_id
            }
 end
 
