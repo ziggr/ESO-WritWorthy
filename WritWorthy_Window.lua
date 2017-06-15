@@ -810,12 +810,11 @@ function WritWorthy_LLCCompleted(event, station, llc_result)
     local unique_id = nil
     local request_index = nil
     if llc_result then
-        unique_id, request_index = WritWorthy.FromReference(llc_result.reference)
+        unique_id = llc_result.reference
     end
     if not unique_id then return end
     -- Log:Add("LibLazyCrafting completed"
     --         .." unique_id:"..tostring(unique_id)
-    --         .." request_index:"..tostring(request_index)
     --         .." event:"..tostring(event)
     --         .." station:"..tostring(station)
     --         .." llc_result:"..tostring(llc_result))
@@ -970,35 +969,6 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
     -- WritWorthy:LogLLCQueue(WritWorthy:GetLLC().personalQueue)
 end
 
--- @deprecated
--- Leftovers from when we would make multiple LibLazyCrafter requests to craft
--- multiple copies of the same stackable item. Now that LibLazyCrafter supports
--- "timesToMake", we no longer use result_index and this function is scheduled
--- for termination.
---
--- Return ""42000", "42000.2", "42000.3", "42000.4", and so on.
-function WritWorthy.ToReference(unique_id, request_index)
-    if not request_index or request_index < 2 then
-        return tostring(unique_id)
-    end
-    return tostring(unique_id).."."..tostring(request_index)
-end
-
--- @deprecated
--- Leftovers from when we would make multiple LibLazyCrafter requests to craft
--- multiple copies of the same stackable item. Now that LibLazyCrafter supports
--- "timesToMake", we no longer use result_index and this function is scheduled
--- for termination.
---
--- Return string(unique_id), integer(request_index)
--- If no ".n" suffix found, return integer(1) for request_index
-function WritWorthy.FromReference(llc_reference)
-    local sep_index = llc_reference:find("%.")
-    if not sep_index then return llc_reference, 1 end
-    return llc_reference:sub(1, sep_index-1)
-         , tonumber(llc_reference:sub(sep_index+1))
-end
-
 -- The Dolgubon-only portion of enqueing a request, no list UI work here.
 -- Called from WritWorthy itself during RestoreFromSavedChariables()
 -- and also after the user selects a checkbox.
@@ -1034,8 +1004,7 @@ function WritWorthy:Enqueue(unique_id, inventory_data)
                         -- Parsers know nothing of our id.
                         -- We really should expand the ToDolRequest() API
                         -- to include the unique_id to use as a LLC reference.
-    local reference = WritWorthy.ToReference(i_d.unique_id)
-    i_d.llc_args[i_d.llc_reference_index] = reference
+    i_d.llc_args[i_d.llc_reference_index] = i_d.unique_id
 
                         -- Call LibLazyCrafting to queue it up for later.
     if LLC[i_d.llc_func] then
@@ -1055,8 +1024,7 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     Log:Add("Dequeue "..tostring(unique_id))
 
     local LLC = WritWorthy:GetLLC()
-    local reference = WritWorthy.ToReference(inventory_data.unique_id)
-    LLC:cancelItemByReference(reference)
+    LLC:cancelItemByReference(inventory_data.unique_id)
                         -- Remove from savedChariables so that we do not
                         -- re-queue this row upon /reloadui.
     if WritWorthy.savedChariables.writ_unique_id then
@@ -1121,8 +1089,7 @@ function WritWorthyInventoryList:QueuedReferenceList()
         if type(queued) == "table" then
             for i, request in ipairs(queued) do
                 if request.reference then
-                    local unique_id, request_index
-                        = WritWorthy.FromReference(request.reference)
+                    local unique_id = request.reference
                     queued_ids[unique_id] = true
                 end
             end
