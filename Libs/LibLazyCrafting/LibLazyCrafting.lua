@@ -189,14 +189,13 @@ LibLazyCrafting.functionTable.findItemLocationById = findItemLocationById
 --
 function LibLazyCrafting.findSlotsContaining(itemLink, alsoIncludeFirstEmpty)
 	local wantItemName = GetItemLinkName(itemLink)
-	local wantQuality = GetItemLinkQuality(itemLink)
 
 	local r = {}
 	local bagId = BAG_BACKPACK
 	local maxSlotId = GetBagSize(bagId)
-	for slotIndex = 1, maxSlotId do
+	for slotIndex = 0, maxSlotId do
 		local slotLink = GetItemLink(bagId, slotIndex, LINK_STYLE_DEFAULT)
-		if GetItemLinkName(slotLink) == wantItemName and GetItemLinkQuality(slotLink) == wantQuality then
+		if GetItemLinkName(slotLink) == wantItemName then
 			r[slotIndex] = GetSlotStackSize(bagId, slotIndex)
 		end
 	end
@@ -231,6 +230,13 @@ function LibLazyCrafting.tableShallowCopy(t)
 	return a
 end
 
+-- clear a table in-place. Allows functions to clear out tables passed as a parameter.
+local function tableClear(t)
+	for k,_ in ipairs(t) do
+		t[k] = nil
+	end
+end
+
 -- Common code called by Alchemy and Provisioning crafting complete handlers.
 function LibLazyCrafting.stackableCraftingComplete(event, station, lastCheck, craftingType, currentCraftAttempt)
 	dbug("EVENT:CraftComplete")
@@ -239,35 +245,44 @@ function LibLazyCrafting.stackableCraftingComplete(event, station, lastCheck, cr
 	-- Because alchemy potions stack, cannot trust .slot field here, so
 	-- just assume it worked without checking for item name matches.
 
-	local newSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link)
+	local newSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link, true)
 	local grewSlotIndex = LibLazyCrafting.findIncreasedSlotIndex(currentCraftAttempt.prevSlots, newSlots)
+
 	if grewSlotIndex then
-		dbug("ACTION:RemoveQueueItem")
-		craftingQueue[currentCraftAttempt.addon][craftingType][currentCraftAttempt.position] = nil
-		LibLazyCrafting.sortCraftQueue()
-		local resultTable =
-		{
-			["bag"] = BAG_BACKPACK,
-			["slot"] = grewSlotIndex,
-			['link'] = currentCraftAttempt.link,
-			['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
-			["quantity"] = 1,
-			["reference"] = currentCraftAttempt.reference,
-		}
-		currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, craftingType, resultTable)
-		currentCraftAttempt = {}
+		dbug("RESULT:StackableMade")
+		if currentCraftAttempt["timesToMake"] < 2 then
+			dbug("ACTION:RemoveQueueItem")
+			craftingQueue[currentCraftAttempt.addon][craftingType][currentCraftAttempt.position] = nil
+			LibLazyCrafting.sortCraftQueue()
+			local resultTable =
+			{
+				["bag"] = BAG_BACKPACK,
+				["slot"] = grewSlotIndex,
+				['link'] = currentCraftAttempt.link,
+				['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
+				["quantity"] = 1,
+				["reference"] = currentCraftAttempt.reference,
+			}
+
+			currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, craftingType, resultTable)
+			tableClear(currentCraftAttempt)
+		else
+			-- Loop to craft multiple copies
+			local earliest = craftingQueue[currentCraftAttempt.addon][craftingType][currentCraftAttempt.position]
+			earliest.timesToMake = earliest.timesToMake - 1
+			currentCraftAttempt.timesToMake = earliest.timesToMake
+			if GetCraftingInteractionType()==0 then zo_callLater(function() LibLazyCrafting.stackableCraftingComplete(event, station, true, craftingType, currentCraftAttempt) end,100) end
+		end
 
 	elseif lastCheck then
 
 		-- give up on finding it.
-		for k,_ in ipairs(currentCraftAttempt) do
-			currentCraftAttempt[k] = nil
-		end
+		tableClear(currentCraftAttempt)
 	else
 
 		-- further search
 		-- search again later
-		if GetCraftingInteractionType()==0 then zo_callLater(function() LibLazyCrafting.StackableCraftingComplete(event, station, true, craftingType, currentCraftAttempt) end,100) end
+		if GetCraftingInteractionType()==0 then zo_callLater(function() LibLazyCrafting.stackableCraftingComplete(event, station, true, craftingType, currentCraftAttempt) end,100) end
 	end
 end
 

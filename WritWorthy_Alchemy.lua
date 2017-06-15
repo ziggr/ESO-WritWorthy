@@ -386,11 +386,12 @@ function Parser:ToDolRequest()
     o[2] = GetItemIDFromLink(mat_list[2].link) -- reagent1
     o[3] = GetItemIDFromLink(mat_list[3].link) -- reagent2
     o[4] = GetItemIDFromLink(mat_list[4].link) -- reagent3 (optional, nilable)
-    o[5] = true                                -- autocraft
-    o[6] = nil                                 -- reference
-    return { ["function"       ] = "CraftAlchemy"
+    o[5] = mat_list[1].ct                      -- timesToMake
+    o[6] = true                                -- autocraft
+    o[7] = nil                                 -- reference
+    return { ["function"       ] = "CraftAlchemyItemByItemId"
            , ["args"           ] = o
-           , ["request_ct"     ] = mat_list[1].ct
-           , ["reference_index"] = 6 -- where in args[n] is the reference/unique_id
+           , ["request_ct"     ] = 1 -- ### was mat_list[1].ct (let LibLazyCrafting do the loop, not WritWorthy)
+           , ["reference_index"] = 7 -- where in args[n] is the reference/unique_id
            }
 end
