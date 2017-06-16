@@ -359,7 +359,6 @@ function WritWorthy:Initialize()
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
 
-    WritWorthyUI_RestorePos()
                         -- Load the LibLazyCrafting queue BEFORE we start up
                         -- the list UI. This gives the list UI actual queue
                         -- data to consume when deciding which checkboxes to
@@ -369,6 +368,8 @@ function WritWorthy:Initialize()
     WritWorthy.InventoryList = WritWorthyInventoryList:New()
     WritWorthy.InventoryList:BuildMasterlist()
     WritWorthy.InventoryList:Refresh()
+
+    WritWorthyUI_RestorePos()
 
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end

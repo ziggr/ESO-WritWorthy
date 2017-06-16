@@ -124,14 +124,38 @@ function WritWorthyUI_RestorePos()
         d("Your XML probably did not load. Fix it.")
         local _ = WritWorthyUI.SetAnchor
     end
+    WritWorthyUI:ClearAnchors()
     WritWorthyUI:SetAnchor(
-             TOPLEFT
-            ,GuiRoot
-            ,TOPLEFT
-            ,pos[1]
-            ,pos[2]
+              TOPLEFT
+            , GuiRoot
+            , TOPLEFT
+            , pos[1]
+            , pos[2]
             )
--- ### restore width, too, if set.
+
+    -- ### This "works" sort of, leaves the initial window with the width/height
+    -- ### last saved. But as soon as I try to resize the window, it snaps back
+    -- ### to whatever width/height I have hardcoded in WritWorthy.xml instead
+    -- ### of the width/height created by this BOTTOMRIGHT corner. Hrm.
+    -- if pos[3] and pos[4] then
+    --     WritWorthyUI:SetAnchor(
+    --               BOTTOMRIGHT
+    --             , GuiRoot
+    --             , TOPLEFT
+    --             , pos[3]
+    --             , pos[4]
+    --             )
+    end
+end
+
+function WritWorthyUI_SavePos()
+    local l = WritWorthyUI:GetLeft()
+    local t = WritWorthyUI:GetTop()
+    local r = WritWorthyUI:GetRight()
+    local b = WritWorthyUI:GetBottom()
+    d("SavePos ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    local pos = { l, t, r, b }
+    WritWorthy.savedVariables.position = pos
 end
 
 function WritWorthyUI_OnMoveStop()
@@ -139,8 +163,7 @@ function WritWorthyUI_OnMoveStop()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    -- d("OnMoveStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
-    -- ### Save Bounds
+    WritWorthyUI_SavePos()
 end
 
 function WritWorthyUI_OnResizeStop()
@@ -148,9 +171,8 @@ function WritWorthyUI_OnResizeStop()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    -- d("OnResizeStop ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
     WritWorthy.InventoryList:UpdateAllCellWidths()
-    -- ### Save Bounds
+    WritWorthyUI_SavePos()
 end
 
 function WritWorthyUI_ToggleUI()
