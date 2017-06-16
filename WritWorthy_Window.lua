@@ -133,18 +133,9 @@ function WritWorthyUI_RestorePos()
             , pos[2]
             )
 
-    -- ### This "works" sort of, leaves the initial window with the width/height
-    -- ### last saved. But as soon as I try to resize the window, it snaps back
-    -- ### to whatever width/height I have hardcoded in WritWorthy.xml instead
-    -- ### of the width/height created by this BOTTOMRIGHT corner. Hrm.
-    -- if pos[3] and pos[4] then
-    --     WritWorthyUI:SetAnchor(
-    --               BOTTOMRIGHT
-    --             , GuiRoot
-    --             , TOPLEFT
-    --             , pos[3]
-    --             , pos[4]
-    --             )
+    if pos[3] and pos[4] then
+        WritWorthyUI:SetWidth( pos[3] - pos[1])
+        WritWorthyUI:SetHeight(pos[4] - pos[2])
     end
 end
 
@@ -153,7 +144,7 @@ function WritWorthyUI_SavePos()
     local t = WritWorthyUI:GetTop()
     local r = WritWorthyUI:GetRight()
     local b = WritWorthyUI:GetBottom()
-    d("SavePos ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    -- d("SavePos ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
     local pos = { l, t, r, b }
     WritWorthy.savedVariables.position = pos
 end
@@ -173,6 +164,14 @@ function WritWorthyUI_OnResizeStop()
     local b = WritWorthyUI:GetBottom()
     WritWorthy.InventoryList:UpdateAllCellWidths()
     WritWorthyUI_SavePos()
+
+                        -- Update vertical scrollbar and extents to
+                        -- match new scrollpane height.
+    if      WritWorthyInventoryList.singleton
+        and WritWorthyInventoryList.singleton.list then
+        local scroll_list = WritWorthyInventoryList.singleton.list
+        ZO_ScrollList_Commit(scroll_list)
+    end
 end
 
 function WritWorthyUI_ToggleUI()
@@ -234,6 +233,7 @@ end
 function WritWorthyInventoryList:Initialize(control)
     ZO_SortFilterList.Initialize(self, control)
     self.inventory_data_list = {}
+    self:SetEmptyText("This character has no sealed master writs in its inventory.")
 
                         -- Tell ZO_ScrollList how it can ask us to
                         -- create row controls.
