@@ -276,6 +276,69 @@ function WritWorthyInventoryList:Initialize(control)
     self.sortHeaderGroup:SelectHeaderByKey("detail1")
     ZO_SortHeader_OnMouseExit(WritWorthyUIInventoryListHeadersType)
     self:RefreshData()
+
+
+                        -- Create the summary grid at the bottom of the window.
+    local OFFSET_X = { 0, 72, 100,   350, 350+72, 350+100, 700 }
+    local OFFSET_Y = { 5, 30, 55 }
+    local L = TEXT_ALIGN_LEFT       -- for a LOT less typing
+    local R = TEXT_ALIGN_RIGHT
+
+                                            -- offsetX index into above table
+                                            -- offsetY index into above table
+                                            -- align
+                                            -- text
+    local GRID = {                          --
+      ["SummaryQueuedVoucherCt"          ] = { 1, 1, R, "" }
+    , ["SummaryQueuedMatCost"            ] = { 1, 2, R, "" }
+    , ["SummaryQueuedVoucherCost"        ] = { 1, 3, R, "" }
+
+    , ["SummaryQueuedVoucherCtUnit"      ] = { 2, 1, L, "v"   }
+    , ["SummaryQueuedMatCostUnit"        ] = { 2, 2, L, "g"   }
+    , ["SummaryQueuedVoucherCostUnit"    ] = { 2, 3, L, "g/v" }
+
+    , ["SummaryQueuedVoucherCtLabel"     ] = { 3, 1, L, "total vouchers queued"      }
+    , ["SummaryQueuedMatCostLabel"       ] = { 3, 2, L, "total materials queued"     }
+    , ["SummaryQueuedVoucherCostLabel"   ] = { 3, 3, L, "average queued voucher cost" }
+
+    , ["SummaryCompletedVoucherCt"       ] = { 4, 1, R, "" }
+    , ["SummaryCompletedMatCost"         ] = { 4, 2, R, "" }
+    , ["SummaryCompletedVoucherCost"     ] = { 4, 3, R, "" }
+
+    , ["SummaryCompletedVoucherCtUnit"   ] = { 5, 1, L, "v"   }
+    , ["SummaryCompletedMatCostUnit"     ] = { 5, 2, L, "g"   }
+    , ["SummaryCompletedVoucherCostUnit" ] = { 5, 3, L, "g/v" }
+
+    , ["SummaryCompletedVoucherCtLabel"  ] = { 6, 1, L, "total vouchers completed"      }
+    , ["SummaryCompletedMatCostLabel"    ] = { 6, 2, L, "total materials completed"     }
+    , ["SummaryCompletedVoucherCostLabel"] = { 6, 3, L, "average completed voucher cost" }
+    }
+    for name, def in pairs(GRID) do
+        local offset_x   = OFFSET_X[def[1]]
+        local offset_y   = OFFSET_Y[def[2]]
+        local text_align = def[3]
+        local text       = def[4]
+
+        local width      = OFFSET_X[def[1]+1] - OFFSET_X[def[1]] - 2
+
+        -- local control = WritWorthyUI:GetNamedChild(name)
+        local control_name = "WritWorthyUI"..name
+        local control = WritWorthyUI:CreateControl(control_name, CT_LABEL)
+        control:SetHorizontalAlignment(text_align)
+        control:SetColor(255,255,255)
+        control:SetFont("ZoFontGame")
+        control:SetHeight(20)
+        control:SetWidth(width)
+        control:SetText(text)
+        control:ClearAnchors()
+        control:SetAnchor( TOPLEFT                      -- point
+                         , WritWorthyUIInventoryList    -- relativeTo
+                         , BOTTOMLEFT                   -- relativePoint
+                         , offset_x                     -- offsetX
+                         , offset_y                     -- offsetY
+                         )
+    end
+
 end
 
 -- Collect data that we'll eventually use to fill the inventory list UI.
@@ -1167,15 +1230,15 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
         completed_mat_per_v = total_completed_mat_gold / total_completed_voucher_ct
     end
 
-    local queued_voucher_string = Util.ToMoney(total_queued_voucher_ct).."v"
-    local queued_mat_string     = Util.ToMoney(total_queued_mat_gold).."g"
-    local queued_mat_per_string = Util.ToMoney(queued_mat_per_v).."g/v"
+    local queued_voucher_string = Util.ToMoney(total_queued_voucher_ct)
+    local queued_mat_string     = Util.ToMoney(total_queued_mat_gold)
+    local queued_mat_per_string = Util.ToMoney(queued_mat_per_v)
     WritWorthyUISummaryQueuedVoucherCt:SetText(queued_voucher_string)
     WritWorthyUISummaryQueuedMatCost:SetText(queued_mat_string)
     WritWorthyUISummaryQueuedVoucherCost:SetText(queued_mat_per_string)
-    local completed_voucher_string = Util.ToMoney(total_completed_voucher_ct).."v"
-    local completed_mat_string     = Util.ToMoney(total_completed_mat_gold).."g"
-    local completed_mat_per_string = Util.ToMoney(completed_mat_per_v).."g/v"
+    local completed_voucher_string = Util.ToMoney(total_completed_voucher_ct)
+    local completed_mat_string     = Util.ToMoney(total_completed_mat_gold)
+    local completed_mat_per_string = Util.ToMoney(completed_mat_per_v)
     WritWorthyUISummaryCompletedVoucherCt:SetText(completed_voucher_string)
     WritWorthyUISummaryCompletedMatCost:SetText(completed_mat_string)
     WritWorthyUISummaryCompletedVoucherCost:SetText(completed_mat_per_string)
