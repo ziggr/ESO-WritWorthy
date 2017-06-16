@@ -1125,10 +1125,12 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
     local queued_ids = self:QueuedReferenceList()
 
                         -- Accumulators
-    local can_enqueue_any  = false
-    local can_dequeue_any  = false
-    local total_voucher_ct = 0
-    local total_mat_gold   = 0
+    local can_enqueue_any            = false
+    local can_dequeue_any            = false
+    local total_queued_voucher_ct    = 0
+    local total_queued_mat_gold      = 0
+    local total_completed_voucher_ct = 0
+    local total_completed_mat_gold   = 0
 
                         -- Scan our master request list, accumulate voucher
                         -- and mat totals for each request in LLC's queue.
@@ -1138,29 +1140,45 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
         if inventory_data.unique_id then
             if queued_ids[inventory_data.unique_id] then
                 local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
-                total_voucher_ct = total_voucher_ct + voucher_ct
+                total_queued_voucher_ct = total_queued_voucher_ct + voucher_ct
                 local mat_list = inventory_data.parser:ToMatList()
                 local mat_gold = WritWorthy.MatRow.ListTotal(mat_list)
-                total_mat_gold = total_mat_gold + mat_gold
+                total_queued_mat_gold = total_queued_mat_gold + mat_gold
                 can_dequeue_any = true
             elseif inventory_data.ui_can_queue
                    and not inventory_data.ui_is_queued then
                 can_enqueue_any = true
+            elseif self:IsCompleted(inventory_data) then
+                local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
+                total_completed_voucher_ct = total_completed_voucher_ct + voucher_ct
+                local mat_list = inventory_data.parser:ToMatList()
+                local mat_gold = WritWorthy.MatRow.ListTotal(mat_list)
+                total_completed_mat_gold = total_completed_mat_gold + mat_gold
             end
         end
     end
 
-    local mat_per_v      = 0
-    if total_voucher_ct then
-        mat_per_v = total_mat_gold / total_voucher_ct
+    local queued_mat_per_v      = 0
+    local completed_mat_per_v   = 0
+    if total_queued_voucher_ct then
+        queued_mat_per_v = total_queued_mat_gold / total_queued_voucher_ct
+    end
+    if total_completed_voucher_ct then
+        completed_mat_per_v = total_completed_mat_gold / total_completed_voucher_ct
     end
 
-    local voucher_string = Util.ToMoney(total_voucher_ct).."v"
-    local mat_string     = Util.ToMoney(total_mat_gold).."g"
-    local mat_per_string = Util.ToMoney(mat_per_v).."g/v"
-    WritWorthyUISummaryVoucherCt:SetText(voucher_string)
-    WritWorthyUISummaryMatCost:SetText(mat_string)
-    WritWorthyUISummaryVoucherCost:SetText(mat_per_string)
+    local queued_voucher_string = Util.ToMoney(total_queued_voucher_ct).."v"
+    local queued_mat_string     = Util.ToMoney(total_queued_mat_gold).."g"
+    local queued_mat_per_string = Util.ToMoney(queued_mat_per_v).."g/v"
+    WritWorthyUISummaryQueuedVoucherCt:SetText(queued_voucher_string)
+    WritWorthyUISummaryQueuedMatCost:SetText(queued_mat_string)
+    WritWorthyUISummaryQueuedVoucherCost:SetText(queued_mat_per_string)
+    local completed_voucher_string = Util.ToMoney(total_completed_voucher_ct).."v"
+    local completed_mat_string     = Util.ToMoney(total_completed_mat_gold).."g"
+    local completed_mat_per_string = Util.ToMoney(completed_mat_per_v).."g/v"
+    WritWorthyUISummaryCompletedVoucherCt:SetText(completed_voucher_string)
+    WritWorthyUISummaryCompletedMatCost:SetText(completed_mat_string)
+    WritWorthyUISummaryCompletedVoucherCost:SetText(completed_mat_per_string)
 
     WritWorthyUIEnqueueAll:SetEnabled(can_enqueue_any)
     WritWorthyUIDequeueAll:SetEnabled(can_dequeue_any)
