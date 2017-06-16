@@ -17,15 +17,18 @@ local function LLC_CraftProvisioningItemByRecipeId(self, recipeId, timesToMake, 
     if autocraft==nil then autocraft = self.autocraft end
     if not recipeId then return end
 
-    -- ZOS API prefers recipeListIndex + recipeIndex, not recipeId or recipeLink.
-    -- Translate now, fail silently if we cannot.
     local recipeLink = toRecipeLink(recipeId)
     local recipeListIndex, recipeIndex = GetItemLinkGrantedRecipeIndices(recipeLink)
-    if not (recipeListIndex and recipeIndex) then return end
+    if not (recipeListIndex and recipeIndex) then
+        d("Unable to find recipeListIndex for recipeId:"..tostring(recipeId))
+        return end
+    end
+    LLC_CraftProvisioningItemByRecipeIndex(self, recipeListIndex, recipeIndex, timesToMake, autocraft, reference)
+end
 
+local function LLC_CraftProvisioningItemByRecipeIndex(self, recipeListIndex, recipeIndex, timesToMake, autocraft, reference)
     table.insert(craftingQueue[self.addonName][CRAFTING_TYPE_PROVISIONING],
     {
-        ["recipeId"] = recipeId,
         ["recipeListIndex"] = recipeListIndex,
         ["recipeIndex"] = recipeIndex,
         ["timestamp"] = GetTimeStamp(),
@@ -76,3 +79,4 @@ LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_PROVISIONING] =
 }
 
 LibLazyCrafting.functionTable.CraftProvisioningItemByRecipeId = LLC_CraftProvisioningItemByRecipeId
+LibLazyCrafting.functionTable.CraftProvisioningItemByRecipeIndex = LLC_CraftProvisioningItemByRecipeIndex
