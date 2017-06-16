@@ -21,7 +21,7 @@ local function LLC_CraftProvisioningItemByRecipeId(self, recipeId, timesToMake, 
     local recipeListIndex, recipeIndex = GetItemLinkGrantedRecipeIndices(recipeLink)
     if not (recipeListIndex and recipeIndex) then
         d("Unable to find recipeListIndex for recipeId:"..tostring(recipeId))
-        return end
+        return
     end
     LLC_CraftProvisioningItemByRecipeIndex(self, recipeListIndex, recipeIndex, timesToMake, autocraft, reference)
 end
