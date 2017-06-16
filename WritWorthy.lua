@@ -359,13 +359,14 @@ function WritWorthy:Initialize()
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
 
+    WritWorthy.InventoryList = WritWorthyInventoryList:New()
+
                         -- Load the LibLazyCrafting queue BEFORE we start up
                         -- the list UI. This gives the list UI actual queue
                         -- data to consume when deciding which checkboxes to
                         -- initially mark checked.
     WritWorthyInventoryList.RestoreFromSavedChariables()
 
-    WritWorthy.InventoryList = WritWorthyInventoryList:New()
     WritWorthy.InventoryList:BuildMasterlist()
     WritWorthy.InventoryList:Refresh()
 

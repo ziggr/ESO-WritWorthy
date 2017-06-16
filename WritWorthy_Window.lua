@@ -1063,6 +1063,7 @@ end
 -- Enqueues one or more copies of inventory_data's request.
 --
 function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
+    self = WritWorthyInventoryList.singleton
     if not inventory_data.llc_func then
                         -- Either this row should not have had its
                         -- "Enqueue" checkbox enabled, or this row
