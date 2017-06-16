@@ -78,14 +78,6 @@
             WritWorthyUI_ToggleUI()
           </OnClicked>
         </Button>
-        <!-- lot list ----------------------------------------------->
-
-            <!-- Optional: anchor each resizable list's container
-               to the resizable TopLevelControl, to minimize
-               layout calculations during resize.
-               Then lay out list headers relative to that
-               container.
-            -->
                           <!-- WritWorthyUIInventoryList -->
         <Control name="$(parent)InventoryList"
             inheritAlpha="true"
@@ -100,7 +92,10 @@
               point="BOTTOMRIGHT"
               offsetX="0"
               offsetY="-80" />
+          <!-- Pointless to set dimensions when the two anchors
+               completely and dynamically define our size
           <Dimensions x="990" y="700" />
+          -->
           <Controls>
                        <!-- WritWorthyUIInventoryListHeaders -->
             <Control name="$(parent)Headers">
@@ -226,8 +221,6 @@
               <Anchor point="BOTTOMRIGHT"
                   relativeTo="$(parent)"
                   relativePoint="BOTTOMRIGHT"
-                  offsetX="0"
-                  offsetY="-100"
                   />
             </Control>
           </Controls>
