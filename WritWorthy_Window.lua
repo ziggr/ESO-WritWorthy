@@ -1273,6 +1273,11 @@ end
 
 function WritWorthyInventoryList:EnqueueAll()
     for _, inventory_data in ipairs(self.inventory_data_list) do
+                        -- If this row has not yet had its UI
+                        -- data filled in, we need it now.
+        if inventory_data.ui_detail1 == nil then
+            self:PopulateUIFields(inventory_data)
+        end
         if inventory_data.ui_can_queue and not inventory_data.ui_is_queued then
             self:Enqueue(inventory_data)
         end
@@ -1281,6 +1286,11 @@ end
 
 function WritWorthyInventoryList:DequeueAll()
     for _, inventory_data in ipairs(self.inventory_data_list) do
+                        -- If this row has not yet had its UI
+                        -- data filled in, we need it now.
+        if inventory_data.ui_detail1 == nil then
+            self:PopulateUIFields(inventory_data)
+        end
         if inventory_data.ui_is_queued then
             self:Dequeue(inventory_data)
         end
