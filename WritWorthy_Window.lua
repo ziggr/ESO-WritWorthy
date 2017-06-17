@@ -46,16 +46,17 @@ local Util = WritWorthy.Util
 local TYPE_ID = 1
 
 WritWorthyInventoryList.SORT_KEYS = {
-  ["ui_type"      ] = {tiebreaker="ui_voucher_ct"}
-, ["ui_voucher_ct"] = {tiebreaker="ui_detail1", isNumeric=true }
-, ["ui_detail1"   ] = {tiebreaker="ui_detail2"}
-, ["ui_detail2"   ] = {tiebreaker="ui_detail3"}
-, ["ui_detail3"   ] = {tiebreaker="ui_detail4"}
-, ["ui_detail4"   ] = {tiebreaker="ui_detail5"}
-, ["ui_detail5"   ] = {tiebreaker="ui_is_queued"}
-, ["ui_is_queued" ] = {tiebreaker="ui_can_queue"}
-, ["ui_can_queue" ] = {} -- Not a visible column, but does have visible
-                         -- effect on "is_queued" column.
+  ["ui_type"        ] = {tiebreaker="ui_voucher_ct"}
+, ["ui_voucher_ct"  ] = {tiebreaker="ui_detail1", isNumeric=true }
+, ["ui_detail1"     ] = {tiebreaker="ui_detail2"}
+, ["ui_detail2"     ] = {tiebreaker="ui_detail3"}
+, ["ui_detail3"     ] = {tiebreaker="ui_detail4"}
+, ["ui_detail4"     ] = {tiebreaker="ui_detail5"}
+, ["ui_detail5"     ] = {tiebreaker="ui_is_queued"}
+, ["ui_is_queued"   ] = {tiebreaker="ui_can_queue"}
+                        -- Not a visible columns, but still affect sort.
+, ["ui_can_queue"   ] = {}
+, ["ui_station_sort"] = {tiebreaker="ui_voucher_ct"}
 }
 
 WritWorthyInventoryList.ROW_HEIGHT = 30
@@ -346,6 +347,10 @@ end
 function WritWorthyInventoryList:BuildMasterlist()
     self.inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
 
+                        -- We need UI data before we can sort.
+    for _, inventory_data in pairs(self.inventory_data_list) do
+        self:PopulateUIFields(inventory_data)
+    end
                         -- This seems as good a place as any to
                         -- make this once-a-day-or-so call.
                         -- Certainly do not want it once-per-init().
@@ -746,6 +751,26 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     inventory_data.ui_detail3    = self.Shorten(inventory_data.ui_detail3   )
     inventory_data.ui_detail4    = self.Shorten(inventory_data.ui_detail4   )
     inventory_data.ui_detail5    = self.Shorten(inventory_data.ui_detail5   )
+
+
+                        -- "Sort by station" key.  Consumables to the front,
+                        -- then set bonus sites.
+    if parser.class == WritWorthy.Alchemy.Parser.class then
+        inventory_data.ui_station_sort = "01 alchemy"
+    elseif parser.class == WritWorthy.Enchanting.Parser.class then
+        inventory_data.ui_station_sort = "02 enchanting"
+    elseif parser.class == WritWorthy.Provisioning.Parser.class then
+        inventory_data.ui_station_sort = "03 provisioning"
+    elseif parser.class == WritWorthy.Smithing.Parser.class then
+        local set_name      = inventory_data.ui_detail1
+        local crafting_type = parser.request_item.school.trade_skill_type
+
+        local t = string.format( "04 %s %02d"
+                               , set_name
+                               , crafting_type
+                               )
+        inventory_data.ui_station_sort = t
+    end
 end
 
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
@@ -781,6 +806,16 @@ function WritWorthyInventoryList_DequeueAll()
     self:UpdateSummaryAndQButtons()
 end
 
+-- Called by ZOS code after user clicks "Sort by Station"
+function WritWorthyInventoryList_SortByStation()
+    Log:StartNewEvent()
+    Log:Add("SortByStation")
+    self = WritWorthyInventoryList.singleton
+    self.currentSortKey = "ui_station_sort"
+    self.currentSortOrder = ZO_SORT_ORDER_UP
+    self:RefreshData()
+end
+
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
 -- WritWorthyInventoryListRow row_control to display some inventory_data. But
 -- it's our job to fill in that control's nested labels with the appropriate
@@ -792,6 +827,8 @@ end
 -- FilterScrollList(), is an element of master list
 -- WritWorthy.inventory_data_list.
 function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
+    -- Log:Add("SetupRowControl row_control:"..tostring(row_control)
+    --         .."  inventory_data.unique_id:"..tostring(inventory_data.unique_id))
     row_control.inventory_data = inventory_data
 
                         -- ZO_SortList reuses row_control instances, so there
@@ -807,6 +844,7 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
         table.insert(self.row_control_list, row_control)
     end
 
+                        -- Refresh mutable state (aka queued/completed)
     self:PopulateUIFields(inventory_data)
 
                         -- For less typing.
@@ -964,7 +1002,6 @@ end
 function WritWorthyInventoryList:UpdateUISoon(inventory_data)
     Log:Add("WritWorthyInventoryList:UpdateUISoon  unique_id:"
             ..tostring(inventory_data.unique_id))
-    self:PopulateUIFields(inventory_data)
     self.LogLLCQueue(self:GetLLC().personalQueue)
     self:UpdateSummaryAndQButtons()
     self:Refresh()
@@ -1273,12 +1310,12 @@ end
 
 function WritWorthyInventoryList:EnqueueAll()
     for _, inventory_data in ipairs(self.inventory_data_list) do
-                        -- If this row has not yet had its UI
-                        -- data filled in, we need it now.
-        if inventory_data.ui_detail1 == nil then
-            self:PopulateUIFields(inventory_data)
-        end
-        if inventory_data.ui_can_queue and not inventory_data.ui_is_queued then
+                        -- Use CanQueue()/IsQueued() for dynamic/current
+                        -- reality instead of inventory.can_queue/ui_is_queued
+                        -- because that might not be filled in yet for rows
+                        -- scrolled offscreen.
+        if          self:CanQueue(inventory_data)
+            and not self:IsQueued(inventory_data) then
             self:Enqueue(inventory_data)
         end
     end
@@ -1286,12 +1323,11 @@ end
 
 function WritWorthyInventoryList:DequeueAll()
     for _, inventory_data in ipairs(self.inventory_data_list) do
-                        -- If this row has not yet had its UI
-                        -- data filled in, we need it now.
-        if inventory_data.ui_detail1 == nil then
-            self:PopulateUIFields(inventory_data)
-        end
-        if inventory_data.ui_is_queued then
+                        -- Use IsQueued() for dynamic/current reality
+                        -- instead of inventory.ui_is_queued because
+                        -- that might not be filled in yet for rows
+                        -- scrolled offscreen.
+        if self:IsQueued(inventory_data) then
             self:Dequeue(inventory_data)
         end
     end

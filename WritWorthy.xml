@@ -78,6 +78,22 @@
             WritWorthyUI_ToggleUI()
           </OnClicked>
         </Button>
+
+        <Button   name="$(parent)SortByStation"
+            inherits="ZO_DefaultButton"
+            text="Sort by Station"
+            >
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPRIGHT"
+              point="TOPRIGHT"
+              offsetX="0"
+              offsetY="35" />
+          <Dimensions x="200" y="25" />
+          <OnClicked>
+            WritWorthyInventoryList_SortByStation()
+          </OnClicked>
+        </Button>
+
                           <!-- WritWorthyUIInventoryList -->
         <Control name="$(parent)InventoryList"
             inheritAlpha="true"
