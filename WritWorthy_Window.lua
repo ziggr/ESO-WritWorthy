@@ -399,8 +399,14 @@ function WritWorthyInventoryList_Cell_OnMouseDown(cell_control)
             and cell_control.inventory_data.item_link) then
         return
     end
-
+                        -- Inject this item's unique_id so that our
+                        -- WritWorthy.TooltipInsertOurText() code will see
+                        -- it and display "Queued for crafting". Otherwise
+                        -- an itemLink alone is insufficient to uniquely
+                        -- identify a Sealed Master Writ within our inventory.
+    PopupTooltip.WritWorthy_UniqueId = cell_control.inventory_data.unique_id
     ZO_PopupTooltip_SetLink(cell_control.inventory_data.item_link)
+    PopupTooltip.WritWorthy_UniqueId = nil
 end
 
 -- First time through a row's SetupRowControl(), programmatically create the

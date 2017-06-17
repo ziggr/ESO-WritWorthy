@@ -163,7 +163,7 @@ end
 --                Include this cost in the gold-per-voucher calculation.
 --                (optional, nil ok)
 --
-function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
+function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, unique_id)
     -- Only fire for master writs.
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
 
@@ -179,6 +179,34 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold)
     local know_text = WritWorthy.KnowTooltipText(know_list)
     if know_text then
         control:AddLine(know_text)
+    end
+                        -- Can we append WritWorthy queued/completed status?
+                        -- We can if this writ is in our backpack and thus
+                        -- has a unique_id.
+                        --
+                        -- The unique_id for bag position usually comes in
+                        -- from ZOS inventory UI, but we can also inject it
+                        -- from the WritWorthyInventoryList UI
+    if not unique_id then
+        unique_id = control.WritWorthy_UniqueId
+    end
+    if      unique_id
+        and WritWorthyInventoryList.singleton then
+        local inventory_data = WritWorthyInventoryList.singleton:UniqueIDToInventoryData(unique_id)
+        if inventory_data then
+            local text = nil
+            local color = nil
+            if inventory_data.ui_is_queued then
+                text = "WritWorthy: queued for crafting"
+                color = WritWorthyInventoryList.COLOR_TEXT_QUEUED
+            elseif inventory_data.ui_is_completed then
+                text = "WritWorthy: crafting completed"
+                color = WritWorthyInventoryList.COLOR_TEXT_COMPLETED
+            end
+            if color and text then
+                control:AddLine(Util.color(color, text))
+            end
+        end
     end
 end
 
@@ -260,7 +288,9 @@ function WritWorthy.TooltipInterceptInstall()
     local tt=ItemTooltip.SetBagItem
     ItemTooltip.SetBagItem=function(control,bagId,slotIndex,...)
         tt(control,bagId,slotIndex,...)
-        WritWorthy.TooltipInsertOurText(control,GetItemLink(bagId,slotIndex))
+        WritWorthy.TooltipInsertOurText(control,GetItemLink(bagId,slotIndex)
+                                , nil -- purchase_gold
+                                , WritWorthy.UniqueID(bagId, slotIndex))
     end
     local tt=ItemTooltip.SetLootItem
     ItemTooltip.SetLootItem=function(control,lootId,...)
