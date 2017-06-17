@@ -393,6 +393,16 @@ function WritWorthyInventoryList_Cell_OnMouseExit(cell_control)
     ZO_Tooltips_HideTextTooltip()
 end
 
+function WritWorthyInventoryList_Cell_OnMouseDown(cell_control)
+    if not (    cell_control
+            and cell_control.inventory_data
+            and cell_control.inventory_data.item_link) then
+        return
+    end
+
+    ZO_PopupTooltip_SetLink(cell_control.inventory_data.item_link)
+end
+
 -- First time through a row's SetupRowControl(), programmatically create the
 -- individual label controls that will hold cell text. Doing so
 -- programmatically here is less maintenance work than  trying to keep the XML
@@ -449,8 +459,6 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
 
             cell_control:SetFont("ZoFontGame")
             cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
-            --cell_control:SetLinkEnabled(true)
-            cell_control:SetMouseEnabled(true)
 
                         -- Surprise! Headers:GetNamedChild() returns a control
                         -- instance that lacks a "Name" sub-control, which we
@@ -475,6 +483,11 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                             -- never need this because TEXT_WRAP_MODE_ELLIPSIS
                             -- above should prevent multiline text.
             cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
+
+                            -- Click to toggle item tooltip for row's
+                            -- Sealed Master Writ.
+            cell_control:SetMouseEnabled(true)
+            cell_control:SetHandler("OnMouseDown", WritWorthyInventoryList_Cell_OnMouseDown)
         end
     end
 
@@ -804,7 +817,11 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     elseif inventory_data.ui_is_queued then
         c = self.COLOR_TEXT_QUEUED
     end
-
+                        -- Allow each cell's OnMouseDown handler easy
+                        -- access to this row's data.
+    for _, name in ipairs(self.CELL_NAME_LIST) do
+        rc[name].inventory_data = i_d
+    end
                         -- Fill in the cells with data for this row.
     rc[self.CELL_TYPE     ]:SetText(fn(c, i_d.ui_type))
     rc[self.CELL_VOUCHERCT]:SetText(fn(c, tostring(i_d.ui_voucher_ct)))
