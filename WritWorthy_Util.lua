@@ -66,6 +66,9 @@ end
 
 -- Chat Colors ---------------------------------------------------------------
 
+WritWorthy.Util.COLOR_RED    = "FF3333"
+WritWorthy.Util.COLOR_GREY   = "999999"
+WritWorthy.Util.COLOR_ORANGE = "FF8800"
 
 function Util.color(color, text)
     return "|c" .. color .. text .. "|r"

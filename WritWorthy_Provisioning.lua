@@ -687,7 +687,11 @@ function Parser:ToKnowList()
                        , is_known = self.recipe.is_known
                        , lack_msg = "Recipe not known"
                        })
-    return { k }
+    local chef   = WritWorthy.RequiredSkill.PR_FOOD_4X:ToKnow()
+    local brewer = WritWorthy.RequiredSkill.PR_DRINK_4X:ToKnow()
+    chef.is_warn = true
+    brewer.is_warn = true
+    return { k, chef, brewer }
 end
 
 function Parser:ToDolRequest(unique_id)

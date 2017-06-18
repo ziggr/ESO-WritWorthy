@@ -185,6 +185,15 @@ function Parser:ToMatList()
     return ml
 end
 
+function Parser:ToKnowList()
+    if self.aspect_rune == Enchanting.KUTA then
+        local kuta = WritWorthy.RequiredSkill.EN_ASPECT_GOLD:ToKnow()
+        return { kuta }
+    else
+        return {}
+    end
+end
+
 function Parser:ToDolRequest(unique_id)
     local o = {}
     o[1] = self.potency_rune.item_id        -- potency_item_id

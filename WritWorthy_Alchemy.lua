@@ -379,6 +379,14 @@ function Parser:ToMatList()
     return self.mat_list
 end
 
+function Parser:ToKnowList()
+    local three_reagents = WritWorthy.RequiredSkill.AL_LABORATORY_USE:ToKnow()
+    local four_pots_per  = WritWorthy.RequiredSkill.AL_POTION_4X:ToKnow()
+    four_pots_per.is_warn = true
+    local r = { three_reagents, four_pots_per }
+    return r
+end
+
 function Parser:ToDolRequest(unique_id)
     local mat_list = self:ToMatList()
     local o = {}

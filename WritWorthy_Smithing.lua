@@ -9,6 +9,9 @@ local Util     = WritWorthy.Util
 local Fail     = WritWorthy.Util.Fail
 local Log      = WritWorthy.Log
 
+local a = WritWorthy.RequiredSkill
+local b = WritWorthy.RequiredSkill.FetchInfo
+local c = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
 -- Schools: HVY MED LGT WOOD -------------------------------------------------
 --
 -- Clothing split into two since base mats differ (silk vs. leather).
@@ -28,6 +31,7 @@ Smithing.SCHOOL_HEAVY =  {
 ,   purple_mat_name     = "grain solvent"
 ,   gold_mat_name       = "tempering alloy"
 ,   armor_weight_name   = "Heavy"
+,   temper_skill        = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
     -- research lines
 ,   H1_AXE              =  1
 ,   H1_MACE             =  2
@@ -53,6 +57,7 @@ Smithing.SCHOOL_MEDIUM = {
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
 ,   armor_weight_name   = "Medium"
+,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
     -- research lines
 ,   CHEST               =  8
 ,   FEET                =  9
@@ -71,6 +76,7 @@ Smithing.SCHOOL_LIGHT  = {
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
 ,   armor_weight_name   = "Light"
+,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
     -- research lines
 ,   CHEST               =  1
 ,   FEET                =  2
@@ -89,6 +95,7 @@ Smithing.SCHOOL_WOOD   = {
 ,   purple_mat_name     = "mastic"
 ,   gold_mat_name       = "rosin"
 ,   armor_weight_name   = ""
+,   temper_skill        = WritWorthy.RequiredSkill.WW_TEMPER_EXPERTISE
     -- research lines
 ,   BOW                 =  1
 ,   FLAME_STAFF         =  2
@@ -872,6 +879,17 @@ function Parser:ToKnowList()
         table.insert(r, Know:New({ name     = title
                                  , is_known = self.set_bonus.trait_ct <= known_trait_ct
                                  , lack_msg = msg }))
+    end
+                        -- Is this a Legendary request and do you have the
+                        -- passive skill to minimize the gold tempers required?
+                        -- Skill not REQUIRED to craft, but worth at least a warning.
+                        -- WritWorthyInventoryList will refuse to queue such an
+                        -- unnecessarily expensive waste of gold tempers.
+    if self.improve_level == Smithing.GOLD then
+        local skill = self.request_item.school.temper_skill
+        local know = skill:ToKnow()
+        know.is_warn = true
+        table.insert(r, know)
     end
 
     return r

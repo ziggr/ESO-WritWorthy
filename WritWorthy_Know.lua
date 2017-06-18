@@ -14,6 +14,10 @@ function Know:New(args)
     local o = {
         name      = args.name       -- "recipe"
     ,   is_known  = args.is_known   -- false
+    ,   is_warn   = args.is_warn    -- not required, but increases mat cost.
+                                    -- WritWorthy will refuse to queue for
+                                    -- LibLazyCrafting.
+
     ,   lack_msg  = args.lack_msg   -- "Recipe not known"
     }
     setmetatable(o, self)
@@ -30,5 +34,7 @@ end
 
 function Know:TooltipText()
     if self.is_known then return nil end
-    return WritWorthy.Util.red(self.lack_msg)
+    color = WritWorthy.Util.COLOR_RED
+    if self.is_warn then color = WritWorthy.Util.COLOR_ORANGE end
+    return WritWorthy.Util.color(color, self.lack_msg)
 end

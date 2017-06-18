@@ -806,6 +806,38 @@ function WritWorthyInventoryList_DequeueAll()
     self:UpdateSummaryAndQButtons()
 end
 
+-- No longer used, but boy howdy tihs was a fun way to get the skill IDs for
+-- all the crafting passives I'm interested in.
+local function DumpSkills()
+    Log:StartNewEvent()
+    local num_types = GetNumSkillTypes()
+    Log:Add("num_types:"..tostring(num_types))
+    for skill_type = 1, num_types do
+        local num_lines = GetNumSkillLines(skill_type)
+        Log:Add("t:"..tostring(skill_type).."  num_lines:"..tostring(num_lines))
+        for skill_index = 1, num_lines do
+            local num_abilities = GetNumSkillAbilities(skill_type, skill_index)
+            Log:Add("t:"..tostring(skill_type).." i:"..tostring(skill_index)
+                .."  num_abilities:"..tostring(num_abilities))
+            for ability_index = 1, num_abilities do
+                local info = { GetSkillAbilityInfo(skill_type, skill_index, ability_index) }
+                local id   =   GetSkillAbilityId(skill_type, skill_index, ability_index, false)
+                Log:Add("t i a:"..tostring(skill_type).." "..tostring(skill_index)
+                    .." "..tostring(ability_index)
+                    .." id:"..tostring(id)
+                    .." name:"..tostring(info[1])
+                    .." tex:"  ..tostring(info[2])
+                    .." earnedRank:"..tostring(info[3])
+                    .." passive:"..tostring(info[4])
+                    .." ultimate:"..tostring(info[5])
+                    .." purchased:"..tostring(info[6])
+                    .." progression:"..tostring(info[7])
+                    )
+            end
+        end
+    end
+end
+
 -- Called by ZOS code after user clicks "Sort by Station"
 function WritWorthyInventoryList_SortByStation()
     Log:StartNewEvent()
