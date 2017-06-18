@@ -10,22 +10,6 @@ local function toRecipeLink(recipeId)
     return string.format("|H1:item:%s:3:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h", tostring(recipeId))
 end
 
-local function LLC_CraftProvisioningItemByRecipeId(self, recipeId, timesToMake, autocraft, reference)
-    dbug('FUNCTION:LLCCraftProvisioning')
-    if reference == nil then reference = "" end
-    if not self then d("Please call with colon notation") end
-    if autocraft==nil then autocraft = self.autocraft end
-    if not recipeId then return end
-
-    local recipeLink = toRecipeLink(recipeId)
-    local recipeListIndex, recipeIndex = GetItemLinkGrantedRecipeIndices(recipeLink)
-    if not (recipeListIndex and recipeIndex) then
-        d("Unable to find recipeListIndex for recipeId:"..tostring(recipeId))
-        return
-    end
-    LLC_CraftProvisioningItemByRecipeIndex(self, recipeListIndex, recipeIndex, timesToMake, autocraft, reference)
-end
-
 local function LLC_CraftProvisioningItemByRecipeIndex(self, recipeListIndex, recipeIndex, timesToMake, autocraft, reference)
     table.insert(craftingQueue[self.addonName][CRAFTING_TYPE_PROVISIONING],
     {
@@ -44,6 +28,22 @@ local function LLC_CraftProvisioningItemByRecipeIndex(self, recipeListIndex, rec
     if GetCraftingInteractionType()==CRAFTING_TYPE_PROVISIONING then
         LibLazyCrafting.craftInteract(event, CRAFTING_TYPE_PROVISIONING)
     end
+end
+
+local function LLC_CraftProvisioningItemByRecipeId(self, recipeId, timesToMake, autocraft, reference)
+    dbug('FUNCTION:LLCCraftProvisioning')
+    if reference == nil then reference = "" end
+    if not self then d("Please call with colon notation") end
+    if autocraft==nil then autocraft = self.autocraft end
+    if not recipeId then return end
+
+    local recipeLink = toRecipeLink(recipeId)
+    local recipeListIndex, recipeIndex = GetItemLinkGrantedRecipeIndices(recipeLink)
+    if not (recipeListIndex and recipeIndex) then
+        d("Unable to find recipeListIndex for recipeId:"..tostring(recipeId))
+        return
+    end
+    LLC_CraftProvisioningItemByRecipeIndex(self, recipeListIndex, recipeIndex, timesToMake, autocraft, reference)
 end
 
 local function LLC_ProvisioningCraftInteraction(event, station)
