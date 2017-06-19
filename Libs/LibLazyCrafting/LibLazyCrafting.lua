@@ -240,7 +240,7 @@ end
 -- Common code called by Alchemy and Provisioning crafting complete handlers.
 function LibLazyCrafting.stackableCraftingComplete(event, station, lastCheck, craftingType, currentCraftAttempt)
 	dbug("EVENT:CraftComplete")
-	if not currentCraftAttempt.addon then return end
+	if not (currentCraftAttempt and currentCraftAttempt.addon) then return end
 
 	local newSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link, true)
 	local grewSlotIndex = LibLazyCrafting.findIncreasedSlotIndex(currentCraftAttempt.prevSlots, newSlots)
