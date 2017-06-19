@@ -25,6 +25,6 @@ zip:
 	-rm -rf published/WritWorthy published/WritWorthy\ x.x.x.zip
 	mkdir -p published/WritWorthy
 	cp -R Libs published/WritWorthy/Libs
-	cp ./WritWorthy* published/WritWorthy/
+	cp ./WritWorthy* Bindings.xml published/WritWorthy/
 	cd published; zip -r WritWorthy\ x.x.x.zip WritWorthy
 

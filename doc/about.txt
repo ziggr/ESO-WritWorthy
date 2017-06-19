@@ -1,30 +1,54 @@
-Is this Master Writ worth doing?
+[LIST]
+[*]Is a master writ worth doing?
+[*]Does this character have the skills to do so?
+[*]Want to craft it automatically? <-- NEW and experimental as of 2017-06-18
+[/LIST]
+
+[B]Is this master writ worth doing?[/B]
 
 Most writs consume less than 1000g worth of materials for each writ voucher they return.  But some consume 2000g+ materials per voucher and might not be worth doing.
 
-Shopping guild stores for Master Writs? Which is cheaper, 700,000g for a 72-voucher writ, or 400,000g for a 45-voucher writ? Sure, you could do division in your head or with a calculator. Or let the computer tell you (it's the 400,000g/45-voucher writ, just barely).
+Shopping guild stores for Master Writs? What is the per-voucher cost of a writ, including both materials and purchase price?
 
 This add-on adds text to each Master Writ's tooltip, showing the total material cost, purchase price (if any), and the cost per writ voucher reward.
 
-
-Not interested in writs that require something that you cannot craft?
-
-This add-on shows big red warnings when writ requires a motif, trait, or recipe that the current character does not yet know.
-
 It also optionally dumps a complete material list to chat. Surprisingly useful when filling Alchemy writs.
-
-
-[B]Reporting Errors[/B]
-WritWorthy now writes a small debugging log to [I]SavedVariables\WritWorthy.lua[/I]. This should help me identify what it is about the master writ that triggers a bug in WritWorthy. Please send (or upload to imgur or gist.github.com or whatever):
-[LIST=1]
-[*] screenshot of the offending writ. You might have to move a UI Error dialog out of the way to make the shot.
-[*] /reloadui to cause the log to write to SavedVariables
-[*] [I]SavedVariables\WritWorthy.lua[\I]
-[/LIST]
-
 
 Requires [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] for material prices.
 
-Thank you to [URL=http://www.esoui.com/downloads/info1376-CraftStoreFixedandImproved.html]CraftStore Fixed and Improved[/URL] and [URL=http://www.esoui.com/downloads/info1043-ESOMasterRecipeList.html]ESO Master Recipe List[/URL] for some internal glyph and recipe item_id tables that saved me a couple hours of work.
+[B]Does this character have the skills to do so?[/B]
+
+Not interested in writs that you cannot craft?
+
+This add-on shows big red warnings when writ requires a motif, trait, or recipe that the current character does not yet know.
+
+It also shows orange warnings for missing skills that are not required, but which reduce the cost of expensive writs, such as Temper Expertise.
+
+(No, WritWorthy does not check inventory for required materials, or space to hold the the crafted item. I assume a master crafter can handle their own inventory management.)
+
+[B]Want to craft it automatically?[/B]
+NEW and experimental for version 3.0.3 2017-06-18
+
+"Experimental" here means that you will lose materials, maybe even gold tempers, if you discover a bug in WritWorthy.  Use automatic crafting only if you're willing to take the risk.
+
+
+[LIST=1]
+[*]Bind a key to "Show/Hide WritWorthy"
+[*]Use that key binding to see a list of all Sealed Master Writs in the current character's inventory.
+[*]Check the ones you want to craft automatically next time the character visits the appropriate crafting station. Or "Enqueue All" if you want to craft them all.
+[*]"Sort by Station" to see which crafting stations you need to visit.
+[*]Walk up to a station, 'E' interact, and watch Dolgubon's LibLazyCrafter make your items.
+[*][B]Wait patiently while the automatic crafting occurs[/B]. If you cancel interaction while still auto-crafting, you might end up auto-crafting an item twice, wasting materials. There is no indication for "all done". Sorry.
+[*]Once you have crafted items for your writs, you can open them, accept their quest, and the quest will automatically advance to "Turn in".
+[/LIST]
+
+Thanks to Dolgubon's LibLazyCrafting which makes automatic crafting possible.
+
+Automatic crafting requires that the appropriate cost-reduction skills have been maxed out: Temper Expertise, Chef, Brewer, or Chemistry.
+
+
+[B]Thank You[/B]
+Huge thank you to Rhyono and Dolgubon for all the programming help.
+I pulled some internal glyph and recipe list item_id values from [URL=http://www.esoui.com/downloads/info1376-CraftStoreFixedandImproved.html]CraftStore Fixed and Improved[/URL] and [URL=http://www.esoui.com/downloads/info1043-ESOMasterRecipeList.html]ESO Master Recipe List[/URL]: saved me a couple hours of work.
 
 --Z

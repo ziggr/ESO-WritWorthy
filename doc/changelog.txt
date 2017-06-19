@@ -1,3 +1,10 @@
+[B]3.0.Y 2017-06-18[/B]
+[LIST]
+[*]New window with list of all master writs in backpack.
+[*]Automatic crafting of writs.
+[*]integrate Dolgubon's LibLazyCrafting 0.4, which is actually Dolgubon's LibLazyCrafting 0.3 but with Zig-added support for alchemy and provisioning. If those don't work, it's Zig's fault not Dolgubons. Thank you Dolgubon for all the help!
+[/LIST]
+
 [B]3.0.2 2017-05-28[/B]
 [LIST]
 [*] Morrowind API: replace temporary workaround numbers with actual constants for new styles. Thank you @Rhyono for the CraftStore Morrowind update which had all the quest IDs I needed for the "which pages do you know?" query.
