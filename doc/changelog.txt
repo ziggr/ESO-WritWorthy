@@ -1,4 +1,9 @@
-[B]3.0.Y 2017-06-18[/B]
+[B]3.0.4 2017-06-20[/B]
+[LIST]
+[*]Bugfix: operator < is not supported for nil < nil.  Thanks to Tonyleila for the report.
+[/LIST]
+
+[B]3.0.3 2017-06-18[/B]
 [LIST]
 [*]New window with list of all master writs in backpack.
 [*]Automatic crafting of writs.

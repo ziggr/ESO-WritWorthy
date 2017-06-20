@@ -81,8 +81,15 @@ function RequiredSkill:FetchInfo()
                             , self.skill_index
                             , self.ability_index
                             ) }
-    self._name         = info[1]
-    self._is_purchased = info[6]
+    if self._name ~= nil and self._is_purchased ~= nil then
+        self._name         = info[1]
+        self._is_purchased = info[6]
+    else
+                        -- Unable to fetch info about this skill for some
+                        -- reason. Give up and ignore this requirement.
+        self._name         = "?"
+        self._is_purchased = true
+    end
 end
 
 function RequiredSkill:FetchUpgradeInfo()
@@ -91,7 +98,13 @@ function RequiredSkill:FetchUpgradeInfo()
                             , self.skill_index
                             , self.ability_index
                             )
-    self._is_maxxed = self._max <= self._have
+    if self._max ~= nil and self._have ~= nil then
+        self._is_maxxed = self._max <= self._have
+    else
+                        -- Unable to fetch info about this skill for some
+                        -- reason. Give up and ignore this requirement.
+        self._is_maxxed = true
+    end
 end
 
 local R = WritWorthy.RequiredSkill  -- for less typing
