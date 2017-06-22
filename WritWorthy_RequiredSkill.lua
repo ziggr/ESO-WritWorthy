@@ -27,8 +27,8 @@ function RequiredSkill:ToKnow()
         local known = self:IsKnown()
         local text  = string.format( "Insufficient skill '%s': %d/%d"
                                    , self:Name()
-                                   , self._have
-                                   , self._max
+                                   , self._have or -1
+                                   , self._max or -1
                                    )
         return WritWorthy.Know:New(
             { name     = "Skill: "..self:Name()
@@ -58,7 +58,7 @@ function RequiredSkill:Name()
     if self._name == nil then
         self:FetchInfo()
     end
-    return self._name
+    return self._name or "?"
 end
 
 function RequiredSkill:IsPurchased()
@@ -106,6 +106,11 @@ function RequiredSkill:FetchUpgradeInfo()
         self._is_maxxed = true
     end
 end
+
+-- ### I suspect that hardcoded skill indices are incorrect, that they change
+-- ### from player to player. I see signs on the esoui forums that JP clients
+-- ### have different skill sequences. Need to do an O(n) scan instead of this
+-- ### O(1) constant. Boo.
 
 local R = WritWorthy.RequiredSkill  -- for less typing
 
