@@ -7,18 +7,23 @@ WritWorthy.RequiredSkill = {}
 RequiredSkill = WritWorthy.RequiredSkill
 Log = WritWorthy.Log
 
+-- clean up suffixes such as ^F or ^S
+-- Code copied from Advanced Filters
+local function decaret(s)
+    return zo_strformat(SI_TOOLTIP_ITEM_NAME, s) or " "
+end
 
-function RequiredSkill:New(skill_id, function_name)
+function RequiredSkill:New(function_name, skill_name_list)
     local o = {
-        skill_id       = skill_id
-    ,   function_name  = function_name
-    ,   _skill_index   = nil
-    ,   _ability_index = nil
-    ,   _name          = nil
-    ,   _is_purchased  = nil
-    ,   _is_maxxed     = nil
-    ,   _have          = nil
-    ,   _max           = nil
+        function_name   = function_name
+    ,   skill_name_list = skill_name_list -- {en, es, fr, etc...}
+    ,   _skill_index    = nil
+    ,   _ability_index  = nil
+    ,   _name           = nil
+    ,   _is_purchased   = nil
+    ,   _is_maxxed      = nil
+    ,   _have           = nil
+    ,   _max            = nil
     }
     setmetatable(o, self)
     self.__index = self
@@ -49,7 +54,7 @@ function RequiredSkill:ToKnow()
 end
 
 function RequiredSkill:IsKnown()
-    return self[self.function_name](self)
+    return self[self.function_name](self) -- and false
 end
 
 -- This lazy-fetch and then latch idiom means that if the player acquires the
@@ -61,19 +66,20 @@ function RequiredSkill:Name()
     if self._name == nil then
         self:FetchInfo()
     end
-    return self._name or "?"
+    return decaret(self._name) or "?"
 end
 
 function RequiredSkill:IsPurchased()
     if self._is_purchsed == nil then
-        self:FetchInfo()
+        self:FetchInfo()            -- For localized name and purchased state
     end
     return self._is_purchased
 end
 
 function RequiredSkill:IsMaxxed()
     if self._is_maxxed == nil then
-        self:FetchUpgradeInfo()
+        self:FetchInfo()            -- For localized name
+        self:FetchUpgradeInfo()     -- for 3/3 skill rank
     end
     return self._is_maxxed
 end
@@ -83,7 +89,7 @@ function RequiredSkill:FetchInfo()
 
                         -- Unable to fetch info about this skill for some
                         -- reason? Set fallbacks to ignore this requirement.
-    self._name         = "?"
+    self._name         = self.skill_name_list[1]
     self._is_purchased = true
 
     local skill_index, ability_index = self:GetIndices()
@@ -93,7 +99,7 @@ function RequiredSkill:FetchInfo()
                             , skill_index
                             , ability_index
                             ) }
-    if not info and info[1] then return end
+    if not (info and info[1]) then return end
     self._name         = info[1]
     self._is_purchased = info[6]
 end
@@ -101,7 +107,7 @@ end
 function RequiredSkill:FetchUpgradeInfo()
     if (self._have ~= nil and self._max ~= nil) then return end
                         -- Unable to fetch info about this skill for some
-                        -- reason? Set fallbacksto ignore this requirement.
+                        -- reason? Set fallbacks to ignore this requirement.
     self._have      = 0
     self._max       = 0
     self._is_maxxed = true
@@ -121,16 +127,27 @@ function RequiredSkill:FetchUpgradeInfo()
 end
 
 function RequiredSkill:GetIndices()
-    if not RequiredSkill.id_to_indices then
+    if (self._skill_index and self._ability_index) then
+        return self._skill_index, self._ability_index
+    end
+
+    if not RequiredSkill.name_to_indices then
                         -- Lazy-fetch a table of every crafting skill.
-        RequiredSkill.id_to_indices = RequiredSkill.FindAllSkills()
+        RequiredSkill.name_to_indices = RequiredSkill.FindAllSkills()
     end
-    local r = RequiredSkill.id_to_indices[self.skill_id]
-    if not r then
-        d("WritWorthy: unable to find skill_id:"..tostring(self.skill_id))
-        return nil, nil
+
+    for _,name in ipairs(self.skill_name_list) do
+        local r = RequiredSkill.name_to_indices[decaret(name)]
+        if r then
+            self._skill_index   = r.skill_index
+            self._ability_index = r.ability_index
+            break
+        end
     end
-    return r.skill_index, r.ability_index
+    if not self._skill_index and self._ability_index then
+        d("WritWorthy: unable to find skill indices for name:"..tostring(self.skill_name_list[1]))
+    end
+    return  self._skill_index, self._ability_index
 end
 
 -- O(n) scan through all skills in an attempt to find all the ones
@@ -154,6 +171,7 @@ function RequiredSkill.FindAllSkills()
         for ability_index = 1, num_abilities do
             local info = { GetSkillAbilityInfo(skill_type, skill_index, ability_index) }
             local id   =   GetSkillAbilityId(skill_type, skill_index, ability_index, false)
+            local name = info[1]
             Log:Add("t i a:"..tostring(skill_type).." "..tostring(skill_index)
                 .." "..tostring(ability_index)
                 .." id:"..tostring(id)
@@ -165,11 +183,11 @@ function RequiredSkill.FindAllSkills()
                 .." purchased:"..tostring(info[6])
                 .." progression:"..tostring(info[7])
                 )
-            t[id] = { id            = id
-                    , name          = info[1]
-                    , skill_index   = skill_index
-                    , ability_index = ability_index
-                    }
+            t[decaret(name)] = { id            = id
+                               , name          = info[1]
+                               , skill_index   = skill_index
+                               , ability_index = ability_index
+                               }
         end
     end
     return t
@@ -178,12 +196,25 @@ end
 
 local R = WritWorthy.RequiredSkill  -- for less typing
 
-R.BS_TEMPER_EXPERTISE = R:New(48168, "IsMaxxed"   ) -- 2, 6, Temper Expertise
-R.CL_TEMPER_EXPERTISE = R:New(48198, "IsMaxxed"   ) -- 3, 6, Tannin Expertise
-R.WW_TEMPER_EXPERTISE = R:New(48177, "IsMaxxed"   ) -- 6, 6, Resin Expertise
-R.EN_ASPECT_GOLD      = R:New(46763, "IsMaxxed"   ) -- 4, 1, Aspect Improvement
-R.PR_FOOD_4X          = R:New(44619, "IsMaxxed"   ) -- 5, 5, Chef
-R.PR_DRINK_4X         = R:New(44624, "IsMaxxed"   ) -- 5, 6, Brewer
-R.AL_POTION_4X        = R:New(45579, "IsMaxxed"   ) -- 1, 4, Chemistry
-R.AL_LABORATORY_USE   = R:New(45555, "IsPurchased") -- 1, 5, Laboratory Use, 3 reagents
+R.BS_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Temper Expertise"   , "Härterkenntnis"    , "Expertise de la trempe^f"    })
+R.CL_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Tannin Expertise"   , "Gerberkunde"       , "Expertise en tanins^f"       })
+R.WW_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Resin Expertise"    , "Harzkenntnis"      , "Expertise en résines^f"      })
+R.EN_ASPECT_GOLD      = R:New("IsMaxxed"   , {"Aspect Improvement" , "Aspektverbesserung", "Amélioration d'aspect^f"     })
+R.PR_FOOD_4X          = R:New("IsMaxxed"   , {"Chef"               , "Kochkunst"         , "Chef^m"                      })
+R.PR_DRINK_4X         = R:New("IsMaxxed"   , {"Brewer"             , "Braukunst"         , "Brasserie^f"                 })
+R.AL_POTION_4X        = R:New("IsMaxxed"   , {"Chemistry"          , "Chemie"            , "Chimie"                      })
+R.AL_LABORATORY_USE   = R:New("IsPurchased", {"Laboratory Use"     , "Laborkenntnis"     , "Utilisation du laboratoire^f"})
 
+-- ESO API lacks a constant for each skill. skill_index+ability_index varies
+-- from player to player. skill_id varies from character to character.
+-- The closest things we have are either icon and name. Name is user-visible
+-- and changes from language to language.
+--
+-- [44] = "t i a:8 6 6 id:48175 name:Resin Expertise    tex:/esoui/art/icons/ability_tradecraft_001.dds  earnedRank:10 passive:true ultimate:false purchased:false progression:nil",
+-- [36] = "t i a:8 5 6 id:44620 name:Brewer             tex:/esoui/art/icons/ability_provisioner_003.dds earnedRank:9  passive:true ultimate:false purchased:false progression:nil",
+-- [35] = "t i a:8 5 5 id:44616 name:Chef               tex:/esoui/art/icons/ability_provisioner_002.dds earnedRank:7  passive:true ultimate:false purchased:false progression:nil",
+-- [25] = "t i a:8 4 1 id:46758 name:Aspect Improvement tex:/esoui/art/icons/ability_enchanter_002b.dds  earnedRank:1  passive:true ultimate:false purchased:true  progression:nil",
+-- [23] = "t i a:8 3 6 id:48196 name:Tannin Expertise   tex:/esoui/art/icons/ability_tradecraft_004.dds  earnedRank:10 passive:true ultimate:false purchased:false progression:nil",
+-- [16] = "t i a:8 2 6 id:48166 name:Temper Expertise   tex:/esoui/art/icons/ability_smith_004.dds       earnedRank:10 passive:true ultimate:false purchased:false progression:nil",
+-- [ 8] = "t i a:8 1 5 id:45555 name:Laboratory Use     tex:/esoui/art/icons/ability_alchemy_002.dds     earnedRank:15 passive:true ultimate:false purchased:true  progression:nil",
+-- [ 7] = "t i a:8 1 4 id:45577 name:Chemistry          tex:/esoui/art/icons/ability_alchemy_006.dds     earnedRank:12 passive:true ultimate:false purchased:false progression:nil",
