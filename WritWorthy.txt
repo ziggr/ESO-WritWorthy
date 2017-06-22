@@ -1,5 +1,5 @@
 ## Title: WritWorthy
-## Description: WritWorthy version 3.0.4
+## Description: WritWorthy version 3.0.5
 ## Author: ziggr
 ## APIVersion: 100019
 ## SavedVariables: WritWorthyVars
