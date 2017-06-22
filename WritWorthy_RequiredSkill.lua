@@ -5,13 +5,16 @@ local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 WritWorthy.RequiredSkill = {}
 
 RequiredSkill = WritWorthy.RequiredSkill
+Log = WritWorthy.Log
 
-function RequiredSkill:New(skill_index, ability_index, function_name)
+
+function RequiredSkill:New(skill_id, function_name)
     local o = {
-        skill_index    = skill_index
-    ,   ability_index  = ability_index
+        skill_id       = skill_id
     ,   function_name  = function_name
-    ,   _name          = nil  -- lazy fetched
+    ,   _skill_index   = nil
+    ,   _ability_index = nil
+    ,   _name          = nil
     ,   _is_purchased  = nil
     ,   _is_maxxed     = nil
     ,   _have          = nil
@@ -76,50 +79,111 @@ function RequiredSkill:IsMaxxed()
 end
 
 function RequiredSkill:FetchInfo()
+    if self._name and (self._is_purchased ~= nil) then return end
+
+                        -- Unable to fetch info about this skill for some
+                        -- reason? Set fallbacks to ignore this requirement.
+    self._name         = "?"
+    self._is_purchased = true
+
+    local skill_index, ability_index = self:GetIndices()
+    if not (skill_index and ability_index) then return end
     local info = { GetSkillAbilityInfo(
                               SKILL_TYPE_TRADESKILL
-                            , self.skill_index
-                            , self.ability_index
+                            , skill_index
+                            , ability_index
                             ) }
-    if self._name ~= nil and self._is_purchased ~= nil then
-        self._name         = info[1]
-        self._is_purchased = info[6]
-    else
-                        -- Unable to fetch info about this skill for some
-                        -- reason. Give up and ignore this requirement.
-        self._name         = "?"
-        self._is_purchased = true
-    end
+    if not info and info[1] then return end
+    self._name         = info[1]
+    self._is_purchased = info[6]
 end
 
 function RequiredSkill:FetchUpgradeInfo()
-    self._have, self._max = GetSkillAbilityUpgradeInfo(
-                              SKILL_TYPE_TRADESKILL
-                            , self.skill_index
-                            , self.ability_index
-                            )
-    if self._max ~= nil and self._have ~= nil then
-        self._is_maxxed = self._max <= self._have
-    else
+    if (self._have ~= nil and self._max ~= nil) then return end
                         -- Unable to fetch info about this skill for some
-                        -- reason. Give up and ignore this requirement.
-        self._is_maxxed = true
-    end
+                        -- reason? Set fallbacksto ignore this requirement.
+    self._have      = 0
+    self._max       = 0
+    self._is_maxxed = true
+
+    local skill_index, ability_index = self:GetIndices()
+    if not (skill_index and ability_index) then return end
+
+    local have, max = GetSkillAbilityUpgradeInfo(
+                              SKILL_TYPE_TRADESKILL
+                            , skill_index
+                            , ability_index
+                            )
+    if not (have and max) then return end
+    self._have      = have
+    self._max       = max
+    self._is_maxxed = max <= have
 end
 
--- ### I suspect that hardcoded skill indices are incorrect, that they change
--- ### from player to player. I see signs on the esoui forums that JP clients
--- ### have different skill sequences. Need to do an O(n) scan instead of this
--- ### O(1) constant. Boo.
+function RequiredSkill:GetIndices()
+    if not RequiredSkill.id_to_indices then
+                        -- Lazy-fetch a table of every crafting skill.
+        RequiredSkill.id_to_indices = RequiredSkill.FindAllSkills()
+    end
+    local r = RequiredSkill.id_to_indices[self.skill_id]
+    if not r then
+        d("WritWorthy: unable to find skill_id:"..tostring(self.skill_id))
+        return nil, nil
+    end
+    return r.skill_index, r.ability_index
+end
+
+-- O(n) scan through all skills in an attempt to find all the ones
+-- that we require.
+--
+-- +++ I would expect this nested loop to cause a noticeable frame stutter
+-- +++ upon our first Sealed Master Writ. And yet, I don't really notice it.
+-- +++ If I did, I could cache the 6 or 7 interesting rows in savedVariables.
+--
+function RequiredSkill.FindAllSkills()
+    Log:StartNewEvent()
+    local t = {}
+    Log:Add("Scanning all skills...")
+    local skill_type = SKILL_TYPE_TRADESKILL
+    local num_lines = GetNumSkillLines(skill_type)
+    Log:Add("t:"..tostring(skill_type).."  num_lines:"..tostring(num_lines))
+    for skill_index = 1, num_lines do
+        local num_abilities = GetNumSkillAbilities(skill_type, skill_index)
+        Log:Add("t:"..tostring(skill_type).." i:"..tostring(skill_index)
+            .."  num_abilities:"..tostring(num_abilities))
+        for ability_index = 1, num_abilities do
+            local info = { GetSkillAbilityInfo(skill_type, skill_index, ability_index) }
+            local id   =   GetSkillAbilityId(skill_type, skill_index, ability_index, false)
+            Log:Add("t i a:"..tostring(skill_type).." "..tostring(skill_index)
+                .." "..tostring(ability_index)
+                .." id:"..tostring(id)
+                .." name:"..tostring(info[1])
+                .." tex:"  ..tostring(info[2])
+                .." earnedRank:"..tostring(info[3])
+                .." passive:"..tostring(info[4])
+                .." ultimate:"..tostring(info[5])
+                .." purchased:"..tostring(info[6])
+                .." progression:"..tostring(info[7])
+                )
+            t[id] = { id            = id
+                    , name          = info[1]
+                    , skill_index   = skill_index
+                    , ability_index = ability_index
+                    }
+        end
+    end
+    return t
+end
+
 
 local R = WritWorthy.RequiredSkill  -- for less typing
 
-R.BS_TEMPER_EXPERTISE = R:New( 2, 6, "IsMaxxed"    ) -- Temper Expertise
-R.CL_TEMPER_EXPERTISE = R:New( 3, 6, "IsMaxxed"    ) -- Tannin Expertise
-R.WW_TEMPER_EXPERTISE = R:New( 6, 6, "IsMaxxed"    ) -- Resin Expertise
-R.EN_ASPECT_GOLD      = R:New( 4, 1, "IsMaxxed"    ) -- Aspect Improvement
-R.PR_FOOD_4X          = R:New( 5, 5, "IsMaxxed"    ) -- Chef
-R.PR_DRINK_4X         = R:New( 5, 6, "IsMaxxed"    ) -- Brewer
-R.AL_POTION_4X        = R:New( 1, 4, "IsMaxxed"    ) -- Chemistry
-R.AL_LABORATORY_USE   = R:New( 1, 5, "IsPurchased" ) -- Laboratory Use, 3 reagents
+R.BS_TEMPER_EXPERTISE = R:New(48168, "IsMaxxed"   ) -- 2, 6, Temper Expertise
+R.CL_TEMPER_EXPERTISE = R:New(48198, "IsMaxxed"   ) -- 3, 6, Tannin Expertise
+R.WW_TEMPER_EXPERTISE = R:New(48177, "IsMaxxed"   ) -- 6, 6, Resin Expertise
+R.EN_ASPECT_GOLD      = R:New(46763, "IsMaxxed"   ) -- 4, 1, Aspect Improvement
+R.PR_FOOD_4X          = R:New(44619, "IsMaxxed"   ) -- 5, 5, Chef
+R.PR_DRINK_4X         = R:New(44624, "IsMaxxed"   ) -- 5, 6, Brewer
+R.AL_POTION_4X        = R:New(45579, "IsMaxxed"   ) -- 1, 4, Chemistry
+R.AL_LABORATORY_USE   = R:New(45555, "IsPurchased") -- 1, 5, Laboratory Use, 3 reagents
 
