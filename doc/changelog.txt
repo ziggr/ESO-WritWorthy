@@ -1,3 +1,8 @@
+[B]3.0.6 2017-07-20[/B]
+[LIST]
+[*]Bugfix: would inconsistently fail to report "Motif XXX not known" for some motifs. Thank you Rhyono for helping me debug this.
+[/LIST]
+
 [B]3.0.5 2017-06-22[/B]
 [LIST]
 [*]Replace hardcoded skill indices with a runtime scan for localized skill name. Turns out those indices change from player to player, are not constants. And there are no "skillId" analogs to "itemId" constants. Oh well. Fall back to string matching. Hopefully this will end the many reports of nil errors on other people's ESO clients. I included the names for EN, DE, and FR.  I do not have a JP client, so I lack those names, sorry.
