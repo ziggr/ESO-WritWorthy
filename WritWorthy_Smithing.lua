@@ -784,17 +784,20 @@ function Parser:ToKnowList()
                         -- First see if we just know the whole book.
                         --
                         -- This works for earlier motifs that don't have
-                        -- separate pages, and for Crown Store exclusives, and
-                        -- for any paged books like Glass or Xivkyn or Ebony,
-                        -- if you know all 14 pages.
+                        -- separate pages, and for Crown Store exclusives,
+                        -- but NOT for paged books like Glass or Xivkyn or Ebony,
+                        -- which have been seen to incorrectly return true when
+                        -- you do NOT know the whole book
                         --
                         -- MYSTERY_OFFSET: because IsSmithingStyleKnown()
                         -- surprises us by subtracting 1 from its argument.
     local MYSTERY_OFFSET = 1
-    local motif_known = IsSmithingStyleKnown(self.motif_num + MYSTERY_OFFSET)
-    Log:Add("motif book IsSmithingStyleKnown("
+    local motif_known = false
+    if self.motif.is_simple or self.motif.crown_id then
+        motif_known = IsSmithingStyleKnown(self.motif_num + MYSTERY_OFFSET)
+        Log:Add("motif book IsSmithingStyleKnown("
             ..tostring(self.motif_num).."+1) = "..tostring(motif_known))
-
+    end
                         -- If the above check failed, and the motif has
                         -- individual pages, check those. For some reason,
                         -- the 2nd arg to IsSmithingStyleKnown() has no effect.
