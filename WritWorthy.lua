@@ -78,6 +78,25 @@ function WritWorthy.ToMatKnowList(item_link)
     return mat_list, know_list
 end
 
+-- Convert a Master Writ item_link into an integer gold cost
+-- for required materials.
+--
+-- Not used internally, but here as a public API for any other
+-- add-ons that want it.
+--
+function WritWorthy.ToMatCost(item_link)
+                        -- Temporarily suspend all "dump matlist to chat"
+                        -- to avoid scroll blindness
+    local save_mat_list_chat = WritWorthy.savedVariables.enable_mat_list_chat
+
+    local mat_list = WritWorthy.ToMatKnowList(item_link)
+    local mat_total = WritWorthy.MatRow.ListTotal(mat_list)
+                        -- Restore mat list to chat setting now that we're
+                        -- done with chat-flooding scan.
+    WritWorthy.savedVariables.enable_mat_list_chat = save_mat_list_chat
+
+    return Util.round(mat_total)
+end
 -- Convert a Master Writ item_link into the integer number of
 -- writ vouchers it returns.
 function WritWorthy.ToVoucherCount(item_link)
@@ -316,17 +335,18 @@ end
 -- UI ------------------------------------------------------------------------
 
 function WritWorthy:CreateSettingsWindow()
+    local lam_addon_id = "WritWorthy_LAM"
     local panelData = {
         type                = "panel",
-        name                = "WritWorthy",
-        displayName         = "WritWorthy",
+        name                = self.name,
+        displayName         = self.name,
         author              = "ziggr",
         version             = self.version,
         --slashCommand        = "/gg",
         registerForRefresh  = false,
         registerForDefaults = false,
     }
-    local cntrlOptionsPanel = LAM2:RegisterAddonPanel( self.name
+    local cntrlOptionsPanel = LAM2:RegisterAddonPanel( lam_addon_id
                                                      , panelData
                                                      )
     local optionsData = {
@@ -356,7 +376,7 @@ function WritWorthy:CreateSettingsWindow()
         },
     }
 
-    LAM2:RegisterOptionControls("WritWorthy", optionsData)
+    LAM2:RegisterOptionControls(lam_addon_id, optionsData)
 end
 
 -- Init ----------------------------------------------------------------------
