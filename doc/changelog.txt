@@ -1,4 +1,10 @@
-[B]3.0.6 2017-07-20[/B]
+[B]3.0.7 2017-07-16[/B]
+[LIST]
+[*]Public API Support: new function WritWorthy.ToMatCost(itemLink) returns material cost for a single writ.
+[*]Bugfix: Make WritWorthy global be the actual add-on, not the LibAddOnMenu pane. Thank you sirinsidiator and silvereyes for the report+fix!
+[/LIST]
+
+[B]3.0.6 2017-07-10[/B]
 [LIST]
 [*]Bugfix: would inconsistently fail to report "Motif XXX not known" for some motifs. Thank you Rhyono for helping me debug this.
 [/LIST]
