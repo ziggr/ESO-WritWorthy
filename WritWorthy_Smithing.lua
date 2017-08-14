@@ -989,7 +989,7 @@ function Parser:ToDolRequest(unique_id)
     o.patternIndex = self.request_item.dol_pattern_index
     o.isCP         = true
     o.level        = 150
-    o.styleIndex   = self.motif_num + 1
+    o.styleIndex   = self.motif_num -- 2017-08-14 no longer need + 1
     o.traitIndex   = self.trait_num + 1
     o.useUniversalStyleItem = false
     o.station      = self.request_item.school.trade_skill_type
