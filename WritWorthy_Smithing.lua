@@ -664,8 +664,33 @@ Smithing.SET_BONUS = {
 ,   [317] = { name = "Masters Duel Wield",                                               }
 ,   [318] = { name = "Masters Restoration Staff",                                        }
 ,   [319] = nil
-,   [320] = nil
-,   [321] = nil
+,   [320] = { name= "War Maiden",                                                        }
+,   [321] = { name= "Defiler",                                                           }
+,   [322] = { name= "Warrior-Poet",                                                      }
+,   [323] = { name= "Assassin's Guile",                 trait_ct = 3, dol_set_index = 37 }
+,   [324] = { name= "Daedric Trickery",                 trait_ct = 8, dol_set_index = 39 }
+,   [325] = { name= "Shacklebreaker",                   trait_ct = 6, dol_set_index = 38 }
+,   [326] = { name= "Vanguard's Challenge",                                              }
+,   [327] = { name= "Coward's Gear",                                                     }
+,   [328] = { name= "Knight Slayer",                                                     }
+,   [329] = { name= "Wizard's Riposte",                                                  }
+,   [330] = { name= "Automated Defense",                                                 }
+,   [331] = { name= "War Machine",                                                       }
+,   [332] = { name= "Master Architect",                                                  }
+,   [333] = { name= "Inventor's Guard",                                                  }
+,   [334] = { name= "Impregnable Armor",                                                 }
+,   [335] = { name= "Draugr's Rest",                                                     }
+,   [336] = { name= "Pillar of Nirn",                                                    }
+,   [337] = { name= "Ironblood",                                                         }
+,   [338] = { name= "Flame Blossom",                                                     }
+,   [339] = { name= "Blooddrinker",                                                      }
+,   [340] = { name= "Hagraven's Garden",                                                 }
+,   [341] = { name= "Earthgore",                                                         }
+,   [342] = { name= "Domihaus",                                                          }
+,   [343] = nil
+,   [344] = nil
+,   [345] = nil
+
 }
 
 -- Improvement Material Counts -----------------------------------------------

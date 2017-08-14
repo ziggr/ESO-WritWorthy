@@ -481,8 +481,33 @@ writ4 	smithing 	set bonus
 317 Masters Duel Wield
 318 Masters Restoration Staff
 319
-320
-321
+320 War Maiden
+321 Defiler
+322 Warrior-Poet
+323 Assassin's Guile
+324 Daedric Trickery
+325 Shacklebreaker
+326 Vanguard's Challenge
+327 Coward's Gear
+328 Knight Slayer
+329 Wizard's Riposte
+330 Automated Defense
+331 War Machine
+332 Master Architect
+333 Inventor's Guard
+334 Impregnable Armor
+335 Draugr's Rest
+336 Pillar of Nirn
+337 Ironblood
+338 Flame Blossom
+339 Blooddrinker
+340 Hagraven's Garden
+341 Earthgore
+342 Domihaus
+343
+344
+345
+346
 
 writ5 	smithing 	traits
 -----
