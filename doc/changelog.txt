@@ -1,3 +1,11 @@
+[B]3.1.1 2017-08-14[/B]
+[LIST]
+[*]ESO 3.1 Horns of the Reach/API 20
+[*]Squelch errors for "table index is nil" for new item style constants.
+[*]Autocraft: no longer add mystery +1 to motif index. No longer required or correct.
+[*]KNOWN BUG: "Motif Barbaric not known" even though you do know this motif. For some reason the ESO API returns "false" for IsSmithingStyleKnown(barbaric=17+1) even if you know that motif. Might be a bug in ESO 3.1.0.
+[/LIST]
+
 [B]3.0.7 2017-07-16[/B]
 [LIST]
 [*]Public API Support: new function WritWorthy.ToMatCost(itemLink) returns material cost for a single writ.
