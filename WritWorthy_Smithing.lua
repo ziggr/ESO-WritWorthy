@@ -217,26 +217,26 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_ENEMY_MAZZATUN        ] = { mat_name = "leviathan scrimshaw" , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 57
 ,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN] = { mat_name = "grinstones"          , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 58
 ,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK    ] = { mat_name = "amber marble"        , motif_name = "Hollowjack"           , pages_id  = 1545 } -- 59
-,   [ITEMSTYLE_UNUSED1               ] = nil --                             , motif_name = Unused 11"             } -- 60
-,   [ITEMSTYLE_UNUSED2               ] = nil --                             , motif_name = Unused 11"             } -- 61
-,   [ITEMSTYLE_UNUSED3               ] = nil --                             , motif_name = Unused 11"             } -- 62
-,   [ITEMSTYLE_UNUSED4               ] = nil --                             , motif_name = Unused 11"             } -- 63
-,   [ITEMSTYLE_UNUSED5               ] = nil --                             , motif_name = Unused 11"             } -- 64
-,   [ITEMSTYLE_UNUSED6               ] = nil --                             , motif_name = Unused 11"             } -- 65
-,   [ITEMSTYLE_UNUSED7               ] = nil --                             , motif_name = Unused 11"             } -- 66
-,   [ITEMSTYLE_UNUSED8               ] = nil --                             , motif_name = Unused 11"             } -- 67
-,   [ITEMSTYLE_UNUSED9               ] = nil --                             , motif_name = Unused 11"             } -- 68
-,   [ITEMSTYLE_UNUSED10              ] = nil --                             , motif_name = Unused 11"             } -- 69
-,   [ITEMSTYLE_UNUSED11              ] = nil --                             , motif_name = Unused 11"             } -- 70
-,   [ITEMSTYLE_UNUSED12              ] = nil --                             , motif_name = Unused 11"             } -- 71
-,   [ITEMSTYLE_UNUSED13              ] = nil --                             , motif_name = Unused 11"             } -- 72
-,   [ITEMSTYLE_UNUSED14              ] = nil --                             , motif_name = Unused 11"             } -- 73
-,   [ITEMSTYLE_UNUSED15              ] = nil --                             , motif_name = Unused 11"             } -- 74
-,   [ITEMSTYLE_UNUSED16              ] = nil --                             , motif_name = Unused 11"             } -- 75
-,   [ITEMSTYLE_UNUSED17              ] = nil --                             , motif_name = Unused 11"             } -- 76
-,   [ITEMSTYLE_UNUSED18              ] = nil --                             , motif_name = Unused 11"             } -- 77
-,   [ITEMSTYLE_UNUSED19              ] = nil --                             , motif_name = Unused 11"             } -- 78
-,   [ITEMSTYLE_UNUSED20              ] = nil --                             , motif_name = Unused 11"             } -- 79
+-- ,   [ITEMSTYLE_UNUSED1               ] = nil --                             , motif_name = Unused 11"             } -- 60
+-- ,   [ITEMSTYLE_UNUSED2               ] = nil --                             , motif_name = Unused 11"             } -- 61
+-- ,   [ITEMSTYLE_UNUSED3               ] = nil --                             , motif_name = Unused 11"             } -- 62
+-- ,   [ITEMSTYLE_UNUSED4               ] = nil --                             , motif_name = Unused 11"             } -- 63
+-- ,   [ITEMSTYLE_UNUSED5               ] = nil --                             , motif_name = Unused 11"             } -- 64
+-- ,   [ITEMSTYLE_UNUSED6               ] = nil --                             , motif_name = Unused 11"             } -- 65
+-- ,   [ITEMSTYLE_UNUSED7               ] = nil --                             , motif_name = Unused 11"             } -- 66
+-- ,   [ITEMSTYLE_UNUSED8               ] = nil --                             , motif_name = Unused 11"             } -- 67
+-- ,   [ITEMSTYLE_UNUSED9               ] = nil --                             , motif_name = Unused 11"             } -- 68
+-- ,   [ITEMSTYLE_UNUSED10              ] = nil --                             , motif_name = Unused 11"             } -- 69
+-- ,   [ITEMSTYLE_UNUSED11              ] = nil --                             , motif_name = Unused 11"             } -- 70
+-- ,   [ITEMSTYLE_UNUSED12              ] = nil --                             , motif_name = Unused 11"             } -- 71
+-- ,   [ITEMSTYLE_UNUSED13              ] = nil --                             , motif_name = Unused 11"             } -- 72
+-- ,   [ITEMSTYLE_UNUSED14              ] = nil --                             , motif_name = Unused 11"             } -- 73
+-- ,   [ITEMSTYLE_UNUSED15              ] = nil --                             , motif_name = Unused 11"             } -- 74
+-- ,   [ITEMSTYLE_UNUSED16              ] = nil --                             , motif_name = Unused 11"             } -- 75
+-- ,   [ITEMSTYLE_UNUSED17              ] = nil --                             , motif_name = Unused 11"             } -- 76
+-- ,   [ITEMSTYLE_UNUSED18              ] = nil --                             , motif_name = Unused 11"             } -- 77
+-- ,   [ITEMSTYLE_UNUSED19              ] = nil --                             , motif_name = Unused 11"             } -- 78
+-- ,   [ITEMSTYLE_UNUSED20              ] = nil --                             , motif_name = Unused 11"             } -- 79
 ,   [ITEMSTYLE_MAX_VALUE             ] = nil --                             , motif_name = Unused 11"             } -- 79
 }
 
