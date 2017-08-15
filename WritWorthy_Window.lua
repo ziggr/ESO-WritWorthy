@@ -1298,7 +1298,7 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
                 local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
                 total_queued_voucher_ct = total_queued_voucher_ct + voucher_ct
                 local mat_list = inventory_data.parser:ToMatList()
-                local mat_gold = WritWorthy.MatRow.ListTotal(mat_list)
+                local mat_gold = WritWorthy.MatRow.ListTotal(mat_list) or 0
                 total_queued_mat_gold = total_queued_mat_gold + mat_gold
                 can_dequeue_any = true
             elseif inventory_data.ui_can_queue
@@ -1308,7 +1308,7 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
                 local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
                 total_completed_voucher_ct = total_completed_voucher_ct + voucher_ct
                 local mat_list = inventory_data.parser:ToMatList()
-                local mat_gold = WritWorthy.MatRow.ListTotal(mat_list)
+                local mat_gold = WritWorthy.MatRow.ListTotal(mat_list) or 0
                 total_completed_mat_gold = total_completed_mat_gold + mat_gold
             end
         end
