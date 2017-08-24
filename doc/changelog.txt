@@ -1,3 +1,8 @@
+[B]3.1.3 2017-08-15[/B]
+[LIST]
+[*]Manavortex's fix for autocraft window's error: "attempt to perform arithmetic on a nil value" if you run without Master Merchant.
+[/LIST]
+
 [B]3.1.2 2017-08-14[/B]
 [LIST]
 [*]"Motif X not known" fixed. I was off by +1 for all motifs.
