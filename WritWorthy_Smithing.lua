@@ -139,7 +139,7 @@ Smithing.TRAITS_ARMOR    = {
 ,   [ITEM_TRAIT_TYPE_ARMOR_WELL_FITTED ] = { trait_name = "well-fitted",  mat_name = "almandine"          , trait_index = 4 }
 ,   [ITEM_TRAIT_TYPE_ARMOR_TRAINING    ] = { trait_name = "training",     mat_name = "emerald"            , trait_index = 5 }
 ,   [ITEM_TRAIT_TYPE_ARMOR_INFUSED     ] = { trait_name = "infused",      mat_name = "bloodstone"         , trait_index = 6 }
-,   [ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS  ] = { trait_name = "prosperous",   mat_name = "garnet"             , trait_index = 7 } -- nee exploration
+,   [ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS  ] = { trait_name = "invigorating", mat_name = "garnet"             , trait_index = 7 } -- nee exploration
 ,   [ITEM_TRAIT_TYPE_ARMOR_DIVINES     ] = { trait_name = "divines",      mat_name = "sapphire"           , trait_index = 8 }
 ,   [ITEM_TRAIT_TYPE_ARMOR_NIRNHONED   ] = { trait_name = "nirnhoned",    mat_name = "fortified nirncrux" , trait_index = 9 }
 }
