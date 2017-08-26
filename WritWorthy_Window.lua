@@ -1174,9 +1174,12 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
     local i_d = inventory_data
     local LLC = self:GetLLC()
     if not LLC[i_d.llc_func] then
-        d("LibLazyCrafter function missing:"..tostring(i_d.llc_func))
-        d("LibLazyCrafter version:"..tostring(LLC.version))
+        d("LibLazyCrafting function missing:"..tostring(i_d.llc_func))
+        d("LibLazyCrafting version:"..tostring(LLC.version))
         return
+    else
+        d("LibLazyCrafting function found:"..tostring(i_d.llc_func))
+        d("LibLazyCrafting version:"..tostring(LLC.version))
     end
                         -- Call LibLazyCrafting to queue it up for later.
     if LLC[i_d.llc_func] then
@@ -1186,8 +1189,8 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
                         -- required function. Should not happen, but did
                         -- while Zig was developing WritWorthy with
                         -- unpublished versions of LibLazyCrafting.
-        d("LibLazyCrafter function missing:"..tostring(i_d.llc_func))
-        d("LibLazyCrafter version:"..tostring(LLC.version))
+        d("LibLazyCrafting function missing:"..tostring(i_d.llc_func))
+        d("LibLazyCrafting version:"..tostring(LLC.version))
     end
 end
 
