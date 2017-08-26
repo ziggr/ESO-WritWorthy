@@ -1,3 +1,6 @@
+--GetLastCraftingResultItemLink(number resultIndex, number LinkStyle linkStyle)
+--/script d(GetLastCraftingResultItemInfo(1))
+
 local LibLazyCrafting = LibStub("LibLazyCrafting")
 local sortCraftQueue = LibLazyCrafting.sortCraftQueue
 SetIndexes ={}
@@ -323,7 +326,7 @@ local function LLC_CraftSmithingItem(self, patternIndex, materialIndex, material
 		["setIndex"] = setIndex,
 		["quality"] = quality,
 		["useUniversalStyleItem"] = useUniversalStyleItem,
-		["timestamp"] = GetTimeStamp(),
+		["timestamp"] = reference,
 		["autocraft"] = autocraft,
 		["Requester"] = self.addonName,
 		["reference"] = reference,
@@ -446,7 +449,7 @@ local function LLC_SmithingCraftInteraction( station)
 			table.remove(parameters,6 )
 
 			currentCraftAttempt.link = GetSmithingPatternResultLink(unpack(parameters))
-
+			--d("Making reference #"..tostring(currentCraftAttempt.reference).." link: "..currentCraftAttempt.link)
 		elseif earliest.type =="improvement" then
 			local parameters = {}
 			local skillIndex = station + 1 - math.floor(station/6)
@@ -529,19 +532,24 @@ end
 
 local function SmithingCraftCompleteFunction(station)
 	dbug("EVENT:CraftComplete")
-
+	--d("complete at "..GetTimeStamp())
 	if currentCraftAttempt.type == "smithing" then
 		if WasItemCrafted() then
 			
 			dbug("ACTION:RemoveRequest")
 			
-
+			--d("Item found")
 			table.remove(craftingQueue[currentCraftAttempt.Requester][station],currentCraftAttempt.position )
 			if currentCraftAttempt.quality>1 then
+				--d("Improving #".. tostring(currentCraftAttempt.reference))
 				LLC_ImproveSmithingItem({["addonName"]=currentCraftAttempt.Requester}, BAG_BACKPACK, currentCraftAttempt.slot, currentCraftAttempt.quality, currentCraftAttempt.autocraft, currentCraftAttempt.reference)
 			else
-				LibLazyCrafting.craftResultFunctions[currentCraftAttempt.Requester](LLC_CRAFT_SUCCESS, station, 
-					{["bag"] = BAG_BACKPACK,["slot"] = currentCraftAttempt.slot,["reference"] = currentCraftAttempt.reference} )
+				local errorFound, err =  pcall(function()LibLazyCrafting.craftResultFunctions[currentCraftAttempt.Requester](LLC_CRAFT_SUCCESS, station, 
+					{["bag"] = BAG_BACKPACK,["slot"] = currentCraftAttempt.slot,["reference"] = currentCraftAttempt.reference} )end)
+					if not errorFound then
+						d("Callback to LLC resulted in an error. Please contact the author of "..currentCraftAttempt.Requester)
+						d(err)
+					end
 			end
 			currentCraftAttempt = {}
 			sortCraftQueue()
@@ -558,6 +566,7 @@ local function SmithingCraftCompleteFunction(station)
 		currentCraftAttempt = {}
 		sortCraftQueue()
 	else
+
 		return
 	end
 end
@@ -571,7 +580,6 @@ local function compileRequirements(request, station)-- Ingot/style mat/trait mat
 	
 
 end
-
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_BLACKSMITHING] =
 {
