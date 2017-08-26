@@ -26,6 +26,8 @@ WritWorthyInventoryList.inventory_data_list = {}
                         --
                         -- Version 0.3 has BS/CL/WW + Enchanting
                         -- version 0.4 has Alchemy and Provisioning.
+                        -- version 1.2 has Alchemy and Provisioning,
+                        --             released by Dolgubon in Writ/Set addons
 WritWorthyInventoryList.LibLazyCrafting = nil
 
                         -- Live row_control used to lay out rows. Remembered
@@ -983,7 +985,7 @@ function WritWorthyInventoryList:PurgeAncientSavedChariables()
     end
 end
 
--- Callback from LibLazyCrafter into our code upon completion of a single
+-- Callback from LibLazyCrafting into our code upon completion of a single
 -- queued request.
 --  - event is "success" or "not enough mats" or some other string.
 --          We COULD key off of "success" and display error redness if fail.
@@ -1079,7 +1081,7 @@ function WritWorthyInventoryList:GetLLC()
     end
 
 
-    local lib = LibStub:GetLibrary("LibLazyCrafting", 0.4)
+    local lib = LibStub:GetLibrary("LibLazyCrafting", 1.2)
     self.LibLazyCrafting = lib:AddRequestingAddon(
          WritWorthy.name            -- name
        , true                       -- autocraft
@@ -1088,8 +1090,8 @@ function WritWorthyInventoryList:GetLLC()
 
     Log:StartNewEvent()
     if not self.LibLazyCrafting then
-        d("WritWorthy: Unable to load LibLazyCrafting 0.4")
-        Log:Add("Unable to load LibLazyCrafting 0.4")
+        d("WritWorthy: Unable to load LibLazyCrafting 1.2")
+        Log:Add("Unable to load LibLazyCrafting 1.2")
     end
     Log:Add("LibLazyCrafting LLC:"..tostring(self.LibLazyCrafting))
 
@@ -1266,7 +1268,7 @@ function WritWorthyInventoryList.LogLLCQueue(queue)
 end
 
 -- O(n) scan to collect a hash of unique item ids of items actually
--- in LibLazyCrafter's queue.
+-- in LibLazyCrafting's queue.
 function WritWorthyInventoryList:QueuedReferenceList()
     local queued_ids = {}
     for station, queued in ipairs(self:GetLLC().personalQueue) do
