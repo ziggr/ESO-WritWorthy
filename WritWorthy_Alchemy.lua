@@ -397,7 +397,7 @@ function Parser:ToDolRequest(unique_id)
     o[5] = mat_list[1].ct                      -- timesToMake
     o[6] = true                                -- autocraft
     o[7] = unique_id                           -- reference
-    return { ["function"       ] = "CraftAlchemyItemByItemId"
+    return { ["function"       ] = "CraftAlchemyItemId"
            , ["args"           ] = o
            }
 end
