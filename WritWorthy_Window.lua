@@ -187,12 +187,20 @@ function WritWorthyUI_ToggleUI()
         if t then
             t:SetText("Writ Inventory: "..GetUnitName("player"))
         end
-        list = WritWorthyInventoryList.singleton
-        list:BuildMasterlist()
-        list:Refresh()
-        list:UpdateSummaryAndQButtons()
+        WritWorthuUI_Refresh()
     end
     WritWorthyUI:SetHidden(not h)
+end
+
+function WritWorthyUI_RefreshUI()
+    WritWorthuUI_Refresh()
+end
+
+function WritWorthuUI_Refresh()
+    list = WritWorthyInventoryList.singleton
+    list:BuildMasterlist()
+    list:Refresh()
+    list:UpdateSummaryAndQButtons()
 end
 
 -- Inventory List ------------------------------------------------------------

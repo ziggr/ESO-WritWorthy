@@ -79,6 +79,29 @@
           </OnClicked>
         </Button>
 
+        <Button name="$(parent)Refresh"
+              alpha="1">
+          <Textures
+              normal="EsoUI/Art/Help/help_tabicon_feedback_up.dds"
+              pressed="EsoUI/Art/Help/help_tabicon_feedback_down.dds"
+              mouseOver="EsoUI/Art/Help/help_tabicon_feedback_mouseOver.dds"
+              disabled="EsoUI/Art/Help/help_tabicon_feedback_disabled.dds"
+              />
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPRIGHT"
+              point="TOPRIGHT"
+              offsetX="-30"
+              offsetY="0" />
+          <Dimensions x="20" y="20" />
+          <TextureCoords
+              left="0.1"     top="0.1"
+              right="0.9" bottom="0.9"
+              />
+          <OnClicked>
+            WritWorthyUI_RefreshUI()
+          </OnClicked>
+        </Button>
+
         <Button   name="$(parent)SortByStation"
             inherits="ZO_DefaultButton"
             text="Sort by Station"
