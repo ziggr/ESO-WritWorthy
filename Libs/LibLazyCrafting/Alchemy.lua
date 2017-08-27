@@ -6,12 +6,13 @@ local function dbug(...)
 	DolgubonGlobalDebugOutput(...)
 end
 
-local function LLC_CraftAlchemyPotionItemId(self, solventId, reagentId1, reagentId2, reagentId3, autocraft, reference)
+local function LLC_CraftAlchemyItemByItemId(self, solventId, reagentId1, reagentId2, reagentId3, timesToMake, autocraft, reference)
 	dbug('FUNCTION:LLCCraftAlchemy')
 	if reference == nil then reference = "" end
 	if not self then d("Please call with colon notation") end
 	if autocraft==nil then autocraft = self.autocraft end
 	if not solventId and reagentId1 and reagentId2 then return end -- reagentId3 optional, nil okay.
+	if timesToMake == nil then timesToMake = 1 end
 
 	table.insert(craftingQueue[self.addonName][CRAFTING_TYPE_ALCHEMY],
 	{
@@ -24,6 +25,7 @@ local function LLC_CraftAlchemyPotionItemId(self, solventId, reagentId1, reagent
 		["Requester"] = self.addonName,
 		["reference"] = reference,
 		["station"] = CRAFTING_TYPE_ALCHEMY,
+		["timesToMake"] = timesToMake,
 	}
 	)
 
@@ -40,7 +42,7 @@ local function LLC_CraftAlchemyPotion(self, selventBagId, solventSlotId, reagent
 	else
 		reagent3itemId = GetItemId(reagent3BagId, reagent3SlotId)
 	end
-	LLC_CraftEnchantingGlyphItemID(self, GetItemId(selventBagId, solventSlotId),GetItemId( reagent1BagId, reagent1SlotId),GetItemId(reagent2BagId, reagent2SlotId), reagent3itemId, timesToMake,autocraft, reference)
+	LLC_CraftAlchemyItemByItemId(self, GetItemId(solventBagId, solventSlotId),GetItemId( reagent1BagId, reagent1SlotId),GetItemId(reagent2BagId, reagent2SlotId), reagent3itemId, timesToMake,autocraft, reference)
 end
 
 local function copy(t)
@@ -111,7 +113,7 @@ local function LLC_AlchemyCraftInteraction(event, station)
 	dbug("CALL:ZOAlchemyCraft")
 	CraftAlchemyItem(unpack(locations))
 
-	currentCraftAttempt= copy(earliest)
+	currentCraftAttempt = LibLazyCrafting.tableShallowCopy(earliest)
 	currentCraftAttempt.callback = LibLazyCrafting.craftResultFunctions[addon]
 
 						-- ZZ: This .slot field is INCORRECT when crafting
@@ -132,45 +134,11 @@ local function LLC_AlchemyCraftInteraction(event, station)
 	currentCraftAttempt.position = position
 	currentCraftAttempt.timestamp = GetTimeStamp()
 	currentCraftAttempt.addon = addon
-	currentCraftAttempt.prevSlots = LLC_FindSlotsContaining(currentCraftAttempt.link)
+	currentCraftAttempt.prevSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link, true)
 end
 
 local function LLC_AlchemyCraftingComplete(event, station, lastCheck)
-	dbug("EVENT:CraftComplete")
-	if not currentCraftAttempt.addon then return end
-
-	-- Because alchemy potions stack, cannot trust .slot field here, so
-	-- just assume it worked without checking for item name matches.
-
-	local newSlots = LLC_FindSlotsContaining(currentCraftAttempt.link)
-	local grewSlotIndex = LLC_FindIncreasedSlotIndex(currentCraftAttempt.prevSlots, newSlots)
-	if grewSlotIndex then
-		dbug("ACTION:RemoveQueueItem")
-		craftingQueue[currentCraftAttempt.addon][CRAFTING_TYPE_ALCHEMY][currentCraftAttempt.position] = nil
-		sortCraftQueue()
-		local resultTable =
-		{
-			["bag"] = BAG_BACKPACK,
-			["slot"] = grewSlotIndex,
-			['link'] = currentCraftAttempt.link,
-			['uniqueId'] = GetItemUniqueId(BAG_BACKPACK, currentCraftAttempt.slot),
-			["quantity"] = 1,
-			["reference"] = currentCraftAttempt.reference,
-		}
-		currentCraftAttempt.callback(LLC_CRAFT_SUCCESS, CRAFTING_TYPE_ALCHEMY, resultTable)
-		currentCraftAttempt = {}
-
-	elseif lastCheck then
-
-		-- give up on finding it.
-		currentCraftAttempt = {}
-	else
-
-		-- further search
-		-- search again later
-		if GetCraftingInteractionType()==0 then zo_callLater(function() LLC_EnchantingCraftingComplete(event, station, true) end,100) end
-	end
-
+	LibLazyCrafting.stackableCraftingComplete(event, station, lastCheck, CRAFTING_TYPE_ALCHEMY, currentCraftAttempt)
 end
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ALCHEMY] =
@@ -183,4 +151,4 @@ LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ALCHEMY] =
 }
 
 LibLazyCrafting.functionTable.CraftAlchemyPotion = LLC_CraftAlchemyPotion
-LibLazyCrafting.functionTable.CraftAlchemyItemId = LLC_CraftAlchemyPotionItemId
+LibLazyCrafting.functionTable.CraftAlchemyItemId = LLC_CraftAlchemyItemByItemId
