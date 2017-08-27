@@ -42,7 +42,7 @@ local function LLC_CraftAlchemyPotion(self, selventBagId, solventSlotId, reagent
 	else
 		reagent3itemId = GetItemId(reagent3BagId, reagent3SlotId)
 	end
-	LLC_CraftAlchemyItemByItemId(self, GetItemId(solventBagId, solventSlotId),GetItemId( reagent1BagId, reagent1SlotId),GetItemId(reagent2BagId, reagent2SlotId), reagent3itemId, timesToMake,autocraft, reference)
+	LLC_CraftAlchemyItemByItemId(self, GetItemId(selventBagId, solventSlotId),GetItemId( reagent1BagId, reagent1SlotId),GetItemId(reagent2BagId, reagent2SlotId), reagent3itemId, timesToMake,autocraft, reference)
 end
 
 local function copy(t)
@@ -51,42 +51,6 @@ local function copy(t)
 		a[k] = v
 	end
 	return a
-end
-
--- Returns a table of [slot_index] --> stack count for each bag slot that holds
--- the requested item.
---
--- ALSO includes the first empty slot in bag, since there is still a chance
--- that this crafting attempt might start a new stack.
---
-local function LLC_FindSlotsContaining(itemLink)
-	local wantItemName = GetItemLinkName(itemLink)
-
-	local r = {}
-	local bagId = BAG_BACKPACK
-	local maxSlotId = GetBagSize(bagId)
-	for slotIndex = 0, maxSlotId do
-		local slotLink = GetItemLink(bagId, slotIndex, LINK_STYLE_DEFAULT)
-		if GetItemLinkName(slotLink) == wantItemName then
-			r[slotIndex] = GetSlotStackSize(bagId, slotIndex)
-		end
-	end
-
-	local emptySlotIndex = FindFirstEmptySlotInBag(bagId)
-	r[emptySlotIndex] = 0
-	return r
-end
-
--- Return the first slot index of a stack of items that grew.
--- Return nil if no stacks grew.
-local function LLC_FindIncreasedSlotIndex(prevSlotsContaining, newSlotsContaining)
-	for slotIndex, prevStackSize in pairs(prevSlotsContaining) do
-		local new = newSlotsContaining[slotIndex]
-		if new and prevStackSize < new then
-			return slotIndex
-		end
-	end
-	return nil
 end
 
 local function LLC_AlchemyCraftInteraction(event, station)
@@ -113,7 +77,7 @@ local function LLC_AlchemyCraftInteraction(event, station)
 	dbug("CALL:ZOAlchemyCraft")
 	CraftAlchemyItem(unpack(locations))
 
-	currentCraftAttempt = LibLazyCrafting.tableShallowCopy(earliest)
+	currentCraftAttempt= copy(earliest)
 	currentCraftAttempt.callback = LibLazyCrafting.craftResultFunctions[addon]
 
 						-- ZZ: This .slot field is INCORRECT when crafting
@@ -134,11 +98,13 @@ local function LLC_AlchemyCraftInteraction(event, station)
 	currentCraftAttempt.position = position
 	currentCraftAttempt.timestamp = GetTimeStamp()
 	currentCraftAttempt.addon = addon
-	currentCraftAttempt.prevSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link, true)
+	currentCraftAttempt.prevSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link,true)
 end
 
 local function LLC_AlchemyCraftingComplete(event, station, lastCheck)
+	dbug("EVENT:CraftComplete")
 	LibLazyCrafting.stackableCraftingComplete(event, station, lastCheck, CRAFTING_TYPE_ALCHEMY, currentCraftAttempt)
+
 end
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ALCHEMY] =

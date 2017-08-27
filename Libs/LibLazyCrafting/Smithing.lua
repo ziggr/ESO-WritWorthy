@@ -1,6 +1,13 @@
 --GetLastCraftingResultItemLink(number resultIndex, number LinkStyle linkStyle)
 --/script d(GetLastCraftingResultItemInfo(1))
 
+--if tonumber(requestTable[station][i]["timestamp"]) < earliest["timestamp"] then
+--user:/AddOns/DolgubonsLazySetCrafter/Libs/LibLazyCrafting/LibLazyCrafting.lua:300: operator < is not supported for string < number
+-- 	stack traceback:
+ --   user:/AddOns/DolgubonsLazySetCrafter/Libs/LibLazyCrafting/LibLazyCrafting.lua:300: in function 'findEarliestRequest'
+ --   user:/AddOns/DolgubonsLazyWritCreator/libs/LibLazyCrafting/Smithing.lua:423: in function 'LLC_SmithingCraftInteraction'
+ --   user:/AddOns/DolgubonsLazySetCrafter/Libs/LibLazyCrafting/LibLazyCrafting.lua:523: in function 'CraftInteract'
+
 local LibLazyCrafting = LibStub("LibLazyCrafting")
 local sortCraftQueue = LibLazyCrafting.sortCraftQueue
 SetIndexes ={}
@@ -16,7 +23,7 @@ end
 -- This is filled out after crafting. It's so we can make sure that:
 -- A: The item was crafted and
 -- B: Find it. Includes itemLink and other stuff just in case it doesn't go to the expected slot (It should)
-local waitingOnSmithingCraftComplete =
+local waitingOnSmithingCraftComplete = 
 {
 	["craftFunction"] = function() end,
 	["slotID"] = 0,
@@ -27,7 +34,7 @@ local waitingOnSmithingCraftComplete =
 
 
 --- EXAMPLE ONLY - for knowing what is in a request
-local CraftSmithingRequestItem =
+local CraftSmithingRequestItem = 
 {
 	["pattern"] =0,
 	["style"] = 0,
@@ -48,7 +55,7 @@ local function copy(t)
 	return a
 end
 
-local function getItemLinkFromItemId(itemId) local name = GetItemLinkName(ZO_LinkHandler_CreateLink("Test Trash", nil, ITEM_LINK_TYPE,itemId, 1, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 10000, 0))
+local function getItemLinkFromItemId(itemId) local name = GetItemLinkName(ZO_LinkHandler_CreateLink("Test Trash", nil, ITEM_LINK_TYPE,itemId, 1, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 10000, 0)) 
 	return ZO_LinkHandler_CreateLink(zo_strformat("<<t:1>>",name), nil, ITEM_LINK_TYPE,itemId, 1, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 10000, 0) end
 
 
@@ -67,13 +74,13 @@ local requirementJumps = { -- At these material indexes, the material required c
 
 additionalRequirements = -- Seperated by station. The additional amount of mats added to the base amount.
 {
-	[CRAFTING_TYPE_BLACKSMITHING] =
+	[CRAFTING_TYPE_BLACKSMITHING] = 
 	{ 2, 2, 2, 4, 4, 4, 1, 6, 4, 4, 4, 5, 4, 4,
 	},
-	[CRAFTING_TYPE_WOODWORKING] =
+	[CRAFTING_TYPE_WOODWORKING] = 
 	{ 2, 5, 2, 2, 2, 2,
 	},
-	[CRAFTING_TYPE_CLOTHIER] =
+	[CRAFTING_TYPE_CLOTHIER] = 
 	{ 6, 6, 4, 4, 4, 5, 4, 4, 6, 4, 4, 4, 5, 4, 4,
 
 	},
@@ -88,7 +95,7 @@ for i = 1, 41 do
 		baseRequirements[i] = currentStep - 1
 	elseif requirementJumps[currentStep] == i then
 		currentStep = currentStep + 1
-		baseRequirements[i] = currentStep -1
+		baseRequirements[i] = currentStep -1 
 	else
 		baseRequirements[i] = baseRequirements[i-1] +1
 	end
@@ -97,7 +104,7 @@ end
 
 function enoughMaterials(craftRequestTable)
 
-	local missing =
+	local missing = 
 	{
 		["materials"] = {},
 	}
@@ -115,7 +122,7 @@ function enoughMaterials(craftRequestTable)
 		else
 			if craftRequestTable["trait"]==0 then d("Invalid trait") end
 			missing.materials["trait"] = true
-
+			
 		end
 	else
 		missing.materials["style"] = true
@@ -127,7 +134,7 @@ end
 
 
 function canCraftItem(craftRequestTable)
-	local missing =
+	local missing = 
 	{
 		["knowledge"] = {},
 		["materials"] = {},
@@ -144,7 +151,7 @@ function canCraftItem(craftRequestTable)
 	local _,_,_,_,traitsRequired, traitsKnown = GetSmithingPatternInfo(craftRequestTable["pattern"] + setPatternOffset[craftRequestTable["station"]])
 
 	if traitsRequired<= traitsKnown then
-
+		
 		-- Check if the specific trait is known
 		if IsSmithingTraitKnownForResult(craftRequestTable["pattern"], craftRequestTable["materialIndex"], craftRequestTable["materialQuantity"],craftRequestTable["style"], craftRequestTable["trait"]) then
 			-- Check if the style is known for that piece
@@ -154,7 +161,7 @@ function canCraftItem(craftRequestTable)
 
 				missing.knowledge["style"] = true
 			end
-
+			
 		else
 
 			missing.knowledge["trait"] = true
@@ -164,7 +171,7 @@ function canCraftItem(craftRequestTable)
 	end
 
 	return false, missing
-
+	
 end
 LibLazyCrafting.canCraftItemHere = canCraftItemHere
 
@@ -186,7 +193,7 @@ local function GetCurrentSetInteractionIndex()
 		baseSetPatternName = GetSmithingPatternInfo(7)
 		sampleId = GetItemIDFromLink(GetSmithingPatternResultLink(7,1,3,1,1,0))
 	else
-
+		
 		return nil , nil, nil, nil
 	end
 	-- If no set
@@ -194,17 +201,17 @@ local function GetCurrentSetInteractionIndex()
 	-- find set index
 	for i =1, #SetIndexes do
 		if sampleId == SetIndexes[i][2][currentStation] then
-
+			
 			return i, SetIndexes[i][1] , SetIndexes[i][3]
 		end
 	end
-
+	
 end
 LibLazyCrafting.functionTable.GetCurrentSetInteractionIndex  = GetCurrentSetInteractionIndex
 
 -- Can an item be crafted here, based on set and station indexes
 local function canCraftItemHere(station, setIndex)
-
+	
 	if not setIndex then setIndex = 0 end
 	if GetCraftingInteractionType()==station then
 		if GetCurrentSetInteractionIndex()==setIndex or setIndex==1 then
@@ -227,7 +234,7 @@ local function GetMaxImprovementMats(bag, slot ,station)
 	while chance<100 do
 		numBooster = numBooster + 1
 		chance = GetSmithingImprovementChance(bag, slot, numBooster,station)
-
+		
 	end
 	return numBooster
 end
@@ -333,8 +340,8 @@ local function LLC_CraftSmithingItem(self, patternIndex, materialIndex, material
 	})
 
 	sortCraftQueue()
-	if not IsPerformingCraftProcess() and GetCraftingInteractionType()~=0 then
-		LibLazyCrafting.craftInteractionTables[GetCraftingInteractionType()]["function"](GetCraftingInteractionType())
+	if not IsPerformingCraftProcess() and GetCraftingInteractionType()~=0 then  
+		LibLazyCrafting.craftInteractionTables[GetCraftingInteractionType()]["function"](GetCraftingInteractionType()) 
 	end
 end
 
@@ -390,7 +397,7 @@ LibLazyCrafting.functionTable.ImproveSmithingItem = LLC_ImproveSmithingItem
 -- /script for i = 1, 200 do if GetItemTrait(1,i)==20 or GetItemTrait(1,i)==9 then LLC_ImproveSmithingItem(LLC_Global, 1,i,3,true) d("Improve") end end
 
 
-local currentCraftAttempt =
+local currentCraftAttempt = 
 {
 	["type"] = "smithing",
 	["pattern"] = 3,
@@ -402,7 +409,7 @@ local currentCraftAttempt =
 	["quality"] = 2,
 	["useUniversalStyleItem"] = true,
 	["autocraft"] = true,
-	["Requester"] = "",
+	["Requester"] = "",	
 	["timestamp"] = 1234566789012345,
 	["slot"]  = 0,
 	["link"] = "",
@@ -426,17 +433,17 @@ local function LLC_SmithingCraftInteraction( station)
 		if earliest.type =="smithing" then
 
 			local parameters = {
-			earliest.pattern,
+			earliest.pattern, 
 			earliest.materialIndex,
-			earliest.materialQuantity,
-			earliest.style,
-			earliest.trait,
+			earliest.materialQuantity, 
+			earliest.style, 
+			earliest.trait, 
 			earliest.useUniversalStyleItem,
 			LINK_STYLE_DEFAULT,
 		}
 		local setPatternOffset = {14, 15,[6]=6}
 		if earliest.setIndex~=1 then
-			parameters[1] = parameters[1] + setPatternOffset[station]
+			parameters[1] = parameters[1] + setPatternOffset[station]	
 		end
 			dbug("CALL:ZOCraftSmithing")
 			CraftSmithingItem(unpack(parameters))
@@ -456,16 +463,16 @@ local function LLC_SmithingCraftInteraction( station)
 			local currentSkill, maxSkill = GetSkillAbilityUpgradeInfo(SKILL_TYPE_TRADESKILL,skillIndex,6)
 			if earliest.quality==GetItemLinkQuality(GetItemLink(earliest.ItemBagID, earliest.ItemSlotID))then
 				dbug("ACTION:RemoveImprovementRequest")
-				LibLazyCrafting.craftResultFunctions[earliest.Requester](LLC_CRAFT_SUCCESS, earliest.station,
+				LibLazyCrafting.craftResultFunctions[earliest.Requester](LLC_CRAFT_SUCCESS, earliest.station, 
 					{["bag"] = BAG_BACKPACK,["slot"] = currentCraftAttempt.slot,["reference"] = earliest.reference} )
 				craftingQueue[addon][station][position] = nil
 				sortCraftQueue()
 				LLC_SmithingCraftInteraction(station)
-				return
+				return 
 			end
 			if currentSkill~=maxSkill then
 				-- cancel if quality is already blue and skill is not max
-				-- This is to save on improvement mats.
+				-- This is to save on improvement mats. 
 
 				if earliest.quality>2 and GetItemLinkQuality(GetItemLink(earliest.ItemBagID, earliest.ItemSlotID)) >ITEM_QUALITY_MAGIC then
 					d("Improvement skill is not at maximum. Improvement prevented to save mats.")
@@ -475,7 +482,7 @@ local function LLC_SmithingCraftInteraction( station)
 			local numBooster = GetMaxImprovementMats( earliest.ItemBagID,earliest.ItemSlotID,station)
 			if not numBooster then return end
 			local _,_, stackSize = GetSmithingImprovementItemInfo(station, GetItemLinkQuality(GetItemLink(earliest.ItemBagID, earliest.ItemSlotID)))
-			if stackSize< numBooster then
+			if stackSize< numBooster then 
 				d("Not enough improvement mats")
 				return end
 			dbug("CALL:ZOImprovement")
@@ -486,7 +493,7 @@ local function LLC_SmithingCraftInteraction( station)
 			currentCraftAttempt.timestamp = GetTimeStamp()
 			currentCraftAttempt.link = GetSmithingImprovedItemLink(earliest.ItemBagID, earliest.ItemSlotID, station)
 		end
-
+		
 			--ImproveSmithingItem(number itemToImproveBagId, number itemToImproveSlotIndex, number numBoostersToUse)
 			--GetSmithingImprovedItemLink(number itemToImproveBagId, number itemToImproveSlotIndex, number TradeskillType craftingSkillType, number LinkStyle linkStyle)
 	end
@@ -535,16 +542,16 @@ local function SmithingCraftCompleteFunction(station)
 	--d("complete at "..GetTimeStamp())
 	if currentCraftAttempt.type == "smithing" then
 		if WasItemCrafted() then
-
+			
 			dbug("ACTION:RemoveRequest")
-
+			
 			--d("Item found")
 			table.remove(craftingQueue[currentCraftAttempt.Requester][station],currentCraftAttempt.position )
 			if currentCraftAttempt.quality>1 then
 				--d("Improving #".. tostring(currentCraftAttempt.reference))
 				LLC_ImproveSmithingItem({["addonName"]=currentCraftAttempt.Requester}, BAG_BACKPACK, currentCraftAttempt.slot, currentCraftAttempt.quality, currentCraftAttempt.autocraft, currentCraftAttempt.reference)
 			else
-				local errorFound, err =  pcall(function()LibLazyCrafting.craftResultFunctions[currentCraftAttempt.Requester](LLC_CRAFT_SUCCESS, station,
+				local errorFound, err =  pcall(function()LibLazyCrafting.craftResultFunctions[currentCraftAttempt.Requester](LLC_CRAFT_SUCCESS, station, 
 					{["bag"] = BAG_BACKPACK,["slot"] = currentCraftAttempt.slot,["reference"] = currentCraftAttempt.reference} )end)
 					if not errorFound then
 						d("Callback to LLC resulted in an error. Please contact the author of "..currentCraftAttempt.Requester)
@@ -560,7 +567,7 @@ local function SmithingCraftCompleteFunction(station)
 		if WasItemImproved(currentCraftAttempt) then
 
 			table.remove(craftingQueue[currentCraftAttempt.Requester][station],currentCraftAttempt.position )
-			LibLazyCrafting.craftResultFunctions[currentCraftAttempt.Requester](LLC_CRAFT_SUCCESS, station,
+			LibLazyCrafting.craftResultFunctions[currentCraftAttempt.Requester](LLC_CRAFT_SUCCESS, station, 
 					{["bag"] = BAG_BACKPACK,["slot"] = currentCraftAttempt.slot,["reference"] = currentCraftAttempt.reference} )
 		end
 		currentCraftAttempt = {}
@@ -577,7 +584,7 @@ local function compileRequirements(request, station)-- Ingot/style mat/trait mat
 	requirements[ GetItemIDFromLink( GetSmithingStyleItemLink(request.style , 0))] = 1
 	requirements[GetItemIDFromLink( GetSmithingTraitItemLink(request.trait, 0))] = 1
 	if request.quality==1 then return requirements end
-
+	
 
 end
 
@@ -587,36 +594,36 @@ LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_BLACKSMITHING] =
 	['function'] = LLC_SmithingCraftInteraction,
 	["complete"] = SmithingCraftCompleteFunction,
 	["endInteraction"] = function(station) --[[endInteraction()]] end,
-	["isItemCraftable"] = function(station, request)
-
-		if request["type"] == "improvement" then
+	["isItemCraftable"] = function(station, request) 
+	
+		if request["type"] == "improvement" then 
 			local numBooster = GetMaxImprovementMats( request.ItemBagID,request.ItemSlotID,station)
 			if not numBooster then return false end
 			local _,_,stackSize = GetSmithingImprovementItemInfo(station, GetItemLinkQuality(GetItemLink(request.ItemBagID, request.ItemSlotID)))
 			if stackSize< numBooster then
-				return false
+				return false 
 			end
 			return true
 		end
 
-
+		
 		if canCraftItemHere(station, request["setIndex"]) and canCraftItem(request) and enoughMaterials(request) then
 
 			return true
 		else
 			return false
-		end
+		end 
 	end,
-	["materialRequirements"] = function(request) return compileRequirements(request, CRAFTING_TYPE_BLACKSMITHING) end
+	["materialRequirements"] = function(request) return compileRequirements(request, CRAFTING_TYPE_BLACKSMITHING) end 
 }
 -- Should be the same for other stations though. Except for the check
-LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_WOODWORKING] = copy(LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_BLACKSMITHING])
-LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_WOODWORKING]["check"] = function(station) return station == CRAFTING_TYPE_WOODWORKING end
-LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_WOODWORKING]["materialRequirements"] = function(request) return compileRequirements(CRAFTING_TYPE_WOODWORKING) end
+LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_WOODWORKING] = copy(LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_BLACKSMITHING]) 
+LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_WOODWORKING]["check"] = function(station) return station == CRAFTING_TYPE_WOODWORKING end 
+LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_WOODWORKING]["materialRequirements"] = function(request) return compileRequirements(CRAFTING_TYPE_WOODWORKING) end 
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_CLOTHIER] = copy(LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_BLACKSMITHING])
-LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_CLOTHIER]["check"] = function(station) return station == CRAFTING_TYPE_CLOTHIER end
-LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_CLOTHIER]["materialRequirements"] = function(request) return compileRequirements(CRAFTING_TYPE_CLOTHIER) end
+LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_CLOTHIER]["check"] = function(station) return station == CRAFTING_TYPE_CLOTHIER end 
+LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_CLOTHIER]["materialRequirements"] = function(request) return compileRequirements(CRAFTING_TYPE_CLOTHIER) end 
 
 
 
@@ -627,7 +634,7 @@ LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_CLOTHIER]["materialRequirem
 
 -- Language free!!!!
 
--- For brevity sake, sets are simply listed as 3 item IDs with the number of traits needed.
+-- For brevity sake, sets are simply listed as 3 item IDs with the number of traits needed.	
 -- The name of the set is then added in on initialization using the API.
 SetIndexes =
 {		--   Axe,  Robe,     Bow
@@ -672,7 +679,7 @@ SetIndexes =
 	{{121901 , 121921, [6] = 121908 },8},
 }
 
-for i = 1,#SetIndexes do
+for i = 1,#SetIndexes do 
 	local _, a = GetItemLinkSetInfo(getItemLinkFromItemId(SetIndexes[i][1][1]),false)
 	table.insert(SetIndexes[i],1,a)
 end
@@ -684,9 +691,9 @@ function GetSetIndexes()
 end
 
 -- IDs for stuff like Sanded Ruby Ash, Iron Ingots, etc.
-MaterialitemIDTable =
+MaterialitemIDTable = 
 {
-	[CRAFTING_TYPE_BLACKSMITHING] =
+	[CRAFTING_TYPE_BLACKSMITHING] = 
 	{
 	5413,
 	4487,
@@ -699,7 +706,7 @@ MaterialitemIDTable =
 	46130,
 	64489,
 	},
-	[CRAFTING_TYPE_CLOTHIER] =
+	[CRAFTING_TYPE_CLOTHIER] = 
 	{
 	811,
 	4463,
@@ -712,7 +719,7 @@ MaterialitemIDTable =
 	43543,
 	43543,
 	},
-	[CRAFTING_TYPE_WOODWORKING] =
+	[CRAFTING_TYPE_WOODWORKING] = 
 	{
 	803,
 	533,
@@ -727,7 +734,7 @@ MaterialitemIDTable =
 	},
 }
 
-improvementChances =
+improvementChances = 
 {
 	[1] = {5, 7,10,20},
 	[2] = {4,5,7,14},
