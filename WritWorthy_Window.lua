@@ -1190,9 +1190,9 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
         d("LibLazyCrafting function missing:"..tostring(i_d.llc_func))
         d("LibLazyCrafting version:"..tostring(LLC.version))
         return
-    else
-        d("LibLazyCrafting function found:"..tostring(i_d.llc_func))
-        d("LibLazyCrafting version:"..tostring(LLC.version))
+    -- else
+    --     d("LibLazyCrafting function found:"..tostring(i_d.llc_func))
+    --     d("LibLazyCrafting version:"..tostring(LLC.version))
     end
                         -- Call LibLazyCrafting to queue it up for later.
     if LLC[i_d.llc_func] then
