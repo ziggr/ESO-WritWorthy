@@ -24,10 +24,13 @@ WritWorthyInventoryList.inventory_data_list = {}
                         -- time you're at a appropriate station." Often
                         -- called "LLC" for a shorter abbreviation.
                         --
-                        -- Version 0.3 has BS/CL/WW + Enchanting
+                        -- version 0.3 has BS/CL/WW + Enchanting
                         -- version 0.4 has Alchemy and Provisioning.
                         -- version 1.2 has Alchemy and Provisioning,
                         --             released by Dolgubon in Writ/Set addons
+                        --             had bugs that broke smithing and alchemy. DO NOT USE.
+                        -- version 1.3 ZZ fixes to 1.2, works again
+                        --             not released by Dolgubon."
 WritWorthyInventoryList.LibLazyCrafting = nil
 
                         -- Live row_control used to lay out rows. Remembered
@@ -1081,7 +1084,7 @@ function WritWorthyInventoryList:GetLLC()
     end
 
 
-    local lib = LibStub:GetLibrary("LibLazyCrafting", 1.2)
+    local lib = LibStub:GetLibrary("LibLazyCrafting", 1.3)
     self.LibLazyCrafting = lib:AddRequestingAddon(
          WritWorthy.name            -- name
        , true                       -- autocraft
@@ -1090,8 +1093,8 @@ function WritWorthyInventoryList:GetLLC()
 
     Log:StartNewEvent()
     if not self.LibLazyCrafting then
-        d("WritWorthy: Unable to load LibLazyCrafting 1.2")
-        Log:Add("Unable to load LibLazyCrafting 1.2")
+        d("WritWorthy: Unable to load LibLazyCrafting 1.3")
+        Log:Add("Unable to load LibLazyCrafting 1.3")
     end
     Log:Add("LibLazyCrafting LLC:"..tostring(self.LibLazyCrafting))
 
