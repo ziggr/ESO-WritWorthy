@@ -9,8 +9,15 @@ local LAM2 = LibStub("LibAddonMenu-2.0")
 WritWorthy.name            = "WritWorthy"
 WritWorthy.version         = "3.1.4"
 WritWorthy.savedVarVersion = 1
+
+-- Constants for savedVariables.enable_mat_list_chat
+-- Appear as user-visible text in dropdown and also used as programmatic keys
+-- which is usually a bad idea but I'm suboptimally lazy today.
+WritWorthy.MAT_LIST_CHAT_OFF          = "Off"
+WritWorthy.MAT_LIST_CHAT_ALL          = "All"
+WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY = "Alchemy Only"
 WritWorthy.default = {
-    enable_mat_list_chat = false
+    enable_mat_list_chat = WritWorthy.MAT_LIST_CHAT_OFF
 
                         -- UI topleft, used by WritWorthyInventoryList.
 ,   position = { 50, 50 }
@@ -75,7 +82,7 @@ function WritWorthy.ToMatKnowList(item_link)
     if parser.ToKnowList then
         know_list = parser:ToKnowList()
     end
-    return mat_list, know_list
+    return mat_list, know_list, parser
 end
 
 -- Convert a Master Writ item_link into an integer gold cost
@@ -174,6 +181,17 @@ function WritWorthy.KnowTooltipText(know_list)
     return table.concat(elements, "\n")
 end
 
+local function can_dump_matlist(enable, parser)
+    if enable == WritWorthy.MAT_LIST_CHAT_ALL then
+        return true
+    elseif enable == WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY
+        and parser
+        and parser.class == WritWorthy.Alchemy.Parser.class then
+        return true
+    end
+    return false
+end
+
 -- Add text to a tooltip.
 --
 -- control:       the tooltip, responds to :AddLine(text)
@@ -186,12 +204,12 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     -- Only fire for master writs.
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
 
-    local mat_list, know_list   = WritWorthy.ToMatKnowList(item_link)
+    local mat_list, know_list, parser   = WritWorthy.ToMatKnowList(item_link)
     local voucher_ct = WritWorthy.ToVoucherCount(item_link)
     local mat_text = WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
     if not mat_text then return end
     control:AddLine(mat_text)
-    if WritWorthy.savedVariables.enable_mat_list_chat then
+    if can_dump_matlist(WritWorthy.savedVariables.enable_mat_list_chat, parser) then
         WritWorthy.MatRow.ListDump(mat_list)
         --WritWorthy.KnowDump(know_list)
     end
@@ -350,10 +368,14 @@ function WritWorthy:CreateSettingsWindow()
                                                      , panelData
                                                      )
     local optionsData = {
-        { type      = "checkbox"
+        { type      = "dropdown"
         , name      = "Show material list in chat"
         , tooltip   = "Write several lines of materials to chat each"
                       .." time a Master Writ tooltip appears."
+        , choices   = { WritWorthy.MAT_LIST_CHAT_OFF
+                      , WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY
+                      , WritWorthy.MAT_LIST_CHAT_ALL
+                      }
         , getFunc   = function()
                         return self.savedVariables.enable_mat_list_chat
                       end
