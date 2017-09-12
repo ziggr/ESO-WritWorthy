@@ -1083,7 +1083,6 @@ function WritWorthyInventoryList:GetLLC()
         return self.LibLazyCrafting
     end
 
-
     local lib = LibStub:GetLibrary("LibLazyCrafting", 1.3)
     self.LibLazyCrafting = lib:AddRequestingAddon(
          WritWorthy.name            -- name
@@ -1108,7 +1107,77 @@ function WritWorthyInventoryList:GetLLC()
         Log:Add("LibLazyCrafting API k:"..tostring(k).."  v:"..tostring(v))
     end
 
+                        -- Install our Alchemy and Provisioning pre-craft
+                        -- hooks. LibLazyCrafting 1.3 lacks these checks and
+                        -- erroneously attempts (and fails) to craft items with
+                        -- insufficient materials, causing failure or in
+                        -- Provisioning's case, an infinite loop followed by
+                        -- client disconnect (!).  Hopefully 1.4 will add them.
+                        -- But until then, here, have our own hooks.
+    local llc_global = LibStub("LibLazyCrafting")
+    llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY]      = WritWorthy_LLC_IsItemCraftable_Alchemy
+    llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING] = WritWorthy_LLC_IsItemCraftable_Provisioning
+
     return self.LibLazyCrafting
+end
+
+-- Copied from LLC internals
+local function getItemLinkFromItemId(itemId) local name = GetItemLinkName(ZO_LinkHandler_CreateLink("Test Trash", nil, ITEM_LINK_TYPE,itemId, 1, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 10000, 0))
+    return ZO_LinkHandler_CreateLink(zo_strformat("<<t:1>>",name), nil, ITEM_LINK_TYPE,itemId, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+end
+
+local function HaveMaterials(mat_list)
+    for _, mat in ipairs(mat_list) do
+        local item_link = mat_list.item_link
+        if (not item_link) and mat.item_id then
+            item_link = getItemLinkFromItemId(mat.item_id)
+        end
+        if item_link then
+            local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
+            if (bag_ct + bank_ct + craft_bag_ct) < mat.required_ct then
+                return false
+            end
+        end
+    end
+    return true
+end
+
+-- Hook called by LibLazyCrafting before attempting to craft each request.
+-- Return true if it's okay to start crafting it, false if not.
+function WritWorthy_LLC_IsItemCraftable_Alchemy(station_crafting_type, request)
+    if station_crafting_type ~= CRAFTING_TYPE_ALCHEMY then return false end
+
+    local mat_list
+      = { { item_id = request.solventId  , required_ct = request.timesToMake }
+        , { item_id = request.reagentId1 , required_ct = request.timesToMake }
+        , { item_id = request.reagentId2 , required_ct = request.timesToMake }
+        , { item_id = request.reagentId3 , required_ct = request.timesToMake }
+        }
+    return HaveMaterials(mat_list)
+end
+
+function WritWorthy_LLC_IsItemCraftable_Provisioning(station_crafting_type, request)
+    if station_crafting_type ~= CRAFTING_TYPE_PROVISIONING then return false end
+
+    local mat_list    = {}
+    local recipe_link = getItemLinkFromItemId(request.recipeId)
+    local mat_ct      = GetItemLinkRecipeNumIngredients(o.recipe_link)
+    for ingr_index = 1,mat_ct do
+        local _, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
+                              o.recipe_link
+                            , ingr_index)
+        local ingr_link = GetItemLinkRecipeIngredientItemLink(
+                              o.recipe_link
+                            , ingr_index
+                            , LINK_STYLE_DEFAULT)
+        if 0 < ingr_ct and ingr_link and ingr_link ~= "" then
+            local mr = { item_link   = ingr_link
+                       , required_ct = ingr_ct * request.timesToMake
+                       }
+            table.insert(mat_list, mr)
+        end
+    end
+    return HaveMaterials(mat_list)
 end
 
 -- Record a "queued" or "completed" state to per-character savedVariables. If
