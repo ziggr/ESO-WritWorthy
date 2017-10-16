@@ -1115,8 +1115,8 @@ function WritWorthyInventoryList:GetLLC()
                         -- client disconnect (!).  Hopefully 1.4 will add them.
                         -- But until then, here, have our own hooks.
     local llc_global = LibStub("LibLazyCrafting")
-    llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY]      = WritWorthy_LLC_IsItemCraftable_Alchemy
-    llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING] = WritWorthy_LLC_IsItemCraftable_Provisioning
+    llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Alchemy
+    llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Provisioning
 
     return self.LibLazyCrafting
 end
@@ -1128,15 +1128,23 @@ end
 
 local function HaveMaterials(mat_list)
     for _, mat in ipairs(mat_list) do
-        local item_link = mat_list.item_link
+        local item_link = mat.item_link
         if (not item_link) and mat.item_id then
             item_link = getItemLinkFromItemId(mat.item_id)
         end
         if item_link then
             local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
-            if (bag_ct + bank_ct + craft_bag_ct) < mat.required_ct then
+            local have_ct = bag_ct + bank_ct + craft_bag_ct
+            Log:Add("HaveMaterials: "..tostring(mat.required_ct)
+                    .." <=? "..tostring(have_ct).."  "..tostring(item_link))
+            if have_ct < mat.required_ct then
+                d("WritWorthy: insufficient materials: "..tostring(item_link)
+                    ..": require "..tostring(mat.required_ct)
+                    .."  have "..tostring(have_ct))
                 return false
             end
+        else
+            Log:Add("HaveMaterials: nil link")
         end
     end
     return true
@@ -1161,20 +1169,23 @@ function WritWorthy_LLC_IsItemCraftable_Provisioning(station_crafting_type, requ
 
     local mat_list    = {}
     local recipe_link = getItemLinkFromItemId(request.recipeId)
-    local mat_ct      = GetItemLinkRecipeNumIngredients(o.recipe_link)
+    local mat_ct      = GetItemLinkRecipeNumIngredients(recipe_link)
     for ingr_index = 1,mat_ct do
         local _, _, ingr_ct = GetItemLinkRecipeIngredientInfo(
-                              o.recipe_link
+                              recipe_link
                             , ingr_index)
         local ingr_link = GetItemLinkRecipeIngredientItemLink(
-                              o.recipe_link
+                              recipe_link
                             , ingr_index
                             , LINK_STYLE_DEFAULT)
-        if 0 < ingr_ct and ingr_link and ingr_link ~= "" then
-            local mr = { item_link   = ingr_link
-                       , required_ct = ingr_ct * request.timesToMake
-                       }
-            table.insert(mat_list, mr)
+        if       ingr_ct
+            and (0 < ingr_ct)
+            and  ingr_link
+            and (ingr_link ~= "") then
+            local mat = { item_link   = ingr_link
+                        , required_ct = ingr_ct * request.timesToMake
+                        }
+            table.insert(mat_list, mat)
         end
     end
     return HaveMaterials(mat_list)
