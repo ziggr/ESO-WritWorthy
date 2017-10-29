@@ -1,7 +1,7 @@
 ## Title: WritWorthy
-## Description: WritWorthy version 3.1.5
+## Description: WritWorthy version 3.2.1
 ## Author: ziggr
-## APIVersion: 100020 100021
+## APIVersion: 100021
 ## SavedVariables: WritWorthyVars
 ## OptionalDependsOn: LibAddonMenu-2.0
 

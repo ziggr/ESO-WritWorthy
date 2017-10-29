@@ -1,3 +1,8 @@
+[B]3.2.1 2017-10-29[/B]
+[LIST]
+[*] Update to LibLazyCrafting 1.4. This fixes the error "WritWorthy_Window.lua:1118: attempt to index a nil value"
+[/LIST]
+
 [B]3.1.5 2017-10-16[/B]
 [LIST]
 [*]"Show material list in chat" has a new "Alchemy only" option for folks (like me!) who only check the material list for alchemy.
