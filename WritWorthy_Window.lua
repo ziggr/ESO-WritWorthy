@@ -1116,8 +1116,17 @@ function WritWorthyInventoryList:GetLLC()
                         -- client disconnect (!).  Hopefully 1.4 will add them.
                         -- But until then, here, have our own hooks.
     local llc_global = LibStub("LibLazyCrafting")
-    llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Alchemy
-    llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Provisioning
+    if      llc_global
+        and llc_global.craftInteractionTables
+        and llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]
+        and llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING] then
+        llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Alchemy
+        llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Provisioning
+    else
+        d("WritWorthy warning: unable to install code to check"
+          .." provisioning/alchemy materials. Auto-crafting these types"
+          .." will hang if you lack required materials.")
+    end
 
     return self.LibLazyCrafting
 end
