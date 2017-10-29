@@ -23,6 +23,13 @@
  --   user:/AddOns/DolgubonsLazySetCrafter/Libs/LibLazyCrafting/LibLazyCrafting.lua:523: in function 'CraftInteract'
 
 local LibLazyCrafting = LibStub("LibLazyCrafting")
+
+local widgetType = 'smithing'
+local widgetVersion = 1
+if not LibLazyCrafting:RegisterWidget(widgetType, widgetVersion) then return  end
+
+local SetIndexes
+
 local sortCraftQueue = LibLazyCrafting.sortCraftQueue
 SetIndexes ={}
 local abc = 1
@@ -691,10 +698,18 @@ SetIndexes =
 	{{121551 , 121571, [6] = 121558 },3},
 	{{122251 , 122271, [6] = 122258 },6},
 	{{121901 , 121921, [6] = 121908 },8},
+	{{131070 , 131090, [6] = 131077 },6},
+	{{130370 , 130390, [6] = 130377 },2},
+	{{130720 , 130740, [6] = 130727 },4},
+
 }
+
+
+
 
 for i = 1,#SetIndexes do 
 	local _, a = GetItemLinkSetInfo(getItemLinkFromItemId(SetIndexes[i][1][1]),false)
+
 	table.insert(SetIndexes[i],1,a)
 end
 
@@ -705,7 +720,7 @@ function GetSetIndexes()
 end
 
 -- IDs for stuff like Sanded Ruby Ash, Iron Ingots, etc.
-MaterialitemIDTable = 
+local MaterialitemIDTable = 
 {
 	[CRAFTING_TYPE_BLACKSMITHING] = 
 	{
