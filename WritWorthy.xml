@@ -12,7 +12,7 @@
         mouseEnabled="true"
         resizeHandleSize="2"
         allowBringToTop="true"
-        clampedToScreen="true"
+        clampedToScreen="false"
         >
       <Dimensions              x="1075"      y="550" />
       <DimensionConstraints minX="1075"   minY="350"
