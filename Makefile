@@ -28,3 +28,6 @@ zip:
 	cp ./WritWorthy* Bindings.xml published/WritWorthy/
 	cd published; zip -r WritWorthy\ x.x.x.zip WritWorthy
 
+getllc:
+	cp -R ../LibLazyCrafting/* ./Libs/LibLazyCrafting/
+

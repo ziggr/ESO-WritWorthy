@@ -147,6 +147,8 @@ craftingQueue =
 }
 craftingQueue["ExampleAddon"] = nil
 
+LibLazyCrafting.craftingQueue = craftingQueue
+
 local craftResultFunctions = {[""]=function() end}
 
 LibLazyCrafting.functionTable = {}
