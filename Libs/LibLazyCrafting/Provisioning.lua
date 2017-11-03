@@ -9,7 +9,7 @@
 -- File Name: Provisioning.lua
 -- File Description: Contains the functions for Provisioning
 -- Load Order Requirements: After LibLazyCrafting.lua
--- 
+--
 -----------------------------------------------------------------------------------
 
 
@@ -80,7 +80,7 @@ local function LLC_ProvisioningCraftInteraction(event, station)
     currentCraftAttempt.position = position
     currentCraftAttempt.timestamp = GetTimeStamp()
     currentCraftAttempt.addon = addon
-    currentCraftAttempt.prevSlots = LibLazyCrafting.findSlotsContaining(currentCraftAttempt.link)
+    currentCraftAttempt.prevSlots = LibLazyCrafting.backpackInventory()
 end
 
 local function LLC_ProvisioningCraftingComplete(event, station, lastCheck)
