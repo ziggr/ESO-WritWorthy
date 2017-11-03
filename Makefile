@@ -31,3 +31,6 @@ zip:
 getllc:
 	cp -R ../LibLazyCrafting/* ./Libs/LibLazyCrafting/
 
+putllc:
+	cp -R ./Libs/LibLazyCrafting/* ../LibLazyCrafting/
+
