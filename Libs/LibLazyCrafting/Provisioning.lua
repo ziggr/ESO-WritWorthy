@@ -27,6 +27,8 @@ local function dbug(...)
     DolgubonGlobalDebugOutput(...)
 end
 
+local craftingQueue = LibLazyCrafting.craftingQueue
+
 local function toRecipeLink(recipeId)
     return string.format("|H1:item:%s:3:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h", tostring(recipeId))
 end

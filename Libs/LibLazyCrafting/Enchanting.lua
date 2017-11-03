@@ -23,6 +23,8 @@ local function dbug(...)
 	DolgubonGlobalDebugOutput(...)
 end
 
+local craftingQueue = LibLazyCrafting.craftingQueue
+
 --------------------------------------
 -- ENCHANTING HELPER FUNCTIONS
 
