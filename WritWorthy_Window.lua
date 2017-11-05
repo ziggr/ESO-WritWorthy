@@ -1083,8 +1083,7 @@ function WritWorthyInventoryList:GetLLC()
         return self.LibLazyCrafting
     end
 
-    local LLC_VERSION = 1.4
-    local lib = LibStub:GetLibrary("LibLazyCrafting", LLC_VERSION)
+    local lib = LibStub:GetLibrary("LibLazyCrafting")
     self.LibLazyCrafting = lib:AddRequestingAddon(
          WritWorthy.name            -- name
        , true                       -- autocraft
@@ -1093,8 +1092,8 @@ function WritWorthyInventoryList:GetLLC()
 
     Log:StartNewEvent()
     if not self.LibLazyCrafting then
-        d("WritWorthy: Unable to load LibLazyCrafting"..tostring(LLC_VERSION))
-        Log:Add("Unable to load LibLazyCrafting"..tostring(LLC_VERSION))
+        d("WritWorthy: Unable to load LibLazyCrafting")
+        Log:Add("Unable to load LibLazyCrafting")
     end
     Log:Add("LibLazyCrafting LLC:"..tostring(self.LibLazyCrafting))
 
