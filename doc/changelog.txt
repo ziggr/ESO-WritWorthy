@@ -1,3 +1,10 @@
+[B]3.2.2 2017-11-09[/B]
+[LIST]
+[*] Update to LibLazyCrafting 1.5. Same library version as in Dolgubon's Lazy Writ Crafter v36.8 and Dolgubon's Lazy Set Crafter v1.0.19
+[*] Allow WritWorthy window to be moved partially offscreen. Zig finds it [i]very[/i] handy to slide the window off to the right and just focus on crafting station names when doing dozens of master writs at a time.
+[*] Stop making an unnecessary extra crafted provisioning/alchemy item. Thank you Dolgubon for finding a 100% reproduction case.
+[/LIST]
+
 [B]3.2.1 2017-10-29[/B]
 [LIST]
 [*] Update to LibLazyCrafting 1.4. This fixes the error "WritWorthy_Window.lua:1118: attempt to index a nil value"
