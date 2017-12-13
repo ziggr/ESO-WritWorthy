@@ -1,3 +1,9 @@
+[B]3.2.3 2017-12-13[/B]
+[LIST]
+[*] Update to LibLazyCrafting 1.7
+    from [URL=https://github.com/Dolgubon/LibLazyCrafting/commit/8e4642c444775ecd26bc80b9ae380e8c3fd79318]LibLazyCrafting on GitHub[/URL]
+[/LIST]
+
 [B]3.2.2 2017-11-09[/B]
 [LIST]
 [*] Update to LibLazyCrafting 1.5. Same library version as in Dolgubon's Lazy Writ Crafter v36.8 and Dolgubon's Lazy Set Crafter v1.0.19
