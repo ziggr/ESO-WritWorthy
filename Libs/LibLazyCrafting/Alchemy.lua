@@ -17,7 +17,7 @@ local LibLazyCrafting = LibStub("LibLazyCrafting")
 local sortCraftQueue = LibLazyCrafting.sortCraftQueue
 
 local widgetType = 'alchemy'
-local widgetVersion = 1.1
+local widgetVersion = 1.3
 if not LibLazyCrafting:RegisterWidget(widgetType, widgetVersion) then return false end
 
 local function dbug(...)
@@ -95,6 +95,7 @@ local function LLC_AlchemyCraftInteraction(event, station)
 	if not (solventSlotIndex and reagent1SlotIndex and reagent2SlotIndex and (not earliest["reagentId3"] or reagent3SlotIndex)) then return end
 
 	dbug("CALL:ZOAlchemyCraft")
+	LibLazyCrafting.isCurrentlyCrafting = {true, "alchemy", earliest["Requester"]}
 	CraftAlchemyItem(unpack(locations))
 
 	currentCraftAttempt= copy(earliest)
@@ -129,11 +130,12 @@ end
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ALCHEMY] =
 {
-	["check"] = function(station) return station == CRAFTING_TYPE_ALCHEMY end,
+	["station"] = CRAFTING_TYPE_ALCHEMY,
+	["check"] = function(self, station) return station == self.station end,
 	['function'] = LLC_AlchemyCraftInteraction,
 	["complete"] = LLC_AlchemyCraftingComplete,
-	["endInteraction"] = function(station) --[[endInteraction()]] end,
-	["isItemCraftable"] = function(station) if station == CRAFTING_TYPE_ALCHEMY then return true else return false end end,
+	["endInteraction"] = function(self, station) --[[endInteraction()]] end,
+	["isItemCraftable"] = function(self, station) if station == CRAFTING_TYPE_ALCHEMY then return true else return false end end,
 }
 
 LibLazyCrafting.functionTable.CraftAlchemyPotion = LLC_CraftAlchemyPotion

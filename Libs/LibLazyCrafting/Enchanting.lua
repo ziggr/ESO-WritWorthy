@@ -15,7 +15,7 @@ local LibLazyCrafting = LibStub("LibLazyCrafting")
 local sortCraftQueue = LibLazyCrafting.sortCraftQueue
 
 local widgetType = 'enchanting'
-local widgetVersion = 1
+local widgetVersion = 1.2
 if not LibLazyCrafting:RegisterWidget(widgetType, widgetVersion) then return false end
 
 local function dbug(...)
@@ -104,7 +104,7 @@ local currentCraftAttempt =
 
 }
 
-timeGiven = 1800
+
 local function LLC_EnchantingCraftinteraction(event, station)
 	dbug("FUNCTION:LLCEnchantCraft")
 	local earliest, addon , position = LibLazyCrafting.findEarliestRequest(CRAFTING_TYPE_ENCHANTING)
@@ -119,6 +119,7 @@ local function LLC_EnchantingCraftinteraction(event, station)
 		}
 		if locations[1] and locations[5] and locations[3] then
 			dbug("CALL:ZOEnchantCraft")
+			LibLazyCrafting.isCurrentlyCrafting = {true, "enchanting", earliest["Requester"]}
 			CraftEnchantingItem(unpack(locations))
 			
 			currentCraftAttempt= copy(earliest)
@@ -135,7 +136,7 @@ local function LLC_EnchantingCraftinteraction(event, station)
 			ENCHANTING.essenceLength = 0
 			ENCHANTING.aspectSound = SOUNDS["NONE"]
 			ENCHANTING.aspectLength = 0
-			--zo_callLater(function() SCENE_MANAGER:ShowBaseScene() end, timeGiven)
+			
 		end
 	end
 end
@@ -199,11 +200,12 @@ end
 
 LibLazyCrafting.craftInteractionTables[CRAFTING_TYPE_ENCHANTING] =
 {
-	["check"] = function(station) return station == CRAFTING_TYPE_ENCHANTING end,
+	["station"] = CRAFTING_TYPE_ENCHANTING,
+	["check"] = function(self, station) return station == self.station end,
 	['function'] = LLC_EnchantingCraftinteraction,
 	["complete"] = LLC_EnchantingCraftingComplete,
-	["endInteraction"] = function(station) --[[endInteraction()]] end,
-	["isItemCraftable"] = function(station, request) 
+	["endInteraction"] = function(self, station) --[[endInteraction()]] end,
+	["isItemCraftable"] = function(self, station, request) 
 		if station == CRAFTING_TYPE_ENCHANTING and haveEnoughMats(request.potencyItemID, request.essenceItemID, request.aspectItemID) then 
 			return true else return false 
 		end 
