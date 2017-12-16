@@ -996,6 +996,7 @@ end
 --          its unique_id reference.
 function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     Log:StartNewEvent()
+    if event ~= LLC_CRAFT_SUCCESS then return end
     local unique_id = nil
     local request_index = nil
     if llc_result then
