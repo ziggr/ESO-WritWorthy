@@ -17,7 +17,7 @@ local LibLazyCrafting = LibStub("LibLazyCrafting")
 local sortCraftQueue = LibLazyCrafting.sortCraftQueue
 
 local widgetType = 'alchemy'
-local widgetVersion = 1.4
+local widgetVersion = 1.5
 if not LibLazyCrafting:RegisterWidget(widgetType, widgetVersion) then return false end
 
 local function dbug(...)
@@ -49,7 +49,7 @@ local function LLC_CraftAlchemyItemByItemId(self, solventId, reagentId1, reagent
 	}
 	)
 
-	sortCraftQueue()
+	--sortCraftQueue()
 	if GetCraftingInteractionType()==CRAFTING_TYPE_ALCHEMY then
 		LibLazyCrafting.craftInteract(event, CRAFTING_TYPE_ALCHEMY)
 	end
