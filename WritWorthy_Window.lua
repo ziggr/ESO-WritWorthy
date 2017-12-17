@@ -996,6 +996,7 @@ end
 --          its unique_id reference.
 function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     Log:StartNewEvent()
+    if event ~= LLC_CRAFT_SUCCESS then return end
     local unique_id = nil
     local request_index = nil
     if llc_result then
@@ -1161,7 +1162,7 @@ end
 
 -- Hook called by LibLazyCrafting before attempting to craft each request.
 -- Return true if it's okay to start crafting it, false if not.
-function WritWorthy_LLC_IsItemCraftable_Alchemy(station_crafting_type, request)
+function WritWorthy_LLC_IsItemCraftable_Alchemy(self, station_crafting_type, request)
     if station_crafting_type ~= CRAFTING_TYPE_ALCHEMY then return false end
 
     local mat_list
@@ -1173,7 +1174,7 @@ function WritWorthy_LLC_IsItemCraftable_Alchemy(station_crafting_type, request)
     return HaveMaterials(mat_list)
 end
 
-function WritWorthy_LLC_IsItemCraftable_Provisioning(station_crafting_type, request)
+function WritWorthy_LLC_IsItemCraftable_Provisioning(self, station_crafting_type, request)
     if station_crafting_type ~= CRAFTING_TYPE_PROVISIONING then return false end
 
     local mat_list    = {}
