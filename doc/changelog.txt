@@ -1,3 +1,10 @@
+[B]3.2.5 2017-12-16[/B]
+[LIST]
+[*] by Dolgubon: Adapt to API in LibLazyCrafting 1.9.
+[*] Fixes the Provisioning and Alchemy checks.
+[*] Fix possible issues with the LLC callback, honor crafting response code.
+[/LIST]
+
 [B]3.2.4 2017-12-15[/B]
 [LIST]
 [*] Update to LibLazyCrafting 1.9
