@@ -996,7 +996,21 @@ end
 --          its unique_id reference.
 function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     Log:StartNewEvent()
+                        -- Just finished crafting at this station.
+                        -- Auto-exit the station so that we can move on.
+    if      event == LLC_NO_FURTHER_CRAFT_POSSIBLE
+        and WritWorthyInventoryList.auto_exit_soon then
+        WritWorthyInventoryList.auto_exit_soon = false
+        SCENE_MANAGER:ShowBaseScene()
+    end
+
     if event ~= LLC_CRAFT_SUCCESS then return end
+
+                        -- Avoid auto-exiting immediately after connecting
+                        -- to a station that LLC cannot craft anything for.
+                        -- That would be super-annoying.
+    WritWorthyInventoryList.auto_exit_soon = true
+
     local unique_id = nil
     local request_index = nil
     if llc_result then
