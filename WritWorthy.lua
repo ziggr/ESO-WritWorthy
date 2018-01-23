@@ -456,3 +456,4 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
 
 ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",       "Show/Hide WritWorthy")
 
+SLASH_COMMANDS["/writworthy"] = WritWorthyUI_ToggleUI
