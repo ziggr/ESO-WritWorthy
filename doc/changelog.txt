@@ -1,3 +1,11 @@
+[B]3.3.1 2018-01-29[/B]
+[LIST]
+[*] Update 17 / ESO 3.3 / Dragon Bones / API 10022
+[*] /writworthy command toggles window
+[*] Exit crafting station after auto-crafting all we can at this station.
+[*] Update to LibLazyCrafting 1.1.9 8ef2e2, matching Dolgubon's Lazy Set Crafter 1.1.6 and Writ Crafter 36.19.
+[/LIST]
+
 [B]3.2.5 2017-12-16[/B]
 [LIST]
 [*] by Dolgubon: Adapt to API in LibLazyCrafting 1.9.
