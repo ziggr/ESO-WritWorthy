@@ -33,7 +33,7 @@ NEW and experimental for version 3.0.3 2017-06-18
 
 
 [LIST=1]
-[*]Bind a key to "Show/Hide WritWorthy"
+[*]Bind a key to "Show/Hide WritWorthy" or type /writworthy in chat.
 [*]Use that key binding to see a list of all Sealed Master Writs in the current character's inventory.
 [*]Check the ones you want to craft automatically next time the character visits the appropriate crafting station. Or "Enqueue All" if you want to craft them all.
 [*]"Sort by Station" to see which crafting stations you need to visit.
