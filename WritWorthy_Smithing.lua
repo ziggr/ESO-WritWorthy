@@ -217,6 +217,10 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_ENEMY_MAZZATUN        ] = { mat_name = "leviathan scrimshaw"   , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 57
 ,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN] = { mat_name = "grinstones"            , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 58
 ,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK    ] = { mat_name = "amber marble"          , motif_name = "Hollowjack"           , pages_id  = 1545 } -- 59
+,   [ITEMSTYLE_BLOODFORGE      or 61 ] = { mat_name = "bloodroot flux"        , motif_name = "Bloodforge"           , pages_id  = 2098 } -- 59
+,   [ITEMSTYLE_DREADHORN       or 62 ] = { mat_name = "minotaur bezoar"       , motif_name = "Dreadhorn"            , pages_id  = 2097 } -- 59
+,   [ITEMSTYLE_APOSTLE         or 65 ] = { mat_name = "tempered brass"        , motif_name = "Apostle"              , pages_id  = 2044 } -- 59
+,   [ITEMSTYLE_EBONSHADOW      or 66 ] = { mat_name = "tenebrous cord"        , motif_name = "Ebonshadow"           , pages_id  = 2045 } -- 59
 -- ,   [ITEMSTYLE_UNUSED1               ] = nil --                             , motif_name = Unused 11"             } -- 60
 -- ,   [ITEMSTYLE_UNUSED2               ] = nil --                             , motif_name = Unused 11"             } -- 61
 -- ,   [ITEMSTYLE_UNUSED3               ] = nil --                             , motif_name = Unused 11"             } -- 62
