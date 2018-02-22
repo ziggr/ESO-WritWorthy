@@ -1,3 +1,10 @@
+[B]3.3.2 2018-02-22[/B]
+[LIST]
+[*] Add HotR motif style IDs. Thank you, Rhyono for the numbers from CraftStore
+[*] Remove unwanted LibAddonMenu.txt manifest file from like 2 years ago that was 1. in the wrong directory, and 2. shouldn't have been there at all. Thank you, Marazota for the find and fix.
+[*] LibAddonMenu updated from r18 (!) to r25.
+[/LIST]
+
 [B]3.3.1 2018-01-29[/B]
 [LIST]
 [*] Update 17 / ESO 3.3 / Dragon Bones / API 10022
