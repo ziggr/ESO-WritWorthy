@@ -6,11 +6,6 @@
 ## OptionalDependsOn: LibAddonMenu-2.0
 
 Libs/LibStub/LibStub.lua
-Libs/LibLazyCrafting/LibLazyCrafting.lua
-Libs/LibLazyCrafting/Alchemy.lua
-Libs/LibLazyCrafting/Enchanting.lua
-Libs/LibLazyCrafting/Provisioning.lua
-Libs/LibLazyCrafting/Smithing.lua
 Libs/LibAddonMenu-2.0/LibAddonMenu-2.0.lua
 Libs/LibAddonMenu-2.0/controls/panel.lua
 Libs/LibAddonMenu-2.0/controls/submenu.lua
@@ -25,6 +20,11 @@ Libs/LibAddonMenu-2.0/controls/header.lua
 Libs/LibAddonMenu-2.0/controls/slider.lua
 Libs/LibAddonMenu-2.0/controls/texture.lua
 Libs/LibAddonMenu-2.0/controls/iconpicker.lua
+Libs/LibLazyCrafting/LibLazyCrafting.lua
+Libs/LibLazyCrafting/Alchemy.lua
+Libs/LibLazyCrafting/Enchanting.lua
+Libs/LibLazyCrafting/Provisioning.lua
+Libs/LibLazyCrafting/Smithing.lua
 
 WritWorthy_Define.lua
 WritWorthy_Price.lua
