@@ -995,7 +995,7 @@ end
 --  - llc_result is a table with bag/slot id of the crafted item and
 --          its unique_id reference.
 function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
-    Log:StartNewEvent()
+    Log:Add("LLCCompleted event:"..tostring(event).." station:"..tostring(station))
                         -- Just finished crafting at this station.
                         -- Auto-exit the station so that we can move on.
     if      event == LLC_NO_FURTHER_CRAFT_POSSIBLE
