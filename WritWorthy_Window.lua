@@ -628,7 +628,6 @@ local SHORTEN = {
 , ["Armor of the Seducer"     ] = "Seducer"
 , ["Night Mother's Gaze"      ] = "Night Mother's"
 , ["Alessia's Bulwark"        ] = "Alessia's"
-, ["Law of Julianos"          ] = "Julianos"
 , ["Pelinal's Aptitude"       ] = "Pelinal's"
 
 , ["Epic"                     ] = "|c973dd8Epic|r"
