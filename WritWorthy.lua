@@ -396,6 +396,18 @@ function WritWorthy:CreateSettingsWindow()
                         self.savedVariables.enable_mm_fallback = e
                       end
         },
+
+        { type      = "checkbox"
+        , name      = "Station colors in window"
+        , tooltip   = "Use different colors for blacksmithing, clothing, and"
+                      .." woodworking items in the WritWorthy window."
+        , getFunc   = function()
+                        return self.savedVariables.enable_station_colors
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_station_colors = e
+                      end
+        },
     }
 
     LAM2:RegisterOptionControls(lam_addon_id, optionsData)

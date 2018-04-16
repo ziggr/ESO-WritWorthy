@@ -74,6 +74,9 @@ WritWorthyInventoryList.COLOR_TEXT_CANNOT_QUEUE = "CC3333"
 WritWorthyInventoryList.COLOR_TEXT_CAN_QUEUE    = "CCCCCC"
 WritWorthyInventoryList.COLOR_TEXT_QUEUED       = "FFFFFF"
 WritWorthyInventoryList.COLOR_TEXT_COMPLETED    = "33AA33"
+WritWorthyInventoryList.COLOR_TEXT_WW           = "E0FF93"
+WritWorthyInventoryList.COLOR_TEXT_CL           = "A8E0FF"
+WritWorthyInventoryList.COLOR_TEXT_BS           = "FFCE93"
 
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
@@ -695,6 +698,17 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
     return true, ""
 end
 
+-- Thank you, Manavortex!
+-- Cache these, because with inline == the string will be created just to compare
+-- it each time the fn runs
+local UI_TYPE_WOOD          = "Wood"
+local UI_TYPE_HEAVY         = "Heavy"
+local UI_TYPE_MEDIUM        = "Medium"
+local UI_TYPE_LIGHT         = "Light"
+local UI_TYPE_ALCHEMY       = "Alchemy"
+local UI_TYPE_ENCHANTING    = "Enchanting"
+local UI_TYPE_PROVISIONING  = "Provisioning"
+
 -- Fill in all inventory_data.ui_xxx fields.
 -- Here is where our data gets translated into user-visible text.
 function WritWorthyInventoryList:PopulateUIFields(inventory_data)
@@ -714,7 +728,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     if parser.class == WritWorthy.Smithing.Parser.class then
         local ri = parser.request_item  -- For less typing.
         if ri.school == WritWorthy.Smithing.SCHOOL_WOOD then
-            inventory_data.ui_type = "Wood"
+            inventory_data.ui_type = UI_TYPE_WOOD
         else
             inventory_data.ui_type = ri.school.armor_weight_name
         end
@@ -724,14 +738,14 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         inventory_data.ui_detail4 = ri.trait_set[parser.trait_num].trait_name
         inventory_data.ui_detail5 = parser.improve_level.name
     elseif parser.class == WritWorthy.Alchemy.Parser.class then
-        inventory_data.ui_type =  "Alchemy"
+        inventory_data.ui_type =  UI_TYPE_ALCHEMY
         local mat_list = parser:ToMatList()
         inventory_data.ui_detail1 = mat_list[1].name
         inventory_data.ui_detail2 = mat_list[2].name
         inventory_data.ui_detail3 = mat_list[3].name
         inventory_data.ui_detail4 = mat_list[4].name
     elseif parser.class == WritWorthy.Enchanting.Parser.class then
-        inventory_data.ui_type =  "Enchanting"
+        inventory_data.ui_type =  UI_TYPE_ENCHANTING
         if parser.level == 150 then
             inventory_data.ui_detail1 = "Superb"
         else
@@ -745,7 +759,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
            inventory_data.ui_detail5 = "Legendary"
         end
     elseif parser.class == WritWorthy.Provisioning.Parser.class then
-        inventory_data.ui_type    = "Provisioning"
+        inventory_data.ui_type    = UI_TYPE_PROVISIONING
         inventory_data.ui_detail1 = parser.recipe.fooddrink_name
     end
                         -- Since the point of these UI fields is to  drive the
@@ -860,6 +874,7 @@ function WritWorthyInventoryList_SortByStation()
     self:RefreshData()
 end
 
+
 -- ZO_ScrollFilterList will instantiate (or reuse!) a
 -- WritWorthyInventoryListRow row_control to display some inventory_data. But
 -- it's our job to fill in that control's nested labels with the appropriate
@@ -898,26 +913,39 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
                         -- Apply text color to entire row.
     local fn = Util.color
     local c  = self.COLOR_TEXT_CAN_QUEUE
+    local c2 = nil
     if inventory_data.ui_is_completed then
         c = self.COLOR_TEXT_COMPLETED
     elseif not inventory_data.ui_can_queue then
         c = self.COLOR_TEXT_CANNOT_QUEUE
     elseif inventory_data.ui_is_queued then
         c = self.COLOR_TEXT_QUEUED
+
+                        -- Manavortex supplied station-specific colors.
+        if WritWorthy.savedVariables.enable_station_colors then
+            if i_d.ui_type == UI_TYPE_WOOD then
+                c2 = self.COLOR_TEXT_WW
+            elseif (i_d.ui_type == UI_TYPE_LIGHT) or (i_d.ui_type == UI_TYPE_MEDIUM) then
+                c2 = self.COLOR_TEXT_CL
+            elseif i_d.ui_type == UI_TYPE_HEAVY then
+                c2 = self.COLOR_TEXT_BS
+            end
+        end
     end
+    if not c2 then c2 = c end
                         -- Allow each cell's OnMouseDown handler easy
                         -- access to this row's data.
     for _, name in ipairs(self.CELL_NAME_LIST) do
         rc[name].inventory_data = i_d
     end
                         -- Fill in the cells with data for this row.
-    rc[self.CELL_TYPE     ]:SetText(fn(c, i_d.ui_type))
-    rc[self.CELL_VOUCHERCT]:SetText(fn(c, tostring(i_d.ui_voucher_ct)))
-    rc[self.CELL_DETAIL1  ]:SetText(fn(c, i_d.ui_detail1))
-    rc[self.CELL_DETAIL2  ]:SetText(fn(c, i_d.ui_detail2))
-    rc[self.CELL_DETAIL3  ]:SetText(fn(c, i_d.ui_detail3))
-    rc[self.CELL_DETAIL4  ]:SetText(fn(c, i_d.ui_detail4))
-    rc[self.CELL_DETAIL5  ]:SetText(fn(c, i_d.ui_detail5))
+    rc[self.CELL_TYPE     ]:SetText(fn(c2, i_d.ui_type))
+    rc[self.CELL_VOUCHERCT]:SetText(fn(c , tostring(i_d.ui_voucher_ct)))
+    rc[self.CELL_DETAIL1  ]:SetText(fn(c2, i_d.ui_detail1))
+    rc[self.CELL_DETAIL2  ]:SetText(fn(c , i_d.ui_detail2))
+    rc[self.CELL_DETAIL3  ]:SetText(fn(c , i_d.ui_detail3))
+    rc[self.CELL_DETAIL4  ]:SetText(fn(c , i_d.ui_detail4))
+    rc[self.CELL_DETAIL5  ]:SetText(fn(c , i_d.ui_detail5))
 
                         -- The "Enqueue" checkbox and its mask that makes it
                         -- look dimmed out when we cannot enqueue this row
