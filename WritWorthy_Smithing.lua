@@ -12,6 +12,9 @@ local Log      = WritWorthy.Log
 local a = WritWorthy.RequiredSkill
 local b = WritWorthy.RequiredSkill.FetchInfo
 local c = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
+
+local CRAFTING_TYPE_JEWELRY = CRAFTING_TYPE_JEWELRY or 7
+
 -- Schools: HVY MED LGT WOOD -------------------------------------------------
 --
 -- Clothing split into two since base mats differ (silk vs. leather).
@@ -32,6 +35,7 @@ Smithing.SCHOOL_HEAVY =  {
 ,   gold_mat_name       = "tempering alloy"
 ,   armor_weight_name   = "Heavy"
 ,   temper_skill        = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
+,   motif_required      = true
     -- research lines
 ,   H1_AXE              =  1
 ,   H1_MACE             =  2
@@ -58,6 +62,7 @@ Smithing.SCHOOL_MEDIUM = {
 ,   gold_mat_name       = "dreugh wax"
 ,   armor_weight_name   = "Medium"
 ,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
+,   motif_required      = true
     -- research lines
 ,   CHEST               =  8
 ,   FEET                =  9
@@ -77,6 +82,7 @@ Smithing.SCHOOL_LIGHT  = {
 ,   gold_mat_name       = "dreugh wax"
 ,   armor_weight_name   = "Light"
 ,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
+,   motif_required      = true
     -- research lines
 ,   CHEST               =  1
 ,   FEET                =  2
@@ -96,6 +102,7 @@ Smithing.SCHOOL_WOOD   = {
 ,   gold_mat_name       = "rosin"
 ,   armor_weight_name   = ""
 ,   temper_skill        = WritWorthy.RequiredSkill.WW_TEMPER_EXPERTISE
+,   motif_required      = true
     -- research lines
 ,   BOW                 =  1
 ,   FLAME_STAFF         =  2
@@ -103,6 +110,22 @@ Smithing.SCHOOL_WOOD   = {
 ,   LIGHTNING_STAFF     =  4
 ,   RESTO_STAFF         =  5
 ,   SHIELD              =  6
+}
+
+Smithing.SCHOOL_JEWELRY = {
+    trade_skill_type    = CRAFTING_TYPE_JEWELRY
+,   base_mat_name       = "platinum"
+,   green_mat_name      = "terne"
+,   blue_mat_name       = "iridium"
+,   purple_mat_name     = "zircon"
+,   gold_mat_name       = "chromium"
+,   armor_weight_name   = ""
+,   temper_skill        = WritWorthy.RequiredSkill.JW_TEMPER_EXPERTISE
+,   motif_required      = false
+,   autocraft_not_implemented = true
+    -- research lines
+,   RING                =  2
+,   NECKLACE            =  1
 }
 
 -- Traits --------------------------------------------------------------------
@@ -132,7 +155,7 @@ Smithing.TRAITS_WEAPON = {
 ,   [ITEM_TRAIT_TYPE_WEAPON_DECISIVE   ] = { trait_name = "decisive",     mat_name = "citrine"            , trait_index = 8 }  -- nee weighted
 ,   [ITEM_TRAIT_TYPE_WEAPON_NIRNHONED  ] = { trait_name = "nirnhoned",    mat_name = "potent nirncrux"    , trait_index = 9 }
 }
-Smithing.TRAITS_ARMOR    = {
+Smithing.TRAITS_ARMOR = {
     [ITEM_TRAIT_TYPE_ARMOR_STURDY      ] = { trait_name = "sturdy",       mat_name = "quartz"             , trait_index = 1 }
 ,   [ITEM_TRAIT_TYPE_ARMOR_IMPENETRABLE] = { trait_name = "impenetrable", mat_name = "diamond"            , trait_index = 2 }
 ,   [ITEM_TRAIT_TYPE_ARMOR_REINFORCED  ] = { trait_name = "reinforced",   mat_name = "sardonyx"           , trait_index = 3 }
@@ -142,6 +165,17 @@ Smithing.TRAITS_ARMOR    = {
 ,   [ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS  ] = { trait_name = "invigorating", mat_name = "garnet"             , trait_index = 7 } -- nee exploration
 ,   [ITEM_TRAIT_TYPE_ARMOR_DIVINES     ] = { trait_name = "divines",      mat_name = "sapphire"           , trait_index = 8 }
 ,   [ITEM_TRAIT_TYPE_ARMOR_NIRNHONED   ] = { trait_name = "nirnhoned",    mat_name = "fortified nirncrux" , trait_index = 9 }
+}
+Smithing.TRAITS_JEWELRY = {
+    [ITEM_TRAIT_TYPE_JEWELRY_ARCANE       or 22] = { trait_name = "arcane",         mat_name = "cobalt"        , trait_index = 1 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_HEALTHY      or 21] = { trait_name = "healthy",        mat_name = "antimony"      , trait_index = 2 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_ROBUST       or 23] = { trait_name = "robust",         mat_name = "zinc"          , trait_index = 3 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_TRIUNE       or 30] = { trait_name = "triune",         mat_name = "dawn-prism"    , trait_index = 4 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_INFUSED      or 33] = { trait_name = "infused",        mat_name = "aurbic amber"  , trait_index = 5 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_PROTECTIVE   or 32] = { trait_name = "protective",     mat_name = "titanium"      , trait_index = 6 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_SWIFT        or 28] = { trait_name = "swift",          mat_name = "gilding wax"   , trait_index = 7 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_HARMONY      or 29] = { trait_name = "harmony",        mat_name = "dibellium"     , trait_index = 8 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY or 31] = { trait_name = "bloodthirsty",   mat_name = "slaughterston" , trait_index = 9 }
 }
 
 -- Motifs --------------------------------------------------------------------
@@ -212,7 +246,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER   ] = { mat_name = "volcanic viridian"     , motif_name = "Buoyant Armiger"      , pages_id  = 1934  } -- 52
 ,   [ITEMSTYLE_HOLIDAY_FROSTCASTER   ] = { mat_name = "stahlrim shard"        , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 53
 ,   [ITEMSTYLE_AREA_ASHLANDER        ] = { mat_name = "ash canvas"            , motif_name = "Ashlander"            , pages_id  = 1932  } -- 54
-,   [ITEMSTYLE_ORG_WORM_CULT         ] = nil --                               , motif_name = Unused 11"             } -- 55
+,   [ITEMSTYLE_ORG_WORM_CULT   or 55 ] = nil --                               , motif_name = Unused 11"             } -- 55
 ,   [ITEMSTYLE_ENEMY_SILKEN_RING     ] = { mat_name = "distilled slowsilver"  , motif_name = "Silken Ring"          , pages_id  = 1796 } -- 56
 ,   [ITEMSTYLE_ENEMY_MAZZATUN        ] = { mat_name = "leviathan scrimshaw"   , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 57
 ,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN] = { mat_name = "grinstones"            , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 58
@@ -221,26 +255,6 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_DREADHORN       or 62 ] = { mat_name = "minotaur bezoar"       , motif_name = "Dreadhorn"            , pages_id  = 2097 } -- 59
 ,   [ITEMSTYLE_APOSTLE         or 65 ] = { mat_name = "tempered brass"        , motif_name = "Apostle"              , pages_id  = 2044 } -- 59
 ,   [ITEMSTYLE_EBONSHADOW      or 66 ] = { mat_name = "tenebrous cord"        , motif_name = "Ebonshadow"           , pages_id  = 2045 } -- 59
--- ,   [ITEMSTYLE_UNUSED1               ] = nil --                             , motif_name = Unused 11"             } -- 60
--- ,   [ITEMSTYLE_UNUSED2               ] = nil --                             , motif_name = Unused 11"             } -- 61
--- ,   [ITEMSTYLE_UNUSED3               ] = nil --                             , motif_name = Unused 11"             } -- 62
--- ,   [ITEMSTYLE_UNUSED4               ] = nil --                             , motif_name = Unused 11"             } -- 63
--- ,   [ITEMSTYLE_UNUSED5               ] = nil --                             , motif_name = Unused 11"             } -- 64
--- ,   [ITEMSTYLE_UNUSED6               ] = nil --                             , motif_name = Unused 11"             } -- 65
--- ,   [ITEMSTYLE_UNUSED7               ] = nil --                             , motif_name = Unused 11"             } -- 66
--- ,   [ITEMSTYLE_UNUSED8               ] = nil --                             , motif_name = Unused 11"             } -- 67
--- ,   [ITEMSTYLE_UNUSED9               ] = nil --                             , motif_name = Unused 11"             } -- 68
--- ,   [ITEMSTYLE_UNUSED10              ] = nil --                             , motif_name = Unused 11"             } -- 69
--- ,   [ITEMSTYLE_UNUSED11              ] = nil --                             , motif_name = Unused 11"             } -- 70
--- ,   [ITEMSTYLE_UNUSED12              ] = nil --                             , motif_name = Unused 11"             } -- 71
--- ,   [ITEMSTYLE_UNUSED13              ] = nil --                             , motif_name = Unused 11"             } -- 72
--- ,   [ITEMSTYLE_UNUSED14              ] = nil --                             , motif_name = Unused 11"             } -- 73
--- ,   [ITEMSTYLE_UNUSED15              ] = nil --                             , motif_name = Unused 11"             } -- 74
--- ,   [ITEMSTYLE_UNUSED16              ] = nil --                             , motif_name = Unused 11"             } -- 75
--- ,   [ITEMSTYLE_UNUSED17              ] = nil --                             , motif_name = Unused 11"             } -- 76
--- ,   [ITEMSTYLE_UNUSED18              ] = nil --                             , motif_name = Unused 11"             } -- 77
--- ,   [ITEMSTYLE_UNUSED19              ] = nil --                             , motif_name = Unused 11"             } -- 78
--- ,   [ITEMSTYLE_UNUSED20              ] = nil --                             , motif_name = Unused 11"             } -- 79
 ,   [ITEMSTYLE_MAX_VALUE             ] = nil --                             , motif_name = Unused 11"             } -- 79
 }
 
@@ -286,8 +300,10 @@ local HVY    = Smithing.SCHOOL_HEAVY
 local MED    = Smithing.SCHOOL_MEDIUM
 local LGT    = Smithing.SCHOOL_LIGHT
 local WW     = Smithing.SCHOOL_WOOD
+local JW     = Smithing.SCHOOL_JEWELRY
 local WEAPON = Smithing.TRAITS_WEAPON
 local ARMOR  = Smithing.TRAITS_ARMOR
+local TJW    = Smithing.TRAITS_JEWELRY
 local PG     = Smithing.MOTIF_PAGE
 
 Smithing.REQUEST_ITEMS = {
@@ -331,6 +347,10 @@ Smithing.REQUEST_ITEMS = {
 , [71] = { item_id = 71, item_name = "Ruby Ash Healing Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.RESTO_STAFF,     motif_page = PG.STAVES   , dol_pattern_index =  6 }
 
 , [65] = { item_id = 65, item_name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR , research_line = WW.SHIELD,          motif_page = PG.SHIELDS  , dol_pattern_index =  2 }
+
+, [24] = { item_id = nil,item_name = "Platinum Ring",               school = JW,  base_mat_ct = 10, trait_set = TJW   , research_line = JW.RING,            motif_page = nil         , dol_pattern_index =  nil }
+, [18] = { item_id = nil,item_name = "Platinum Necklace",           school = JW,  base_mat_ct = 15, trait_set = TJW   , research_line = JW.NECKLACE,        motif_page = nil         , dol_pattern_index =  nil }
+
 }
 
 -- Set Bonus required trait counts -------------------------------------------
@@ -756,7 +776,16 @@ function Parser:ParseItemLink(item_link)
     local trait_num     = fields.writ5
     local motif_num     = fields.writ6
 
+
+-- wr 1 item_num      24  "Ring"
+--    2 material_num 255  "platinum"
+--    3 quality_num    5  "Legendary"
+--    4 set_num      224  "Tava's Favor"
+--    5 trait_num     33  "infused"
+--    6 motif_num      0
+
     self.request_item   = Smithing.REQUEST_ITEMS[item_num]
+if not self.request_item then d("WW Error unknown item_num:"..tostring(item_num)) end
     Log:Add("request_item:"..tostring(item_num).." "
             ..tostring(self.request_item.item_name))
     self.set_bonus      = Smithing.SET_BONUS[set_num]
@@ -771,7 +800,10 @@ function Parser:ParseItemLink(item_link)
     self.motif          = Smithing.MOTIF[motif_num]
     Log:Add("motif:"..tostring(motif_num))
     Log:Add(self.motif)
-    if not self.motif then return Fail("motif not found "..tostring(motif_num)) end
+    if self.request_item.school.motif_required
+            and not self.motif then
+        return Fail("motif not found "..tostring(motif_num))
+    end
     self.improve_level  = Smithing.QUALITY[quality_num]
     Log:Add("improve:"..tostring(quality_num))
     Log:Add(self.improve_level)
@@ -787,8 +819,9 @@ function Parser:ToMatList()
     table.insert(ml, MatRow:FromName( self.request_item.school.base_mat_name
                                     , self.request_item.base_mat_ct ))
     table.insert(ml, MatRow:FromName( self.trait.mat_name ))
-    table.insert(ml, MatRow:FromName( self.motif.mat_name ))
-
+    if self.motif then
+        table.insert(ml, MatRow:FromName( self.motif.mat_name ))
+    end
     table.insert(ml, MatRow:FromName( self.request_item.school.green_mat_name
                                     , self.improve_level.green_mat_ct ))
     table.insert(ml, MatRow:FromName( self.request_item.school.blue_mat_name
@@ -817,41 +850,43 @@ function Parser:ToKnowList()
                         -- but NOT for paged books like Glass or Xivkyn or Ebony,
                         -- which have been seen to incorrectly return true when
                         -- you do NOT know the whole book
-    local motif_known = false
-    if self.motif.is_simple or self.motif.crown_id then
-        motif_known = IsSmithingStyleKnown(self.motif_num)
-        Log:Add("motif book IsSmithingStyleKnown("
-            ..tostring(self.motif_num)..") = "..tostring(motif_known))
-    end
+    if self.request_item.school.motif_required then
+        local motif_known = false
+        if self.motif.is_simple or self.motif.crown_id then
+            motif_known = IsSmithingStyleKnown(self.motif_num)
+            Log:Add("motif book IsSmithingStyleKnown("
+                ..tostring(self.motif_num)..") = "..tostring(motif_known))
+        end
                         -- If the above check failed, and the motif has
                         -- individual pages, check those. For some reason,
                         -- the 2nd arg to IsSmithingStyleKnown() has no effect.
                         -- So copy CraftStore and use achievement progress.
-    if (not motif_known) and self.motif.pages_id then
-        local _, completed_ct = GetAchievementCriterion(
-                                  self.motif.pages_id
-                                , self.request_item.motif_page)
-        motif_known = 0 < completed_ct
-        Log:Add("motif page GetAchievementCriterion("
-                .."pages_id="..tostring(self.motif.pages_id)
-                ..", req.page="..tostring(self.request_item.motif_page)
-                ..") = "..tostring(completed_ct))
-                        -- Debug dump all 14 pages of this motif
-        local pg_known = {}
-        for pg = 1,14 do
+        if (not motif_known) and self.motif.pages_id then
             local _, completed_ct = GetAchievementCriterion(
-                                  self.motif.pages_id
-                                , pg )
-            pg_known[pg] = completed_ct
+                                      self.motif.pages_id
+                                    , self.request_item.motif_page)
+            motif_known = 0 < completed_ct
+            Log:Add("motif page GetAchievementCriterion("
+                    .."pages_id="..tostring(self.motif.pages_id)
+                    ..", req.page="..tostring(self.request_item.motif_page)
+                    ..") = "..tostring(completed_ct))
+                        -- Debug dump all 14 pages of this motif
+            local pg_known = {}
+            for pg = 1,14 do
+                local _, completed_ct = GetAchievementCriterion(
+                                      self.motif.pages_id
+                                    , pg )
+                pg_known[pg] = completed_ct
+            end
+            Log:Add("pages known:"..table.concat(pg_known, " "))
         end
-        Log:Add("pages known:"..table.concat(pg_known, " "))
+        local title = string.format("motif %s", self.motif.motif_name)
+        local msg   = string.format("Motif %s not known", self.motif.motif_name)
+        table.insert(r, Know:New({ name     = title
+                                 , is_known = motif_known
+                                 , lack_msg = msg
+                                 }))
     end
-    local title = string.format("motif %s", self.motif.motif_name)
-    local msg   = string.format("Motif %s not known", self.motif.motif_name)
-    table.insert(r, Know:New({ name     = title
-                             , is_known = motif_known
-                             , lack_msg = msg
-                             }))
 
                         -- Do you know this trait?
     local line_name = GetSmithingResearchLineInfo(

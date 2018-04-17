@@ -199,6 +199,7 @@ local R = WritWorthy.RequiredSkill  -- for less typing
 R.BS_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Temper Expertise"   , "Härterkenntnis"    , "Expertise de la trempe^f"    })
 R.CL_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Tannin Expertise"   , "Gerberkunde"       , "Expertise en tanins^f"       })
 R.WW_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Resin Expertise"    , "Harzkenntnis"      , "Expertise en résines^f"      })
+R.JW_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Platings Expertise"                                                       })
 R.EN_ASPECT_GOLD      = R:New("IsMaxxed"   , {"Aspect Improvement" , "Aspektverbesserung", "Amélioration d'aspect^f"     })
 R.PR_FOOD_4X          = R:New("IsMaxxed"   , {"Chef"               , "Kochkunst"         , "Chef^m"                      })
 R.PR_DRINK_4X         = R:New("IsMaxxed"   , {"Brewer"             , "Braukunst"         , "Brasserie^f"                 })

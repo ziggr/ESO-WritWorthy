@@ -683,7 +683,11 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
     if not inventory_data.llc_func then
         return false, "WritWorthy bug: Missing LLC data"
     end
-
+    if      inventory_data.parser.request_item
+        and inventory_data.parser.request_item.school
+        and inventory_data.parser.request_item.school.autocraft_not_implemented then
+        return false, "WritWorthy not yet implemented: jewelry crafting."
+    end
     local text_list = {}
     if inventory_data.parser.ToKnowList then
         for _, know in ipairs(inventory_data.parser:ToKnowList()) do
@@ -705,6 +709,7 @@ local UI_TYPE_WOOD          = "Wood"
 local UI_TYPE_HEAVY         = "Heavy"
 local UI_TYPE_MEDIUM        = "Medium"
 local UI_TYPE_LIGHT         = "Light"
+local UI_TYPE_JEWELRY       = "Jewelry"
 local UI_TYPE_ALCHEMY       = "Alchemy"
 local UI_TYPE_ENCHANTING    = "Enchanting"
 local UI_TYPE_PROVISIONING  = "Provisioning"
@@ -729,12 +734,14 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         local ri = parser.request_item  -- For less typing.
         if ri.school == WritWorthy.Smithing.SCHOOL_WOOD then
             inventory_data.ui_type = UI_TYPE_WOOD
+        elseif ri.school == WritWorthy.Smithing.SCHOOL_JEWELRY then
+            inventory_data.ui_type = UI_TYPE_JEWELRY
         else
             inventory_data.ui_type = ri.school.armor_weight_name
         end
         inventory_data.ui_detail1 = parser.set_bonus.name
         inventory_data.ui_detail2 = ri.item_name
-        inventory_data.ui_detail3 = parser.motif.motif_name
+        inventory_data.ui_detail3 = (parser.motif_required and parser.motif.motif_name) or ""
         inventory_data.ui_detail4 = ri.trait_set[parser.trait_num].trait_name
         inventory_data.ui_detail5 = parser.improve_level.name
     elseif parser.class == WritWorthy.Alchemy.Parser.class then
