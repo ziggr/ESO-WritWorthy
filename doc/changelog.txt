@@ -1,3 +1,12 @@
+[B]4.0.1 2018-04-17[/B]
+[LIST]
+[*] Update 18/4.0.0/API 100023/Summerset
+[*] Jewelry master writs parsed, materials listed, and knowledge checked.
+[*] Auto-crafting not yet implemented for jewelry
+[*] Manavortex's alternating colors for BS/CL/WW stations (thank you!).
+[*] Rename "Julianos" to full "Law of Julianos" to better match the stations's displayed name.
+[/LIST]
+
 [B]3.3.2 2018-02-22[/B]
 [LIST]
 [*] Add HotR motif style IDs. Thank you, Rhyono for the numbers from CraftStore
