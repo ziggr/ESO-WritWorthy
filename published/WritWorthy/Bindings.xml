@@ -1,9 +1,0 @@
-<Bindings>
-    <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
-        <Category name="WritWorthy">
-            <Action name="WritWorthyUI_ToggleUI">
-                <Up>WritWorthyUI_ToggleUI()</Up>
-            </Action>
-        </Category>
-    </Layer>
-</Bindings>
