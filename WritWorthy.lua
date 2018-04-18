@@ -208,7 +208,9 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     local voucher_ct = WritWorthy.ToVoucherCount(item_link)
     local mat_text = WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
     if not mat_text then return end
-    control:AddLine(mat_text)
+    if WritWorthy.savedVariables.enable_mat_price_tooltip ~= false then
+        control:AddLine(mat_text)
+    end
     if can_dump_matlist(WritWorthy.savedVariables.enable_mat_list_chat, parser) then
         WritWorthy.MatRow.ListDump(mat_list)
         --WritWorthy.KnowDump(know_list)
@@ -368,6 +370,18 @@ function WritWorthy:CreateSettingsWindow()
                                                      , panelData
                                                      )
     local optionsData = {
+        { type      = "checkbox"
+        , name      = "Show material price in tooltip"
+        , tooltip   = "Insert text into tooltip with the cost of all the"
+                      .." materials that crafting this writ would consume."
+        , getFunc   = function()
+                        return self.savedVariables.enable_mat_price_tooltip ~= false
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_mat_price_tooltip = e
+                      end
+        },
+
         { type      = "dropdown"
         , name      = "Show material list in chat"
         , tooltip   = "Write several lines of materials to chat each"
