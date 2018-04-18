@@ -97,6 +97,21 @@ function Util.ToMoney(x)
     return ZO_CurrencyControl_FormatCurrency(Util.round(x), false)
 end
 
+function Util.MatPrice(link)
+                        -- Master Merchant first
+    local mm = Util.MMPrice(link)
+    if mm then return mm end
+
+                        -- If fallback enabled, use that
+    if WritWorthy.savedVariables.enable_mm_fallback then
+        local fb = WritWorthy.FallbackPrice(link)
+        if fb then return fb end
+    end
+
+                        -- No price for you!
+    return WritWorthy.GOLD_UNKNOWN
+end
+
 -- Master Merchant integration
 function Util.MMPrice(link)
     if not MasterMerchant then return WritWorthy.GOLD_UNKNOWN end
@@ -127,13 +142,6 @@ function Util.MMPrice(link)
           end
     mm = MasterMerchant:itemStats(link, false)
     MasterMerchant.TimeCheck = save_tc
-
-                        -- No M.M. price? If permitted, look for a
-                        -- hardcoded price.
-    if (not mm) and WritWorthy.savedVariables.enable_mm_fallback then
-        local mm_fb = WritWorthy.FallbackPrice(link)
-        if mm_fb then return mm_fb end
-    end
 
     if not mm then return WritWorthy.GOLD_UNKNOWN end
     return mm.avgPrice

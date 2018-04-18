@@ -35,7 +35,7 @@ function MatRow:FromName(mat_name, ct)
     else
         o.ct = 1
     end
-    o.mm = WritWorthy.Util.MMPrice(o.link)
+    o.mm = WritWorthy.Util.MatPrice(o.link)
     return o
 end
 
@@ -49,7 +49,7 @@ function MatRow:FromLink(mat_link, ct)
     else
         o.ct = 1
     end
-    o.mm = WritWorthy.Util.MMPrice(o.link)
+    o.mm = WritWorthy.Util.MatPrice(o.link)
     return o
 end
 
