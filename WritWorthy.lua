@@ -262,37 +262,41 @@ function WritWorthy.KnowDump(know_list)
     return table.concat(elements, "\n")
 end
 
-
 -- Scan inventory, return list of { link="xxx", parser=ParserXXX }
 -- one element for each master writ found.
 function WritWorthy:ScanInventoryForMasterWrits()
     local result_list = {}
-    local bag_id = BAG_BACKPACK
-    local slot_ct = GetBagSize(bag_id)
+    local bag_list = {BAG_BACKPACK}
+    if self.savedVariables.enable_banked_vouchers then
+        bag_list = {BAG_BACKPACK, BAG_BANK, BAG_SUBSCRIBER }
+    end
+    for _,bag_id in ipairs(bag_list) do
+        local slot_ct = GetBagSize(bag_id)
 
                         -- Temporarily suspend all "dump matlist to chat"
                         -- to avoid scroll blindness
-    local save_mat_list_chat = self.savedVariables.enable_mat_list_chat
-    for slot_index = 0, slot_ct do
-        local item_link = GetItemLink(bag_id, slot_index, LINK_STYLE_DEFAULT)
-        local parser    = WritWorthy.CreateParser(item_link)
-        if not (parser and parser:ParseItemLink(item_link)) then
-            parser = nil
-        end
-        if parser then
-            local unique_id = WritWorthy.UniqueID(bag_id, slot_index)
-            local llc_req   = {}
-            if parser.ToDolRequest then
-                llc_req = parser:ToDolRequest(unique_id)
+        local save_mat_list_chat = self.savedVariables.enable_mat_list_chat
+        for slot_index = 0, slot_ct do
+            local item_link = GetItemLink(bag_id, slot_index, LINK_STYLE_DEFAULT)
+            local parser    = WritWorthy.CreateParser(item_link)
+            if not (parser and parser:ParseItemLink(item_link)) then
+                parser = nil
             end
-            local inventory_data =
-                { item_link           = item_link
-                , parser              = parser
-                , unique_id           = unique_id
-                , llc_func            = llc_req["function"]
-                , llc_args            = llc_req.args
-                }
-            table.insert(result_list, inventory_data)
+            if parser then
+                local unique_id = WritWorthy.UniqueID(bag_id, slot_index)
+                local llc_req   = {}
+                if parser.ToDolRequest then
+                    llc_req = parser:ToDolRequest(unique_id)
+                end
+                local inventory_data =
+                    { item_link           = item_link
+                    , parser              = parser
+                    , unique_id           = unique_id
+                    , llc_func            = llc_req["function"]
+                    , llc_args            = llc_req.args
+                    }
+                table.insert(result_list, inventory_data)
+            end
         end
     end
                         -- Restore mat list to chat setting now that we're
@@ -420,6 +424,22 @@ function WritWorthy:CreateSettingsWindow()
                       end
         , setFunc   = function(e)
                         self.savedVariables.enable_station_colors = e
+                      end
+        },
+
+        { type      = "checkbox"
+        , name      = "Include vouchers from bank in auto-crafting window"
+        , tooltip   = "Scan bank and include those vouchers in the list of"
+                        .." vouchers available to automatically craft."
+                        .."\n|cFF3333BE CAREFUL if you craft on multiple"
+                        .." characters! WritWorthy will not warn you if you"
+                        .." craft the same banked writ on multiple"
+                        .." characters.|r"
+        , getFunc   = function()
+                        return self.savedVariables.enable_banked_vouchers
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_banked_vouchers = e
                       end
         },
     }
