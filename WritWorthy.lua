@@ -143,8 +143,11 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
         if mat_gold then
             total_gold   = total_gold + mat_gold
         end
-        table.insert( tooltip_elements
-                    , "Mat total: " .. Util.ToMoney(mat_gold) .. "g" )
+        local s = "Mat total: " .. Util.ToMoney(mat_gold) .. "g"
+        if not mat_gold then
+            s = "|c"..WritWorthy.Util.COLOR_RED..s.."|r"
+        end
+        table.insert( tooltip_elements, s)
     end
 
     if purchase_gold then
