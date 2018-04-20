@@ -11,6 +11,10 @@ get:
 	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/WritWorthy.lua ../../SavedVariables/
 	cp -f ../../SavedVariables/WritWorthy.lua data/
 
+getpts:
+	cp -f /Volumes/Elder\ Scrolls\ Online/pts/SavedVariables/WritWorthy.lua ../../SavedVariables/
+	cp -f ../../SavedVariables/WritWorthy.lua data/
+
 parse:
 	lua wwparse.lua
 

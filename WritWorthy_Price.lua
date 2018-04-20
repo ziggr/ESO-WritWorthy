@@ -248,11 +248,18 @@ WritWorthy.FALLBACK_PRICE = {
 ,   ["kuta"               ] =  2750
 }
 
--- The above table uses our internal material names, not item links.
--- Material names are easier to read and debug. But Util.MMPrice()
--- uses item links.  So fill the above table with links, too.
-function WritWorthy.PopulateTableWithLinks()
-    if WritWorthy.FALLBACK_PRICE.filled_with_linky_goodness then return end
+
+-- The above table initially has keys for our internal material names, not
+-- item IDs. Add item_id keys so that we can look things up by (disassembled)
+-- item_links, matching MMPrice() API as well as the links that the ZOS recipe
+-- ingredient API returns.
+--
+-- Do NOT use item_link as a key: the ZOS recipe ingredient API will return
+-- links with slightly varying digits in insignificant positions that will
+-- will cause lookup failures.
+--
+function WritWorthy.PopulateTableWithItemIds()
+    if WritWorthy.FALLBACK_PRICE.filled_with_item_id_goodness then return end
     local name_list = {}
                         -- Do this in two passes because I'm not sure how
                         -- Lua handles "modifying a table while you're
@@ -260,19 +267,22 @@ function WritWorthy.PopulateTableWithLinks()
     for name, _ in pairs(WritWorthy.FALLBACK_PRICE) do
         table.insert(name_list, name)
     end
-    for _, name in pairs(name_list) do
+    for _, name in ipairs(name_list) do
         local link  = WritWorthy.FindLink(name)
-        WritWorthy.FALLBACK_PRICE[link] = WritWorthy.FALLBACK_PRICE[name]
+        local w     = WritWorthy.Util.ToWritFields(link)
+        WritWorthy.FALLBACK_PRICE[w.item_id] = WritWorthy.FALLBACK_PRICE[name]
     end
-    WritWorthy.FALLBACK_PRICE.filled_with_linky_goodness = true
+    WritWorthy.FALLBACK_PRICE.filled_with_item_id_goodness = true
 end
 
 -- If the material is in the FALLBACK_PRICE table, return its fallback price.
 -- If not, return nil.
 function WritWorthy.FallbackPrice(link)
-    if not WritWorthy.FALLBACK_PRICE[link] then
-        WritWorthy.PopulateTableWithLinks()
+    local w     = WritWorthy.Util.ToWritFields(link)
+    if not WritWorthy.FALLBACK_PRICE[w.item_id] then
+        WritWorthy.PopulateTableWithItemIds()
     end
-d("fallback:"..tostring(WritWorthy.FALLBACK_PRICE[link]).." link:"..tostring(link))
-    return WritWorthy.FALLBACK_PRICE[link]
+-- d("fallback:"..tostring(WritWorthy.FALLBACK_PRICE[w.item_id])
+--    .." item_id:"..tostring(w.item_id).." link:"..tostring(link))
+    return WritWorthy.FALLBACK_PRICE[w.item_id]
 end
