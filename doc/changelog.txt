@@ -1,3 +1,10 @@
+[B]4.0.2 2018-04-20[/B]
+[LIST]
+[*] Fixed: M.M. Fallback works again.
+[*] New option: showing price in tooltip is now optional. Because some people use WritWorthy more for the crafting and less for the pricing. Thank you @Jerkling for the feature request.
+[*] New option: Include bank when listing writs available to craft. Be careful with this: no warning if you craft the same banked writ on multiple characters. Thank you @UESP for the feature request.
+[/LIST]
+
 [B]4.0.1 2018-04-17[/B]
 [LIST]
 [*] Update 18/4.0.0/API 100023/Summerset
