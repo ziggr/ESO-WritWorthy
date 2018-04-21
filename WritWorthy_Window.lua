@@ -193,7 +193,11 @@ function WritWorthyUI_ToggleUI()
         WritWorthyUI_RestorePos()
         local t = WritWorthyUIInventoryListTitle
         if t then
-            t:SetText("Writ Inventory: "..GetUnitName("player"))
+            local s = "Writ Inventory: "..GetUnitName("player")
+            if WritWorthy.savedVariables.enable_banked_vouchers then
+                s = "Writ Inventory: "..GetUnitName("player").. " + bank"
+            end
+            t:SetText(s)
         end
         WritWorthuUI_Refresh()
     end
