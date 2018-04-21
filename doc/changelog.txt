@@ -1,3 +1,10 @@
+[B]4.0.3 2018-04-21[/B]
+[LIST]
+[*] Fixed: motif names appear in "Detail 3" column again. Thank you, tomtomhotep for the bug report.
+[*] "Mat total: ?g" tooltip text now appears in red to better warn you that the per-voucher pricce ignores crafting cost. Thank you XomRhoK for the feature request.
+[*] Add "+ bank" to window subtitle when showing writs from both the character inventory and bank.
+[/LIST]
+
 [B]4.0.2 2018-04-20[/B]
 [LIST]
 [*] Fixed: M.M. Fallback works again.
