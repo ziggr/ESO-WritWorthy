@@ -1,0 +1,3 @@
+[submodule "Libs/LibLazyCrafting"]
+	path = Libs/LibLazyCrafting
+	url = https://github.com/ziggr/ESO-LibLazyCrafting.git
