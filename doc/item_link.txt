@@ -15,6 +15,8 @@ ESOUI forums poster Rhyono suggests:
 >
 > Provisioning has 1 type, Enchanting has 2, Blacksmithing has 4, Woodworking has 4, Clothier has 4.
 
+Jewelry Writ, platinum Necklace; Quality: Epic; Trait: Robust; Set: Death's Wind, 8 vouchers
+|H1:item:138798:6:1:0:0:0:18:255:4:37:23:0:0:0:0:0:0:0:0:0:76000|h|h
 
 
 item_id
