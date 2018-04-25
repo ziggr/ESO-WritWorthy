@@ -229,7 +229,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_AREA_YOKUDAN         ] = { mat_name = "ferrous salts"       , motif_name = "Yokudan"              , pages_id  = 1713 } -- 35
 ,   [ITEMSTYLE_UNIVERSAL            ] = nil --                             , motif_name = "unused"               } -- 36
 ,   [ITEMSTYLE_AREA_REACH_WINTER    ] = nil --                             , motif_name = "Reach Winter"         } -- 37
-,   [ITEMSTYLE_AREA_TSAESCI         ] = nil --                             , motif_name = "Worm Cult"            } -- 38
+,   [ITEMSTYLE_AREA_TSAESCI          ] = { mat_name = "snake fang"            , motif_name = "Taesci"                                  } -- 38
 ,   [ITEMSTYLE_ENEMY_MINOTAUR        ] = { mat_name = "oxblood fungus"        , motif_name = "Minotaur"             , pages_id  = 1662 } -- 39
 ,   [ITEMSTYLE_EBONY                 ] = { mat_name = "night pumice"          , motif_name = "Ebony"                , pages_id  = 1798 } -- 40
 ,   [ITEMSTYLE_ORG_ABAHS_WATCH       ] = { mat_name = "polished shilling"     , motif_name = "Abah's Watch"         , pages_id  = 1422 } -- 41
@@ -250,17 +250,17 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_ENEMY_SILKEN_RING     ] = { mat_name = "distilled slowsilver"  , motif_name = "Silken Ring"          , pages_id  = 1796 } -- 56
 ,   [ITEMSTYLE_ENEMY_MAZZATUN        ] = { mat_name = "leviathan scrimshaw"   , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 57
 ,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN] = { mat_name = "grinstones"            , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 58
-,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK    ] = { mat_name = "amber marble"          , motif_name = "Hollowjack"           , pages_id  = 1545 } -- 59
-,   [ITEMSTYLE_BLOODFORGE      or 61 ] = { mat_name = "bloodroot flux"        , motif_name = "Bloodforge"           , pages_id  = 2098 } -- 59
-,   [ITEMSTYLE_DREADHORN       or 62 ] = { mat_name = "minotaur bezoar"       , motif_name = "Dreadhorn"            , pages_id  = 2097 } -- 59
-,   [ITEMSTYLE_APOSTLE         or 65 ] = { mat_name = "tempered brass"        , motif_name = "Apostle"              , pages_id  = 2044 } -- 59
-,   [ITEMSTYLE_EBONSHADOW      or 66 ] = { mat_name = "tenebrous cord"        , motif_name = "Ebonshadow"           , pages_id  = 2045 } -- 59
+,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK    ] = { mat_name = "amber marble"          , motif_name = "Hollowjack"           , pages_id  = 1545 }
+,   [ITEMSTYLE_BLOODFORGE      or 61 ] = { mat_name = "bloodroot flux"        , motif_name = "Bloodforge"           , pages_id  = 2098 }
+,   [ITEMSTYLE_DREADHORN       or 62 ] = { mat_name = "minotaur bezoar"       , motif_name = "Dreadhorn"            , pages_id  = 2097 }
+,   [ITEMSTYLE_APOSTLE         or 65 ] = { mat_name = "tempered brass"        , motif_name = "Apostle"              , pages_id  = 2044 }
+,   [ITEMSTYLE_EBONSHADOW      or 66 ] = { mat_name = "tenebrous cord"        , motif_name = "Ebonshadow"           , pages_id  = 2045 }
 ,   [ITEMSTYLE_UNDAUNTED_67       or 67 ] = nil
 ,   [ITEMSTYLE_USE_ME             or 68 ] = nil
-,   [ITEMSTYLE_FANG_LAIR          or 69 ] = nil
-,   [ITEMSTYLE_SCALECALLER        or 70 ] = nil
-,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = nil
-,   [ITEMSTYLE_SAPIARCH           or 72 ] = nil
+,   [ITEMSTYLE_FANG_LAIR          or 69 ] = { mat_name = "dragon bone"        , motif_name = "Fang Lair"                               }
+,   [ITEMSTYLE_SCALECALLER        or 70 ] = { mat_name = "infected flesh"     , motif_name = "Scalecaller"                             }
+,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = { mat_name = "vitrified malondo"  , motif_name = "Psijic Order"                            }
+,   [ITEMSTYLE_SAPIARCH           or 72 ] = { mat_name = "culanda lacquer"    , motif_name = "Sapiarch"                                }
 ,   [ITEMSTYLE_WELKYNAR           or 73 ] = nil
 ,   [ITEMSTYLE_DREMORA            or 74 ] = nil
 ,   [ITEMSTYLE_PYANDONEAN         or 75 ] = nil
