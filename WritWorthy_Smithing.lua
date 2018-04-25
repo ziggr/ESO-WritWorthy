@@ -255,7 +255,17 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_DREADHORN       or 62 ] = { mat_name = "minotaur bezoar"       , motif_name = "Dreadhorn"            , pages_id  = 2097 } -- 59
 ,   [ITEMSTYLE_APOSTLE         or 65 ] = { mat_name = "tempered brass"        , motif_name = "Apostle"              , pages_id  = 2044 } -- 59
 ,   [ITEMSTYLE_EBONSHADOW      or 66 ] = { mat_name = "tenebrous cord"        , motif_name = "Ebonshadow"           , pages_id  = 2045 } -- 59
-,   [ITEMSTYLE_MAX_VALUE             ] = nil --                             , motif_name = Unused 11"             } -- 79
+,   [ITEMSTYLE_UNDAUNTED_67       or 67 ] = nil
+,   [ITEMSTYLE_USE_ME             or 68 ] = nil
+,   [ITEMSTYLE_FANG_LAIR          or 69 ] = nil
+,   [ITEMSTYLE_SCALECALLER        or 70 ] = nil
+,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = nil
+,   [ITEMSTYLE_SAPIARCH           or 72 ] = nil
+,   [ITEMSTYLE_WELKYNAR           or 73 ] = nil
+,   [ITEMSTYLE_DREMORA            or 74 ] = nil
+,   [ITEMSTYLE_PYANDONEAN         or 75 ] = nil
+,   [ITEMSTYLE_DIVINE_PROSECUTION or 76 ] = nil
+,   [ITEMSTYLE_MAX_VALUE             ]    = nil
 }
 
 -- Motif page numbers --------------------------------------------------------
@@ -711,11 +721,150 @@ Smithing.SET_BONUS = {
 ,   [340] = { name= "Hagraven's Garden",                                                 }
 ,   [341] = { name= "Earthgore",                                                         }
 ,   [342] = { name= "Domihaus",                                                          }
-,   [343] = nil
-,   [344] = nil
-,   [345] = nil
+,   [343] = { name = "Caluurion's Legacy",                                               }
+,   [344] = { name = "Trappings of Invigoration",                                        }
+,   [345] = { name = "Ulfnor's Favor",                                                   }
+,   [346] = { name = "Jorvuld's Guidance",                                               }
+,   [347] = { name = "Plague Slinger",                                                   }
+,   [348] = { name = "Curse of Doylemish",                                               }
+,   [349] = { name = "Thurvokun",                                                        }
+,   [350] = { name = "Zaan",                                                             }
+,   [351] = { name = "Innate Axiom",                    trait_ct = 2, dol_set_index = 41 }
+,   [352] = { name = "Fortified Brass",                 trait_ct = 4, dol_set_index = 42 }
+,   [353] = { name = "Mechanical Acuity",               trait_ct = 6, dol_set_index = 40 }
+,   [354] = { name = "Mad Tinkerer",                                                     }
+,   [355] = { name = "Unfathomable Darkness",                                            }
+,   [356] = { name = "Livewire",                                                         }
+,   [357] = { name = "Disciplined Slash (Perfected)",                                    }
+,   [358] = { name = "Defensive Position (Perfected)",                                   }
+,   [359] = { name = "Chaotic Whirlwind (Perfected)",                                    }
+,   [360] = { name = "Piercing Spray (Perfected)",                                       }
+,   [361] = { name = "Concentrated Force (Perfected)",                                   }
+,   [362] = { name = "Timeless Blessing (Perfected)",                                    }
+,   [363] = { name = "Disciplined Slash",                                                }
+,   [364] = { name = "Defensive Position",                                               }
+,   [365] = { name = "Chaotic Whirlwind",                                                }
+,   [366] = { name = "Piercing Spray",                                                   }
+,   [367] = { name = "Concentrated Force",                                               }
+,   [368] = { name = "Timeless Blessing",                                                }
+,   [369] = { name = "Merciless Charge",                                                 }
+,   [370] = { name = "Rampaging Slash",                                                  }
+,   [371] = { name = "Cruel Flurry",                                                     }
+,   [372] = { name = "Thunderous Volley",                                                }
+,   [373] = { name = "Crushing Wall",                                                    }
+,   [374] = { name = "Precise Regeneration",                                             }
+,   [375] = nil
+,   [376] = nil
+,   [377] = nil
+,   [378] = nil
+,   [379] = nil
+,   [380] = { name = "Prophet's",                                                        }
+,   [381] = { name = "Broken Soul",                                                      }
+,   [382] = { name = "Grace of Gloom",                                                   }
+,   [383] = { name = "Gryphon's Ferocity",                                               }
+,   [384] = { name = "Wisdom of Vanus",                                                  }
+,   [385] = { name = "Adept Rider",                     trait_ct = 3, dol_set_index = 43 }
+,   [386] = { name = "Sload's Semblance",               trait_ct = 6, dol_set_index = 45 }
+,   [387] = { name = "Nocturnal's Favor",               trait_ct = 9, dol_set_index = 44 }
 
 }
+
+
+-- Roll through different values to explore set indexes or whatever.
+-- Record results to savedVariables.discover.XXX
+--
+-- 1. game chat:  /script WritWorthy.Smithing.Discover()
+--    output      WritWorthy: discovered xxx_ct: 99
+-- 2.             /reloadui to write to SavedVariables.
+-- 3. workstation make get  -or-  make getpts
+--                SavedVariables copied to workstation
+-- 4. Gaze upon data/WritWorthy.lua's discover.XXX
+--
+function Smithing.Discover()
+    WritWorthy.savedVariables.discover = {}
+                        -- Scan set bonus, aka writ4
+    local set = {}
+    local set_ct = 0
+    local t = "|H1:item:138798:6:1:0:0:0:18:255:4:%d:23:0:0:0:0:0:0:0:0:0:76000|h|h"
+    local re = "Set: ([^;]*)"
+    for i=1,500 do
+        local item_link = string.format(t, i)
+        local b = GenerateMasterWritBaseText(item_link)
+        local _,_,f = string.find(b,re)
+        set[i] = f
+        if f then set_ct = set_ct + 1 end
+    end
+    WritWorthy.savedVariables.discover.writ4_smithing_set_bonus = set
+    d("WritWorthy: discovered set_ct:"..tostring(set_ct))
+
+                        -- Scan requested item id aka writ1
+                        -- (not ZOS itemId)
+                        -- Rubedite 1h Axe, Ancestor Silk Shoes, and so on
+    -- local t = "|H1:item:119563:6:1:0:0:0:%d:188:4:324:4:51:0:0:0:0:0:0:0:0:72000|h|h" -- bs
+    -- local t = "|H1:item:119694:6:1:0:0:0:%d:194:4:95:16:42:0:0:0:0:0:0:0:0:63250|h|h"  -- cl
+    -- local t = "|H1:item:121530:6:1:0:0:0:%d:192:5:241:8:9:0:0:0:0:0:0:0:0:451500|h|h" -- ww
+    local item = {}
+    local item_ct = 0
+    local t = "|H1:item:138798:6:1:0:0:0:%d:255:4:37:23:0:0:0:0:0:0:0:0:0:76000|h|h"
+    local re = "Craft an? (.*);"
+    for i=1,100 do
+        local item_link = string.format(t, i)
+        local b = GenerateMasterWritBaseText(item_link)
+        local _,_,f = string.find(b,re)
+        item[i] = f
+        if f then item_ct = item_ct + 1 end
+    end
+    WritWorthy.savedVariables.discover.writ4_smithing_item = item
+    d("WritWorthy: discovered item_ct:"..tostring(item_ct))
+
+                        -- scan writ2: material
+                        -- We only use CP150 mats, so
+                        -- most of this range is pointless.
+    local mat = {}
+    local mat_ct = 0
+    local t = "|H1:item:138798:6:1:0:0:0:18:%d:4:37:23:0:0:0:0:0:0:0:0:0:76000|h|h"
+    local re = "Craft an? ([^;]*);"
+    for i=170,255 do
+        local item_link = string.format(t, i)
+        local b = GenerateMasterWritBaseText(item_link)
+        local _,_,f = string.find(b,re)
+        mat[i] = f
+        if f then mat_ct = mat_ct + 1 end
+    end
+    WritWorthy.savedVariables.discover.writ2_smithing_mat = mat
+    d("WritWorthy: discovered mat_ct:"..tostring(mat_ct))
+
+                        -- writ5: trait
+    local trait = {}
+    local trait_ct = 0
+    local t = "|H1:item:119563:6:1:0:0:0:56:188:4:324:%d:51:0:0:0:0:0:0:0:0:72000|h|h"
+    local re = "Trait: ([^;]*);"
+    for i=1,50 do
+        local item_link = string.format(t, i)
+        local b = GenerateMasterWritBaseText(item_link)
+        local _,_,f = string.find(b,re)
+        trait[i] = f
+        if f then trait_ct = trait_ct + 1 end
+    end
+    WritWorthy.savedVariables.discover.writ5_smithing_trait = trait
+    d("WritWorthy: discovered trait_ct:"..tostring(trait_ct))
+
+                        -- writ6: motif
+    local motif = {}
+    local motif_ct = 0
+    local t = "|H1:item:119563:6:1:0:0:0:56:188:4:324:4:%d:0:0:0:0:0:0:0:0:72000|h|h"
+    local re = "Style: ([^;]*)"
+    for i=1,100 do
+        local item_link = string.format(t, i)
+        local b = GenerateMasterWritBaseText(item_link)
+        local _,_,f = string.find(b,re)
+        motif[i] = f
+        if f then motif_ct = motif_ct + 1 end
+    end
+    WritWorthy.savedVariables.discover.writ6_smithing_motif = motif
+    d("WritWorthy: discovered motif_ct:"..tostring(motif_ct))
+end
+
 
 -- Improvement Material Counts -----------------------------------------------
 --
