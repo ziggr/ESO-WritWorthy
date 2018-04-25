@@ -447,6 +447,29 @@ function WritWorthy:CreateSettingsWindow()
     LAM2:RegisterOptionControls(lam_addon_id, optionsData)
 end
 
+-- SlashCommand --------------------------------------------------------------
+
+function WritWorthy.Forget()
+                        -- Forget everything this one character has already
+                        -- crafted.
+                        --
+                        -- Helpful when testing on PTS and you want to keep
+                        -- trying to craft the same few writs over and over.
+    WritWorthy.savedChariables.writ_unique_id = {}
+end
+
+function WritWorthy.SlashCommand(arg1)
+    if arg1:lower() == "discover" then
+        d("|c999999WritWorthy: scanning writ fields...|r")
+        WritWorthy.Smithing.Discover()
+    elseif arg1:lower() == "forget" then
+        d("|c999999WritWorthy: forgetting everything this character already crafted...|r")
+        WritWorthy.Forget()
+    else
+        WritWorthyUI_ToggleUI()
+    end
+end
+
 -- Init ----------------------------------------------------------------------
 
 function WritWorthy.OnAddOnLoaded(event, addonName)
@@ -506,4 +529,4 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
 
 ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",       "Show/Hide WritWorthy")
 
-SLASH_COMMANDS["/writworthy"] = WritWorthyUI_ToggleUI
+SLASH_COMMANDS["/writworthy"] = WritWorthy.SlashCommand
