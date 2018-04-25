@@ -167,15 +167,15 @@ Smithing.TRAITS_ARMOR = {
 ,   [ITEM_TRAIT_TYPE_ARMOR_NIRNHONED   ] = { trait_name = "nirnhoned",    mat_name = "fortified nirncrux" , trait_index = 9 }
 }
 Smithing.TRAITS_JEWELRY = {
-    [ITEM_TRAIT_TYPE_JEWELRY_ARCANE       or 22] = { trait_name = "arcane",         mat_name = "cobalt"        , trait_index = 23 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_HEALTHY      or 21] = { trait_name = "healthy",        mat_name = "antimony"      , trait_index = 22 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_ROBUST       or 23] = { trait_name = "robust",         mat_name = "zinc"          , trait_index = 24 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_TRIUNE       or 30] = { trait_name = "triune",         mat_name = "dawn-prism"    , trait_index = 31 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_INFUSED      or 33] = { trait_name = "infused",        mat_name = "aurbic amber"  , trait_index = 34 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_PROTECTIVE   or 32] = { trait_name = "protective",     mat_name = "titanium"      , trait_index = 33 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_SWIFT        or 28] = { trait_name = "swift",          mat_name = "gilding wax"   , trait_index = 29 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_HARMONY      or 29] = { trait_name = "harmony",        mat_name = "dibellium"     , trait_index = 30 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY or 31] = { trait_name = "bloodthirsty",   mat_name = "slaughterstone", trait_index = 32 }
+    [ITEM_TRAIT_TYPE_JEWELRY_ARCANE       or 22] = { trait_name = "arcane",         mat_name = "cobalt"        , trait_index = 1 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_HEALTHY      or 21] = { trait_name = "healthy",        mat_name = "antimony"      , trait_index = 2 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_ROBUST       or 23] = { trait_name = "robust",         mat_name = "zinc"          , trait_index = 3 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_TRIUNE       or 30] = { trait_name = "triune",         mat_name = "dawn-prism"    , trait_index = 4 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_INFUSED      or 33] = { trait_name = "infused",        mat_name = "aurbic amber"  , trait_index = 5 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_PROTECTIVE   or 32] = { trait_name = "protective",     mat_name = "titanium"      , trait_index = 6 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_SWIFT        or 28] = { trait_name = "swift",          mat_name = "gilding wax"   , trait_index = 7 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_HARMONY      or 29] = { trait_name = "harmony",        mat_name = "dibellium"     , trait_index = 8 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY or 31] = { trait_name = "bloodthirsty",   mat_name = "slaughterstone", trait_index = 9 }
 }
 
 -- Motifs --------------------------------------------------------------------
@@ -949,9 +949,12 @@ if not self.request_item then d("WW Error unknown item_num:"..tostring(item_num)
     self.motif          = Smithing.MOTIF[motif_num]
     Log:Add("motif:"..tostring(motif_num))
     Log:Add(self.motif)
-    if self.request_item.school.motif_required
-            and not self.motif then
-        return Fail("motif not found "..tostring(motif_num))
+    if self.request_item.school.motif_required then
+        if not self.motif then
+            return Fail("motif not found "..tostring(motif_num))
+        end
+    else
+        self.motif_num = nil
     end
     self.improve_level  = Smithing.QUALITY[quality_num]
     Log:Add("improve:"..tostring(quality_num))

@@ -687,11 +687,11 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
     if not inventory_data.llc_func then
         return false, "WritWorthy bug: Missing LLC data"
     end
-    if      inventory_data.parser.request_item
-        and inventory_data.parser.request_item.school
-        and inventory_data.parser.request_item.school.autocraft_not_implemented then
-        return false, "WritWorthy not yet implemented: jewelry crafting."
-    end
+    -- if      inventory_data.parser.request_item
+    --     and inventory_data.parser.request_item.school
+    --     and inventory_data.parser.request_item.school.autocraft_not_implemented then
+    --     return false, "WritWorthy not yet implemented: jewelry crafting."
+    -- end
     local text_list = {}
     if inventory_data.parser.ToKnowList then
         for _, know in ipairs(inventory_data.parser:ToKnowList()) do
