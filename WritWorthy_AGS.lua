@@ -52,13 +52,12 @@ function WritWorthy:InsertIntoAGSTables()
     local fp  = AwesomeGuildStore.FILTER_PRESETS
     local fpc = fp[ITEMFILTERTYPE_CONSUMABLE]
     for i,subcategory in ipairs(fpc.subcategories) do
-        if subcategory.label == want_label then
-            Log:Add("subcategory.subfilters before insertion:"
-                ..tostring(subcategory.subfilters))
+        if (     subcategory.filters
+            and  subcategory.filters[TRADING_HOUSE_FILTER_TYPE_ITEM]
+            and #subcategory.filters[TRADING_HOUSE_FILTER_TYPE_ITEM] == 1
+            and  subcategory.filters[TRADING_HOUSE_FILTER_TYPE_ITEM][1] == ITEMTYPE_MASTER_WRIT) then
             subcategory.subfilters = subcategory.subfilters or {}
             table.insert(subcategory.subfilters, SUBFILTER_WRITWORTHY)
-            Log:Add("subcategory.subfilters after insertion:"
-                ..tostring(subcategory.subfilters))
         end
     end
 
@@ -67,13 +66,14 @@ function WritWorthy:InsertIntoAGSTables()
     end
                         -- Insert a subfilter definition for
                         -- SUBFILTER_WRITWORTHY.
-    local filter = {
+    local filter_preset = {
         type = FILTER_TYPE_ID_WRITWORTHY
-    ,   label = "WritWorthy63"  -- user visible? History? Where?
+    ,   label  = "Per Voucher:" -- user visible if we relay this to
+                                -- label:SetText() in Initialize()
     ,   filter = FILTER_TYPE_ID_WRITWORTHY
     ,   class  = WritWorthy.ags_filter_class
     }
-    AwesomeGuildStore.SUBFILTER_PRESETS[SUBFILTER_WRITWORTHY] = filter
+    AwesomeGuildStore.SUBFILTER_PRESETS[SUBFILTER_WRITWORTHY] = filter_preset
 end
 
 -- begin editor inheritance from Master Merchant -----------------------------
@@ -92,7 +92,7 @@ function WritWorthy.AGS_CreateFilterClass()
         return FilterBase.New(self, FILTER_TYPE_ID_WRITWORTHY, name, tradingHouseWrapper, ...)
     end
 
-    function WWAGSFilter:Initialize(name, tradingHouseWrapper)
+    function WWAGSFilter:Initialize(name, tradingHouseWrapper, filter_preset)
         local tradingHouse = tradingHouseWrapper.tradingHouse
         local saveData = tradingHouseWrapper.saveData
         local container = self.container
@@ -101,7 +101,7 @@ function WritWorthy.AGS_CreateFilterClass()
                         -- the filter sidebar.
         local label = container:CreateControl(name .. "Label", CT_LABEL)
         label:SetFont("ZoFontWinH4")
-        label:SetText("Per Voucher:")
+        label:SetText(filter_preset.label)
         self:SetLabelControl(label)
 
                         -- Edit field.
