@@ -311,6 +311,17 @@
 
       </Controls>
     </TopLevelControl>
+
+    <Backdrop   name="WritWorthyAGSEditBox"
+        inherits="ZO_EditBackdrop"
+        virtual="true">
+      <Dimensions x="180" />
+      <Controls>
+        <EditBox name="$(parent)Box"
+            inherits="ZO_DefaultEditForBackdrop ZO_EditDefaultText" />
+      </Controls>
+    </Backdrop>
+
     <!-- rows ----------------------------------------------------------->
     <Button name="WritWorthyInventoryListRow"
         virtual="true">

@@ -5,7 +5,7 @@
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
-## OptionalDependsOn: LibAddonMenu-2.0
+## OptionalDependsOn: LibAddonMenu-2.0 AwesomeGuildStore
 
 Libs/LibStub/LibStub.lua
 Libs/LibAddonMenu-2.0/LibAddonMenu-2.0.lua
@@ -41,6 +41,7 @@ WritWorthy_Link.lua
 WritWorthy_MatRow.lua
 WritWorthy_Know.lua
 WritWorthy_Window.lua
+WritWorthy_AGS.lua
 WritWorthy.lua
 WritWorthy.xml
 Bindings.xml

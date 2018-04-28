@@ -1,0 +1,465 @@
+
+--[[
+
+Only want this UI to appear for
+Category: Consumable
+
+    name = "Consumable",
+    label = GetString("SI_ITEMFILTERTYPE", ITEMFILTERTYPE_CONSUMABLE),
+    texture = "EsoUI/Art/Inventory/inventory_tabIcon_consumables_%s.dds",
+    index = 3,
+
+Subcategory: Master Writ
+
+    label = zo_strformat(SI_TOOLTIP_ITEM_NAME, GetString("SI_ITEMTYPE", ITEMTYPE_MASTER_WRIT)),
+    texture = "EsoUI/Art/crafting/formulae_tabicon_%s.dds",
+    index = 8,
+    filters = {
+        [TRADING_HOUSE_FILTER_TYPE_ITEM] = { ITEMTYPE_MASTER_WRIT },
+    },
+
+Are there events or hookable functions for category/subcategory switch?
+Can I show/hide my container based on that?
+
+Example: this subfilter only appears on Consumable/Motif subcategory
+
+SUBFILTER_MOTIF_KNOWLEDGE
+KnownMotifFilter
+local KnownMotifFilter = CategorySubfilter:Subclass()
+
+"CategorySubfilter" might mean "category" = "armor trait buttons"
+not "category" = "consumable". EVERY single CategorySubfilter subclass
+is a toggle button set filter.
+
+Try something else. Item Level?
+
+...
+
+Style:  "Select Styles" ?
+ItemStyleFilter
+Appears for weapons and armor categories
+but not armor/jewelry or armor/costume subcategories.
+
+based on FilterBase not CategorySubfilter
+noting in ItemStyleFilter to show that it's limited to certain category/subcategories
+annoying overload of word "category" internally to also apply to "style categories" aka "racial" or "events" or "morrowind". Grrr.
+SUBFILTER_ITEM_STYLE
+
+There it is.
+CategoryPresets.lua
+
+    It's a giant table of all the categories (ITEMFILTERTYPE_ARMOR)
+    and subcategories (SI_TRADING_HOUSE_BROWSE_ARMOR_TYPE_HEAVY, EQUIP_TYPE_COSTUME)
+    and each has a list of which subfilters to show/hide when this is active:
+
+    subfilters = {
+        SUBFILTER_JEWELRY_TYPE,
+        SUBFILTER_JEWELRY_TRAITS,
+        SUBFILTER_JEWELRY_ENCHANTMENTS,
+        SUBFILTER_ITEM_SET
+    },
+
+
+    then those subfilters are further defined later
+
+    [SUBFILTER_ITEM_STYLE] = {
+        type = 42,
+        label = GetString(SI_SMITHING_HEADER_STYLE),
+        class = "ItemStyleFilter",
+        filter = 42,
+    },
+
+
+So injecting ourself into this table MIGHT get AWG to start show/hiding us.
+How and when is this table loaded? Will it fail if the actual filter class
+(WWAGSFilter) doesn't exist yet? Probably.
+
+We're 6 hours in and showing up, but really need a one-line registration API
+to say "register this filter for this set of categories/subcategories" rather
+than Yet Another Dive deep into somebody else's code. Once we figure this out
+then ask Sirsidiator for an API and supply the code as a pull request.
+
+AwesomeGuildStore.FILTER_PRESETS = {
+AwesomeGuildStore.SUBFILTER_PRESETS = {
+
+function CategorySelector:New(parent, name, searchTabWrapper, tradingHouseWrapper)
+    ...
+    for category, preset in pairs(FILTER_PRESETS) do
+        selector:CreateCategoryButton(group, category, preset)
+        selector:CreateSubcategory(name, category, preset)
+    end
+
+    so far okay, just creating tabs and subtabs
+
+
+CategoryPresets.lua
+AwesomeGuildStore.FILTER_PRESETS = {
+    ...
+    [ITEMFILTERTYPE_CONSUMABLE] = {
+        name = "Consumable",
+        label = GetString("SI_ITEMFILTERTYPE", ITEMFILTERTYPE_CONSUMABLE),
+        texture = "EsoUI/Art/Inventory/inventory_tabIcon_consumables_%s.dds",
+        index = 3,
+        subcategories = {
+            ... sequence has no explicit keys, just by implied index number...
+            .. index 10 is...
+
+            { -- needs to stay here because the table index is used for the save data
+                label = zo_strformat(SI_TOOLTIP_ITEM_NAME, GetString("SI_ITEMTYPE", ITEMTYPE_MASTER_WRIT)),
+                texture = "EsoUI/Art/crafting/formulae_tabicon_%s.dds",
+                index = 8,
+                filters = {
+                    [TRADING_HOUSE_FILTER_TYPE_ITEM] = { ITEMTYPE_MASTER_WRIT },
+                },
+            },
+
+            ... note no "subfilters" entry. We can add our own here? ..
+}
+
+AwesomeGuildStore.FILTER_PRESETS[ITEMFILTERTYPE_CONSUMABLE].subcategories.subfilters
+
+table.insert( ditto, SUBFILTER_MASTER_WRIT_WRITWORTHY )
+
+And then define something for SUBFILTER_MASTER_WRIT_WRITWORTHY
+
+
+fyi
+SUBFILTER_MOTIF_KNOWLEDGE = 20, which is NOT
+filterTypeids.txt   39 - KnownMotifSubfilter
+
+
+
+Okay, so what does FilterBase do, why do I derive from it, how do the other, more tab-specific derivations work?
+
+###
+### FilterBase.lua
+###
+### FilterBase is a storage class that holds a search UI and filter.
+###
+### It internally creates a detached, standalone, CT_CONTROL container
+### and then others (usually derived classes) can use that to hold their
+### UI elements.
+###
+### It has a overridable filter API that some other code calls to filter
+### results, including overridable before()/after() hooks for setup/cleanup
+### of any filter cache
+###
+### It has a serialization API for saving search history to the history
+### window, and tooltips to explain what the saved history element holds.
+###
+### This is where the "Provider" such as Master Merchant is set, based
+### on FilterBase.type and a private internal EXTERNAL_FILTER_PROVIDER
+### table that only Sirinsidiator can edit.
+
+FilterBase  isa ZO_Object
+--
+isLocal : bool      true by default, false if not a local filter (probably
+                    for filters that run on the server)
+
+type    : TEXT_FILTER_TYPE_ID       Usually from filterTypeIds?
+                                    Multiple exceptions to this use
+                                    constant like PRICE_FILTER_TYPE_ID
+                                    that evals to 2
+                                    But yeah, use a filterTypeId value
+                                    or one of our own.
+
+priority : 0
+callbackName = name.."Changed"
+
+container : CT_CONTROL              InitializeBase() creates its OWN
+                                    container control.
+                                    We don't pass one in.
+
+resetButton : SimpleIconButton
+
+label : control                     We create this ourself, then pass in to
+                                    SetLabelControl(). FilterBase does not
+                                    create this for us.
+
+fireChangeCallback : fn(self)       Called by HandleChange() in a zo_callLater
+
+
+Not yet called:
+
+InitializeProvider()
+    "provider" here is "Master Merchant", looked up from EXTERNAL_FILTER_PROVIDER
+    and if found, colored pink and priority dropped.
+
+
+SetLabelControl(label)
+    calls InitializeProvider(), I guess because now we'll have a label
+    to set pink and tooltip-ify?
+
+    Sets label anchors, leaving space for reset button.
+
+HandleChange()
+    Call this whenever our filter criteria change (such as when someone types
+    into our edit field).
+
+    This updates the reset buttons visibility based
+    on whether self:IsDefault(). So if the reset button isn't showing up,
+    check that this is being called (before-override and d()?). If it's being
+    called, and IsDefault() is returning true, check your layout that
+    your .label isn't overwriting your .resetButton
+
+
+API that the search tab wrapper uses:
+    all these do is relay the call to self.container:
+    SetParent(parent)
+    SetWidth(width)
+    SetHidden(hidden)
+    GetControl()
+
+Filter API that we are supposed to override where appropriate:
+
+    BeforeRebuildSearchResultsPage()
+        Do any pre-searching cachey work like caching the UI
+        values to a pre-parsed value for use in a loop later
+
+        should return true if the filter "has work to do"
+        which probably means "return true if filter should
+        be called for testing rows, return false if filter
+        should be skipped for rows."
+
+    FilterPageResult()
+        called for each row in the current page
+        return true if should be shown, false if should be hidden
+
+    AfterRebuildSearchResultsPage()
+        used for cleanup, but we won't have any
+
+    Reset()
+        called by the reset button
+
+    IsDefault()
+        should return true when we show the same values as what Reset()
+        clears us to.
+
+        Not sure if returning true here also means that our filter isn't
+        called at all?
+
+Search History API
+    Serialize()
+    Deserialize()
+    GetToolTipText()        AHA the tooltips appear in the search
+                            history/library screen!
+
+
+Oh looky! There _is_ internal notification for showing/hiding this filter
+from different tabs:
+
+OnAttached()
+OnDetached()
+
+----------------------------------------------------------------------------
+
+Looking for an XML template for virtual control that you can use
+for default text edit box? TextFilter.lua is your best, local filter,
+example.
+
+<Backdrop name="AwesomeGuildStoreNameFilterTemplate" inherits="ZO_EditBackdrop" virtual="true">
+    <Dimensions x="180" />
+    <Controls>
+        <EditBox name="$(parent)Box" inherits="ZO_DefaultEditForBackdrop ZO_EditDefaultText" />
+    </Controls>
+</Backdrop>
+
+AGS itself does almost exactly what we want, by reusing and repurposing
+this template for its numeric page entry at the bottom of the results page:
+
+function Paging:Initialize(tradingHouseWrapper)
+    ...
+
+    local input = CreateControlFromVirtual("AwesomeGuildStorePageInput", navBar, "AwesomeGuildStoreNameFilterTemplate")
+    ...
+    local inputBox = input:GetNamedChild("Box")
+    inputBox:SetMaxInputChars(3)
+    inputBox:SetTextType(TEXT_TYPE_NUMERIC_UNSIGNED_INT)
+    ...
+
+----------------------------------------------------------------------------
+
+How do controls get inserted into AGS, shown on some tabs, hidden on others?
+
+CategoryPresets.lua holds the two big tables
+
+AwesomeGuildStore.FILTER_PRESETS = {
+    ...
+    [ITEMFILTERTYPE_WEAPONS] = {
+        ...
+        subcategories = {
+            {
+                ...
+                filters = {
+                    [TRADING_HOUSE_FILTER_TYPE_EQUIP] = { EQUIP_TYPE_ONE_HAND, EQUIP_TYPE_TWO_HAND }
+                },
+                subfilters = {
+                    SUBFILTER_WEAPON_TRAITS,
+                    SUBFILTER_WEAPON_ENCHANTMENTS,
+                    SUBFILTER_TRAIT_KNOWLEDGE,
+                    SUBFILTER_ITEM_STYLE,
+                    SUBFILTER_ITEM_SET,
+                    SUBFILTER_CRAFTING
+                },
+            },
+
+
+So for example, how does SUBFILTER_CRAFTING show/hide?
+    SUBFILTER_CRAFTING=25
+
+
+AwesomeGuildStore.SUBFILTER_PRESETS = {
+    ...
+    [SUBFILTER_CRAFTING] = {
+        type = 44,
+        -- TRANSLATORS: title of the crafted item filter in the left panel on the search tab
+        label = gettext("Crafting"),
+        class = "CraftedItemFilter",
+        filter = 44,
+        singleButtonMode = true,
+        buttons = {
+            {
+                -- TRANSLATORS: tooltip text for the crafted item filter
+                label = gettext("Crafted item"),
+                texture = "Esoui/Art/TreeIcons/achievements_indexIcon_crafting_%s.dds",
+                value = 1,
+            },
+            {
+                -- TRANSLATORS: tooltip text for the crafted item filter
+                label = gettext("Looted item"),
+                texture = "Esoui/Art/Progression/progression_indexIcon_class_%s.dds",
+                value = 2,
+            },
+        },
+    },
+
+CraftedItemFilter.lua
+
+    local CategorySubfilter = AwesomeGuildStore.CategorySubfilter
+
+    local CraftedItemFilter = CategorySubfilter:Subclass()
+    AwesomeGuildStore.CraftedItemFilter = CraftedItemFilter
+
+
+So the insertion points are
+    Insert a filter definition into SUBFILTER_PRESETS
+    that defines the filter. Its class, filter type ID,
+    label, and optional data that its class can use
+    such as buttons = {} here for CategorySubFilter and its
+    array of toggle buttons.
+
+    Use the above filter in FILTER_PRESETS,
+    listing it as a subfilter on the appropriate
+    sub pages.
+
+So now, who calls these two arrays, and do they call it before
+our own add-on could successfully insert?
+
+SUBFILTER_PRESETS called only by CategorySelector.lua.
+    Mentioned in many other files, but not actually used by them: dead code.
+
+
+function CategorySelector:New(parent, name, searchTabWrapper, tradingHouseWrapper)
+
+    ...
+    for category, preset in pairs(FILTER_PRESETS) do
+        selector:CreateCategoryButton(group, category, preset)
+        selector:CreateSubcategory(name, category, preset)
+    end
+
+    for subfilterId, preset in pairs(SUBFILTER_PRESETS) do
+        if(preset.buttons or preset.class) then
+            if(type(preset.class) == "string") then preset.class = AwesomeGuildStore[preset.class] end
+            local class = preset.class or CategorySubfilter
+            local subfilter = class:New(name .. "Subfilter" .. subfilterId, tradingHouseWrapper, preset)
+            CALLBACK_MANAGER:RegisterCallback(subfilter.callbackName, function()
+                selector:HandleChange()
+            end)
+            selector.subfilters[subfilterId] = subfilter
+        end
+    end
+
+So we need to insert before CategorySelector:New(), or
+we need to dynamic insert into whatever it creates.
+Note that it does the string ==> class conversion via this lookup,
+which will NOT work for our own class. Our insertion must supply
+a class not a string:
+    if(type(preset.class) == "string") then preset.class = AwesomeGuildStore[preset.class] end
+
+function SearchTabWrapper:InitializeFilters(tradingHouseWrapper)
+    is the only caller of
+
+    local categoryFilter = AwesomeGuildStore.CategorySelector:New(browseItemsControl, "AwesomeGuildStoreItemCategory", self, tradingHouseWrapper)
+
+called by
+
+function SearchTabWrapper:RunInitialSetup(tradingHouseWrapper)
+    self:InitializeContainers(tradingHouseWrapper)
+    self:InitializePageFiltering(tradingHouseWrapper)
+    self:InitializeFilters(tradingHouseWrapper)
+    ...
+
+called from EVENT_OPEN_TRADING_HOUSE which is WAY late after addon load time! We might have a winner!
+
+TradingHouseWrapper.lua
+
+    -- we cannot wrap TRADING_HOUSE.OpenTradingHouse or RunInitialSetup as it would taint the call stack down the line
+    -- e.g. when using inventory items or withdrawing from the bank
+    -- instead we use the EVENT_OPEN_TRADING_HOUSE and hook into the first method after RunInitialSetup is called
+    local CollectGuildKiosk = AwesomeGuildStore.CollectGuildKiosk
+    RegisterForEvent(EVENT_OPEN_TRADING_HOUSE, function()
+        self:ResetSalesCategoryFilter()
+        if(CollectGuildKiosk) then
+            CollectGuildKiosk()
+        end
+    end)
+
+
+------------------
+
+Need to be called AFTER AGS code gets loaded, but BEFORE CategoryPresets is consumed
+
+AwesomeGuildStore:RegisterBeforeInitialSetupCallback()  ?
+AwesomeGuildStore:RegisterAfterInitialSetupCallback()   ?
+RegisterOnInitializeFiltersCallback()
+
+SearchTabWrapper.lua
+
+function SearchTabWrapper:RunInitialSetup(tradingHouseWrapper)
+    self:InitializeContainers(tradingHouseWrapper)
+    self:InitializePageFiltering(tradingHouseWrapper)
+    self:InitializeFilters(tradingHouseWrapper)
+    self:InitializeButtons(tradingHouseWrapper)
+    self:InitializeSearchSortHeaders(tradingHouseWrapper)
+    self:InitializeNavigation(tradingHouseWrapper)
+    self:InitializeUnitPriceDisplay(tradingHouseWrapper)
+    self:InitializeSearchResultMasterList(tradingHouseWrapper)
+    self:InitializeKeybinds(tradingHouseWrapper)
+    zo_callLater(function()
+        self:RefreshFilterDimensions() -- call this after the layout has been updated
+        self.categoryFilter:UpdateSubfilterVisibility() -- fix inpage filters not working on first visit
+    end, 1)
+    self.tradingHouseWrapper = tradingHouseWrapper
+
+    local saveData = self.saveData
+    CALLBACK_MANAGER:RegisterCallback("AwesomeGuildStore_SearchLibraryEntry_Selected", function(entry)
+        if(saveData.autoSearch) then
+            self.fromSearchLibrary = true
+            tradingHouseWrapper.tradingHouse:ClearSearchResults()
+            self:Search()
+        end
+    end)
+end
+
+Where in the above does the FILTER_PRESETS and SUBFILTER_PRESETS get loaded?
+    CategorySelector:New(), called by
+    SearchTabWrapper:InitializeFilters() BEFORE FireOnInitializeFiltersCallbacks().
+
+    So yeah, InitializeFiltersCallbacks() is too late.
+
+So really it should be fine to continue using ADD_ON_LOADED here
+
+
+
+
+

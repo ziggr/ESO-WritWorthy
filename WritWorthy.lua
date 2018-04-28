@@ -87,10 +87,7 @@ end
 
 -- Convert a Master Writ item_link into an integer gold cost
 -- for required materials.
---
--- Not used internally, but here as a public API for any other
--- add-ons that want it.
---
+----
 function WritWorthy.ToMatCost(item_link)
                         -- Temporarily suspend all "dump matlist to chat"
                         -- to avoid scroll blindness
@@ -107,7 +104,7 @@ end
 -- Convert a Master Writ item_link into the integer number of
 -- writ vouchers it returns.
 function WritWorthy.ToVoucherCount(item_link)
-    local reward_text = GenerateMasterWritRewardText(item_link)
+    -- local reward_text = GenerateMasterWritRewardText(item_link)
     local fields      = Util.ToWritFields(item_link)
     local vc          = Util.round(fields.writ_reward / 10000)
     return vc
@@ -453,9 +450,13 @@ end
 -- Init ----------------------------------------------------------------------
 
 function WritWorthy.OnAddOnLoaded(event, addonName)
-    if addonName ~= WritWorthy.name then return end
-    if not WritWorthy.version then return end
-    WritWorthy:Initialize()
+    if addonName == WritWorthy.name then
+        if not WritWorthy.version then return end
+        WritWorthy:Initialize()
+        WritWorthy.InitAGSIntegration()
+    -- elseif addonName == "AwesomeGuildStore" then
+    --     WritWorthy.InitAGSIntegration()
+    end
 end
 
 function WritWorthy:Initialize()
