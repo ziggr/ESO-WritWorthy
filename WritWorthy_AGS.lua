@@ -110,8 +110,8 @@ function WritWorthy.AGS_CreateFilterClass()
                         , container
                         , "WritWorthyAGSEditBox"
                         )
-        bg:SetAnchor(TOPLEFT    , label    , BOTTOMLEFT , 0, LINE_SPACING)
-        bg:SetAnchor(BOTTOMRIGHT, container, BOTTOMRIGHT, 0, 30          )
+        bg:SetAnchor(TOPLEFT    , label    , BOTTOMLEFT , 0,  LINE_SPACING)
+        bg:SetAnchor(BOTTOMRIGHT, container, BOTTOMRIGHT, 0,  0)
         self.edit = bg:GetNamedChild("Box")
         ZO_EditDefaultText_Initialize(self.edit, "Filter by crafted cost")
         self.edit:SetMaxInputChars(6)
@@ -124,7 +124,7 @@ function WritWorthy.AGS_CreateFilterClass()
         self.edit:SetTextType(TEXT_TYPE_NUMERIC_UNSIGNED_INT)
 
         container:SetHeight(  label:GetHeight() + LINE_SPACING
-                            + bg:GetHeight()   )
+                            + 28 )
 
         local tooltipText = gettext("Reset <<1>> Filter", label:GetText():gsub(":", ""))
         self.resetButton:SetTooltipText(tooltipText)
