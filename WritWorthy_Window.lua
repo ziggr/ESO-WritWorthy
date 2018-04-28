@@ -50,6 +50,9 @@ local Util = WritWorthy.Util
 -- a "quality" field.
 local TYPE_ID = 1
 
+local CRAFTING_TYPE_JEWELRY = CRAFTING_TYPE_JEWELRY or 7
+
+
 WritWorthyInventoryList.SORT_KEYS = {
   ["ui_type"        ] = {tiebreaker="ui_voucher_ct"}
 , ["ui_voucher_ct"  ] = {tiebreaker="ui_detail1", isNumeric=true }
@@ -687,11 +690,11 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
     if not inventory_data.llc_func then
         return false, "WritWorthy bug: Missing LLC data"
     end
-    -- if      inventory_data.parser.request_item
-    --     and inventory_data.parser.request_item.school
-    --     and inventory_data.parser.request_item.school.autocraft_not_implemented then
-    --     return false, "WritWorthy not yet implemented: jewelry crafting."
-    -- end
+    if      inventory_data.parser.request_item
+        and inventory_data.parser.request_item.school
+        and inventory_data.parser.request_item.school.autocraft_not_implemented then
+        return false, "WritWorthy not yet implemented: jewelry crafting."
+    end
     local text_list = {}
     if inventory_data.parser.ToKnowList then
         for _, know in ipairs(inventory_data.parser:ToKnowList()) do
@@ -1179,6 +1182,19 @@ function WritWorthyInventoryList:GetLLC()
           .." provisioning/alchemy materials. Auto-crafting these types"
           .." will hang if you lack required materials.")
     end
+
+                        -- Does this version of LLC support jewelry?
+                        -- Ideally we can key off of an LLC version number,
+                        -- but until there's an official release with it,
+                        -- just look to see if it has any table entries for
+                        -- jewelry
+    if     llc_global
+       and llc_global.craftInteractionTables
+       and llc_global.craftInteractionTables[CRAFTING_TYPE_JEWELRY] then
+       WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
+    end
+
+
 
     return self.LibLazyCrafting
 end
