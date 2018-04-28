@@ -30,6 +30,10 @@ zip:
 	mkdir -p published/WritWorthy
 	cp -R Libs published/WritWorthy/Libs
 	cp ./WritWorthy* Bindings.xml published/WritWorthy/
+	rm published/WritWorthy/Libs/LibLazyCrafting/.git
+	rm published/WritWorthy/Libs/LibLazyCrafting/LLC.txt
+	rm published/WritWorthy/Libs/LibLazyCrafting/package.*
+
 	cd published; zip -r WritWorthy\ x.x.x.zip WritWorthy
 
 getllc:

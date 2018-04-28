@@ -1,3 +1,9 @@
+[B]4.0.4 2018-04-27[/B]
+[LIST]
+[*] AwesomeGuildStore filter! You can now search guild stores for master writs that cost X gold or less to purchase + craft. Look for a "Per Voucher:" field when on the Consumables/Master Writ shopping tab.
+[*] Preliminary Jewelry Crafting support. Disabled in this release.
+[/LIST]
+
 [B]4.0.3 2018-04-21[/B]
 [LIST]
 [*] Fixed: motif names appear in "Detail 3" column again. Thank you, tomtomhotep for the bug report.
