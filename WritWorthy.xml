@@ -322,7 +322,7 @@
       </Controls>
     </Backdrop>
 
-    <!-- rows ----------------------------------------------------------->
+    <!-- rows --------------------------------------------------------- -->
     <Button name="WritWorthyInventoryListRow"
         virtual="true">
       <Dimensions y="20" />
