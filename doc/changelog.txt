@@ -1,3 +1,8 @@
+[B]4.0.5 2018-04-28[/B]
+[LIST]
+[*] AwesomeGuildStore code review from Sirinsidiator: fix spacing so that WritWorthy and Master Merchant filters don't draw on top of each other. Internal caching to accelerate filter.
+[/LIST]
+
 [B]4.0.4 2018-04-27[/B]
 [LIST]
 [*] AwesomeGuildStore filter! You can now search guild stores for master writs that cost X gold or less to purchase + craft. Look for a "Per Voucher:" field when on the Consumables/Master Writ shopping tab.
