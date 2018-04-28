@@ -76,6 +76,60 @@ function WritWorthy:InsertIntoAGSTables()
     AwesomeGuildStore.SUBFILTER_PRESETS[SUBFILTER_WRITWORTHY] = filter_preset
 end
 
+local CACHED_MAT_COST_MAX_CT = 100
+
+function WritWorthy.GetCachedMatCost(item_link)
+    WritWorthy.cached_mat_cost    = WritWorthy.cached_mat_cost or {}
+    WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct or 0
+
+    return WritWorthy.cached_mat_cost[item_link]
+end
+
+function WritWorthy.SetCachedMatCost(item_link, mat_cost)
+    WritWorthy.cached_mat_cost    = WritWorthy.cached_mat_cost or {}
+    WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct or 0
+
+                        -- Replacing existing value?
+                        -- Then we already know the value fits.
+                        -- Insert and we're done.
+    if WritWorthy.cached_mat_cost[item_link] then
+        WritWorthy.cached_mat_cost[item_link] = mat_cost
+        return
+    end
+
+                        -- Not enough room? Make room
+    for k,_ in pairs(WritWorthy.cached_mat_cost) do
+        if CACHED_MAT_COST_MAX_CT <= WritWorthy.cached_mat_cost_ct then
+            WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct - 1
+            WritWorthy.cached_mat_cost[k] = nil
+            -- Log:Add("SetCachedMatCost removed:"..tostring(k)
+            --         .." ct:"..tostring(WritWorthy.cached_mat_cost_ct))
+        else
+            break
+        end
+    end
+
+    WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct + 1
+    WritWorthy.cached_mat_cost[item_link] = mat_cost
+    -- Log:Add("SetCachedMatCost added  :"..tostring(item_link)
+    --         .." ct:"..tostring(WritWorthy.cached_mat_cost_ct))
+end
+
+function WritWorthy.GetMatCost(item_link)
+    local mat_gold = WritWorthy.GetCachedMatCost(item_link)
+    if mat_gold then
+        -- Log:Add("GetMatCost cache hit : "..item_link.." cost:"..tostring(mat_gold))
+        return mat_gold
+    end
+    -- Log:Add("GetMatCost cache miss: "..tostring(item_link))
+    local parser     = WritWorthy.CreateParser(item_link)
+    if not (parser and parser:ParseItemLink(item_link)) then return nil end
+    local mat_list   = parser:ToMatList()
+    local mat_gold   = WritWorthy.MatRow.ListTotal(mat_list) or 0
+    WritWorthy.SetCachedMatCost(item_link, mat_gold)
+    return mat_gold
+end
+
 -- begin editor inheritance from Master Merchant -----------------------------
 
 function WritWorthy.AGS_CreateFilterClass()
@@ -153,12 +207,10 @@ function WritWorthy.AGS_CreateFilterClass()
                         -- Is this a sealed master writ that WritWorthy
                         -- can understand?
         local item_link  = GetTradingHouseSearchResultItemLink(index,LINK_STYLE_DEFAULT)
-        local parser     = WritWorthy.CreateParser(item_link)
-        if not (parser and parser:ParseItemLink(item_link)) then return true end
         local voucher_ct = WritWorthy.ToVoucherCount(item_link)
         if not voucher_ct then return true end
-        local mat_list   = parser:ToMatList()
-        local mat_gold   = WritWorthy.MatRow.ListTotal(mat_list) or 0
+        local mat_gold   = WritWorthy.GetMatCost(item_link)
+        if not mat_gold then return true end
         local total_gold = (mat_gold or 0) + (purchasePrice or 0)
         local gold_per_voucher = Util.round(total_gold / voucher_ct)
         return gold_per_voucher <= self.max_gold_per_voucher
