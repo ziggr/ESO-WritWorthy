@@ -1,3 +1,8 @@
+[B]4.0.6 2018-05-04[/B]
+[LIST]
+[*] Update to LibLazyCrafting 2.0 with its shiny new support for jewelry crafting.
+[/LIST]
+
 [B]4.0.5 2018-04-28[/B]
 [LIST]
 [*] AwesomeGuildStore code review from Sirinsidiator: fix spacing so that WritWorthy and Master Merchant filters don't draw on top of each other. Internal caching to accelerate filter.
