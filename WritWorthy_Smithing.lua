@@ -13,7 +13,7 @@ local a = WritWorthy.RequiredSkill
 local b = WritWorthy.RequiredSkill.FetchInfo
 local c = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
 
-local CRAFTING_TYPE_JEWELRY = CRAFTING_TYPE_JEWELRY or 7
+local CRAFTING_TYPE_JEWELRYCRAFTING = CRAFTING_TYPE_JEWELRYCRAFTING or 7
 
 -- Schools: HVY MED LGT WOOD -------------------------------------------------
 --
@@ -113,7 +113,7 @@ Smithing.SCHOOL_WOOD   = {
 }
 
 Smithing.SCHOOL_JEWELRY = {
-    trade_skill_type    = CRAFTING_TYPE_JEWELRY
+    trade_skill_type    = CRAFTING_TYPE_JEWELRYCRAFTING
 ,   base_mat_name       = "platinum"
 ,   green_mat_name      = "terne"
 ,   blue_mat_name       = "iridium"

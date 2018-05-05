@@ -50,7 +50,7 @@ local Util = WritWorthy.Util
 -- a "quality" field.
 local TYPE_ID = 1
 
-local CRAFTING_TYPE_JEWELRY = CRAFTING_TYPE_JEWELRY or 7
+local CRAFTING_TYPE_JEWELRYCRAFTING = CRAFTING_TYPE_JEWELRYCRAFTING or 7
 
 
 WritWorthyInventoryList.SORT_KEYS = {
@@ -1190,7 +1190,7 @@ function WritWorthyInventoryList:GetLLC()
                         -- jewelry
     if     llc_global
        and llc_global.craftInteractionTables
-       and llc_global.craftInteractionTables[CRAFTING_TYPE_JEWELRY] then
+       and llc_global.craftInteractionTables[CRAFTING_TYPE_JEWELRYCRAFTING] then
        WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
     end
 
