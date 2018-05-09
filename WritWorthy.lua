@@ -465,6 +465,19 @@ function WritWorthy.SlashCommand(arg1)
     elseif arg1:lower() == "forget" then
         d("|c999999WritWorthy: forgetting everything this character already crafted...|r")
         WritWorthy.Forget()
+    elseif arg1:lower() == "count" then
+        local mwlist = WritWorthy:ScanInventoryForMasterWrits()
+        local mw_ct = #mwlist
+        local voucher_ct = 0
+        for _,mw in ipairs(mwlist) do
+            local vc  = WritWorthy.ToVoucherCount(mw.item_link)
+            voucher_ct = voucher_ct + vc
+        end
+        d(string.format( "|c999999WritWorthy: %d writs, %d vouchers|r"
+                       , mw_ct
+                       , Util.ToMoney(voucher_ct)
+                       ))
+        WritWorthy.Forget()
     else
         WritWorthyUI_ToggleUI()
     end
