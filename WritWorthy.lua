@@ -268,7 +268,7 @@ function WritWorthy:ScanInventoryForMasterWrits()
     local result_list = {}
     local bag_list = {BAG_BACKPACK}
     if self.savedVariables.enable_banked_vouchers then
-        bag_list = {BAG_BACKPACK, BAG_BANK, BAG_SUBSCRIBER }
+        bag_list = {BAG_BACKPACK, BAG_BANK, BAG_SUBSCRIBER_BANK }
     end
     for _,bag_id in ipairs(bag_list) do
         local slot_ct = GetBagSize(bag_id)
