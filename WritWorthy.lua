@@ -428,9 +428,9 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
-        , name      = "Include vouchers from bank in auto-crafting window"
-        , tooltip   = "Scan bank and include those vouchers in the list of"
-                        .." vouchers available to automatically craft."
+        , name      = "Include writs from bank in auto-crafting window"
+        , tooltip   = "Scan bank and include those writs in the list of"
+                        .." writs available to automatically craft."
                         .."\n|cFF3333BE CAREFUL if you craft on multiple"
                         .." characters! WritWorthy will not warn you if you"
                         .." craft the same banked writ on multiple"
