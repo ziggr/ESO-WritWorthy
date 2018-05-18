@@ -1140,6 +1140,7 @@ function WritWorthyInventoryList:GetLLC()
     end
 
     local lib = LibStub:GetLibrary("LibLazyCrafting")
+    self.LibLazyCrafting_lib = lib
     self.LibLazyCrafting = lib:AddRequestingAddon(
          WritWorthy.name            -- name
        , true                       -- autocraft
@@ -1345,24 +1346,27 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
     local i_d = inventory_data
     local LLC = self:GetLLC()
     if not LLC[i_d.llc_func] then
-        d("LibLazyCrafting function missing:"..tostring(i_d.llc_func))
-        d("LibLazyCrafting version:"..tostring(LLC.version))
+        self:LLC_Missing(i_d.llc_func)
         return
-    -- else
-    --     d("LibLazyCrafting function found:"..tostring(i_d.llc_func))
-    --     d("LibLazyCrafting version:"..tostring(LLC.version))
     end
                         -- Call LibLazyCrafting to queue it up for later.
-    if LLC[i_d.llc_func] then
-        LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
-    else
-                        -- Oops! This version of LibLazyCrafting lacks the
-                        -- required function. Should not happen, but did
-                        -- while Zig was developing WritWorthy with
-                        -- unpublished versions of LibLazyCrafting.
-        d("LibLazyCrafting function missing:"..tostring(i_d.llc_func))
-        d("LibLazyCrafting version:"..tostring(LLC.version))
+    LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
+end
+
+-- A required LibLazyCrafting function is missing?
+-- Maybe due to some old or incombatible LLC version?
+function WritWorthyInventoryList:LLC_Missing(llc_func)
+    local LLC = self:GetLLC()
+    d("LibLazyCrafting function missing:"..tostring(llc_func))
+    d("LibLazyCrafting version:"..tostring(LLC.version))
+    if      self.LibLazyCrafting_lib
+        and self.LibLazyCrafting_lib.widgets then
+        d(self.LibLazyCrafting_lib.widgets)
     end
+    local set  = (DolgubonSetCrafter and "yes") or "no"
+    local writ = (DolgubonWritCrafter and "yes") or "no"
+    d("Dolgubon's Lazy Writ Crafter: "..writ)
+    d("Dolgubon's Lazy Set Crafter: "..set)
 end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)

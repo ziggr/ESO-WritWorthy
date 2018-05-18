@@ -19,6 +19,7 @@ sub dirls($)
 @files = ( 'Makefile' );
 # push @files, dirls('src');
 push @files, 'WritWorthy.lua';
+push @files, 'WritWorthy_Window.lua';
 push @files, 'WritWorthy_AGS.lua';
 print join("\n", @files) . "\n";
 
