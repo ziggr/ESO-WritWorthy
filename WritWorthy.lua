@@ -92,6 +92,7 @@ function WritWorthy.ToMatCost(item_link)
                         -- Temporarily suspend all "dump matlist to chat"
                         -- to avoid scroll blindness
     local save_mat_list_chat = WritWorthy.savedVariables.enable_mat_list_chat
+    WritWorthy.savedVariables.enable_mat_list_chat = WritWorthy.MAT_LIST_CHAT_OFF
 
     local mat_list = WritWorthy.ToMatKnowList(item_link)
     local mat_total = WritWorthy.MatRow.ListTotal(mat_list)
@@ -211,6 +212,7 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     if WritWorthy.savedVariables.enable_mat_price_tooltip ~= false then
         control:AddLine(mat_text)
     end
+
     if can_dump_matlist(WritWorthy.savedVariables.enable_mat_list_chat, parser) then
         WritWorthy.MatRow.ListDump(mat_list)
         --WritWorthy.KnowDump(know_list)
@@ -270,12 +272,12 @@ function WritWorthy:ScanInventoryForMasterWrits()
     if self.savedVariables.enable_banked_vouchers then
         bag_list = {BAG_BACKPACK, BAG_BANK, BAG_SUBSCRIBER_BANK }
     end
-    for _,bag_id in ipairs(bag_list) do
-        local slot_ct = GetBagSize(bag_id)
-
                         -- Temporarily suspend all "dump matlist to chat"
                         -- to avoid scroll blindness
-        local save_mat_list_chat = self.savedVariables.enable_mat_list_chat
+    local save_mat_list_chat = self.savedVariables.enable_mat_list_chat
+    self.savedVariables.enable_mat_list_chat = WritWorthy.MAT_LIST_CHAT_OFF
+    for _,bag_id in ipairs(bag_list) do
+        local slot_ct = GetBagSize(bag_id)
         for slot_index = 0, slot_ct do
             local item_link = GetItemLink(bag_id, slot_index, LINK_STYLE_DEFAULT)
             local parser    = WritWorthy.CreateParser(item_link)
