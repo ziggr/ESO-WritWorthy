@@ -5,7 +5,7 @@
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
-## OptionalDependsOn: LibAddonMenu-2.0 AwesomeGuildStore
+## OptionalDependsOn: LibAddonMenu-2.0 AwesomeGuildStore LibSlashCommander
 
 Libs/LibStub/LibStub.lua
 Libs/LibAddonMenu-2.0/LibAddonMenu-2.0.lua
@@ -27,6 +27,8 @@ Libs/LibLazyCrafting/Alchemy.lua
 Libs/LibLazyCrafting/Enchanting.lua
 Libs/LibLazyCrafting/Provisioning.lua
 Libs/LibLazyCrafting/Smithing.lua
+Libs/LibSlashCommander/LibSlashCommander.lua
+Libs/LibSlashCommander/descriptions/$(language).lua
 
 WritWorthy_Define.lua
 WritWorthy_Price.lua

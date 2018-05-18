@@ -485,6 +485,31 @@ function WritWorthy.SlashCommand(arg1)
     end
 end
 
+function WritWorthy.RegisterSlashCommands()
+    local lsc = LibStub("LibSlashCommander")
+    local cmd = lsc:Register( "/writworthy"
+                            , function(arg) WritWorthy.SlashCommand(arg) end
+                            , "Show/hide WritWorthy window")
+
+    local sub_forget = cmd:RegisterSubCommand()
+    sub_forget:AddAlias("forget")
+    sub_forget:SetCallback(function() WritWorthy.SlashCommand("forget") end)
+    sub_forget:SetDescription("Forget this character's crafted master writs")
+
+    local sub_count = cmd:RegisterSubCommand()
+    sub_count:AddAlias("count")
+    sub_count:SetCallback(function() WritWorthy.SlashCommand("count") end)
+    sub_count:SetDescription("How many master writs in this character's inventory/bank?")
+
+    if (GetDisplayName() == "@ziggr") then
+        local sub_discover = cmd:RegisterSubCommand()
+        sub_discover:AddAlias("discover")
+        sub_discover:SetCallback(function() WritWorthy.SlashCommand("discover") end)
+        sub_discover:SetDescription("Dump item_link writ fields to tables in log")
+    end
+end
+
+
 -- Init ----------------------------------------------------------------------
 
 function WritWorthy.OnAddOnLoaded(event, addonName)
@@ -544,4 +569,4 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
 
 ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",       "Show/Hide WritWorthy")
 
-SLASH_COMMANDS["/writworthy"] = WritWorthy.SlashCommand
+WritWorthy.RegisterSlashCommands()
