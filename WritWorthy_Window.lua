@@ -1353,20 +1353,33 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
     LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
 end
 
+local function grey(msg)
+    d("|ceeeeee"..msg.."|r")
+end
+
 -- A required LibLazyCrafting function is missing?
 -- Maybe due to some old or incombatible LLC version?
 function WritWorthyInventoryList:LLC_Missing(llc_func)
     local LLC = self:GetLLC()
-    d("LibLazyCrafting function missing:"..tostring(llc_func))
-    d("LibLazyCrafting version:"..tostring(LLC.version))
+    d("WritWorthy: LibLazyCrafting function missing:"..tostring(llc_func))
+    grey("WritWorthy version:"..WritWorthy.version)
+    grey("LibLazyCrafting version:"..tostring(LLC.version))
     if      self.LibLazyCrafting_lib
         and self.LibLazyCrafting_lib.widgets then
-        d(self.LibLazyCrafting_lib.widgets)
+        for k,v in pairs(self.LibLazyCrafting_lib.widgets) do
+            grey("llc widget:"..tostring(k).." version:"..tostring(v))
+        end
     end
-    local set  = (DolgubonSetCrafter and "yes") or "no"
-    local writ = (DolgubonWritCrafter and "yes") or "no"
-    d("Dolgubon's Lazy Writ Crafter: "..writ)
-    d("Dolgubon's Lazy Set Crafter: "..set)
+    local AM = GetAddOnManager()
+    local _NAME    = 1  -- GetAddOnInfo() result indices
+    local _TITLE   = 2
+    local _ENABLED = 5
+    for i = 1, AM:GetNumAddOns() do
+        local w = { AM:GetAddOnInfo(i) }
+        if string.find(w[_NAME], "Dolgubon") then
+            grey("other add-on: "..w[_TITLE].." enabled:"..tostring(w[_ENABLED]))
+        end
+    end
 end
 
 function WritWorthyInventoryList:Dequeue(inventory_data)
