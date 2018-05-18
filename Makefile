@@ -36,6 +36,8 @@ zip:
 
 	cd published; zip -r WritWorthy\ x.x.x.zip WritWorthy
 
+	rm -rf published/WritWorthy
+
 getllc:
 	cp -R ../LibLazyCrafting/* ./Libs/LibLazyCrafting/
 

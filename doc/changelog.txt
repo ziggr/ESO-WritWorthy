@@ -1,3 +1,12 @@
+[B]4.0.7 2018-05-18[/B]
+[LIST]
+[*] bugfix: ESO+ subscriber bank now works. Thanks, Snow, for the fix!
+[*] bugfix: "Show material list in chat" setting works again. Thanks, XomRhoK for the bug report.
+[*] error reporting: "LibLazyCrafting function missing" now dumps more details to help ziggr figure out what's going wrong.
+[*] new: /writworthy count -- shows number of writs you have, and how many vouchers they're all worth.
+[*] add Sirinsidiator's most excellent LibSlashCommander 1.0 r4. Allows for command descriptions.
+[/LIST]
+
 [B]4.0.6 2018-05-04[/B]
 [LIST]
 [*] Update to LibLazyCrafting 2.0 with its shiny new support for jewelry crafting.
