@@ -473,7 +473,7 @@ function WritWorthy.SlashCommand(arg1)
             local vc  = WritWorthy.ToVoucherCount(mw.item_link)
             voucher_ct = voucher_ct + vc
         end
-        d(string.format( "|c999999WritWorthy: %d writs, %d vouchers|r"
+        d(string.format( "|c999999WritWorthy: %d writs, %s vouchers|r"
                        , mw_ct
                        , Util.ToMoney(voucher_ct)
                        ))
