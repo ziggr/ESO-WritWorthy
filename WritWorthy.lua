@@ -480,7 +480,6 @@ function WritWorthy.SlashCommand(arg1)
                        , mw_ct
                        , Util.ToMoney(voucher_ct)
                        ))
-        WritWorthy.Forget()
     else
         WritWorthyUI_ToggleUI()
     end
