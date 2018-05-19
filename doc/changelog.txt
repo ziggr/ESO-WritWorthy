@@ -1,3 +1,8 @@
+[B]4.0.8 2018-05-19[/B]
+[LIST]
+[*] Summerset: use final texture string to detect jewelry writs.
+[/LIST]
+
 [B]4.0.7 2018-05-18[/B]
 [LIST]
 [*] bugfix: ESO+ subscriber bank now works. Thanks, Snow, for the fix!
