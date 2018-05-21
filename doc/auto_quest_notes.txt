@@ -1,0 +1,38 @@
+GetOfferedQuestInfo()
+    Returns: string dialogue, string response
+
+PROTECTED: This function is protected and can only be used out of combat.
+    if IsProtectedFunction("TheNameOfYourFunction") then
+        CallSecureProtected("TheNameOfYourFunction", arg1, arg2, arg3)
+    else
+        TheNameOfYourFunction(arg1, arg2, arg3)
+    end
+
+PROTECTED
+    UseItem(number Bag bagId, number slotIndex)
+
+
+I think that's all I need to "open" a master writ to start its quest.
+
+If I need to actually accept a quest, here's how Dolgubon does it in QuestHandler.lua:
+
+
+    -- Handles the dialogue where we actually accept the quest
+    local function HandleEventQuestOffered(eventCode)
+        -- Stop listening for quest offering
+        EVENT_MANAGER:UnregisterForEvent(WritCreater.name, EVENT_QUEST_OFFERED)
+        -- Accept the writ quest
+        wasQuestAccepted = true
+        AcceptOfferedQuest()
+    end
+
+
+
+
+Do this for 1-6 master writs, one of each type CRAFTING_TYPE_XXX
+    +++ Add crafting_type to each parser. Watch out for clothing, we have TWO schools landing in that one station.
+
+Then upon interaction with Rolis, auto-sequence through the dialog. See Dolgubon's QuestHandler.lua, HandleChatterBegin() and friends.
+
+    EVENT_MANAGER:RegisterForEvent(WritCreater.name, EVENT_CHATTER_BEGIN, HandleChatterBegin)
+
