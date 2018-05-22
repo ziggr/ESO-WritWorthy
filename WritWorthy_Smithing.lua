@@ -246,7 +246,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER   ] = { mat_name = "volcanic viridian"     , motif_name = "Buoyant Armiger"      , pages_id  = 1934  } -- 52
 ,   [ITEMSTYLE_HOLIDAY_FROSTCASTER   ] = { mat_name = "stahlrim shard"        , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 53
 ,   [ITEMSTYLE_AREA_ASHLANDER        ] = { mat_name = "ash canvas"            , motif_name = "Ashlander"            , pages_id  = 1932  } -- 54
-,   [ITEMSTYLE_ORG_WORM_CULT   or 55 ] = nil --                               , motif_name = Unused 11"             } -- 55
+,   [ITEMSTYLE_ORG_WORM_CULT   or 55 ] = { mat_name = "desecrated grave soil" , motif_name = "Worm Cult"            , pages_id  = 2120 } -- 56
 ,   [ITEMSTYLE_ENEMY_SILKEN_RING     ] = { mat_name = "distilled slowsilver"  , motif_name = "Silken Ring"          , pages_id  = 1796 } -- 56
 ,   [ITEMSTYLE_ENEMY_MAZZATUN        ] = { mat_name = "leviathan scrimshaw"   , motif_name = "Mazzatun"             , pages_id  = 1795 } -- 57
 ,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN] = { mat_name = "grinstones"            , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 58
@@ -257,13 +257,13 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_EBONSHADOW      or 66 ] = { mat_name = "tenebrous cord"        , motif_name = "Ebonshadow"           , pages_id  = 2045 }
 ,   [ITEMSTYLE_UNDAUNTED_67       or 67 ] = nil
 ,   [ITEMSTYLE_USE_ME             or 68 ] = nil
-,   [ITEMSTYLE_FANG_LAIR          or 69 ] = { mat_name = "dragon bone"        , motif_name = "Fang Lair"                               }
-,   [ITEMSTYLE_SCALECALLER        or 70 ] = { mat_name = "infected flesh"     , motif_name = "Scalecaller"                             }
-,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = { mat_name = "vitrified malondo"  , motif_name = "Psijic Order"                            }
-,   [ITEMSTYLE_SAPIARCH           or 72 ] = { mat_name = "culanda lacquer"    , motif_name = "Sapiarch"                                }
+,   [ITEMSTYLE_FANG_LAIR          or 69 ] = { mat_name = "dragon bone"        , motif_name = "Fang Lair"            , pages_id  = 2190 }
+,   [ITEMSTYLE_SCALECALLER        or 70 ] = { mat_name = "infected flesh"     , motif_name = "Scalecaller"          , pages_id  = 2189 }
+,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = { mat_name = "vitrified malondo"  , motif_name = "Psijic Order"         , pages_id  = 2186 }
+,   [ITEMSTYLE_SAPIARCH           or 72 ] = { mat_name = "culanda lacquer"    , motif_name = "Sapiarch"             , pages_id  = 2187 }
 ,   [ITEMSTYLE_WELKYNAR           or 73 ] = nil
 ,   [ITEMSTYLE_DREMORA            or 74 ] = nil
-,   [ITEMSTYLE_PYANDONEAN         or 75 ] = nil
+,   [ITEMSTYLE_PYANDONEAN         or 75 ] = { mat_name = "sea serpent hide"   , motif_name = "Pyandonean"           , pages_id  = 2285 }
 ,   [ITEMSTYLE_DIVINE_PROSECUTION or 76 ] = nil
 ,   [ITEMSTYLE_MAX_VALUE             ]    = nil
 }
