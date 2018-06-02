@@ -1,3 +1,8 @@
+[B]4.0.10 2018-06-01[/B]
+[LIST]
+[*] Performance improvement. Internally cache Master Merchant prices to avoid duplicate lookups. Affects both the big WritWorthy window as well as the filter for Awesome Guild Store.
+[/LIST]
+
 [B]4.0.9 2018-05-22[/B]
 [LIST]
 [*] Update to LibLazyCrafting 2.1.  Fixes "LibLazyCrafting function missing" errors
