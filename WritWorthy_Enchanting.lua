@@ -147,6 +147,7 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
+    WritWorthy.Profiler.Call("Enchanting.ParseItemLink")
     local fields      = Util.ToWritFields(item_link)
     local glyph_id    = fields.writ1
     local level_num   = fields.writ2
@@ -172,6 +173,7 @@ function Parser:ParseItemLink(item_link)
     self.potency_rune = Enchanting.POTENCY_RUNES[self.glyph.add_sub][level_num]
     self.aspect_rune  = Enchanting.ASPECT_RUNES[quality_num]
 
+    WritWorthy.Profiler.End("Enchanting.ParseItemLink")
     return self
 end
 

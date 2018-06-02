@@ -44,3 +44,7 @@ getllc:
 putllc:
 	cp -R ./Libs/LibLazyCrafting/* ../LibLazyCrafting/
 
+profile:
+	lua ZZProfiler_Dump.lua > profile.txt
+
+

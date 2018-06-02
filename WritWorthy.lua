@@ -59,12 +59,14 @@ WritWorthy.ICON_TO_PARSER = {
 --  Alchemy.Parser
 --
 function WritWorthy.CreateParser(item_link)
+    WritWorthy.Profiler.Call("CreateParser")
     local icon, _, _, _, item_style = GetItemLinkInfo(item_link)
     local parser_class = WritWorthy.ICON_TO_PARSER[icon]
     if not parser_class then return nil end
     Log:StartNewEvent()
     Log:Add(GenerateMasterWritBaseText(item_link))
     Log:Add(item_link)
+    WritWorthy.Profiler.End("CreateParser")
     return parser_class:New()
 end
 
@@ -90,6 +92,7 @@ end
 -- for required materials.
 ----
 function WritWorthy.ToMatCost(item_link)
+    WritWorthy.Profiler.Call("ToMatCost")
                         -- Temporarily suspend all "dump matlist to chat"
                         -- to avoid scroll blindness
     local save_mat_list_chat = WritWorthy.savedVariables.enable_mat_list_chat
@@ -100,15 +103,17 @@ function WritWorthy.ToMatCost(item_link)
                         -- Restore mat list to chat setting now that we're
                         -- done with chat-flooding scan.
     WritWorthy.savedVariables.enable_mat_list_chat = save_mat_list_chat
-
+    WritWorthy.Profiler.End("ToMatCost")
     return Util.round(mat_total)
 end
 -- Convert a Master Writ item_link into the integer number of
 -- writ vouchers it returns.
 function WritWorthy.ToVoucherCount(item_link)
+    WritWorthy.Profiler.Call("ToVoucherCount")
     -- local reward_text = GenerateMasterWritRewardText(item_link)
     local fields      = Util.ToWritFields(item_link)
     local vc          = Util.round(fields.writ_reward / 10000)
+    WritWorthy.Profiler.End("ToVoucherCount")
     return vc
 end
 
@@ -268,6 +273,7 @@ end
 -- Scan inventory, return list of { link="xxx", parser=ParserXXX }
 -- one element for each master writ found.
 function WritWorthy:ScanInventoryForMasterWrits()
+    WritWorthy.Profiler.Call("ScanInventoryForMasterWrits")
     local result_list = {}
     local bag_list = {BAG_BACKPACK}
     if self.savedVariables.enable_banked_vouchers then
@@ -305,6 +311,7 @@ function WritWorthy:ScanInventoryForMasterWrits()
                         -- Restore mat list to chat setting now that we're
                         -- done with chat-flooding scan.
     self.savedVariables.enable_mat_list_chat = save_mat_list_chat
+    WritWorthy.Profiler.End("ScanInventoryForMasterWrits")
     return result_list
 end
 

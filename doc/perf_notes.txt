@@ -1,0 +1,95 @@
+# With MM disabled, one page of AGS results, showing 9 writs out of 66 rows total.
+
+# dur_ms    call_ct func
+  88      66    FilterPageResult
+  87      66    GetMatCost
+  63      66    CreateParser
+   1      66    ToVoucherCount
+   0      66    GetCachedMatCost
+   0      66    SetCachedMatCost
+
+Same results, with MM enabled.
+
+# dur_ms    call_ct func
+ 884      66    FilterPageResult
+ 879      66    GetMatCost
+  69      66    CreateParser
+   5      66    ToVoucherCount
+   0      66    SetCachedMatCost
+   0      66    GetCachedMatCost
+
+Again, with deeper profiling (looks like a couple items sold, only 64 rows now)
+
+# dur_ms    call_ct func
+ 924      64    FilterPageResult
+ 923      64    GetMatCost
+ 835     386    MatRow:FromName
+ 832     386    Util.MatPrice
+ 831     393    MasterMerchant:itemStats
+  68      64    CreateParser
+  13       4    Alchemy.ParseItemLink
+   3      57    Smithing.ParseItemLink
+   1      64    ToVoucherCount
+   0       3    Enchanting.ParseItemLink
+   0      64    SetCachedMatCost
+   0      64    GetCachedMatCost
+
+
+So no surprise, there's your problem:
+ 831     393    MasterMerchant:itemStats
+
+Almost 400 calls ti MasterMerchant:itemStats() consuming almost 13 ms per row.
+
+
+So we need to cache our MM lookups.
+
+
+After adding a cache for MM lookups, a 5x speedup, and a 1/5x calls to MM.
+
+# dur_ms    call_ct func
+ 185      64    FilterPageResult
+ 182      64    GetMatCost
+ 100     386    MatRow:FromName
+  98     386    Util.MatPrice
+  98      81    MasterMerchant:itemStats
+  61      64    CreateParser
+  14       4    Alchemy.ParseItemLink
+   4      57    Smithing.ParseItemLink
+   3      64    ToVoucherCount
+   1      64    GetCachedMatCost
+   0      64    SetCachedMatCost
+   0       3    Enchanting.ParseItemLink
+
+
+----
+WritWorthy window, with the above cache enabled.
+
+# dur_ms    call_ct func
+ 147       2    ScanInventoryForMasterWrits
+  65    1366    CreateParser
+  64      22    Alchemy.ParseItemLink
+  25     199    ToVoucherCount
+   6     488    MatRow:FromName
+   5      34    Smithing.ParseItemLink
+   2     514    Util.MatPrice
+   1       4    MasterMerchant:itemStats
+   1       6    Provisioning.ParseItemLink
+   0      26    MatRow:FromLink
+   0      24    Enchanting.ParseItemLink
+
+Same window, cache disabled:
+Noticable delay before window opens.
+
+# dur_ms    call_ct func
+ 794     548    Util.MatPrice
+ 792     548    MasterMerchant:itemStats
+ 784     522    MatRow:FromName
+ 418       2    ScanInventoryForMasterWrits
+  73      22    Alchemy.ParseItemLink
+  56    1366    CreateParser
+  19       6    Provisioning.ParseItemLink
+  17      26    MatRow:FromLink
+  10     156    ToVoucherCount
+   1      24    Enchanting.ParseItemLink
+   1      34    Smithing.ParseItemLink
+

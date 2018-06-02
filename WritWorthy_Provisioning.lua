@@ -671,9 +671,11 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
+    WritWorthy.Profiler.Call("Provisioning.ParseItemLink")
     local fields = Util.ToWritFields(item_link)
     self.recipe = Provisioning.FindRecipe(fields.writ1)
     if not self.recipe then return nil end
+    WritWorthy.Profiler.End("Provisioning.ParseItemLink")
     return self
 end
 

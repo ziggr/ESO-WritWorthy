@@ -304,6 +304,7 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
+    WritWorthy.Profiler.Call("Alchemy.ParseItemLink")
     local fields      = Util.ToWritFields(item_link)
     local solvent_id  = fields.writ1
     self.is_poison    = solvent_id == 239 -- Lorkhan's Tears
@@ -328,6 +329,7 @@ function Parser:ParseItemLink(item_link)
                                             , self.effects[2]
                                             , self.effects[3]
                                             )
+    WritWorthy.Profiler.End("Alchemy.ParseItemLink")
     return self
 end
 

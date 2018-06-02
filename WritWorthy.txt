@@ -44,6 +44,7 @@ WritWorthy_MatRow.lua
 WritWorthy_Know.lua
 WritWorthy_Window.lua
 WritWorthy_AGS.lua
+WritWorthy_Profiler.lua
 WritWorthy.lua
 WritWorthy.xml
 Bindings.xml
