@@ -917,7 +917,6 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
-    WritWorthy.Profiler.Call("Smithing.ParseItemLink")
     local fields        = Util.ToWritFields(item_link)
     local item_num      = fields.writ1
     local material_num  = fields.writ2
@@ -963,7 +962,6 @@ if not self.request_item then d("WW Error unknown item_num:"..tostring(item_num)
     if not self.improve_level then
         return Fail("quality not found "..tostring(quality_num))
     end
-    WritWorthy.Profiler.End("Smithing.ParseItemLink")
     return self
 end
 

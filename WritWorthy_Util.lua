@@ -98,11 +98,9 @@ function Util.ToMoney(x)
 end
 
 function Util.MatPrice(link)
-    WritWorthy.Profiler.Call("Util.MatPrice")
                         -- Master Merchant first
     local mm = Util.MMPrice(link)
     if mm then
-        WritWorthy.Profiler.End("Util.MatPrice")
         return mm
     end
 
@@ -110,13 +108,11 @@ function Util.MatPrice(link)
     if WritWorthy.savedVariables.enable_mm_fallback then
         local fb = WritWorthy.FallbackPrice(link)
         if fb then
-        WritWorthy.Profiler.End("Util.MatPrice")
             return fb
         end
     end
 
                         -- No price for you!
-    WritWorthy.Profiler.End("Util.MatPrice")
     return WritWorthy.GOLD_UNKNOWN
 end
 
@@ -149,9 +145,7 @@ function Util.MMPrice(link)
     if not link then return WritWorthy.GOLD_UNKNOWN end
     local c_mm = Util.GetCachedMMPrice(link)
     if c_mm then return c_mm end
-    WritWorthy.Profiler.Call("MasterMerchant:itemStats")
     local mm = MasterMerchant:itemStats(link, false)
-    WritWorthy.Profiler.End("MasterMerchant:itemStats")
     if not mm then return WritWorthy.GOLD_UNKNOWN end
     if mm.avgPrice and 0 < mm.avgPrice then
         Util.SetCachedMMPrice(link, mm.avgPrice)
@@ -176,9 +170,7 @@ function Util.MMPrice(link)
             local daysRange = 100  -- 3+ months is long enough.
             return GetTimeStamp() - (86400 * daysRange), daysRange
           end
-    WritWorthy.Profiler.Call("MasterMerchant:itemStats")
     mm = MasterMerchant:itemStats(link, false)
-    WritWorthy.Profiler.End("MasterMerchant:itemStats")
     MasterMerchant.TimeCheck = save_tc
 
     if not mm then return WritWorthy.GOLD_UNKNOWN end

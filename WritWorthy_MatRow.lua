@@ -26,7 +26,6 @@ function MatRow:New()
 end
 
 function MatRow:FromName(mat_name, ct)
-    WritWorthy.Profiler.Call("MatRow:FromName")
     local o  = MatRow:New()
     o.name = mat_name
     o.link = WritWorthy.FindLink(mat_name)
@@ -37,12 +36,10 @@ function MatRow:FromName(mat_name, ct)
         o.ct = 1
     end
     o.mm = WritWorthy.Util.MatPrice(o.link)
-    WritWorthy.Profiler.End("MatRow:FromName")
     return o
 end
 
 function MatRow:FromLink(mat_link, ct)
-    WritWorthy.Profiler.Call("MatRow:FromLink")
     local o  = MatRow:New()
     o.name = GetItemLinkName(mat_link)
     o.link = mat_link
@@ -53,7 +50,6 @@ function MatRow:FromLink(mat_link, ct)
         o.ct = 1
     end
     o.mm = WritWorthy.Util.MatPrice(o.link)
-    WritWorthy.Profiler.End("MatRow:FromLink")
     return o
 end
 

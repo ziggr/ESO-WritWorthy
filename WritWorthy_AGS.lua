@@ -79,15 +79,12 @@ end
 local CACHED_MAT_COST_MAX_CT = 100
 
 function WritWorthy.GetCachedMatCost(item_link)
-    WritWorthy.Profiler.Call("GetCachedMatCost")
     WritWorthy.cached_mat_cost    = WritWorthy.cached_mat_cost or {}
     WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct or 0
-    WritWorthy.Profiler.End("GetCachedMatCost")
     return WritWorthy.cached_mat_cost[item_link]
 end
 
 function WritWorthy.SetCachedMatCost(item_link, mat_cost)
-    WritWorthy.Profiler.Call("SetCachedMatCost")
     WritWorthy.cached_mat_cost    = WritWorthy.cached_mat_cost or {}
     WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct or 0
 
@@ -96,7 +93,6 @@ function WritWorthy.SetCachedMatCost(item_link, mat_cost)
                         -- Insert and we're done.
     if WritWorthy.cached_mat_cost[item_link] then
         WritWorthy.cached_mat_cost[item_link] = mat_cost
-        WritWorthy.Profiler.End("SetCachedMatCost")
         return
     end
 
@@ -116,27 +112,22 @@ function WritWorthy.SetCachedMatCost(item_link, mat_cost)
     WritWorthy.cached_mat_cost[item_link] = mat_cost
     -- Log:Add("SetCachedMatCost added  :"..tostring(item_link)
     --         .." ct:"..tostring(WritWorthy.cached_mat_cost_ct))
-    WritWorthy.Profiler.End("SetCachedMatCost")
 end
 
 function WritWorthy.GetMatCost(item_link)
-    WritWorthy.Profiler.Call("GetMatCost")
     local mat_gold = WritWorthy.GetCachedMatCost(item_link)
     if mat_gold then
         -- Log:Add("GetMatCost cache hit : "..item_link.." cost:"..tostring(mat_gold))
-        WritWorthy.Profiler.End("GetMatCost")
         return mat_gold
     end
     -- Log:Add("GetMatCost cache miss: "..tostring(item_link))
     local parser     = WritWorthy.CreateParser(item_link)
     if not (parser and parser:ParseItemLink(item_link)) then
-        WritWorthy.Profiler.End("GetMatCost")
         return nil
     end
     local mat_list   = parser:ToMatList()
     local mat_gold   = WritWorthy.MatRow.ListTotal(mat_list) or 0
     WritWorthy.SetCachedMatCost(item_link, mat_gold)
-    WritWorthy.Profiler.End("GetMatCost")
     return mat_gold
 end
 
@@ -216,21 +207,17 @@ function WritWorthy.AGS_CreateFilterClass()
     function WWAGSFilter:FilterPageResult(index, icon, name, quality, stackCount, sellerName, timeRemaining, purchasePrice)
                         -- Is this a sealed master writ that WritWorthy
                         -- can understand?
-        WritWorthy.Profiler.Call("FilterPageResult")
         local item_link  = GetTradingHouseSearchResultItemLink(index,LINK_STYLE_DEFAULT)
         local voucher_ct = WritWorthy.ToVoucherCount(item_link)
         if not voucher_ct then
-            WritWorthy.Profiler.End("FilterPageResult")
             return true
         end
         local mat_gold   = WritWorthy.GetMatCost(item_link)
         if not mat_gold then
-            WritWorthy.Profiler.End("FilterPageResult")
             return true
         end
         local total_gold = (mat_gold or 0) + (purchasePrice or 0)
         local gold_per_voucher = Util.round(total_gold / voucher_ct)
-        WritWorthy.Profiler.End("FilterPageResult")
         return gold_per_voucher <= self.max_gold_per_voucher
     end
 
