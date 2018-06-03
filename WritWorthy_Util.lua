@@ -119,7 +119,8 @@ end
 local MM_CACHE_DUR_SECONDS = 5 * 60
 
 function Util.ResetCachedMMIfNecessary()
-    local prev_reset_ts = WritWorthy.mm_cache_reset_ts or GetTimeStamp()
+    WritWorthy.mm_cache_reset_ts = WritWorthy.mm_cache_reset_ts or GetTimeStamp()
+    local prev_reset_ts = WritWorthy.mm_cache_reset_ts
     local now_ts   = GetTimeStamp()
     local ago_secs = GetDiffBetweenTimeStamps(now_ts, prev_reset_ts)
     if MM_CACHE_DUR_SECONDS < ago_secs then
