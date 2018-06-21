@@ -564,6 +564,8 @@ function WritWorthy:Initialize()
 
     WritWorthyUI_RestorePos()
 
+    WritWorthy:AddKeyBind()
+
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
 

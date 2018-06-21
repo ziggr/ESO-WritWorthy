@@ -1,9 +1,18 @@
 <Bindings>
     <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
-        <Category name="WritWorthy">
+        <Category name="SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY">
             <Action name="WritWorthyUI_ToggleUI">
                 <Up>WritWorthyUI_ToggleUI()</Up>
             </Action>
         </Category>
     </Layer>
+
+    <Layer name="SI_KEYBINDINGS_LAYER_USER_INTERFACE_SHORTCUTS">
+        <Category name="SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY">
+            <Action name="WRIT_WORTHY_ACCEPT_QUESTS" rebindable="true">
+                <Down>return ZO_KeybindStrip_HandleKeybindDown(keybind)</Down>
+            </Action>
+        </Category>
+    </Layer>
+
 </Bindings>

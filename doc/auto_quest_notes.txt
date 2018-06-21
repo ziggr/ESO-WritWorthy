@@ -36,3 +36,47 @@ Then upon interaction with Rolis, auto-sequence through the dialog. See Dolgubon
 
     EVENT_MANAGER:RegisterForEvent(WritCreater.name, EVENT_CHATTER_BEGIN, HandleChatterBegin)
 
+
+--
+UI: Votan's Fish Fillet custom button in bag
+
+Inventory button like in Votan's Fish Fillet?
+
+VotansFishFillet100015.lua:
+
+local function AddFiletAll(inventorySlot, slotActions)
+    local bagId, slotIndex = ZO_Inventory_GetBagAndIndex(inventorySlot)
+    if IsItemFish(bagId, slotIndex) and CheckInventorySpaceSilently(2) and GetCurrentFragment():GetState() == SCENE_SHOWN then
+        slotActions:AddCustomSlotAction(addon.settings.filletAllStacks and SI_BINDING_NAME_VOTANS_FISH_FILLET_ALL_STACKS or SI_VOTANS_FILET_FISH_ALL, function(...)
+            return UseInventorySlot(inventorySlot, slotActions)
+        end ,
+        "primary")
+        if IsInGamepadPreferredMode() and not addon.settings.filletAllStacks and addon.settings.showAllStacks then
+            slotActions:AddCustomSlotAction(SI_BINDING_NAME_VOTANS_FISH_FILLET_ALL_STACKS, DoAllStacks)
+        end
+    end
+    return false
+end
+
+Looks like it uses LibCustomMenu do do this. See addon:AddKeyBind(), too.
+
+--
+UI flow
+
+Open bag
+select any master writ
+click "WW:Auto-Quest"
+- 1 to 7 sealed master writs "used"
+- bag closed
+
+Walk up to Rolis, interact
+- 1 to 7 writs turned in
+
+Open Bag (can I open this bag myself from add-on?)
+- GOTO 10
+
+
+Code will almost certainly involve tracking state and zo_callLater() chains.
+
+
+

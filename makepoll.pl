@@ -19,8 +19,8 @@ sub dirls($)
 @files = ( 'Makefile' );
 # push @files, dirls('src');
 push @files, 'WritWorthy.lua';
-push @files, 'WritWorthy_Window.lua';
-push @files, 'WritWorthy_AGS.lua';
+push @files, 'WritWorthy_AutoQuest.lua';
+push @files, 'Bindings.xml';
 print join("\n", @files) . "\n";
 
 @prev_mtime = ();
