@@ -56,6 +56,19 @@ function WritWorthy_BagHasAnyWrits()
 end
 
 function WritWorthy.IsAutoQuestableWrit(bag_id, slot_id)
+                        -- This function is probably too slow and needs
+                        -- O(n) scans replaced with O(1) lookups.
+
+                        -- Is this a writ that we previously auto-crafted?
+    local unique_id = WritWorthy.UniqueID(bag_id, slot_id)
+    local inventory_data = WritWorthyInventoryList.singleton:UniqueIDToInventoryData(unique_id)
+    if not inventory_data and inventory_data.ui_is_completed then
+        return false
+    end
+
+    local crafting_type = inventory_data.parser.crafting_type
+
+
                         -- Need to check state: only one questable
                         -- for each type
 

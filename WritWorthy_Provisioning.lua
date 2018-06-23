@@ -664,6 +664,7 @@ local Parser = Provisioning.Parser
 function Parser:New()
     local o = {
         recipe          = nil -- Recipe{}
+    ,   crafting_type   = CRAFTING_TYPE_PROVISIONING
     }
     setmetatable(o, self)
     self.__index = self

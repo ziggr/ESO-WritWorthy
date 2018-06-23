@@ -297,6 +297,7 @@ function Parser:New()
     ,   effects         = {}    -- { VITALITY, INCREASE_ARMOR, RAVAGE_STAMINA }
     ,   r3list          = {}    -- { list of { Reagent 3-tuple }, { Reagent 3-tuple} ... }
     ,   mat_list        = {}    -- of MatRow
+    ,   crafting_type   = CRAFTING_TYPE_ALCHEMY
     }
     setmetatable(o, self)
     self.__index = self

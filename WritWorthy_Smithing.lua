@@ -972,6 +972,7 @@ function Parser:ParseItemLink(item_link)
 if not self.request_item then d("WW Error unknown item_num:"..tostring(item_num)) end
     Log:Add("request_item:"..tostring(item_num).." "
             ..tostring(self.request_item.item_name))
+    self.crafting_type = self.request_item.school.trade_skill_type
     self.set_bonus      = Smithing.SET_BONUS[set_num]
     if not self.set_bonus then return Fail("set not found "..tostring(set_num)) end
     Log:Add("set_bonus:"..tostring(set_num))

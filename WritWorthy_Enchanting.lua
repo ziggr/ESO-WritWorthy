@@ -140,6 +140,7 @@ function Parser:New()
     ,   level           = 0     -- 150 or 160
     ,   quality_num     = 0     -- 4 or 5
     ,   mat_list        = {}    -- of MatRow
+    ,   crafting_type   = CRAFTING_TYPE_ENCHANTING
     }
     setmetatable(o, self)
     self.__index = self
