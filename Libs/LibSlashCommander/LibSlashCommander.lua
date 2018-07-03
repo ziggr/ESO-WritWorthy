@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibSlashCommander", 4
+local MAJOR, MINOR = "LibSlashCommander", 5
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then
@@ -78,6 +78,18 @@ local function OnSetChannel()
     CHAT_SYSTEM.textEntry:CloseAutoComplete()
 end
 
+local function StartCommandAtIndex(originalStartCommandAtIndex, self, index)
+    originalStartCommandAtIndex(self, index)
+    CHAT_SYSTEM.textEntry:CloseAutoComplete()
+end
+
+local function AutocompleteOnTextChanged(originalOnTextChanged, self)
+    local wasEnabled = self.enabled
+    self.enabled = false
+    originalOnTextChanged(self)
+    self.enabled = wasEnabled
+end
+
 local function OnAutoCompleteEntrySelected(self, text)
     local command = lib.hasCustomResults
     if(command) then
@@ -95,7 +107,7 @@ end
 
 local function GetTopMatches(command, text)
     local results = command:GetAutoCompleteResults(text)
-    local topResults = GetTopMatchesByLevenshteinSubStringScore(results, text, 1, lib.maxResults)
+    local topResults = GetTopMatchesByLevenshteinSubStringScore(results, text, 1, lib.maxResults, true)
     if topResults then
         return unpack(topResults)
     end
@@ -138,6 +150,8 @@ local function Unload()
     CHAT_SYSTEM.SetChannel = lib.oldSetChannel
     CHAT_SYSTEM.OnAutoCompleteEntrySelected = lib.oldOnAutoCompleteEntrySelected
     CHAT_SYSTEM.textEntry.autoComplete.GetAutoCompletionResults = lib.oldGetAutoCompletionResults
+    CHAT_SYSTEM.textEntry.StartCommandAtIndex = lib.oldStartCommandAtIndex
+    SLASH_COMMAND_AUTO_COMPLETE.OnTextChanged = lib.oldOnTextChanged
     lib.globalCommand = nil
 end
 
@@ -146,11 +160,15 @@ local function Load()
     lib.oldSetChannel = CHAT_SYSTEM.SetChannel
     lib.oldOnAutoCompleteEntrySelected = CHAT_SYSTEM.OnAutoCompleteEntrySelected
     lib.oldGetAutoCompletionResults = CHAT_SYSTEM.textEntry.autoComplete.GetAutoCompletionResults
+    lib.oldStartCommandAtIndex = CHAT_SYSTEM.textEntry.StartCommandAtIndex
+    lib.oldOnTextChanged = SLASH_COMMAND_AUTO_COMPLETE.OnTextChanged
 
     ZO_PreHook(CHAT_SYSTEM, "OnTextEntryChanged", OnTextEntryChanged)
     ZO_PreHook(CHAT_SYSTEM, "SetChannel", OnSetChannel)
     ZO_PreHook(CHAT_SYSTEM, "OnAutoCompleteEntrySelected", OnAutoCompleteEntrySelected)
     lib.WrapFunction(CHAT_SYSTEM.textEntry.autoComplete, "GetAutoCompletionResults", GetAutoCompletionResults)
+    lib.WrapFunction(CHAT_SYSTEM.textEntry, "StartCommandAtIndex", StartCommandAtIndex)
+    lib.WrapFunction(SLASH_COMMAND_AUTO_COMPLETE, "OnTextChanged", AutocompleteOnTextChanged)
 
     lib.globalCommand = lib.Command:New()
     lib.globalCommand.subCommandAliases = setmetatable({}, {
