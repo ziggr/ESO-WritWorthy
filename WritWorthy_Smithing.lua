@@ -265,7 +265,6 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_DREMORA            or 74 ] = nil
 ,   [ITEMSTYLE_PYANDONEAN         or 75 ] = { mat_name = "sea serpent hide"   , motif_name = "Pyandonean"           , pages_id  = 2285 }
 ,   [ITEMSTYLE_DIVINE_PROSECUTION or 76 ] = nil
-,   [ITEMSTYLE_MAX_VALUE             ]    = nil
 }
 
 -- Motif page numbers --------------------------------------------------------
