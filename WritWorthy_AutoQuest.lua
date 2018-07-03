@@ -43,22 +43,25 @@ end
 
 -- Enable/disable function for AutoQuest "Accept Writ Quests"
 function WritWorthy_BagHasAnyWrits()
+    return WritWorthy.FindNextAutoQuestableWrit()
+end
+
+function WritWorthy.FindNextAutoQuestableWrit()
+    -- Return slot_id of a writ that can be accepted for turn-in
+
                         -- Do NOT use bank or ESO+ subscriber bank here,
                         -- even if enabled in settings: you cannot accept
                         -- a quest from a banked writ. Only ones in the bag.
     local bag_id = BAG_BACKPACK
     for slot_it = 0, GetBagSize(bag_id) do
         if WritWorthy.IsAutoQuestableWrit(bag_id, slot_id) then
-            return true
+            return slot_id
         end
     end
-    return false
+    return nil
 end
 
 function WritWorthy.IsAutoQuestableWrit(bag_id, slot_id)
-                        -- This function is probably too slow and needs
-                        -- O(n) scans replaced with O(1) lookups.
-
                         -- Is this a writ that we previously auto-crafted?
     local unique_id = WritWorthy.UniqueID(bag_id, slot_id)
     local inventory_data = WritWorthyInventoryList.singleton:UniqueIDToInventoryData(unique_id)
@@ -78,6 +81,17 @@ function WritWorthy.IsAutoQuestableWrit(bag_id, slot_id)
     return true
 end
 
+
 function WritWorthy_AutoQuest()
     d("Pretend I'm doing the thing")
 end
+
+--[[
+A Masterful Concoction - alch
+Masterful Tailoring - cloth
+A Masterful Plate - black
+A Masterful Glyph - ench
+A Masterful Feast - prov
+A Masterful Shield - wood
+
+]]

@@ -369,11 +369,14 @@ end
 -- Just data, no UI code here (that's FilterScrollList()'s job).
 function WritWorthyInventoryList:BuildMasterlist()
     self.inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
+    local u = {}
 
                         -- We need UI data before we can sort.
     for _, inventory_data in pairs(self.inventory_data_list) do
         self:PopulateUIFields(inventory_data)
+        u[inventory_data.unique_id] = inventory_data
     end
+    self.inventory_data_by_unique_id = u
                         -- This seems as good a place as any to
                         -- make this once-a-day-or-so call.
                         -- Certainly do not want it once-per-init().
@@ -1069,7 +1072,7 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     local self = WritWorthyInventoryList.singleton
     if not self then return end
 
-                        -- Remember that this writ is noe "completed", no
+                        -- Remember that this writ is now "completed", no
                         -- longer "queued".
     self.SaveChariableState(
           unique_id
@@ -1083,14 +1086,9 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     end
 end
 
--- O(n) scan for an inventory_data with a matching unique_id
 function WritWorthyInventoryList:UniqueIDToInventoryData(unique_id)
-    for _, inventory_data in pairs(self.inventory_data_list) do
-        if inventory_data.unique_id == unique_id then
-            return inventory_data
-        end
-    end
-    return nil
+    if not self.inventory_data_by_unique_id then return nil end
+    return self.inventory_data_by_unique_id[unique_id]
 end
 
 -- Queued state for one or more rows has changed. Propagate that change through
