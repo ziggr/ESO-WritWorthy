@@ -63,6 +63,7 @@ end
 -- list functions ------------------------------------------------------------
 
 function MatRow.ListDump(mat_list)
+    if not mat_list then return end
     local ToMoney = WritWorthy.Util.ToMoney
     for _, row in ipairs(mat_list) do
         local row_total = row:Total()
@@ -76,6 +77,7 @@ function MatRow.ListDump(mat_list)
 end
 
 function MatRow.ListTotal(mat_list)
+    if not mat_list then return end
     local total = 0
     for _, row in ipairs(mat_list) do
         local row_total = row:Total()

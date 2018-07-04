@@ -971,7 +971,7 @@ function Parser:ToMatList()
     table.insert(ml, MatRow:FromName( self.request_item.school.base_mat_name
                                     , self.request_item.base_mat_ct ))
     table.insert(ml, MatRow:FromName( self.trait.mat_name ))
-    if self.motif then
+    if self.motif and self.motif.mat_name then
         table.insert(ml, MatRow:FromName( self.motif.mat_name ))
     end
     table.insert(ml, MatRow:FromName( self.request_item.school.green_mat_name
@@ -1108,6 +1108,11 @@ function Parser:ToKnowList()
     end
 
     return r
+end
+
+function Parser:WarningText()
+    if self.motif then return nil end
+    return Util.red(string.format("Unknown motif: %d", self.motif_num))
 end
 
 

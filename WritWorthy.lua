@@ -76,7 +76,7 @@ function WritWorthy.ToMatKnowList(item_link)
     if not parser then return nil end
     Log:Add(parser.class)
     if not parser:ParseItemLink(item_link) then
-        return Fail("WritWorthy: could not parse.")
+        return Fail("WritWorthy: could not parse."), nil, parser
     end
     local mat_list = parser:ToMatList()
     local know_list = nil
@@ -220,6 +220,10 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     local know_text = WritWorthy.KnowTooltipText(know_list)
     if know_text then
         control:AddLine(know_text)
+    end
+    local warning_text = parser.WarningText and parser:WarningText()
+    if warning_text then
+        control:AddLine(warning_text)
     end
                         -- Can we append WritWorthy queued/completed status?
                         -- We can if this writ is in our backpack and thus
