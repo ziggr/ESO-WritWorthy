@@ -1,3 +1,12 @@
+[B]4.0.11 2018-07-04[/B]
+[LIST]
+[*] Bugfix: Performance improvement cache never invalidated itself to load fresh prices. Now the cache lasts for 5 minutes before resetting.
+[*] Updated to LibSlashCommander 1.0 r5. Fixes the "cannot up-arrow through chat history" bug.
+[*] Typofix: "vitified malondo" broke parsing of Psijic Order writs.
+[*] Fix: Pyandonean motifs fixed.
+[*] New: "Unknown motif: 73" error tooltip for motifs such as Welkynar that appear in writs but whose crafting details are not yet in-game and programmed into WritWorthy. Also omit such writs from WritWorthy autocraft window: they are not yet worthy.
+[/LIST]
+
 [B]4.0.10 2018-06-01[/B]
 [LIST]
 [*] Performance improvement. Internally cache Master Merchant prices to avoid duplicate lookups. Affects both the big WritWorthy window as well as the filter for Awesome Guild Store.
