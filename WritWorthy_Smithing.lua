@@ -1112,6 +1112,11 @@ end
 
 function Parser:WarningText()
     if self.motif then return nil end
+    if      self.request_item
+        and self.request_item.school
+        and not self.request_item.school.motif_require  then
+        return nil
+    end
     return Util.red(string.format("Unknown motif: %d", self.motif_num))
 end
 
