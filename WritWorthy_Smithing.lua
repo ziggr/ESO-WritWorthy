@@ -261,7 +261,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_SCALECALLER        or 70 ] = { mat_name = "infected flesh"     , motif_name = "Scalecaller"          , pages_id  = 2189 }
 ,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = { mat_name = "vitrified malondo"  , motif_name = "Psijic Order"         , pages_id  = 2186 }
 ,   [ITEMSTYLE_SAPIARCH           or 72 ] = { mat_name = "culanda lacquer"    , motif_name = "Sapiarch"             , pages_id  = 2187 }
-,   [ITEMSTYLE_WELKYNAR           or 73 ] = nil
+,   [ITEMSTYLE_WELKYNAR           or 73 ] = { mat_name = "gryphon plume"      , motif_name = "Welkynar"             , pages_id  = nil  } -- waiting for Rhyono/CraftStore
 ,   [ITEMSTYLE_DREMORA            or 74 ] = nil
 ,   [ITEMSTYLE_PYANDONEAN         or 75 ] = { mat_name = "sea serpent hide"   , motif_name = "Pyandonean"           , pages_id  = 2285 }
 ,   [ITEMSTYLE_DIVINE_PROSECUTION or 76 ] = nil
