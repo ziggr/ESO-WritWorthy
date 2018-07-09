@@ -244,7 +244,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_ORG_ORDINATOR         ] = { mat_name = "lustrous sphalerite"   , motif_name = "Militant Ordinator"   , pages_id  = 1935 } -- 50
 ,   [ITEMSTYLE_ORG_TELVANNI          ] = { mat_name = "wrought ferrofungus"   , motif_name = "Telvanni"             , pages_id  = 2023 } -- 51
 ,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER   ] = { mat_name = "volcanic viridian"     , motif_name = "Buoyant Armiger"      , pages_id  = 1934  } -- 52
-,   [ITEMSTYLE_HOLIDAY_FROSTCASTER   ] = { mat_name = "stahlrim shard"        , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 53
+,   [ITEMSTYLE_HOLIDAY_FROSTCASTER   ] = { mat_name = "stalhrim shard"        , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 53
 ,   [ITEMSTYLE_AREA_ASHLANDER        ] = { mat_name = "ash canvas"            , motif_name = "Ashlander"            , pages_id  = 1932  } -- 54
 ,   [ITEMSTYLE_ORG_WORM_CULT   or 55 ] = { mat_name = "desecrated grave soil" , motif_name = "Worm Cult"            , pages_id  = 2120 } -- 56
 ,   [ITEMSTYLE_ENEMY_SILKEN_RING     ] = { mat_name = "distilled slowsilver"  , motif_name = "Silken Ring"          , pages_id  = 1796 } -- 56
