@@ -140,41 +140,72 @@ function Util.SetCachedMMPrice(link, mm_avg_price)
     WritWorthy.mm_cache[link] = mm_avg_price
 end
 
--- Master Merchant integration
+-- Master Merchant and Arkadius Trade Tools integration
 function Util.MMPrice(link)
-    if not MasterMerchant then return WritWorthy.GOLD_UNKNOWN end
     if not link then return WritWorthy.GOLD_UNKNOWN end
+
     local c_mm = Util.GetCachedMMPrice(link)
     if c_mm then return c_mm end
-    local mm = MasterMerchant:itemStats(link, false)
-    if not mm then return WritWorthy.GOLD_UNKNOWN end
-    if mm.avgPrice and 0 < mm.avgPrice then
+
+                        -- If both MM and ATT are installed, use whatever MM
+                        -- returns, or GOLD_UNKNOWN if MM has no data for this
+                        -- item. Do not fall through to ATT if MM is present
+                        -- but lacks data.
+    if MasterMerchant then
+        local mm = MasterMerchant:itemStats(link, false)
+        if not mm then return WritWorthy.GOLD_UNKNOWN end
+        if mm.avgPrice and 0 < mm.avgPrice then
+            Util.SetCachedMMPrice(link, mm.avgPrice)
+            return mm.avgPrice
+        end
+
+                          -- Normal price lookup came up empty, try an
+                          -- expanded time range.
+                          --
+                          -- MasterMerchant lacks an API to control time range,
+                          -- it does this internally by polling the state of
+                          -- control/shift-key modifiers (!).
+                          --
+                          -- So instead of using a non-existent API, we
+                          -- monkey-patch MM with our own code that ignores
+                          -- modifier keys and always returns a LOOONG time
+                          -- range.
+                          --
+        local save_tc = MasterMerchant.TimeCheck
+        MasterMerchant.TimeCheck
+          = function(self)
+              local daysRange = 100  -- 3+ months is long enough.
+              return GetTimeStamp() - (86400 * daysRange), daysRange
+            end
+        mm = MasterMerchant:itemStats(link, false)
+        MasterMerchant.TimeCheck = save_tc
+
+        if not mm then return WritWorthy.GOLD_UNKNOWN end
         Util.SetCachedMMPrice(link, mm.avgPrice)
         return mm.avgPrice
     end
 
-                        -- Normal price lookup came up empty, try an
-                        -- expanded time range.
-                        --
-                        -- MasterMerchant lacks an API to control time range,
-                        -- it does this internally by polling the state of
-                        -- control/shift-key modifiers (!).
-                        --
-                        -- So instead of using a non-existent API, we
-                        -- monkey-patch MM with our own code that ignores
-                        -- modifier keys and always returns a LOOONG time
-                        -- range.
-                        --
-    local save_tc = MasterMerchant.TimeCheck
-    MasterMerchant.TimeCheck
-        = function(self)
-            local daysRange = 100  -- 3+ months is long enough.
-            return GetTimeStamp() - (86400 * daysRange), daysRange
-          end
-    mm = MasterMerchant:itemStats(link, false)
-    MasterMerchant.TimeCheck = save_tc
+                        -- Fallback to ATT if MM not installed.
+                        -- Thank you, Patros!
+    if      ArkadiusTradeTools
+        and ArkadiusTradeTools.Modules
+        and ArkadiusTradeTools.Modules.Sales then
 
-    if not mm then return WritWorthy.GOLD_UNKNOWN end
-    Util.SetCachedMMPrice(link, mm.avgPrice)
-    return mm.avgPrice
+                        -- Try for a recent price: last 3 days. If nothing
+                        -- that recent, reach back for last 3+ months or so.
+        local day_secs = 24*60*60
+        local att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
+                            link, GetTimeStamp() - (day_secs * 3))
+        if (not att) or (att <= 0) then
+            att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
+                            link, GetTimeStamp() - (day_secs * 100))
+        end
+        if (not att) or (att <= 0) then
+            return WritWorthy.GOLD_UNKNOWN
+        end
+        Util.SetCachedMMPrice(link, att)
+        return att
+    end
+
+    return WritWorthy.GOLD_UNKNOWN
 end
