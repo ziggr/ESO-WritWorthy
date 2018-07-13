@@ -1,3 +1,11 @@
+[B]4.1.1 2018-07-12[/B]
+[LIST]
+[*] Update 19/4.1.0/API 100024/Wolfhunter
+[*] Typofix: Stalhrim not Stahlrim. Thank you, Lakashi, for the find.
+[*] Welkynar: Still not craftable in-game, but at least we have an item link for its crafting material "Gryphon Plume".
+[*] Sirinsidiator's LibSlashCommander now optional.
+[/LIST]
+
 [B]4.0.12 2018-07-04[/B]
 [LIST]
 [*] Bugfix: string.format() error for jewelry crafter writs. Thank you, Dolgubon, for the report.

@@ -1,4 +1,4 @@
--- WritWorthy: Is this Maaster Writ worth doing?
+-- WritWorthy: Is this Master Writ worth doing?
 --
 -- In a master writ's tooltip, include the material cost for that writ
 -- as both a gold total, and a gold per writ voucher reward.
@@ -7,7 +7,7 @@ local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 local LAM2 = LibStub("LibAddonMenu-2.0")
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "4.0.12"
+WritWorthy.version         = "4.1.1"
 WritWorthy.savedVarVersion = 1
 
 -- Constants for savedVariables.enable_mat_list_chat

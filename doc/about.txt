@@ -46,6 +46,8 @@ Thanks to Dolgubon's LibLazyCrafting which makes automatic crafting possible.
 
 Automatic crafting requires that the appropriate cost-reduction skills have been maxed out: Temper Expertise, Chef, Brewer, or Chemistry.
 
+[B]Follow development on GitHub[/B]
+[URL=https://github.com/ziggr/ESO-WritWorthy]ESO-WritWorthy on GitHub[/URL]
 
 [B]Thank You[/B]
 Huge thank you to Rhyono and Dolgubon for all the programming help.
