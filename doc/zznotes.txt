@@ -1,0 +1,7 @@
+
+A better way to find skill lines for the 7 crafting skills
+
+* GetCraftingSkillLineIndices(*[TradeskillType|#TradeskillType]* _craftingSkillType_)
+
+** _Returns:_ *[SkillType|#SkillType]* _skillType_, *luaindex* _skillLineIndex_
+
