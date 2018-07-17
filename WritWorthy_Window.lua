@@ -1050,6 +1050,12 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
 
     if event ~= LLC_CRAFT_SUCCESS then return end
 
+                        -- Invalidate any cache that depends on our list
+                        -- of "writ's we've crafted"
+    if WritWorthy.aq_next_writ_slot then
+        WritWorthy.aq_next_writ_slot:Invalidate()
+    end
+
                         -- Avoid auto-exiting immediately after connecting
                         -- to a station that LLC cannot craft anything for.
                         -- That would be super-annoying.

@@ -3,6 +3,7 @@ ZO_CreateStringId("WRIT_WORTHY_ACCEPT_QUESTS", "Accept Writ Quests")
 
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
+WritWorthy.AQCache = {}
 
 WritWorthy.QUEST_TITLES = {
   ["A Masterful Concoction"] = CRAFTING_TYPE_ALCHEMY
@@ -56,8 +57,24 @@ end
 -- ZIG YOU LEFT OFF HERE Rewrite this to scan and cache and invalidate.
 function WritWorthy_BagHasAnyWrits()
     d("WWAQ:BagHasAny()")
-    return false
---    return WritWorthy.FindNextAutoQuestableWrit()
+   return WritWorthy:GetNextAutoQuestableWrit()
+end
+
+function WritWorthy:GetNextAutoQuestableWrit()
+    if not self.aq_next_writ_slot then
+        self.aq_next_writ_slot = WritWorthy.AQCache:New(
+            { scan_func  = WritWorthy.FindNextAutoQuestableWrit
+            , event_list = {  EVENT_INVENTORY_ITEM_USED
+                           ,  EVENT_ITEM_SLOT_CHANGED
+                           }
+            , name       = "next_writ_slot"
+            })
+    end
+    local r = self.aq_next_writ_slot:Get()
+    if 0 < r then
+        return r
+    end
+    return nil
 end
 
 function WritWorthy.FindNextAutoQuestableWrit()
@@ -68,13 +85,14 @@ function WritWorthy.FindNextAutoQuestableWrit()
                         -- a quest from a banked writ. Only ones in the bag.
     local bag_id = BAG_BACKPACK
     for slot_id = 0, GetBagSize(bag_id) do
+        local item_link = GetItemLink(bag_id, slot_id)
         if WritWorthy.IsAutoQuestableWrit(bag_id, slot_id) then
-            d("WWAQ: Yep : "..tostring(slot_id).." "..tostring(GetItemName(bag_d, slot_id)))
+            d("WWAQ: Yep : "..tostring(slot_id).." "..item_link)
             return slot_id
         end
-        d("WWAQ: Nope: "..tostring(slot_id).." "..tostring(GetItemName(bag_d, slot_id)))
+        d("WWAQ: Nope: "..tostring(slot_id).." "..item_link)
     end
-    return nil
+    return 0
 end
 
 function WritWorthy.IsAutoQuestableWrit(bag_id, slot_id, quest_state)
@@ -226,4 +244,55 @@ function WritWorthy.AQQuestChanged()
     WritWorthy.UnregisterAQQuestJournal()
 end
 
+
+-- AQCache -------------------------------------------------------------------
+-- A cache that knows how to listen for and invalidate upon event(s).
+
+function WritWorthy.AQCache:New(args)
+    local o = {
+        cache       = nil
+    ,   scan_func   = args.scan_func
+    ,   event_list  = args.event_list
+    ,   name        = args.name
+    }
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function WritWorthy.AQCache:Scan()
+d("AQC scan:"..self.name)
+    return self.scan_func()
+end
+
+function WritWorthy.AQCache:Get()
+    if not self.cache then
+        self.cache = self:Scan()
+        self:Register()
+    end
+    return self.cache
+end
+
+function WritWorthy.AQCache:Invalidate()
+d("AQC invalidate:"..self.name)
+    self.cache = nil
+    self:Unregister()
+end
+
+function WritWorthy.AQCache:Register()
+d("AQC register:"..self.name)
+    for _,event_id in ipairs(self.event_list) do
+        EVENT_MANAGER:RegisterForEvent( WritWorthy.name .. "_aq_" .. self.name
+                                      , event_id
+                                      , function() self:Invalidate() end)
+    end
+end
+
+function WritWorthy.AQCache:Invalidate()
+d("AQC unregister:"..self.name)
+    for _,event_id in ipairs(self.event_list) do
+        EVENT_MANAGER:UnregisterForEvent( WritWorthy.name .. "_aq_" .. self.name
+                                        , event_id )
+    end
+end
 
