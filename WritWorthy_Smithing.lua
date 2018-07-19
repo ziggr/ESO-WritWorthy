@@ -862,6 +862,42 @@ function Smithing.Discover()
     end
     WritWorthy.savedVariables.discover.writ6_smithing_motif = motif
     d("WritWorthy: discovered motif_ct:"..tostring(motif_ct))
+
+    local skill_line = {}
+    local skill_line_ct = GetNumSkillLines(SKILL_TYPE_TRADESKILL)
+    local total_ability_ct = 0
+    for skill_index=1,skill_line_ct do
+        local s = {GetSkillLineInfo(SKILL_TYPE_TRADESKILL, skill_index)}
+        local ss = { name = s[1]
+                   , rank = s[2]
+                   , discovered = s[3]
+                   , skill_line_id = s[4]
+                   , advised = s[5]
+                   , unlock_text = s[6]
+                   , ability = {}
+                   }
+        skill_line[skill_index] = ss
+
+        local ability_ct = GetNumSkillAbilities(SKILL_TYPE_TRADESKILL, skill_index)
+        for ability_index = 1,ability_ct do
+            local a = { GetSkillAbilityInfo(SKILL_TYPE_TRADESKILL, skill_index, ability_index)}
+            local ability_id = GetSkillAbilityId(SKILL_TYPE_TRADESKILL, skill_index, ability_index)
+            local aa = { name = a[1]
+                       , texture_name = a[2]
+                       , earned_rank = a[3]
+                       , passive = a[4]
+                       , ultimate = a[5]
+                       , purchased = a[6]
+                       , progression_index = a[7]
+                       , rank_index = a[8]
+                       , ability_id = ability_id
+                       }
+            ss.ability[ability_index] = aa
+            total_ability_ct = total_ability_ct+ 1
+        end
+    end
+    WritWorthy.savedVariables.discover.skill_line = skill_line
+    d("WritWorthy: discovered ability_ct:"..tostring(total_ability_ct))
 end
 
 
