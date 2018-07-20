@@ -71,8 +71,7 @@ function WritWorthy:GetNextAutoQuestableWrit()
             , event_list = { EVENT_INVENTORY_ITEM_USED
                            , EVENT_ITEM_SLOT_CHANGED
                            -- need back dep/withdrawal events here
-                           , EVENT_QUEST_ADDED
-                           , EVENT_QUEST_COMPLETE
+                           , EVENT_QUEST_LIST_UPDATED
                            }
             , name       = "next_writ_slot"
             })
@@ -125,27 +124,57 @@ end
 function WritWorthy_AutoQuest()
     d("Pretend I'm doing the thing")
 
-                        -- Accept every acceptable master writ that
-                        -- we can find. This is an O(n*m) loop. If
-                        -- this turns out to be slow, or if the
-                        -- quest journal doesn't update without a
-                        -- zo_callLater() chain, then we can rewrite
-                        -- this loop later.
-    local loop_limit = 7
-    local slot_id = WritWorthy.FindNextAutoQuestableWrit()
-    while slot_id do
-        d("WWAQ: accept slot_id:"..tostring(slot_id))
+                        -- Register listeners to chain use/dialog/use/dialog
+                        -- chain.
+    WritWorthy:StartAutoAcceptMode()
 
-        if IsProtectedFunction("UseItem") then
-            CallSecureProtected("UseItem", BAG_BACKPACK, slot_id)
-        else
-            UseItem(slot_id)
-        end
+                        -- Accept the first acceptable master writ.
+    WritWorthy:AcceptFirstAcceptableWrit()
+end
 
-                        -- Prevent infinite loops.
-        loop_limit = loop_limit - 1
-        if loop_limit <= 0 then return end
+function WritWorthy:AcceptFirstAcceptableWrit()
+
+                        -- Get a fresh picture of the state of the world,
+                        -- just in case things have changed that our
+                        -- event listeners failed to detect.
+    if self.aq_next_writ_slot then
+        self.aq_next_writ_slot:Invalidate()
     end
+    if self.aq_quest_state then
+        self.aq_quest_state:Invalidate()
+    end
+
+    local slot_id = WritWorthy.FindNextAutoQuestableWrit()
+    if not slot_id or slot_id <= 0 then
+        d("WWAQ: No more writs to accept. Done.")
+        self:EndAutoAcceptMode()
+        return
+    end
+    local item_link = GetItemLink(BAG_BACKPACK, slot_id)
+    d("WWAQ: accept slot_id:"..tostring(slot_id).." "..tostring(item_link))
+    if IsProtectedFunction("UseItem") then
+        CallSecureProtected("UseItem", BAG_BACKPACK, slot_id)
+    else
+        UseItem(slot_id)
+    end
+end
+
+function WritWorthy:StartAutoAcceptMode()
+    self.aq_auto_accept_mode = true
+    EVENT_MANAGER:RegisterForEvent( WritWorthy.name .. "_aq_auto_accept_mode"
+                                  , EVENT_QUEST_ADDED
+                                  , WritWorthy_AutoAcceptModeQuestAdded)
+end
+
+function WritWorthy:EndAutoAcceptMode()
+    self.aq_auto_accept_mode = false
+    EVENT_MANAGER:UnregisterForEvent( WritWorthy.name .. "_aq_auto_accept_mode"
+                                    , EVENT_QUEST_ADDED )
+end
+
+function WritWorthy_AutoAcceptModeQuestAdded()
+    d("WWAQ: AutoAcceptModeQuestAdded.")
+    zo_callLater(function() WritWorthy:AcceptFirstAcceptableWrit() end, 500 )
 end
 
 -- Quest Journal Cache -------------------------------------------------------
@@ -160,8 +189,7 @@ function WritWorthy:GetQuestState()
     if not self.aq_quest_state then
         self.aq_quest_state = WritWorthy.AQCache:New(
             { scan_func  = WritWorthy.ScanQuestJournal
-            , event_list = { EVENT_QUEST_ADDED
-                           , EVENT_QUEST_COMPLETE
+            , event_list = { EVENT_QUEST_LIST_UPDATED
                            }
             , name       = "quest_state"
             })
