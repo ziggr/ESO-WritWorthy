@@ -11,6 +11,7 @@ WritWorthy.QUEST_TITLES = {
 , ["A Masterful Glyph"     ] = CRAFTING_TYPE_ENCHANTING
 , ["A Masterful Feast"     ] = CRAFTING_TYPE_PROVISIONING
 , ["A Masterful Shield"    ] = CRAFTING_TYPE_WOODWORKING
+, ["A Masterful Weapon"    ] = CRAFTING_TYPE_WOODWORKING -- OR BLACKSMITHING!
 , ["An overpriced bauble"  ] = CRAFTING_TYPE_JEWELRYCRAFTING
 }
 
@@ -186,6 +187,7 @@ function WritWorthy:EndAutoAcceptMode()
         EVENT_MANAGER:UnregisterForEvent( name
                                         , EVENT_QUEST_ADDED )
     end
+    ResetChatter()
 end
 
 function WritWorthy_AutoAcceptModeQuestAdded()
@@ -196,7 +198,13 @@ end
 function WritWorthy_AutoAcceptModeQuestOffered()
     local x = {GetOfferedQuestInfo()}
     d("WWAQ: AutoAcceptModeQuestOffered response:"..tostring(x[2]))
-    AcceptOfferedQuest()
+    zo_callLater(
+        function()
+            d("WWAQ: AcceptOfferedQuest()")
+            AcceptOfferedQuest()
+            ResetChatter()
+        end
+    , 500 )
 end
 
 -- EVENT_CHATTER_BEGIN is NOT called for the "-Sealed XXX Writ-" dialog
@@ -319,4 +327,29 @@ CHATTER_END
 INVENTORY_SLOT_SINGLE_SLOT_UPDATE ( 1,0,false,0,0,-1)
 QUEST_POSITION_REQUEST_COMPLETE
 
+]]
+
+
+--[[
+
+SURPRISE! This is NEVER CALLED for opening a sealed master writ
+ All I get is
+
+ INVENTORY_ITEM_USED
+ QUEST_OFFERED
+
+ GetInteractionType() -> 3 == INTERACTION_QUEST
+
+
+function WWAQ_HandleChatterBegin(event_id, option_ct)
+    d("WWAQ_HandleChatterBegin option_ct:"..tostring(option_ct))
+    for i=1,option_ct do
+        local x = {GetChatterOption(i)}
+        d(tostring(i)..": option_type:"..tostring(x[2].." "..x[1]))
+    end
+end
+
+EVENT_MANAGER:RegisterForEvent( "WritWorthy_ZZ_HACK"
+                              , EVENT_CHATTER_BEGIN
+                              , WWAQ_HandleChatterBegin)
 ]]
