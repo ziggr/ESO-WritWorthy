@@ -1,9 +1,8 @@
 ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY", "WritWorthy")
 ZO_CreateStringId("WRIT_WORTHY_ACCEPT_QUESTS", "Accept Writ Quests")
 
-
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
-WritWorthy.AQCache = {}
+WritWorthy.AQCache = {}             -- class defined later in this file
 
 WritWorthy.QUEST_TITLES = {
   ["A Masterful Concoction"] = CRAFTING_TYPE_ALCHEMY
@@ -14,6 +13,11 @@ WritWorthy.QUEST_TITLES = {
 , ["A Masterful Shield"    ] = CRAFTING_TYPE_WOODWORKING
 , ["An overpriced bauble"  ] = CRAFTING_TYPE_JEWELRYCRAFTING
 }
+
+local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
+                            -- auto-questable sealed master writs.
+                            -- Because "nil" means "don't know"
+                            -- and "0" is an actual valid slot ID.
 
 function WritWorthy_AddAutoQuest(inventory_slot, slot_actions)
     local bag_id, slot_index = ZO_Inventory_GetBagAndIndex(inventory_slot)
@@ -43,6 +47,7 @@ function WritWorthy:AddKeyBind()
           "StateChange"
         , function(old_state, new_state)
             if new_state == SCENE_SHOWN then
+--                WritWorthy:AQInvalidateAll()
                 KEYBIND_STRIP:AddKeybindButtonGroup(WritWorthy.auto_queue_button_group)
             elseif new_state == SCENE_HIDING then
                 KEYBIND_STRIP:RemoveKeybindButtonGroup(WritWorthy.auto_queue_button_group)
@@ -51,12 +56,11 @@ function WritWorthy:AddKeyBind()
         )
 end
 
-
 -- Enable/disable function for AutoQuest "Accept Writ Quests"
 -- Called VERY frequently as you mouse over the inventory screen.
 function WritWorthy_BagHasAnyWrits()
     -- d("WWAQ:BagHasAny()")
-    return WritWorthy:GetNextAutoQuestableWrit()
+    return SLOT_ID_NONE ~= WritWorthy:GetNextAutoQuestableWrit()
 end
 
 -- Scan for and return the bag slot_id of the next Sealed Master Writ that
@@ -64,23 +68,22 @@ end
 --
 -- Called from UI command-enabling code VERY frequently as the mouse
 -- hovers over each inventory item, so results MUST be O(1) cached.
+--
+-- Returns SLOT_ID_NONE, not nil, no no auto-questable sealed
+-- master writs found.
 function WritWorthy:GetNextAutoQuestableWrit()
     if not self.aq_next_writ_slot then
         self.aq_next_writ_slot = WritWorthy.AQCache:New(
             { scan_func  = WritWorthy.FindNextAutoQuestableWrit
             , event_list = { EVENT_INVENTORY_ITEM_USED
                            , EVENT_ITEM_SLOT_CHANGED
-                           -- need back dep/withdrawal events here
+                           , EVENT_CLOSE_BANK
                            , EVENT_QUEST_LIST_UPDATED
                            }
             , name       = "next_writ_slot"
             })
     end
-    local r = self.aq_next_writ_slot:Get()
-    if 0 < r then
-        return r
-    end
-    return nil
+    return self.aq_next_writ_slot:Get()
 end
 
 function WritWorthy.FindNextAutoQuestableWrit()
@@ -98,7 +101,7 @@ function WritWorthy.FindNextAutoQuestableWrit()
         end
         --d("WWAQ: Nope: "..tostring(slot_id).." "..item_link)
     end
-    return 0
+    return SLOT_ID_NONE
 end
 
 function WritWorthy.IsAutoQuestableWrit(bag_id, slot_id, quest_state)
@@ -137,15 +140,10 @@ function WritWorthy:AcceptFirstAcceptableWrit()
                         -- Get a fresh picture of the state of the world,
                         -- just in case things have changed that our
                         -- event listeners failed to detect.
-    if self.aq_next_writ_slot then
-        self.aq_next_writ_slot:Invalidate()
-    end
-    if self.aq_quest_state then
-        self.aq_quest_state:Invalidate()
-    end
+    self:AQInvalidateAll()
 
     local slot_id = WritWorthy.FindNextAutoQuestableWrit()
-    if not slot_id or slot_id <= 0 then
+    if not slot_id or slot_id == SLOT_ID_NONE then
         d("WWAQ: No more writs to accept. Done.")
         self:EndAutoAcceptMode()
         return
@@ -161,20 +159,53 @@ end
 
 function WritWorthy:StartAutoAcceptMode()
     self.aq_auto_accept_mode = true
-    EVENT_MANAGER:RegisterForEvent( WritWorthy.name .. "_aq_auto_accept_mode"
+    local name = WritWorthy.name .. "_aq_auto_accept_mode"
+    EVENT_MANAGER:RegisterForEvent( name
                                   , EVENT_QUEST_ADDED
                                   , WritWorthy_AutoAcceptModeQuestAdded)
+
+    EVENT_MANAGER:RegisterForEvent( name
+                                  , EVENT_QUEST_OFFERED
+                                  , WritWorthy_AutoAcceptModeQuestOffered)
+
+    EVENT_MANAGER:RegisterForEvent( name
+                                  , EVENT_CHATTER_BEGIN
+                                  , WritWorthy_AutoAcceptModeChatterBegin)
+
 end
 
 function WritWorthy:EndAutoAcceptMode()
+    d("WWAQ: EndAutoAcceptMode")
     self.aq_auto_accept_mode = false
-    EVENT_MANAGER:UnregisterForEvent( WritWorthy.name .. "_aq_auto_accept_mode"
-                                    , EVENT_QUEST_ADDED )
+    local name = WritWorthy.name .. "_aq_auto_accept_mode"
+    local event_list = { EVENT_QUEST_ADDED
+                       , EVENT_QUEST_OFFERED
+                       , EVENT_CHATTER_BEGIN
+                       }
+    for _,event_id in ipairs(event_list) do
+        EVENT_MANAGER:UnregisterForEvent( name
+                                        , EVENT_QUEST_ADDED )
+    end
 end
 
 function WritWorthy_AutoAcceptModeQuestAdded()
     d("WWAQ: AutoAcceptModeQuestAdded.")
     zo_callLater(function() WritWorthy:AcceptFirstAcceptableWrit() end, 500 )
+end
+
+function WritWorthy_AutoAcceptModeQuestOffered()
+    local x = {GetOfferedQuestInfo()}
+    d("WWAQ: AutoAcceptModeQuestOffered response:"..tostring(x[2]))
+    AcceptOfferedQuest()
+end
+
+-- EVENT_CHATTER_BEGIN is NOT called for the "-Sealed XXX Writ-" dialog
+-- that appears after using a Sealed Master Writ. Only EVENT_QUEST_OFFERED.
+-- EVENT_CHATTER_END is still called when the "-Sealed XXX Writ-" dialog closes.
+function WritWorthy_AutoAcceptModeChatterBegin(event_id, option_ct)
+    d("WWAQ: AutoAcceptModeChatterBegin option_ct:"..tostring(option_ct))
+    local x = { GetChatterOption(1) }
+    d(x)
 end
 
 -- Quest Journal Cache -------------------------------------------------------
@@ -215,6 +246,18 @@ d("WWAQ: ScanQuestJournal crafting_type:"..tostring(crafting_type).." qi:"..tost
         end
     end
     return r
+end
+
+-- Each time we open the inventory screen, clear our cache and start clean.
+-- During non-auto-queue mode, I really don't want to tap into all the
+-- events I'd have to in order to detect any changes.
+function WritWorthy:AQInvalidateAll()
+    if self.aq_next_writ_slot then
+        self.aq_next_writ_slot:Invalidate()
+    end
+    if self.aq_quest_state then
+        self.aq_quest_state:Invalidate()
+    end
 end
 
 -- AQCache -------------------------------------------------------------------
@@ -268,3 +311,12 @@ d("AQC unregister:"..self.name)
     end
 end
 
+--[[
+INVENTORY_ITEM_USED
+QUEST_OFFERED
+QUEST_ADDED 6, "A Masterful Plate", ""
+CHATTER_END
+INVENTORY_SLOT_SINGLE_SLOT_UPDATE ( 1,0,false,0,0,-1)
+QUEST_POSITION_REQUEST_COMPLETE
+
+]]
