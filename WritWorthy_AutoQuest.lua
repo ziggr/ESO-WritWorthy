@@ -54,18 +54,25 @@ end
 
 -- Enable/disable function for AutoQuest "Accept Writ Quests"
 -- Called VERY frequently as you mouse over the inventory screen.
--- ZIG YOU LEFT OFF HERE Rewrite this to scan and cache and invalidate.
 function WritWorthy_BagHasAnyWrits()
-    d("WWAQ:BagHasAny()")
-   return WritWorthy:GetNextAutoQuestableWrit()
+    -- d("WWAQ:BagHasAny()")
+    return WritWorthy:GetNextAutoQuestableWrit()
 end
 
+-- Scan for and return the bag slot_id of the next Sealed Master Writ that
+-- can be accepted and turned in.
+--
+-- Called from UI command-enabling code VERY frequently as the mouse
+-- hovers over each inventory item, so results MUST be O(1) cached.
 function WritWorthy:GetNextAutoQuestableWrit()
     if not self.aq_next_writ_slot then
         self.aq_next_writ_slot = WritWorthy.AQCache:New(
             { scan_func  = WritWorthy.FindNextAutoQuestableWrit
-            , event_list = {  EVENT_INVENTORY_ITEM_USED
-                           ,  EVENT_ITEM_SLOT_CHANGED
+            , event_list = { EVENT_INVENTORY_ITEM_USED
+                           , EVENT_ITEM_SLOT_CHANGED
+                           -- need back dep/withdrawal events here
+                           , EVENT_QUEST_ADDED
+                           , EVENT_QUEST_COMPLETE
                            }
             , name       = "next_writ_slot"
             })
@@ -90,7 +97,7 @@ function WritWorthy.FindNextAutoQuestableWrit()
             d("WWAQ: Yep : "..tostring(slot_id).." "..item_link)
             return slot_id
         end
-        d("WWAQ: Nope: "..tostring(slot_id).." "..item_link)
+        --d("WWAQ: Nope: "..tostring(slot_id).." "..item_link)
     end
     return 0
 end
@@ -143,30 +150,6 @@ end
 
 -- Quest Journal Cache -------------------------------------------------------
 --
--- Keep a local copy of our seven or fewer accepted master writ quests, one
--- per crafting type.
---
--- Add event listeners so that we can invalidate that cache if the list of
--- quests change.
---
-function WritWorthy.ScanQuestJournal()
-    -- return a table[crafting_type] = quest_index
-
-    local r = {}
-    for qi = 1, MAX_JOURNAL_QUESTS do
-        local qinfo = { GetJournalQuestInfo(qinfo) }
-        local quest_name = qinfo[1]
-        local crafting_type = WritWorthy.QUEST_TITLES[quest_name]
-        if qinfo[10] == QUEST_TYPE_CRAFTING and not crafting_type then
-            d("Unknown crafting quest:'"..quest_name.."'")
-        end
-        if quest_name and crafting_type then
-            r[crafting_type] = qi
-        end
-    end
-    return r
-end
-
 -- Return a table[crafting_type] = quest_index_int
 --
 -- Returned table is a snapshot of the quest journal, and does not
@@ -174,76 +157,37 @@ end
 -- accepting or completing quests. This is usually what I want.
 --
 function WritWorthy:GetQuestState()
-    if self.aq_quest_state then
-        d("WWAQ: GetQuestState() returning cached")
-        return self.aq_quest_state
+    if not self.aq_quest_state then
+        self.aq_quest_state = WritWorthy.AQCache:New(
+            { scan_func  = WritWorthy.ScanQuestJournal
+            , event_list = { EVENT_QUEST_ADDED
+                           , EVENT_QUEST_COMPLETE
+                           }
+            , name       = "quest_state"
+            })
     end
-    d("WWAQ: GetQuestState() scanning...")
-    self.aq_quest_state = WritWorthy.ScanQuestJournal()
-                        -- debug dump results of that scan
-    local t = {}
-    for k,v in self.aq_quest_state do
-        table.insert(t,tostring(k)..":"..tostring(v))
-    end
-    table.sort(t)
-    d("WWAQ: GetQuestState() got: {"..table.concat(t," ").."}")
-
-    WritWorthy.RegisterAQQuestJournal()
-    return self.aq_quest_state
+    local qs = self.aq_quest_state:Get()
+    return qs
 end
 
-WritWorthy.AQ_QUEST_IDS = { EVENT_QUEST_ADDED
-                          , EVENT_QUEST_COMPLETE
-                          }
-
--- Track changes to the quest journal that affect auto-quest.
-function WritWorthy.RegisterAQQuestJournal()
-    if self.aq_registered then return end
-
-    d("WWAQ: RegisterAQQuestJournal() registering")
-    for _, event_id in ipairs(WritWorthy.AQ_QUEST_IDS) do
-        EVENT_MANAGER:RegisterForEvent( WritWorthy.name + "_aq"
-                                      , event_id
-                                      , function()
-                                            WritWorthy.AQQuestChanged()
-                                        end
-                                      )
+function WritWorthy.ScanQuestJournal()
+    -- return a table[crafting_type] = quest_index
+    local r = {}
+    for qi = 1, MAX_JOURNAL_QUESTS do
+        local qinfo = { GetJournalQuestInfo(qi) }
+        local quest_name = qinfo[1]
+        local crafting_type = WritWorthy.QUEST_TITLES[quest_name]
+        if qinfo[10] == QUEST_TYPE_CRAFTING and not crafting_type then
+            d("Unknown crafting quest:'"..quest_name.."'")
+        end
+        if quest_name and crafting_type then
+d("WWAQ: ScanQuestJournal crafting_type:"..tostring(crafting_type).." qi:"..tostring(qi)
+    .." "..tostring(quest_name))
+            r[crafting_type] = qi
+        end
     end
-
-    self.aq_registered = true
+    return r
 end
-
--- Remove our CPU-wasting event listeners if we're not doing anything
-function WritWorthy.UnregisterAQQuestJournal()
-    if not self.aq_registered then return end
-                        -- As long as we have cached quest state,
-                        -- we are not allowed to stop listening for
-                        -- events that might invalidate that cache.
-    assert(not WritWorthy.aq_quest_state)
-
-    d("WWAQ: UnregisterAQQuestJournal() unregistering")
-    for _, event_id in ipairs(WritWorthy.AQ_QUEST_IDS) do
-        EVENT_MANAGER:UnregisterForEvent( WritWorthy.name + "_aq"
-                                        , event_id)
-    end
-
-    self.aq_registered = nil
-end
-
--- Any quest was added or completed
--- Do as little as possible so that we're not punishing the player while
--- they do non-WW things.
-function WritWorthy.AQQuestChanged()
-    d("WWAQ: AQQuestChanged() invalidating cache and unregistering...")
-
-                        -- Invalidate any cached quest state
-    WritWorthy.aq_quest_state = nil
-                        -- Stop listening for additional changes.
-                        -- We no longer care, since we don't have to
-                        -- update any of our own state to match.
-    WritWorthy.UnregisterAQQuestJournal()
-end
-
 
 -- AQCache -------------------------------------------------------------------
 -- A cache that knows how to listen for and invalidate upon event(s).
@@ -288,7 +232,7 @@ d("AQC register:"..self.name)
     end
 end
 
-function WritWorthy.AQCache:Invalidate()
+function WritWorthy.AQCache:Unregister()
 d("AQC unregister:"..self.name)
     for _,event_id in ipairs(self.event_list) do
         EVENT_MANAGER:UnregisterForEvent( WritWorthy.name .. "_aq_" .. self.name
