@@ -4,29 +4,30 @@ ZO_CreateStringId("WRIT_WORTHY_ACCEPT_QUESTS", "Accept Writ Quests")
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 WritWorthy.AQCache = {}             -- class defined later in this file
 
+                        -- Hints to help us immediately recognize accepted
+                        -- master writ quests so that we can skip over any
+                        -- sealed master writs of that type when looking for
+                        -- the next acceptable writ.
+                        --
+                        -- Imperfect! Both WW and BS use the same quest
+                        -- name and details for completed weapons.
+                        --
 WritWorthy.QUEST_TITLES = {
-  ["A Masterful Concoction"] = CRAFTING_TYPE_ALCHEMY
-, ["Masterful Tailoring"   ] = CRAFTING_TYPE_CLOTHIER
-, ["A Masterful Plate"     ] = CRAFTING_TYPE_BLACKSMITHING
-, ["A Masterful Glyph"     ] = CRAFTING_TYPE_ENCHANTING
-, ["A Masterful Feast"     ] = CRAFTING_TYPE_PROVISIONING
-, ["A Masterful Shield"    ] = CRAFTING_TYPE_WOODWORKING
-, ["A Masterful Weapon"    ] = CRAFTING_TYPE_WOODWORKING -- OR BLACKSMITHING!
-, ["An overpriced bauble"  ] = CRAFTING_TYPE_JEWELRYCRAFTING
+  ["A Masterful Concoction"] = { CRAFTING_TYPE_ALCHEMY }
+, ["Masterful Tailoring"   ] = { CRAFTING_TYPE_CLOTHIER }
+, ["A Masterful Plate"     ] = { CRAFTING_TYPE_BLACKSMITHING }
+, ["A Masterful Glyph"     ] = { CRAFTING_TYPE_ENCHANTING }
+, ["A Masterful Feast"     ] = { CRAFTING_TYPE_PROVISIONING }
+, ["A Masterful Shield"    ] = { CRAFTING_TYPE_WOODWORKING }
+, ["A Masterful Weapon"    ] = { CRAFTING_TYPE_WOODWORKING
+                               , CRAFTING_TYPE_BLACKSMITHING }
+, ["An overpriced bauble"  ] = { CRAFTING_TYPE_JEWELRYCRAFTING }
 }
 
 local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
                             -- auto-questable sealed master writs.
                             -- Because "nil" means "don't know"
                             -- and "0" is an actual valid slot ID.
-
-function WritWorthy_AddAutoQuest(inventory_slot, slot_actions)
-    local bag_id, slot_index = ZO_Inventory_GetBagAndIndex(inventory_slot)
-    if not WritWorthy.IsAutoQuestableWrit(bag_id, slot_id) then
-        return false
-    end
-    -- ZIG YOU LEFT OFF HERE
-end
 
 function WritWorthy:AddKeyBind()
     local menu = LibStub("LibCustomMenu")
@@ -129,10 +130,10 @@ function WritWorthy_AutoQuest()
     d("Pretend I'm doing the thing")
 
                         -- Register listeners to chain use/dialog/use/dialog
-                        -- chain.
+                        -- callback sequence.
     WritWorthy:StartAutoAcceptMode()
 
-                        -- Accept the first acceptable master writ.
+                        -- Start the sequence.
     WritWorthy:AcceptFirstAcceptableWrit()
 end
 
@@ -140,7 +141,9 @@ function WritWorthy:AcceptFirstAcceptableWrit()
 
                         -- Get a fresh picture of the state of the world,
                         -- just in case things have changed that our
-                        -- event listeners failed to detect.
+                        -- event listeners failed to detect. I don't EVER
+                        -- want to accidentally use anything other than
+                        -- a master writ.
     self:AQInvalidateAll()
 
     local slot_id = WritWorthy.FindNextAutoQuestableWrit()
@@ -239,6 +242,15 @@ end
 
 function WritWorthy.ScanQuestJournal()
     -- return a table[crafting_type] = quest_index
+
+    -- If a single quest matches multiple possible crafting types, associate
+    -- that quest with ALL possible matching crafting types. It is far simpler
+    -- to code for occasionally being unable to accept any WW quest because
+    -- a BS quest got in the way, than to code for accepting a quest and
+    -- then dealing with UseItem() returning errors and us having to find
+    -- ANOTHER inventory writ to accept, or leaving the "Autoquest" button
+    -- enabled when in fact there are currently no writs that we can accept.
+
     local r = {}
     for qi = 1, MAX_JOURNAL_QUESTS do
         local qinfo = { GetJournalQuestInfo(qi) }
@@ -248,9 +260,11 @@ function WritWorthy.ScanQuestJournal()
             d("Unknown crafting quest:'"..quest_name.."'")
         end
         if quest_name and crafting_type then
+            for _,ct in ipairs(crafting_type) do
 d("WWAQ: ScanQuestJournal crafting_type:"..tostring(crafting_type).." qi:"..tostring(qi)
     .." "..tostring(quest_name))
-            r[crafting_type] = qi
+                r[ct] = qi
+            end
         end
     end
     return r
@@ -352,4 +366,22 @@ end
 EVENT_MANAGER:RegisterForEvent( "WritWorthy_ZZ_HACK"
                               , EVENT_CHATTER_BEGIN
                               , WWAQ_HandleChatterBegin)
+
+2018-07-23 todo
+-- test writ auto-accept chain, make sure it still works
+-- listen for chatter begin
+    on begin, zo_callLater() a test-and-accept function
+    test-and-acccept
+        if in chatter
+            if chatter option 1 is "turn in" then
+                turn in
+                zo_callLater() test-and-accept
+            else
+                end this chain
+                unregister chatter begin
+                -- eventually zo_callLater() the inventory-writ-accept chain
+        else
+            -- not in chatter, maybe user aborted?
+            do nothing
+
 ]]
