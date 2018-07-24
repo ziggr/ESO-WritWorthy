@@ -1,3 +1,8 @@
+-- Automate the "open writs/turn in to Rolis" sequence that happens after
+-- you have pre-crafted a ton of writ items and are standing near Rolis
+-- ready to turn them all in.
+--
+
 ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY", "WritWorthy")
 ZO_CreateStringId("WRIT_WORTHY_ACCEPT_QUESTS", "Accept Writ Quests")
 
@@ -128,6 +133,11 @@ end
 -- React to a button press in the innventory screen's
 -- "WritWorthy: Accept Writ Quests" button.
 function WritWorthy_AutoQuest()
+    d("|c33FF33WritWorthy: Don't forget your XP potion/scroll!")
+    WritWorthy:AutoQuest()
+end
+
+function WritWorthy:AutoQuest()
                         -- Register listeners to chain use/dialog/use/dialog
                         -- callback sequence.
     WritWorthy:StartAutoAcceptMode()
@@ -138,7 +148,6 @@ function WritWorthy_AutoQuest()
 end
 
 function WritWorthy:AcceptFirstAcceptableWrit()
-
                         -- Get a fresh picture of the state of the world,
                         -- just in case things have changed that our
                         -- event listeners failed to detect. I don't EVER
@@ -212,11 +221,11 @@ end
 -- EVENT_CHATTER_BEGIN is NOT called for the "-Sealed XXX Writ-" dialog
 -- that appears after using a Sealed Master Writ. Only EVENT_QUEST_OFFERED.
 -- EVENT_CHATTER_END is still called when the "-Sealed XXX Writ-" dialog closes.
-function WritWorthy_AutoAcceptModeChatterBegin(event_id, option_ct)
-    -- d("WWAQ: AutoAcceptModeChatterBegin option_ct:"..tostring(option_ct))
-    -- local x = { GetChatterOption(1) }
-    -- d(x)
-end
+-- function WritWorthy_AutoAcceptModeChatterBegin(event_id, option_ct)
+--     d("WWAQ: AutoAcceptModeChatterBegin option_ct:"..tostring(option_ct))
+--     local x = { GetChatterOption(1) }
+--     d(x)
+-- end
 
 function WritWorthy:RegisterRolisChatter()
 -- d("WWAQ:RegisterRolisChatter")
@@ -272,10 +281,10 @@ function WritWorthy:RolisChoose()
         WritWorthy:UnregisterRolisChatter()
         EndInteraction(INTERACTION_CONVERSATION)
         local next_writ_slot_id = WritWorthy:GetNextAutoQuestableWrit()
-        d("|cEEEEEEDone turning in writs.|r")
+        -- d("|cEEEEEEDone turning in writs.|r")
         if (SLOT_ID_NONE ~= next_writ_slot_id) then
             d("|cEEEEEEOpening more writs...|r")
-            WritWorthy_AutoQuest()
+            WritWorthy:AutoQuest()
         else
             WritWorthy:UnregisterRolisChatter()
             d("|cEEEEEENo more writs.|r")
@@ -300,10 +309,6 @@ end
 -- Quest Journal Cache -------------------------------------------------------
 --
 -- Return a table[crafting_type] = quest_index_int
---
--- Returned table is a snapshot of the quest journal, and does not
--- dynamically update if calling code later mutates the quest journal by
--- accepting or completing quests. This is usually what I want.
 --
 function WritWorthy:GetQuestState()
     if not self.aq_quest_state then
@@ -333,14 +338,12 @@ function WritWorthy.ScanQuestJournal()
     for qi = 1, MAX_JOURNAL_QUESTS do
         local qinfo = { GetJournalQuestInfo(qi) }
         local quest_name = qinfo[1]
-        local crafting_type = WritWorthy.QUEST_TITLES[quest_name]
-        if qinfo[10] == QUEST_TYPE_CRAFTING and not crafting_type then
+        local crafting_type_list = WritWorthy.QUEST_TITLES[quest_name]
+        if qinfo[10] == QUEST_TYPE_CRAFTING and not crafting_type_list then
             d("Unknown crafting quest:'"..quest_name.."'")
         end
-        if quest_name and crafting_type then
-            for _,ct in ipairs(crafting_type) do
--- d("WWAQ: ScanQuestJournal crafting_type:"..tostring(crafting_type).." qi:"..tostring(qi)
-    -- .." "..tostring(quest_name))
+        if quest_name and crafting_type_list then
+            for _,ct in ipairs(crafting_type_list) do
                 r[ct] = qi
             end
         end
@@ -412,56 +415,3 @@ function WritWorthy.AQCache:Unregister()
                                         , event_id )
     end
 end
-
---[[
-INVENTORY_ITEM_USED
-QUEST_OFFERED
-QUEST_ADDED 6, "A Masterful Plate", ""
-CHATTER_END
-INVENTORY_SLOT_SINGLE_SLOT_UPDATE ( 1,0,false,0,0,-1)
-QUEST_POSITION_REQUEST_COMPLETE
-
-]]
-
-
---[[
-
-SURPRISE! This is NEVER CALLED for opening a sealed master writ
- All I get is
-
- INVENTORY_ITEM_USED
- QUEST_OFFERED
-
- GetInteractionType() -> 3 == INTERACTION_QUEST
-
-
-function WWAQ_HandleChatterBegin(event_id, option_ct)
-    d("WWAQ_HandleChatterBegin option_ct:"..tostring(option_ct))
-    for i=1,option_ct do
-        local x = {GetChatterOption(i)}
-        d(tostring(i)..": option_type:"..tostring(x[2].." "..x[1]))
-    end
-end
-
-EVENT_MANAGER:RegisterForEvent( "WritWorthy_ZZ_HACK"
-                              , EVENT_CHATTER_BEGIN
-                              , WWAQ_HandleChatterBegin)
-
-2018-07-23 todo
--- test writ auto-accept chain, make sure it still works
--- listen for chatter begin
-    on begin, zo_callLater() a test-and-accept function
-    test-and-acccept
-        if in chatter
-            if chatter option 1 is "turn in" then
-                turn in
-                zo_callLater() test-and-accept
-            else
-                end this chain
-                unregister chatter begin
-                -- eventually zo_callLater() the inventory-writ-accept chain
-        else
-            -- not in chatter, maybe user aborted?
-            do nothing
-
-]]
