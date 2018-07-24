@@ -219,6 +219,70 @@ function WritWorthy_AutoAcceptModeChatterBegin(event_id, option_ct)
     d(x)
 end
 
+function WritWorthy:RegisterRolisChatter()
+    local name = WritWorthy.name .. "_aq_rolis_chatter"
+    EVENT_MANAGER:RegisterForEvent( name
+                                  , EVENT_CHATTER_BEGIN
+                                  , function() WritWorthy:OnRolisChatterBegin() end )
+    EVENT_MANAGER:RegisterForEvent( name
+                                  , EVENT_QUEST_COMPLETE_DIALOG
+                                  , function(event_id, quest_index)
+                                        WritWorthy:OnRolisQuestCompleteDialog(
+                                                                  event_id
+                                                                , quest_index )
+                                    end )
+end
+
+function WritWorthy:UnregisterRolisChatter()
+    local name = WritWorthy.name .. "_aq_rolis_chatter"
+    local event_list = { EVENT_CHATTER_BEGIN
+                       }
+    for _,event_id in ipairs(event_list) do
+        EVENT_MANAGER:UnregisterForEvent( name
+                                        , EVENT_QUEST_ADDED
+                                        , EVENT_QUEST_COMPLETE_DIALOG
+                                        )
+    end
+end
+
+function WritWorthy:OnRolisChatterBegin()
+    d("WWAQ: rolis chatter begin")
+    zo_callLater(function() WritWorthy:RolisChoose() end, 500)
+end
+
+WritWorthy.QUEST_TURN_IN_TEXT = {
+   [ "<Finish the job.>"                    ] = true
+,  [ "I've finished the Blacksmithing job." ] = true
+,  [ "I've finished the Provisioning job."  ] = true
+,  [ "I've finished the Alchemy job."       ] = true
+}
+
+function WritWorthy:RolisChoose()
+    local opt_text = GetChatterOption(1)
+    if WritWorthy.QUEST_TURN_IN_TEXT[opt_text] then
+        SelectChatterOption(1)
+    elseif "Store (Mastercraft Mediator)" == opt_text then
+                        -- All writs turned in. We're done
+        d("WWAQ: Rolis done")
+        WritWorthy:UnregisterRolisChatter()
+        EndInteraction(INTERACTION_CONVERSATION)
+    else
+                        -- Dialog is not a Writ turn-in dialog,
+    end
+end
+
+function WritWorthy:OnRolisQuestCompleteDialog(event_id, quest_index)
+    d("WWAQ: rolis quest complete dialog")
+    zo_callLater(function() WritWorthy:RolisCompleteQuest(quest_index) end, 500)
+end
+
+function WritWorthy:RolisCompleteQuest(quest_index)
+    local x = { GetJournalQuestEnding(quest_index) }
+    if x[2] == "<He notes your work and tenders payment.>" then
+        CompleteQuest()
+    end
+end
+
 -- Quest Journal Cache -------------------------------------------------------
 --
 -- Return a table[crafting_type] = quest_index_int
