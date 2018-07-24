@@ -564,7 +564,12 @@ function WritWorthy:Initialize()
 
     WritWorthyUI_RestorePos()
 
-    WritWorthy:AddKeyBind()
+                        -- If WritWorthy_AutoQuest.lua is un-commented-out
+                        -- in WritWorthy.txt, install its button in the
+                        -- Inventory screen. If not, no auto-quest for you!
+    if WritWorthy["AQAddKeyBind"] then
+        WritWorthy:AQAddKeyBind()
+    end
 
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end

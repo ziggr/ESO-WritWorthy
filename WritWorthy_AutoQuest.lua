@@ -30,7 +30,7 @@ local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
                             -- Because "nil" means "don't know"
                             -- and "0" is an actual valid slot ID.
 
-function WritWorthy:AddKeyBind()
+function WritWorthy:AQAddKeyBind()
     local menu = LibStub("LibCustomMenu")
     menu:RegisterContextMenu(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
     menu:RegisterKeyStripEnter(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
