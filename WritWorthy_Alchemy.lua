@@ -387,6 +387,9 @@ function Parser:ToKnowList()
     return r
 end
 
+-- From Dolgubon's LLC functions.lua
+local function GetItemIDFromLink(itemLink) return tonumber(string.match(itemLink,"|H%d:item:(%d+)")) end
+
 function Parser:ToDolRequest(unique_id)
     local mat_list = self:ToMatList()
     local o = {}
