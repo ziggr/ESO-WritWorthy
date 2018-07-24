@@ -15,13 +15,14 @@ WritWorthy.AQCache = {}             -- class defined later in this file
 WritWorthy.QUEST_TITLES = {
   ["A Masterful Concoction"] = { CRAFTING_TYPE_ALCHEMY }
 , ["Masterful Tailoring"   ] = { CRAFTING_TYPE_CLOTHIER }
+, ["Masterful Leatherwear" ] = { CRAFTING_TYPE_CLOTHIER }
 , ["A Masterful Plate"     ] = { CRAFTING_TYPE_BLACKSMITHING }
 , ["A Masterful Glyph"     ] = { CRAFTING_TYPE_ENCHANTING }
 , ["A Masterful Feast"     ] = { CRAFTING_TYPE_PROVISIONING }
 , ["A Masterful Shield"    ] = { CRAFTING_TYPE_WOODWORKING }
 , ["A Masterful Weapon"    ] = { CRAFTING_TYPE_WOODWORKING
                                , CRAFTING_TYPE_BLACKSMITHING }
-, ["An overpriced bauble"  ] = { CRAFTING_TYPE_JEWELRYCRAFTING }
+, ["Masterful Jewelry"     ] = { CRAFTING_TYPE_JEWELRYCRAFTING }
 }
 
 local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
@@ -132,6 +133,7 @@ function WritWorthy_AutoQuest()
                         -- Register listeners to chain use/dialog/use/dialog
                         -- callback sequence.
     WritWorthy:StartAutoAcceptMode()
+    WritWorthy:RegisterRolisChatter()
 
                         -- Start the sequence.
     WritWorthy:AcceptFirstAcceptableWrit()
@@ -252,9 +254,13 @@ end
 
 WritWorthy.QUEST_TURN_IN_TEXT = {
    [ "<Finish the job.>"                    ] = true
-,  [ "I've finished the Blacksmithing job." ] = true
-,  [ "I've finished the Provisioning job."  ] = true
 ,  [ "I've finished the Alchemy job."       ] = true
+,  [ "I've finished the Blacksmithing job." ] = true
+,  [ "I've finished the Clothier job."      ] = true
+,  [ "I've finished the Enchanting job."    ] = true
+,  [ "I've finished the Jewelry job."       ] = true
+,  [ "I've finished the Provisioning job."  ] = true
+,  [ "I've finished the Woodworking job."   ] = true
 }
 
 function WritWorthy:RolisChoose()
