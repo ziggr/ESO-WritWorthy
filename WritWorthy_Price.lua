@@ -13,7 +13,7 @@ WritWorthy.FALLBACK_PRICE = {
                             -- of these for weeks at a time.
 
                             -- Most of these prices are PC NA Master Merchant,
-                            -- circa 2018-04, rounded to some nearby multiple
+                            -- circa 2018-07, rounded to some nearby multiple
                             -- of 5 or 10 or whatever.
 
                             -- Jewelry fallbacks are either:
@@ -23,31 +23,31 @@ WritWorthy.FALLBACK_PRICE = {
                             -- jewelry trait stones gated behind PvP or
                             -- other long-duration grinds, 10 * Potent Nirncrux.
 
-    ["ancestor silk"      ] =   50
-,   ["rubedo leather"     ] =   20
+    ["ancestor silk"      ] =   40
+,   ["rubedo leather"     ] =   15
 ,   ["rubedite"           ] =   10
 ,   ["ruby ash"           ] =   20
-,   ["platinum"           ] =   10 * 10
+,   ["platinum"           ] =   20
 
-,   ["hemming"            ] =   20
-,   ["embroidery"         ] =   20
+,   ["hemming"            ] =   15
+,   ["embroidery"         ] =   15
 ,   ["elegant lining"     ] =  125
 ,   ["dreugh wax"         ] = 4000
 
-,   ["honing stone"       ] =   25
+,   ["honing stone"       ] =   20
 ,   ["dwarven oil"        ] =   35
-,   ["grain solvent"      ] =  550
-,   ["tempering alloy"    ] = 6750
+,   ["grain solvent"      ] =  500
+,   ["tempering alloy"    ] = 5000
 
-,   ["pitch"              ] =   75
+,   ["pitch"              ] =   50
 ,   ["turpen"             ] =   25
-,   ["mastic"             ] =  550
-,   ["rosin"              ] = 2750
+,   ["mastic"             ] =  500
+,   ["rosin"              ] = 2500
 
-,   ["terne"              ] =   25 * 10
-,   ["iridium"            ] =   35 * 10
-,   ["zircon"             ] =  550 * 10
-,   ["chromium"           ] = 6750 * 10
+,   ["terne"              ] =  1250
+,   ["iridium"            ] =  3750
+,   ["zircon"             ] = 21000
+,   ["chromium"           ] = 73000
 
 ,   ["adamantite"         ] =   15
 ,   ["obsidian"           ] =   15
@@ -58,63 +58,70 @@ WritWorthy.FALLBACK_PRICE = {
 ,   ["moonstone"          ] =   15
 ,   ["manganese"          ] =   15
 ,   ["flint"              ] =   15
-,   ["nickel"             ] =   25
-,   ["palladium"          ] =   25
+,   ["nickel"             ] =   15
+,   ["palladium"          ] =   15
 ,   ["copper"             ] =   15
 ,   ["argentum"           ] =   10
-,   ["daedra heart"       ] =   25
-,   ["dwemer frame"       ] =  550
-,   ["malachite"          ] =  275
-,   ["charcoal of remorse"] =  100
-,   ["goldscale"          ] =  150
-,   ["laurel"             ] =   50
-,   ["cassiterite"        ] =   50
-,   ["auric tusk"         ] =  150
-,   ["potash"             ] =  125
-,   ["rogue's soot"       ] =  175
-,   ["eagle feather"      ] =  225
-,   ["lion fang"          ] =  375
-,   ["dragon scute"       ] =  350
+,   ["daedra heart"       ] =   15
+,   ["dwemer frame"       ] =  300
+,   ["malachite"          ] =  175
+,   ["charcoal of remorse"] =   75
+,   ["goldscale"          ] =  100
+,   ["laurel"             ] =   30
+,   ["cassiterite"        ] =   40
+,   ["auric tusk"         ] =  100
+,   ["potash"             ] =  100
+,   ["rogue's soot"       ] =   85
+,   ["eagle feather"      ] =  150
+,   ["lion fang"          ] =  150
+,   ["dragon scute"       ] =  150
 ,   ["azure plasm"        ] =   10
-,   ["fine chalk"         ] =  100
-,   ["polished shilling"  ] =   30
-,   ["tainted blood"      ] =  150
+,   ["fine chalk"         ] =   75
+,   ["polished shilling"  ] =   75
+,   ["tainted blood"      ] =  100
 ,   ["defiled whiskers"   ] =  150
-,   ["black beeswax"      ] =  150
-,   ["oxblood fungus"     ] =  100
+,   ["black beeswax"      ] =  100
+,   ["oxblood fungus"     ] =   50
 ,   ["pearl sand"         ] =  100
-,   ["ferrous salts"      ] =   50
-,   ["star sapphire"      ] =  100
-,   ["pristine shroud"    ] =   75
+,   ["ferrous salts"      ] =   25
+,   ["star sapphire"      ] =   75
+,   ["pristine shroud"    ] =   50
 ,   ["amber marble"       ] =   35
-,   ["grinstones"         ] = 2500
-,   ["stalhrim shard"     ] = 2500
-,   ["wolfsbane incense"  ] =  175
+,   ["grinstones"         ] = 3500
+,   ["stalhrim shard"     ] = 3000
+,   ["wolfsbane incense"  ] =  200
 ,   ["ancient sandstone"  ] =   25
-,   ["leviathan scrimshaw"] = 1275
-,   ["night pumice"       ] = 1600
-,   ["distilled slowsilver"  ] =  200
+,   ["leviathan scrimshaw"] =  750
+,   ["night pumice"       ] = 2000
+,   ["distilled slowsilver"  ] =  150
 ,   ["ash canvas"            ] =   50
-,   ["volcanic viridian"     ] =  450
-,   ["lustrous sphalerite"   ] =  475
-,   ["boiled carapace"       ] =  100
+,   ["volcanic viridian"     ] =  250
+,   ["lustrous sphalerite"   ] =  175
+,   ["boiled carapace"       ] =   50
 ,   ["polished scarab elytra"] =  300
-,   ["refined bonemold resin"] = 2500
-,   ["wrought ferrofungus"   ] =  400
-,   ["bloodroot flux"        ] =  225
-,   ["minotaur bezoar"       ] =  325
-,   ["tempered brass"        ] =  750
-,   ["tenebrous cord"        ] =  325
+,   ["refined bonemold resin"] = 5000
+,   ["wrought ferrofungus"   ] =  250
+,   ["bloodroot flux"        ] =  175
+,   ["minotaur bezoar"       ] =   75
+,   ["tempered brass"        ] =  400
+,   ["tenebrous cord"        ] =  175
+,   ["dragon bone"           ] = 1000
+,   ["infected flesh"        ] =  750
+,   ["culanda lacquer"       ] = 3250
+,   ["vitrified malondo"     ] =  600
+,   ["sea serpent hide"      ] =  300
+,   ["desecrated grave soil" ] =  100
+,   ["gryphon plume"         ] = 1000
 
 ,   ["quartz"             ] =     5
 ,   ["diamond"            ] =     5
 ,   ["sardonyx"           ] =     5
 ,   ["almandine"          ] =     5
-,   ["emerald"            ] =    30
+,   ["emerald"            ] =    15
 ,   ["bloodstone"         ] =     5
 ,   ["garnet"             ] =     5
 ,   ["sapphire"           ] =     5
-,   ["fortified nirncrux" ] =  1000
+,   ["fortified nirncrux" ] =   750
 ,   ["chysolite"          ] =     5
 ,   ["amethyst"           ] =     5
 ,   ["ruby"               ] =     5
@@ -123,16 +130,16 @@ WritWorthy.FALLBACK_PRICE = {
 ,   ["carnelian"          ] =     5
 ,   ["fire opal"          ] =     5
 ,   ["citrine"            ] =     5
-,   ["potent nirncrux"    ] = 14000
-,   ["cobalt"             ] =     5
-,   ["antimony"           ] =     5
-,   ["zinc"               ] =     5
-,   ["dawn-prism"         ] = 14000 * 10
-,   ["dibellium"          ] = 14000 * 10
-,   ["gilding wax"        ] = 14000 * 10
-,   ["aurbic amber"       ] = 14000 * 10
-,   ["titanium"           ] = 14000 * 10
-,   ["slaughterstone"     ] = 14000 * 10
+,   ["potent nirncrux"    ] = 13000
+,   ["cobalt"             ] =   450
+,   ["antimony"           ] =   300
+,   ["zinc"               ] =   350
+,   ["dawn-prism"         ] = 20000
+,   ["dibellium"          ] = 12000
+,   ["gilding wax"        ] = 20000
+,   ["aurbic amber"       ] =  8250
+,   ["titanium"           ] =  2500
+,   ["slaughterstone"     ] =  6500
 
 ,   ["blessed thistle"    ] =   200
 ,   ["blue entoloma"      ] =    35
@@ -166,7 +173,7 @@ WritWorthy.FALLBACK_PRICE = {
 ,   ["clear water"        ] =     5
 
 ,   ["guts"               ] =    15
-,   ["worms"              ] =    15
+,   ["worms"              ] =    25
 ,   ["crawlers"           ] =     5
 
 ,   ["acai berry"         ] =     5
@@ -231,7 +238,7 @@ WritWorthy.FALLBACK_PRICE = {
 ,   ["denima"             ] =     5
 ,   ["deteri"             ] =    15
 ,   ["haoko"              ] =    10
-,   ["hakeijo"            ] = 11600
+,   ["hakeijo"            ] = 11000
 ,   ["kaderi"             ] =     5
 ,   ["kuoko"              ] =     5
 ,   ["makderi"            ] =    30
@@ -245,7 +252,7 @@ WritWorthy.FALLBACK_PRICE = {
 ,   ["rakeipa"            ] =   175
 ,   ["taderi"             ] =    25
 ,   ["rekuta"             ] =    50
-,   ["kuta"               ] =  2750
+,   ["kuta"               ] =  2250
 }
 
 
