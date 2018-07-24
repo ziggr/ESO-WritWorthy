@@ -150,7 +150,7 @@ function WritWorthy:AcceptFirstAcceptableWrit()
 
     local slot_id = WritWorthy.FindNextAutoQuestableWrit()
     if not slot_id or slot_id == SLOT_ID_NONE then
-        d("WWAQ: No more writs to accept. Done.")
+        d("|cEEEEEEWritWorthy: Writs accepted. Go talk to Rolis.|r")
         self:EndAutoAcceptMode()
         return
     end
@@ -174,10 +174,9 @@ function WritWorthy:StartAutoAcceptMode()
                                   , EVENT_QUEST_OFFERED
                                   , WritWorthy_AutoAcceptModeQuestOffered)
 
-    EVENT_MANAGER:RegisterForEvent( name
-                                  , EVENT_CHATTER_BEGIN
-                                  , WritWorthy_AutoAcceptModeChatterBegin)
-
+    -- EVENT_MANAGER:RegisterForEvent( name
+    --                               , EVENT_CHATTER_BEGIN
+    --                               , WritWorthy_AutoAcceptModeChatterBegin)
 end
 
 function WritWorthy:EndAutoAcceptMode()
@@ -186,7 +185,7 @@ function WritWorthy:EndAutoAcceptMode()
     local name = WritWorthy.name .. "_aq_auto_accept_mode"
     local event_list = { EVENT_QUEST_ADDED
                        , EVENT_QUEST_OFFERED
-                       , EVENT_CHATTER_BEGIN
+                       -- , EVENT_CHATTER_BEGIN
                        }
     for _,event_id in ipairs(event_list) do
         EVENT_MANAGER:UnregisterForEvent( name
@@ -216,12 +215,13 @@ end
 -- that appears after using a Sealed Master Writ. Only EVENT_QUEST_OFFERED.
 -- EVENT_CHATTER_END is still called when the "-Sealed XXX Writ-" dialog closes.
 function WritWorthy_AutoAcceptModeChatterBegin(event_id, option_ct)
-    d("WWAQ: AutoAcceptModeChatterBegin option_ct:"..tostring(option_ct))
-    local x = { GetChatterOption(1) }
-    d(x)
+    -- d("WWAQ: AutoAcceptModeChatterBegin option_ct:"..tostring(option_ct))
+    -- local x = { GetChatterOption(1) }
+    -- d(x)
 end
 
 function WritWorthy:RegisterRolisChatter()
+d("WWAQ:RegisterRolisChatter")
     local name = WritWorthy.name .. "_aq_rolis_chatter"
     EVENT_MANAGER:RegisterForEvent( name
                                   , EVENT_CHATTER_BEGIN
@@ -236,13 +236,14 @@ function WritWorthy:RegisterRolisChatter()
 end
 
 function WritWorthy:UnregisterRolisChatter()
+d("WWAQ:UnregisterRolisChatter")
     local name = WritWorthy.name .. "_aq_rolis_chatter"
     local event_list = { EVENT_CHATTER_BEGIN
+                       , EVENT_QUEST_COMPLETE_DIALOG
                        }
     for _,event_id in ipairs(event_list) do
         EVENT_MANAGER:UnregisterForEvent( name
-                                        , EVENT_QUEST_ADDED
-                                        , EVENT_QUEST_COMPLETE_DIALOG
+                                        , event_id
                                         )
     end
 end
@@ -269,9 +270,18 @@ function WritWorthy:RolisChoose()
         SelectChatterOption(1)
     elseif "Store (Mastercraft Mediator)" == opt_text then
                         -- All writs turned in. We're done
-        d("WWAQ: Rolis done")
+        WritWorthy:AQInvalidateAll()
         WritWorthy:UnregisterRolisChatter()
         EndInteraction(INTERACTION_CONVERSATION)
+        local next_writ_slot_id = WritWorthy:GetNextAutoQuestableWrit()
+        d("|cEEEEEEDone turning in writs.|r")
+        if (SLOT_ID_NONE ~= next_writ_slot_id) then
+            d("|cEEEEEEOpening more writs...|r")
+            WritWorthy_AutoQuest()
+        else
+            WritWorthy:UnregisterRolisChatter()
+            d("|cEEEEEENo more writs.|r")
+        end
     else
                         -- Dialog is not a Writ turn-in dialog,
     end
@@ -388,11 +398,13 @@ end
 
 function WritWorthy.AQCache:Register()
 d("AQC register:"..self.name)
-    for _,event_id in ipairs(self.event_list) do
-        EVENT_MANAGER:RegisterForEvent( WritWorthy.name .. "_aq_" .. self.name
-                                      , event_id
-                                      , function() self:Invalidate() end)
-    end
+    zo_callLater(function()
+        for _,event_id in ipairs(self.event_list) do
+            EVENT_MANAGER:RegisterForEvent( WritWorthy.name .. "_aq_" .. self.name
+                                          , event_id
+                                          , function() self:Invalidate() end)
+        end
+        end, 100)
 end
 
 function WritWorthy.AQCache:Unregister()
