@@ -91,7 +91,7 @@ end
 
 function WritWorthy.FindNextAutoQuestableWrit()
     -- Return slot_id of a writ that can be accepted for turn-in
-    d("WWAQ: FindNext...")
+    -- d("WWAQ: FindNext...")
                         -- Do NOT use bank or ESO+ subscriber bank here,
                         -- even if enabled in settings: you cannot accept
                         -- a quest from a banked writ. Only ones in the bag.
@@ -99,7 +99,7 @@ function WritWorthy.FindNextAutoQuestableWrit()
     for slot_id = 0, GetBagSize(bag_id) do
         local item_link = GetItemLink(bag_id, slot_id)
         if WritWorthy.IsAutoQuestableWrit(bag_id, slot_id) then
-            d("WWAQ: Yep : "..tostring(slot_id).." "..item_link)
+            -- d("WWAQ: Yep : "..tostring(slot_id).." "..item_link)
             return slot_id
         end
         --d("WWAQ: Nope: "..tostring(slot_id).." "..item_link)
@@ -128,8 +128,6 @@ end
 -- React to a button press in the innventory screen's
 -- "WritWorthy: Accept Writ Quests" button.
 function WritWorthy_AutoQuest()
-    d("Pretend I'm doing the thing")
-
                         -- Register listeners to chain use/dialog/use/dialog
                         -- callback sequence.
     WritWorthy:StartAutoAcceptMode()
@@ -155,7 +153,7 @@ function WritWorthy:AcceptFirstAcceptableWrit()
         return
     end
     local item_link = GetItemLink(BAG_BACKPACK, slot_id)
-    d("WWAQ: accept slot_id:"..tostring(slot_id).." "..tostring(item_link))
+    -- d("WWAQ: accept slot_id:"..tostring(slot_id).." "..tostring(item_link))
     if IsProtectedFunction("UseItem") then
         CallSecureProtected("UseItem", BAG_BACKPACK, slot_id)
     else
@@ -180,7 +178,7 @@ function WritWorthy:StartAutoAcceptMode()
 end
 
 function WritWorthy:EndAutoAcceptMode()
-    d("WWAQ: EndAutoAcceptMode")
+    -- d("WWAQ: EndAutoAcceptMode")
     self.aq_auto_accept_mode = false
     local name = WritWorthy.name .. "_aq_auto_accept_mode"
     local event_list = { EVENT_QUEST_ADDED
@@ -195,16 +193,16 @@ function WritWorthy:EndAutoAcceptMode()
 end
 
 function WritWorthy_AutoAcceptModeQuestAdded()
-    d("WWAQ: AutoAcceptModeQuestAdded.")
+    -- d("WWAQ: AutoAcceptModeQuestAdded.")
     zo_callLater(function() WritWorthy:AcceptFirstAcceptableWrit() end, 500 )
 end
 
 function WritWorthy_AutoAcceptModeQuestOffered()
     local x = {GetOfferedQuestInfo()}
-    d("WWAQ: AutoAcceptModeQuestOffered response:"..tostring(x[2]))
+    -- d("WWAQ: AutoAcceptModeQuestOffered response:"..tostring(x[2]))
     zo_callLater(
         function()
-            d("WWAQ: AcceptOfferedQuest()")
+            -- d("WWAQ: AcceptOfferedQuest()")
             AcceptOfferedQuest()
             ResetChatter()
         end
@@ -221,7 +219,7 @@ function WritWorthy_AutoAcceptModeChatterBegin(event_id, option_ct)
 end
 
 function WritWorthy:RegisterRolisChatter()
-d("WWAQ:RegisterRolisChatter")
+-- d("WWAQ:RegisterRolisChatter")
     local name = WritWorthy.name .. "_aq_rolis_chatter"
     EVENT_MANAGER:RegisterForEvent( name
                                   , EVENT_CHATTER_BEGIN
@@ -236,7 +234,7 @@ d("WWAQ:RegisterRolisChatter")
 end
 
 function WritWorthy:UnregisterRolisChatter()
-d("WWAQ:UnregisterRolisChatter")
+-- d("WWAQ:UnregisterRolisChatter")
     local name = WritWorthy.name .. "_aq_rolis_chatter"
     local event_list = { EVENT_CHATTER_BEGIN
                        , EVENT_QUEST_COMPLETE_DIALOG
@@ -249,7 +247,7 @@ d("WWAQ:UnregisterRolisChatter")
 end
 
 function WritWorthy:OnRolisChatterBegin()
-    d("WWAQ: rolis chatter begin")
+    -- d("WWAQ: rolis chatter begin")
     zo_callLater(function() WritWorthy:RolisChoose() end, 500)
 end
 
@@ -288,7 +286,7 @@ function WritWorthy:RolisChoose()
 end
 
 function WritWorthy:OnRolisQuestCompleteDialog(event_id, quest_index)
-    d("WWAQ: rolis quest complete dialog")
+    -- d("WWAQ: rolis quest complete dialog")
     zo_callLater(function() WritWorthy:RolisCompleteQuest(quest_index) end, 500)
 end
 
@@ -341,8 +339,8 @@ function WritWorthy.ScanQuestJournal()
         end
         if quest_name and crafting_type then
             for _,ct in ipairs(crafting_type) do
-d("WWAQ: ScanQuestJournal crafting_type:"..tostring(crafting_type).." qi:"..tostring(qi)
-    .." "..tostring(quest_name))
+-- d("WWAQ: ScanQuestJournal crafting_type:"..tostring(crafting_type).." qi:"..tostring(qi)
+    -- .." "..tostring(quest_name))
                 r[ct] = qi
             end
         end
@@ -378,7 +376,7 @@ function WritWorthy.AQCache:New(args)
 end
 
 function WritWorthy.AQCache:Scan()
-d("AQC scan:"..self.name)
+-- d("AQC scan:"..self.name)
     return self.scan_func()
 end
 
@@ -391,13 +389,13 @@ function WritWorthy.AQCache:Get()
 end
 
 function WritWorthy.AQCache:Invalidate()
-d("AQC invalidate:"..self.name)
+-- d("AQC invalidate:"..self.name)
     self.cache = nil
     self:Unregister()
 end
 
 function WritWorthy.AQCache:Register()
-d("AQC register:"..self.name)
+-- d("AQC register:"..self.name)
     zo_callLater(function()
         for _,event_id in ipairs(self.event_list) do
             EVENT_MANAGER:RegisterForEvent( WritWorthy.name .. "_aq_" .. self.name
@@ -408,7 +406,7 @@ d("AQC register:"..self.name)
 end
 
 function WritWorthy.AQCache:Unregister()
-d("AQC unregister:"..self.name)
+-- d("AQC unregister:"..self.name)
     for _,event_id in ipairs(self.event_list) do
         EVENT_MANAGER:UnregisterForEvent( WritWorthy.name .. "_aq_" .. self.name
                                         , event_id )
