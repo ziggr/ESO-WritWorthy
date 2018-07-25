@@ -1,6 +1,6 @@
-## Title: WritWorthy 4.1.1
-## Version: 4.1.1
-## Last Updated: 2018-07-12
+## Title: WritWorthy 4.1.2
+## Version: 4.1.2
+## Last Updated: 2018-07-24
 ## APIVersion: 100023 100024
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
