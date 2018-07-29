@@ -1,3 +1,26 @@
+Auto-interact if reticle over Rolis?
+
+GetUnitNameHighlightedByReticle()
+    Returns: string name
+
+
+GetGameCameraInteractableInfo()
+    Returns: boolean interactionExists
+            , boolean interactionAvailableNow
+            , boolean questInteraction
+            , boolean questTargetBased
+            , number questJournalIndex
+            , number questToolIndex
+            , boolean questToolOnCooldown
+
+SetInteractionUsingInteractCamera(boolean enabled)
+IsInteractionUsingInteractCamera()
+    Returns: boolean enabled
+
+
+
+--------------------------------
+
 GetOfferedQuestInfo()
     Returns: string dialogue, string response
 

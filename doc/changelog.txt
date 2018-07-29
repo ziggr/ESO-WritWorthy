@@ -1,7 +1,7 @@
 [B]4.1.2 2018-07-24[/B]
 [LIST]
-[*] Support [URL="http://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html"]Arkadius' Trade Tools[/URL]. Untested. Thank you, Patros, for the code.
-[*] Update M.M. fallback prices to PC NA 2018-07. Done mostly so that I could see how the increase to Jewelry voucher rewards affects cost per voucher. (1500-5000g per voucher. Still 4x-8x what other tradeskills cost.)
+[*] Support Arkadius' Trade Tools. Untested. Thank you, Patros, for the code.
+[*] Update M.M. fallback prices to PC NA 2018-07. Done mostly so that I could see how the PTS increase to Jewelry voucher rewards affects cost per voucher. (1500-5000g per voucher. Still 4x-8x what other tradeskills cost.)
 [*] Update to latest Dolgubon's LibLazyCrafter 2.2.
 [*] Minor text fixes.
 [/LIST]
