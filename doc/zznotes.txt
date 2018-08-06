@@ -5,3 +5,46 @@ A better way to find skill lines for the 7 crafting skills
 
 ** _Returns:_ *[SkillType|#SkillType]* _skillType_, *luaindex* _skillLineIndex_
 
+---------------
+2018-07-30 3D indicator over "next crafting station"
+
+From HarvestMap: a ton of libraries. Which do I really need?
+
+Lib3D by Shinni
+    http://www.esoui.com/downloads/info1664-Lib3D.html
+    LibGPS2 required
+    LibMapPing required
+    Seems to handle scale factors for maps, coord/meter conversion
+    Lacks scale info for player housing, but probably could be added easily.
+    "HousingWorld" vs. "PersistenWorld or just 'World'"
+    Origin is NW corner with increasing values of X,Z going East, South
+
+LibGPS by Sirinsidiator, votan
+    aka LibGPS2
+    LibMapPing required
+    maps and waypoints and map clicks
+    local/zone/global X,Y conversions
+
+Not sure we HAVE to use any of this if we're in HousingWorld, where coordinates are in centimeters and the origin never changes out from under us as the player moves about (unlike in the full world, where the origin resets to player position every 1km)
+
+HarvestMap/InRangePins.lua
+    is where the worldMarker.dds texture is loaded
+
+function InRangePins:GetNewWorldControl(
+      pinTypeId
+    , globalX
+    , globalY
+    , worldZ
+    , version
+    )
+
+    pin / beam / icon
+
+    beam:Create3DRenderSpace()
+    beam:Set3DRenderSpaceOrigin(x,y,z)
+    beam:Set3DLocalDimensions(width,height)
+
+    ^ These are ZOS functions for controls
+    http://wiki.esoui.com/Controls
+
+
