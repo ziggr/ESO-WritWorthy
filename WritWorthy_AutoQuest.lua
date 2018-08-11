@@ -3,7 +3,6 @@
 -- ready to turn them all in.
 --
 
-ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY", "WritWorthy")
 ZO_CreateStringId("WRIT_WORTHY_ACCEPT_QUESTS", "Accept Writ Quests")
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua

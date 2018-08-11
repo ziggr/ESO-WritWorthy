@@ -581,6 +581,7 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
                               , WritWorthy.OnAddOnLoaded
                               )
 
-ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",       "Show/Hide WritWorthy")
+ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY",    "WritWorthy")
+ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  "Show/Hide WritWorthy")
 
 WritWorthy.RegisterSlashCommands()
