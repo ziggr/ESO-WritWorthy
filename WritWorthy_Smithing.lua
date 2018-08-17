@@ -923,10 +923,32 @@ Smithing.GOLD = {
 ,   gold_mat_ct    = 8
 }
 
+Smithing.PURPLE_JEWELRY = {
+    index          = 4
+,   name           = "Epic"
+,   green_mat_ct   = 1
+,   blue_mat_ct    = 2
+,   purple_mat_ct  = 3
+,   gold_mat_ct    = 0
+}
+
+Smithing.GOLD_JEWELRY = {
+    index          = 5
+,   name           = "Legendary"
+,   green_mat_ct   = 1
+,   blue_mat_ct    = 2
+,   purple_mat_ct  = 3
+,   gold_mat_ct    = 4
+}
+
 -- indices are item_link writ3 numbers (1-3 are white..blue, not used here)
 Smithing.QUALITY = {
     [4] = Smithing.PURPLE
 ,   [5] = Smithing.GOLD
+}
+Smithing.QUALITY_JEWELRY = {
+    [4] = Smithing.PURPLE_JEWELRY
+,   [5] = Smithing.GOLD_JEWELRY
 }
 
 -- Parser ====================================================================
@@ -992,7 +1014,11 @@ if not self.request_item then d("WW Error unknown item_num:"..tostring(item_num)
     else
         self.motif_num = nil
     end
-    self.improve_level  = Smithing.QUALITY[quality_num]
+    if self.crafting_type == CRAFTING_TYPE_JEWELRYCRAFTING then
+        self.improve_level  = Smithing.QUALITY_JEWELRY[quality_num]
+    else
+        self.improve_level  = Smithing.QUALITY[quality_num]
+    end
     Log:Add("improve:"..tostring(quality_num))
     Log:Add(self.improve_level)
     if not self.improve_level then
@@ -1137,7 +1163,7 @@ function Parser:ToKnowList()
                         -- Skill not REQUIRED to craft, but worth at least a warning.
                         -- WritWorthyInventoryList will refuse to queue such an
                         -- unnecessarily expensive waste of gold tempers.
-    if self.improve_level == Smithing.GOLD then
+    if self.improve_level.index == 5 then
         local skill = self.request_item.school.temper_skill
         local know = skill:ToKnow()
         know.is_warn = true
