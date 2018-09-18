@@ -10,7 +10,7 @@ WritWorthy.Log = {
     ,   right_index = -1
     ,   current = nil
     }
-,   MAX_EVENT_CT = 40
+,   MAX_EVENT_CT = 5
 }
 
 local Log = WritWorthy.Log
