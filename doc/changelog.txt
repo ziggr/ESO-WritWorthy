@@ -1,3 +1,11 @@
+[B]4.2.2 2018-10-23[/B]
+[LIST]
+[*] Library Update:
+[*]   LibAddonMenu-2.0 26
+[*]   LibCustomMenu    6.6 standalone
+[*]   LibLazyCrafting  2.22
+[/LIST]
+
 [B]4.2.1 2018-09-17[/B]
 [LIST]
 [*] Update 20/4.2.1/API 100025/Murkmire
