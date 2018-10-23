@@ -5,33 +5,28 @@
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
-## OptionalDependsOn: LibAddonMenu-2.0 LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
+## DependsOn: LibAddonMenu-2.0
+## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
 
-# LibCustomMenu used only for unreleased WritWorthy_AutoQuest.lua
+# LibAddonMenu-2.0  required
+#   is the "Settings/Addons" UI library that everybody uses.
+#   contains its own manifest, must be installed separately.
+
+# LibCustomMenu     optional
+#   used only for unreleased WritWorthy_AutoQuest.lua. Optional as long as I
+#   refuse to publish the autoquest feature.
+
+# LibSlashCommander optional
+#   provides autocompletion and help text for /writworthy
+#   subcommands like "count".
 
 Libs/LibStub/LibStub.lua
 libs/LibCustomTitles/LibCustomTitles.lua
-Libs/LibAddonMenu-2.0/LibAddonMenu-2.0.lua
-Libs/LibAddonMenu-2.0/controls/panel.lua
-Libs/LibAddonMenu-2.0/controls/submenu.lua
-Libs/LibAddonMenu-2.0/controls/button.lua
-Libs/LibAddonMenu-2.0/controls/checkbox.lua
-Libs/LibAddonMenu-2.0/controls/colorpicker.lua
-Libs/LibAddonMenu-2.0/controls/custom.lua
-Libs/LibAddonMenu-2.0/controls/description.lua
-Libs/LibAddonMenu-2.0/controls/dropdown.lua
-Libs/LibAddonMenu-2.0/controls/editbox.lua
-Libs/LibAddonMenu-2.0/controls/header.lua
-Libs/LibAddonMenu-2.0/controls/slider.lua
-Libs/LibAddonMenu-2.0/controls/texture.lua
-Libs/LibAddonMenu-2.0/controls/iconpicker.lua
 Libs/LibLazyCrafting/LibLazyCrafting.lua
 Libs/LibLazyCrafting/Alchemy.lua
 Libs/LibLazyCrafting/Enchanting.lua
 Libs/LibLazyCrafting/Provisioning.lua
 Libs/LibLazyCrafting/Smithing.lua
-## Libs/LibSlashCommander/LibSlashCommander.lua
-## Libs/LibSlashCommander/descriptions/$(language).lua
 
 WritWorthy_Define.lua
 WritWorthy_Price.lua
