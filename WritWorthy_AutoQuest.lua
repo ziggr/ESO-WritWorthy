@@ -36,6 +36,7 @@ local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
 
 function WritWorthy:AQAddKeyBind()
     local menu = LibStub("LibCustomMenu")
+    if not menu then return end
     menu:RegisterContextMenu(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
     menu:RegisterKeyStripEnter(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
 
