@@ -333,7 +333,7 @@ Smithing.REQUEST_ITEMS = {
 , [48] = { item_id = 48, item_name = "Rubedite Girdle",             school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.WAIST,          motif_page = PG.BELTS    , dol_pattern_index = 14 }
 
 , [28] = { item_id = 28, item_name = "Ancestor Silk Robe",          school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  1 }
-, [ 0] = { item_id =  0, item_name = "Ancestor Silk Jerkin",        school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  2 }
+, [75] = { item_id = 75, item_name = "Ancestor Silk Jerkin",        school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  2 }
 , [32] = { item_id = 32, item_name = "Ancestor Silk Shoes",         school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.FEET,           motif_page = PG.BOOTS    , dol_pattern_index =  3 }
 , [34] = { item_id = 34, item_name = "Ancestor Silk Gloves",        school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index =  4 }
 , [26] = { item_id = 26, item_name = "Ancestor Silk Hat",           school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index =  5 }
@@ -357,8 +357,8 @@ Smithing.REQUEST_ITEMS = {
 
 , [65] = { item_id = 65, item_name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR , research_line = WW.SHIELD,          motif_page = PG.SHIELDS  , dol_pattern_index =  2 }
 
-, [24] = { item_id = nil,item_name = "Platinum Ring",               school = JW,  base_mat_ct = 10, trait_set = TJW   , research_line = JW.RING,            motif_page = nil         , dol_pattern_index =  1 }
-, [18] = { item_id = nil,item_name = "Platinum Necklace",           school = JW,  base_mat_ct = 15, trait_set = TJW   , research_line = JW.NECKLACE,        motif_page = nil         , dol_pattern_index =  2 }
+, [24] = { item_id = 24 ,item_name = "Platinum Ring",               school = JW,  base_mat_ct = 10, trait_set = TJW   , research_line = JW.RING,            motif_page = nil         , dol_pattern_index =  1 }
+, [18] = { item_id = 18 ,item_name = "Platinum Necklace",           school = JW,  base_mat_ct = 15, trait_set = TJW   , research_line = JW.NECKLACE,        motif_page = nil         , dol_pattern_index =  2 }
 
 }
 

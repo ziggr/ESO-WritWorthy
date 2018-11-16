@@ -526,11 +526,20 @@ writ5 	smithing 	traits
 13     Reinforced
 14     Well-fitted
 15     Training (armor)
-16     Infused
+16     Invigorating
 17     Prosperous
 18     Divines
 25     Nirnhoned (armor)
 26     Nirnhoned (weapon)
+22     Arcane
+21     Healty
+23     Robust
+30     Triune
+33     Infused (Jewelry)
+32     Protective
+28     Swift
+29     Harmony
+31     Bloodthirsty
 
 writ6 	smithing 	motif id (NOT always book/page motif numbers)
 -----
