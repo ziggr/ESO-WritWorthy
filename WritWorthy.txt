@@ -1,6 +1,7 @@
-## Title: WritWorthy 4.2.2
-## Version: 4.2.2
-## Last Updated: 2018-10-23
+## Title: WritWorthy 4.2.3
+## Version: 4.2.3
+## AddOnVersion: 423
+## Last Updated: 2018-11-15
 ## APIVersion: 100025
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
@@ -8,7 +9,7 @@
 ## DependsOn: LibAddonMenu-2.0
 ## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
 
-# LibAddonMenu-2.0  required
+# LibAddonMenuLibAddonMenu-2.0  required
 #   is the "Settings/Addons" UI library that everybody uses.
 #   contains its own manifest, must be installed separately.
 

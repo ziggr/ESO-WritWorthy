@@ -1,7 +1,10 @@
+New as of 2018-11-15: [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
+
+
 [LIST]
 [*]Is a master writ worth doing?
 [*]Does this character have the skills to do so?
-[*]Want to craft it automatically? <-- NEW and experimental as of 2017-06-18
+[*]Want to craft it automatically?
 [/LIST]
 
 [B]Is this master writ worth doing?[/B]
@@ -14,7 +17,11 @@ This add-on adds text to each Master Writ's tooltip, showing the total material 
 
 It also optionally dumps a complete material list to chat. Surprisingly useful when filling Alchemy writs.
 
-Requires [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] for material prices.
+[B]Requirements[/B]
+[LIST]
+[*] (Optional) uses [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] for material prices.
+[*] [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
+[/LIST]
 
 [B]Does this character have the skills to do so?[/B]
 
@@ -27,10 +34,6 @@ It also shows orange warnings for missing skills that are not required, but whic
 (No, WritWorthy does not check inventory for required materials, or space to hold the the crafted item. I assume a master crafter can handle their own inventory management.)
 
 [B]Want to craft it automatically?[/B]
-NEW and experimental for version 3.0.3 2017-06-18
-
-"Experimental" here means that you will lose materials, maybe even gold tempers, if you discover a bug in WritWorthy.  Use automatic crafting only if you're willing to take the risk.
-
 
 [LIST=1]
 [*]Bind a key to "Show/Hide WritWorthy" or type /writworthy in chat.
