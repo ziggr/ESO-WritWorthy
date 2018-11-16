@@ -185,27 +185,27 @@ function Util.MMPrice(link)
         return mm.avgPrice
     end
 
-                        -- Fallback to ATT if MM not installed.
-                        -- Thank you, Patros!
-    if      ArkadiusTradeTools
-        and ArkadiusTradeTools.Modules
-        and ArkadiusTradeTools.Modules.Sales then
-
-                        -- Try for a recent price: last 3 days. If nothing
-                        -- that recent, reach back for last 3+ months or so.
-        local day_secs = 24*60*60
-        local att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
-                            link, GetTimeStamp() - (day_secs * 3))
-        if (not att) or (att <= 0) then
-            att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
-                            link, GetTimeStamp() - (day_secs * 100))
-        end
-        if (not att) or (att <= 0) then
-            return WritWorthy.GOLD_UNKNOWN
-        end
-        Util.SetCachedMMPrice(link, att)
-        return att
-    end
+    --                  -- Fallback to ATT if MM not installed.
+    --                  -- Thank you, Patros!
+    -- if      ArkadiusTradeTools
+    --     and ArkadiusTradeTools.Modules
+    --     and ArkadiusTradeTools.Modules.Sales then
+    --
+    --                     -- Try for a recent price: last 3 days. If nothing
+    --                     -- that recent, reach back for last 3+ months or so.
+    --     local day_secs = 24*60*60
+    --     local att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
+    --                         link, GetTimeStamp() - (day_secs * 3))
+    --     if (not att) or (att <= 0) then
+    --         att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
+    --                         link, GetTimeStamp() - (day_secs * 100))
+    --     end
+    --     if (not att) or (att <= 0) then
+    --         return WritWorthy.GOLD_UNKNOWN
+    --     end
+    --     Util.SetCachedMMPrice(link, att)
+    --     return att
+    -- end
 
     return WritWorthy.GOLD_UNKNOWN
 end
