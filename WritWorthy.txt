@@ -7,7 +7,7 @@
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
 ## DependsOn: LibAddonMenu-2.0
-## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
+## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander ArkadiusTradeTools
 
 # LibAddonMenuLibAddonMenu-2.0  required
 #   is the "Settings/Addons" UI library that everybody uses.
