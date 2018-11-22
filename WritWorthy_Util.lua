@@ -185,27 +185,37 @@ function Util.MMPrice(link)
         return mm.avgPrice
     end
 
-                     -- Fallback to ATT if MM not installed.
-                     -- Thank you, Patros!
-    if      ArkadiusTradeTools
-        and ArkadiusTradeTools.Modules
-        and ArkadiusTradeTools.Modules.Sales then
-
-                        -- Try for a recent price: last 3 days. If nothing
-                        -- that recent, reach back for last 3+ months or so.
-        local day_secs = 24*60*60
-        local att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
-                            link, GetTimeStamp() - (day_secs * 3))
-        if (not att) or (att <= 0) then
-            att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
-                            link, GetTimeStamp() - (day_secs * 100))
-        end
-        if (not att) or (att <= 0) then
-            return WritWorthy.GOLD_UNKNOWN
-        end
+    local add = Util.ATTPrice(link)
+    if (att) and (0 < att <= 0) then
         Util.SetCachedMMPrice(link, att)
         return att
     end
 
     return WritWorthy.GOLD_UNKNOWN
+end
+
+                        -- Fallback to ATT if MM not installed.
+                        -- Thank you, Patros and Arkadius!
+function Util.ATTPrice(link)
+                        -- ATT might load after WW, so check some random
+                        -- internal "addMenuItems" that gets set during
+                        -- ATT initialization
+    if  not(    ArkadiusTradeTools
+            and ArkadiusTradeTools.Modules
+            and ArkadiusTradeTools.Modules.Sales
+            and ArkadiusTradeTools.Modules.Sales.addMenuItems
+            )
+        then
+        return nil
+    end
+                        -- Try for a recent price: last 3 days. If nothing
+                        -- that recent, reach back for last 3+ months or so.
+    local day_secs = 24*60*60
+    local att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
+                        link, GetTimeStamp() - (day_secs * 3))
+    if (not att) or (att <= 0) then
+        att = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(
+                        link, GetTimeStamp() - (day_secs * 100))
+    end
+    return att
 end

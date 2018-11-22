@@ -20,6 +20,7 @@ sub dirls($)
 # push @files, dirls('src');
 push @files, 'WritWorthy.lua';
 push @files, 'WritWorthy_AutoQuest.lua';
+push @files, 'WritWorthy_Util.lua';
 push @files, 'Bindings.xml';
 print join("\n", @files) . "\n";
 
