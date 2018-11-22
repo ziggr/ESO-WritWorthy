@@ -1,3 +1,8 @@
+[B]4.2.5 2018-11-22[/B]
+[LIST]
+[*] Yet another blind attempt to avoid UI Error during early call into ATT.
+[/LIST]
+
 [B]4.2.4 2018-11-21[/B]
 [LIST]
 [*] Restore ATT/Arkadius' Trade Tools support. Thanks to Arkadius for the find!
