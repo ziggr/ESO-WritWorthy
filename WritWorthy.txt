@@ -13,9 +13,14 @@
 #   is the "Settings/Addons" UI library that everybody uses.
 #   contains its own manifest, must be installed separately.
 
+# Optional libraries used only for unreleased WritWorthy_AutoQuest.lua.
+# Optional as long as I refuse to publish the autoquest feature.
+#
 # LibCustomMenu     optional
-#   used only for unreleased WritWorthy_AutoQuest.lua. Optional as long as I
-#   refuse to publish the autoquest feature.
+#   allows "Accept Writ Quests" button in inventory window
+#
+# LibCraftText      optional
+#   allows Accept/Rolis dialog automation in languages other than EN English.
 
 # LibSlashCommander optional
 #   provides autocompletion and help text for /writworthy

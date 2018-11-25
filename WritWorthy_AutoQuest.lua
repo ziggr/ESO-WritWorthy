@@ -8,27 +8,6 @@ ZO_CreateStringId("WRIT_WORTHY_ACCEPT_QUESTS", "Accept Writ Quests")
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 WritWorthy.AQCache = {}             -- class defined later in this file
 
-                        -- Hints to help us immediately recognize accepted
-                        -- master writ quests so that we can skip over any
-                        -- sealed master writs of that type when looking for
-                        -- the next acceptable writ.
-                        --
-                        -- Imperfect! Both WW and BS use the same quest
-                        -- name and details for completed weapons.
-                        --
-WritWorthy.QUEST_TITLES = {
-  ["A Masterful Concoction"] = { CRAFTING_TYPE_ALCHEMY }
-, ["Masterful Tailoring"   ] = { CRAFTING_TYPE_CLOTHIER }
-, ["Masterful Leatherwear" ] = { CRAFTING_TYPE_CLOTHIER }
-, ["A Masterful Plate"     ] = { CRAFTING_TYPE_BLACKSMITHING }
-, ["A Masterful Glyph"     ] = { CRAFTING_TYPE_ENCHANTING }
-, ["A Masterful Feast"     ] = { CRAFTING_TYPE_PROVISIONING }
-, ["A Masterful Shield"    ] = { CRAFTING_TYPE_WOODWORKING }
-, ["A Masterful Weapon"    ] = { CRAFTING_TYPE_WOODWORKING
-                               , CRAFTING_TYPE_BLACKSMITHING }
-, ["Masterful Jewelry"     ] = { CRAFTING_TYPE_JEWELRYCRAFTING }
-}
-
 local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
                             -- auto-questable sealed master writs.
                             -- Because "nil" means "don't know"
@@ -260,22 +239,17 @@ function WritWorthy:OnRolisChatterBegin()
     zo_callLater(function() WritWorthy:RolisChoose() end, 500)
 end
 
-WritWorthy.QUEST_TURN_IN_TEXT = {
-   [ "<Finish the job.>"                    ] = true
-,  [ "I've finished the Alchemy job."       ] = true
-,  [ "I've finished the Blacksmithing job." ] = true
-,  [ "I've finished the Clothier job."      ] = true
-,  [ "I've finished the Enchanting job."    ] = true
-,  [ "I've finished the Jewelry job."       ] = true
-,  [ "I've finished the Provisioning job."  ] = true
-,  [ "I've finished the Woodworking job."   ] = true
-}
-
 function WritWorthy:RolisChoose()
     local opt_text = GetChatterOption(1)
-    if WritWorthy.QUEST_TURN_IN_TEXT[opt_text] then
+                        -- "I've finished the Blacksmithing job."
+    local ct = LibCraftText.RolisDialogOptionToCraftingType(opt_text)
+
+                        -- "<Finish the job.>"
+    if ct or LibCraftText.MASTER.DIALOG.OPTION_FINISH_JOB == opt_text then
         SelectChatterOption(1)
-    elseif "Store (Mastercraft Mediator)" == opt_text then
+
+                        -- "Store (Mastercraft Mediator)"
+    elseif LibCraftText.MASTER.DIALOG.OPTION_STORE == opt_text then
                         -- All writs turned in. We're done
         WritWorthy:AQInvalidateAll()
         WritWorthy:UnregisterRolisChatter()
@@ -301,7 +275,8 @@ end
 
 function WritWorthy:RolisCompleteQuest(quest_index)
     local x = { GetJournalQuestEnding(quest_index) }
-    if x[2] == "<He notes your work and tenders payment.>" then
+                        -- "<He notes your work and tenders payment.>"
+    if x[2] == LibCraftText.MASTER.DIALOG.RESPONSE_ENDING then
         CompleteQuest()
     end
 end
@@ -338,7 +313,7 @@ function WritWorthy.ScanQuestJournal()
     for qi = 1, MAX_JOURNAL_QUESTS do
         local qinfo = { GetJournalQuestInfo(qi) }
         local quest_name = qinfo[1]
-        local crafting_type_list = WritWorthy.QUEST_TITLES[quest_name]
+        local crafting_type_list = LibCraftText.MasterQuestNameToCraftingTypeList(quest_name)
         if qinfo[10] == QUEST_TYPE_CRAFTING and not crafting_type_list then
             d("Unknown crafting quest:'"..quest_name.."'")
         end
