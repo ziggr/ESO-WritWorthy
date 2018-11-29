@@ -1,5 +1,6 @@
 New as of 2018-11-15: [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
 
+New as of 2018-11-29: [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info2204-LibPrice.html"]LibPrice[/URL]
 
 [LIST]
 [*]Is a master writ worth doing?
@@ -19,8 +20,9 @@ It also optionally dumps a complete material list to chat. Surprisingly useful w
 
 [B]Requirements[/B]
 [LIST]
-[*] (Optional) uses [URL="http://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL] for material prices.
 [*] [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
+[*] [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info2204-LibPrice.html"]LibPrice[/URL]
+[*] (Optional) uses any of [URL="https://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL], [URL="https://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html"]Arkadius' Trade Tools[/URL], [URL="https://www.esoui.com/downloads/info1245-TamrielTradeCentre.html"]Tamriel Trade Centre[/URL] for material price data.
 [/LIST]
 
 [B]Does this character have the skills to do so?[/B]
@@ -51,9 +53,5 @@ Automatic crafting requires that the appropriate cost-reduction skills have been
 
 [B]Follow development on GitHub[/B]
 [URL=https://github.com/ziggr/ESO-WritWorthy]ESO-WritWorthy on GitHub[/URL]
-
-[B]Thank You[/B]
-Huge thank you to Rhyono and Dolgubon for all the programming help.
-I pulled some internal glyph and recipe list item_id values from [URL=http://www.esoui.com/downloads/info1376-CraftStoreFixedandImproved.html]CraftStore Fixed and Improved[/URL] and [URL=http://www.esoui.com/downloads/info1043-ESOMasterRecipeList.html]ESO Master Recipe List[/URL]: saved me a couple hours of work.
 
 --Z

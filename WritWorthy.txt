@@ -6,12 +6,18 @@
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0
+## DependsOn: LibAddonMenu-2.0 LibPrice
 ## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
 
 # LibAddonMenuLibAddonMenu-2.0  required
 #   is the "Settings/Addons" UI library that everybody uses.
 #   contains its own manifest, must be installed separately.
+
+# LibPrice  required
+#   provides material price lookups from
+#       Master Merchant
+#       Arkadius' Trade Tools
+#       Tamriel Trade Centre.
 
 # Optional libraries used only for unreleased WritWorthy_AutoQuest.lua.
 # Optional as long as I refuse to publish the autoquest feature.
