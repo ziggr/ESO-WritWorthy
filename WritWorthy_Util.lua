@@ -67,6 +67,7 @@ end
 -- Chat Colors ---------------------------------------------------------------
 
 WritWorthy.Util.COLOR_RED    = "FF3333"
+WritWorthy.Util.COLOR_GREEN  = "33AA33"
 WritWorthy.Util.COLOR_GREY   = "999999"
 WritWorthy.Util.COLOR_ORANGE = "FF8800"
 

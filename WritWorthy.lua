@@ -135,9 +135,10 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
                         -- Accumulators for totals and text
     local tooltip_elements   = {}
     local total_gold         = 0
+    local mat_gold           = nil
 
     if mat_list then
-        local mat_gold   = WritWorthy.MatRow.ListTotal(mat_list)
+        mat_gold   = WritWorthy.MatRow.ListTotal(mat_list)
         if mat_gold then
             total_gold   = total_gold + mat_gold
         end
@@ -158,12 +159,26 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
     table.insert( tooltip_elements
                 , "Per voucher: " .. Util.ToMoney(per_voucher_gold) .. "g" )
 
-                        -- Avoid line breaks in the middle of an element
-                        -- Insert our own line break between elements 2 and 3.
+    if WritWorthy.savedVariables.sell_per_voucher then
+        local sell_total = WritWorthy.savedVariables.sell_per_voucher * voucher_ct
+        local sell_net   = sell_total - (mat_gold or sell_total)
+        local msg        = nil
+        if 0 < sell_net then
+            msg = string.format( "|c%sSell for %s g"
+                               , WritWorthy.Util.COLOR_GREEN
+                               , Util.ToMoney(sell_net))
+        else
+            msg = string.format( "|c%sCannot sell for %s g"
+                               , WritWorthy.Util.COLOR_ORANGE
+                               , Util.ToMoney(sell_net))
+        end
+        table.insert(tooltip_elements, msg)
+    end
+                        -- Avoid line breaks if we only have a couple elements.
     if 3 <= #tooltip_elements then
-        return          tooltip_elements[1]
-             .. "  " .. tooltip_elements[2]
-             .. "\n" .. tooltip_elements[3]
+        tooltip_elements[1] = tooltip_elements[1] .. "  " .. tooltip_elements[2]
+        table.remove(tooltip_elements,2)
+        return table.concat(tooltip_elements,"\n")
      else
         return table.concat(tooltip_elements, " ")
      end
