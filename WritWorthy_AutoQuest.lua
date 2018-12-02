@@ -16,31 +16,37 @@ local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
 function WritWorthy:AQAddKeyBind()
     local menu = LibStub("LibCustomMenu")
     if not menu then return end
-    menu:RegisterContextMenu(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
-    menu:RegisterKeyStripEnter(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
+    if not WritWorthy.RequireLibCraftText() then return end
 
-    self.auto_queue_button_group = {
-          alignment = KEYBIND_STRIP_ALIGN_LEFT
-        , {   name      = GetString(WRIT_WORTHY_ACCEPT_QUESTS)
-          ,   keybind   = "WRIT_WORTHY_ACCEPT_QUESTS"
-          ,   enabled   = true
-          ,   visible   = WritWorthy_BagHasAnyWrits
-          ,   order     = 100
-          ,   callback  = WritWorthy_AutoQuest
-          }
-    }
+                        -- ### BROKEN in 4.2 !
+                        -- Not sure what broke when, will figure out later.
+                        -- or not. `/writworthy auto` is mo fasta.
 
-    BACKPACK_MENU_BAR_LAYOUT_FRAGMENT:RegisterCallback(
-          "StateChange"
-        , function(old_state, new_state)
-            if new_state == SCENE_SHOWN then
---                WritWorthy:AQInvalidateAll()
-                KEYBIND_STRIP:AddKeybindButtonGroup(WritWorthy.auto_queue_button_group)
-            elseif new_state == SCENE_HIDING then
-                KEYBIND_STRIP:RemoveKeybindButtonGroup(WritWorthy.auto_queue_button_group)
-            end
-          end
-        )
+--     menu:RegisterContextMenu(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
+--     menu:RegisterKeyStripEnter(WritWprthy_AddAutoQuest, menu.CATEGORY_EARLY)
+
+--     self.auto_queue_button_group = {
+--           alignment = KEYBIND_STRIP_ALIGN_LEFT
+--         , {   name      = GetString(WRIT_WORTHY_ACCEPT_QUESTS)
+--           ,   keybind   = "WRIT_WORTHY_ACCEPT_QUESTS"
+--           ,   enabled   = true
+--           ,   visible   = WritWorthy_BagHasAnyWrits
+--           ,   order     = 100
+--           ,   callback  = WritWorthy_AutoQuest
+--           }
+--     }
+
+--     BACKPACK_MENU_BAR_LAYOUT_FRAGMENT:RegisterCallback(
+--           "StateChange"
+--         , function(old_state, new_state)
+--             if new_state == SCENE_SHOWN then
+-- --                WritWorthy:AQInvalidateAll()
+--                 KEYBIND_STRIP:AddKeybindButtonGroup(WritWorthy.auto_queue_button_group)
+--             elseif new_state == SCENE_HIDING then
+--                 KEYBIND_STRIP:RemoveKeybindButtonGroup(WritWorthy.auto_queue_button_group)
+--             end
+--           end
+--         )
 end
 
 -- Enable/disable function for AutoQuest "Accept Writ Quests"
@@ -240,6 +246,8 @@ function WritWorthy:OnRolisChatterBegin()
 end
 
 function WritWorthy:RolisChoose()
+    if not WritWorthy.RequireLibCraftText() then return end
+
     local opt_text = GetChatterOption(1)
                         -- "I've finished the Blacksmithing job."
     local ct = LibCraftText.RolisDialogOptionToCraftingType(opt_text)
@@ -274,6 +282,7 @@ function WritWorthy:OnRolisQuestCompleteDialog(event_id, quest_index)
 end
 
 function WritWorthy:RolisCompleteQuest(quest_index)
+    if not WritWorthy.RequireLibCraftText() then return end
     local x = { GetJournalQuestEnding(quest_index) }
                         -- "<He notes your work and tenders payment.>"
     if x[2] == LibCraftText.MASTER.DIALOG.RESPONSE_ENDING then
@@ -298,7 +307,21 @@ function WritWorthy:GetQuestState()
     return qs
 end
 
+function WritWorthy.RequireLibCraftText()
+    if WritWorthy.aq_libcrafttext_loaded == nil then
+        if LibCraftText then
+            WritWorthy.aq_libcrafttext_loaded = true
+        else
+            WritWorthy.aq_libcrafttext_loaded = false
+            d("|cFF6666WritWorthy_AutoQuest: missing LibCraftText.")
+        end
+    end
+    return WritWorthy.aq_libcrafttext_loaded
+end
+
 function WritWorthy.ScanQuestJournal()
+    if not WritWorthy.RequireLibCraftText() then return {} end
+
     -- return a table[crafting_type] = quest_index
 
     -- If a single quest matches multiple possible crafting types, associate

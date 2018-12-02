@@ -483,6 +483,10 @@ function WritWorthy.SlashCommand(arg1)
                        , mw_ct
                        , Util.ToMoney(voucher_ct)
                        ))
+    elseif arg1:lower() == "auto" then
+        if WritWorthy_AutoQuest then
+            WritWorthy_AutoQuest()
+        end
     else
         WritWorthyUI_ToggleUI()
     end
@@ -511,6 +515,14 @@ function WritWorthy.RegisterSlashCommands()
             sub_discover:SetCallback(function() WritWorthy.SlashCommand("discover") end)
             sub_discover:SetDescription("Dump item_link writ fields to tables in log")
         end
+
+        if WritWorthy.AQAddKeyBind then
+            local sub_auto = cmd:RegisterSubCommand()
+            sub_auto:AddAlias("auto")
+            sub_auto:SetCallback(function() WritWorthy.SlashCommand("auto") end)
+            sub_auto:SetDescription("Automatically accept quests from inventory.")
+        end
+
     else
         SLASH_COMMANDS["/writworthy"] = WritWorthy.SlashCommand
     end
