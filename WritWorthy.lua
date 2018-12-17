@@ -206,6 +206,7 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
 
     local mat_list, know_list, parser   = WritWorthy.ToMatKnowList(item_link)
+    if not parser then return end
     local voucher_ct = WritWorthy.ToVoucherCount(item_link)
     local mat_text = WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
     if not mat_text then return end
