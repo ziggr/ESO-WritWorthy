@@ -1,3 +1,8 @@
+[B]4.2.7 2018-12-19[/B]
+[LIST]
+[*] bugfix: error in WritWorthy.TooltipInsertOurText() for New Life Charity Writ.
+[/LIST]
+
 [B]4.2.6 2018-11-29[/B]
 [LIST]
 [*] Tamriel Trade Centre support.
