@@ -617,7 +617,7 @@ Smithing.SET_BONUS = {
 ,   [237] = { name = "Leki's Focus",                                                     }
 ,   [238] = { name = "Fasalla's Guile",                                                  }
 ,   [239] = { name = "Warrior's Fury",                                                   }
-,   [240] = { name = "Kvatch Gladiator",                trait_ct = 6, dol_set_index = 34 }
+,   [240] = { name = "Kvatch Gladiator",                trait_ct = 5, dol_set_index = 34 }
 ,   [241] = { name = "Varen's Legacy",                  trait_ct = 7, dol_set_index = 35 }
 ,   [242] = { name = "Pelinal's Aptitude",              trait_ct = 9, dol_set_index = 36 }
 ,   [243] = { name = "Hide of Morihaus",                                                 }
