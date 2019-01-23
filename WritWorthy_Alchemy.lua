@@ -332,6 +332,24 @@ function Parser:ParseItemLink(item_link)
     return self
 end
 
+
+function Parser:GetRequiredCraftCt()
+                -- Update 21/4.3.0/100026/Wrathbone 2019-01 reduced
+                -- required potion/poison counts.
+                --
+                -- 20x potions or poisons before 4.3.0
+                -- 16x potions or poisons after.
+    local api_version = GetAPIVersion()
+    local result_ct   = 20
+    if 100026 <= api_version then
+        result_ct = 16
+    end
+
+    local result_per_craft = 4
+    if self.is_poison then result_per_craft = 16 end
+    return math.ceil(result_ct / result_per_craft)
+end
+
 function Parser:ToMatList()
     -- d("self.r3list ct:"..tostring(#self.r3list))
 
@@ -339,10 +357,7 @@ function Parser:ToMatList()
     local MatRow = WritWorthy.MatRow
     local min_gold = 9999999999
     local min_r3   = nil
-    local mat_ct   = 5  -- Writs usually require 20x, I make 4x potion, 16x poison per mat
-    if self.is_poison then
-        mat_ct = 2
-    end
+    local mat_ct   = self:GetRequiredCraftCt()
     for _, r3 in pairs(self.r3list) do
         r3[1].mat = MatRow:FromName(r3[1].name, mat_ct)
         r3[2].mat = MatRow:FromName(r3[2].name, mat_ct)
