@@ -1,3 +1,12 @@
+[B]4.3.1 2019-02-01[/B]
+[LIST]
+[*] Update 21/4.3.1/API 100026/Wrathstone
+[*] Alchemy: craft 16x, not 32x, poisons for Update 21 on PTS.
+    (Current live server, Update 20/4.2.12/API 100025/Murkmire, continues to craft 32x poisons, since live still requires 20x poisons per master writ.)
+[*] Kvatch Gladiator requires 5 traits, not 6.
+    Thanks, azatee, for the report!
+[/LIST]
+
 [B]4.2.7 2018-12-19[/B]
 [LIST]
 [*] bugfix: error in WritWorthy.TooltipInsertOurText() for New Life Charity Writ.
