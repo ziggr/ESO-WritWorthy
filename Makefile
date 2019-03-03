@@ -5,7 +5,6 @@ put:
 	cp -f ./WritWorthy*.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
 	cp -f ./WritWorthy.txt /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
 	cp -f ./*.xml /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
-	cp -f ./Libs/LibLazyCrafting/* /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/Libs/LibLazyCrafting/
 
 get:
 	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/WritWorthy.lua ../../SavedVariables/
@@ -31,19 +30,10 @@ zip:
 	cp -R Libs published/WritWorthy/Libs
 	cp ./WritWorthy* Bindings.xml published/WritWorthy/
 	rm -rf published/WritWorthy/Libs/LibCustomTitles/.git
-	rm published/WritWorthy/Libs/LibLazyCrafting/.git
-	rm published/WritWorthy/Libs/LibLazyCrafting/LLC.txt
-	rm published/WritWorthy/Libs/LibLazyCrafting/package.*
 
 	cd published; zip -r WritWorthy\ x.x.x.zip WritWorthy
 
 	rm -rf published/WritWorthy
-
-getllc:
-	cp -R ../LibLazyCrafting/* ./Libs/LibLazyCrafting/
-
-putllc:
-	cp -R ./Libs/LibLazyCrafting/* ../LibLazyCrafting/
 
 profile:
 	lua ZZProfiler_Dump.lua > profile.txt
