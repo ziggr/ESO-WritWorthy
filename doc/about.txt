@@ -1,6 +1,12 @@
-New as of 2018-11-15: [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
+[COLOR="Red"]System Requirements:[/COLOR]
+[LIST]
+[*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info1594-LibLazyCrafting.html"]LibLazyCrafting[/URL]
+[*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
+[*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info2204-LibPrice.html"]LibPrice[/URL]
+[*] (Optional) uses any of [URL="https://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL], [URL="https://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html"]Arkadius' Trade Tools[/URL], [URL="https://www.esoui.com/downloads/info1245-TamrielTradeCentre.html"]Tamriel Trade Centre[/URL] for material price data.
+[/LIST]
 
-New as of 2018-11-29: [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info2204-LibPrice.html"]LibPrice[/URL]
+[B]Why WritWorthy?[/B]
 
 [LIST]
 [*]Is a master writ worth doing?
@@ -17,13 +23,6 @@ Shopping guild stores for Master Writs? What is the per-voucher cost of a writ, 
 This add-on adds text to each Master Writ's tooltip, showing the total material cost, purchase price (if any), and the cost per writ voucher reward.
 
 It also optionally dumps a complete material list to chat. Surprisingly useful when filling Alchemy writs.
-
-[B]Requirements[/B]
-[LIST]
-[*] [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
-[*] [COLOR="Red"]Required, install separately: [/COLOR][URL="https://www.esoui.com/downloads/info2204-LibPrice.html"]LibPrice[/URL]
-[*] (Optional) uses any of [URL="https://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL], [URL="https://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html"]Arkadius' Trade Tools[/URL], [URL="https://www.esoui.com/downloads/info1245-TamrielTradeCentre.html"]Tamriel Trade Centre[/URL] for material price data.
-[/LIST]
 
 [B]Does this character have the skills to do so?[/B]
 
