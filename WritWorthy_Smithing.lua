@@ -991,7 +991,7 @@ function Parser:ParseItemLink(item_link)
 --    6 motif_num      0
 
     self.request_item   = Smithing.REQUEST_ITEMS[item_num]
-if not self.request_item then d("WW Error unknown item_num:"..tostring(item_num)) end
+    if not self.request_item then return nil end
     Log:Add("request_item:"..tostring(item_num).." "
             ..tostring(self.request_item.item_name))
     self.crafting_type = self.request_item.school.trade_skill_type
