@@ -12,68 +12,108 @@ local Util = WritWorthy.Util
                         -- match our filter type ID for no real reason.
 local SUBFILTER_WRITWORTHY = 103
 
-                        -- see EXTERNAL_FILTER_PROVIDER in ags FilterBase.lua
+                        -- see WRIT_WORTHY_WRIT_COST_FILTER in ags data/FilterIds.lua
 local FILTER_TYPE_ID_WRITWORTHY = 103
 
-function WritWorthy.InitAGSIntegration()
+function WritWorthy.InitAGSIntegration(trading_house_wrapper)
+    local AGS = AwesomeGuildStore   -- for less typing
+
     if WritWorthy.ags_init_started then return end
     WritWorthy.ags_init_started = true
-    local AGS = AwesomeGuildStore   -- for less typing
     if not (    AGS
             and AGS.GetAPIVersion
-            and AGS.GetAPIVersion() == 3) then
+            and AGS.GetAPIVersion() == 4) then
         return
     end
 
-    Log:Add("InitAGSIntegration, AGS e:"..tostring(AwesomeGuildStore ~= nil)
-        .." .FILTER_PRESETS e:"..tostring(AwesomeGuildStore
-                                      and AwesomeGuildStore.FILTER_PRESETS ~= nil))
-    Log:Add("AGS.FilterBase:"..tostring(AwesomeGuildStore
-                                      and AwesomeGuildStore.FilterBase))
-    WritWorthy:InsertIntoAGSTables()
+    local FilterBase            = AGS.class.FilterBase
+    local ValueRangeFilterBase  = AGS.class.ValueRangeFilterBase
+    local FILTER_ID             = AGS.data.FILTER_ID
+    local SUB_CATEGORY_ID       = AGS.data.SUB_CATEGORY_ID
+    local MIN_VALUE             =     0
+    local MAX_VALUE             = 10000
+    local WW_AGS_Filter         = ValueRangeFilterBase:Subclass()
+    WritWorthy.WW_AGS_Filter    = WW_AGS_Filter
+
+    function WW_AGS_Filter:New(...)
+        return ValueRangeFilterBase.New(self, ...)
+    end
+
+    function WW_AGS_Filter:Initialize()
+        ValueRangeFilterBase.Initialize(
+                      self
+                    , FILTER_ID.WRIT_WORTHY_WRIT_COST_FILTER
+                    , FilterBase.GROUP_LOCAL
+                    , {
+                          label     = "WritWorthy cost per voucher"
+                        , currency  = CURT_MONEY
+                        , min       = MIN_VALUE
+                        , max       = MAX_VALUE
+                        , precision = 0
+                        , steps     = { MIN_VALUE, 2, 4, 6, 8, 10, 20, 30, 40
+                                      , 50, 100, 200, 300, 400, MAX_VALUE }
+                        , enabled    = {
+                            [SUB_CATEGORY_ID.CONSUMABLE_WRIT] = true
+                        }
+                    }
+        )
+    end
+
+    function WW_AGS_Filter:FilterLocalResult(item_data)
+        local item_link      = item_data.itemLink
+        local purchase_price = item_data.purchasePrice
+
+        local voucher_ct     = WritWorthy.ToVoucherCount(item_link)
+        if not voucher_ct then
+            return true
+        end
+        local mat_gold   = WritWorthy.GetMatCost(item_link)
+        if not mat_gold then
+            return true
+        end
+        local total_gold = (mat_gold or 0) + (purchase_price or 0)
+        local gold_per_voucher = Util.round(total_gold / voucher_ct)
+
+        if (self.localMin and gold_per_voucher < self.localMin) then
+            return false
+        elseif(self.localMax and self.localMax < gold_per_voucher) then
+            return false
+        end
+
+        return true
+    end
+
+    function WW_AGS_Filter:IsLocal()
+        return true
+    end
+
+    AGS:RegisterFilter(WW_AGS_Filter:New())
+    AGS:RegisterFilterFragment(AGS.class.PriceRangeFilterFragment:New(
+                                    FILTER_ID.WRIT_WORTHY_WRIT_COST_FILTER))
 end
 
-function WritWorthy:InsertIntoAGSTables()
-    Log:StartNewEvent()
-    Log:Add("InsertIntoAGSTables")
-    if not (    AwesomeGuildStore
-            and AwesomeGuildStore.FilterBase ) then
-        Log:Add("InsertIntoAGSTables() called too soon."
-                .." AGS.FilterBase not yet defined.")
+-- Must be called AFTER AGS.SearchTabWrapper:InitializeFilters() because
+-- RegisterFilterFragment() requires InitializeFilters()'s creation of
+-- ags.tradingHouse.searchTab.filterArea.
+--
+-- Must be called BEFORE  searchManager:OnFiltersInitialized()
+-- and self.filterArea:OnFiltersInitialized()
+--
+-- AGS.callback.AFTER_FILTER_SETUP was created for exactly this purpose.
+--
+function WritWorthy.RegisterAGSInitCallback()
+    local AGS = AwesomeGuildStore   -- for less typing
+    if WritWorthy.ags_callback_registered then return end
+    WritWorthy.ags_callback_registered = true
+    if not (    AGS
+            and AGS.GetAPIVersion
+            and AGS.GetAPIVersion() == 4) then
         return
     end
-                        -- Find the FILTER_PRESETS slot for
-                        -- Consumables/Master Writs
-    local want_label = zo_strformat( SI_TOOLTIP_ITEM_NAME
-                                   , GetString( "SI_ITEMTYPE"
-                                              , ITEMTYPE_MASTER_WRIT
-                                              )
-                                   )
-    local fp  = AwesomeGuildStore.FILTER_PRESETS
-    local fpc = fp[ITEMFILTERTYPE_CONSUMABLE]
-    for i,subcategory in ipairs(fpc.subcategories) do
-        if (     subcategory.filters
-            and  subcategory.filters[TRADING_HOUSE_FILTER_TYPE_ITEM]
-            and #subcategory.filters[TRADING_HOUSE_FILTER_TYPE_ITEM] == 1
-            and  subcategory.filters[TRADING_HOUSE_FILTER_TYPE_ITEM][1] == ITEMTYPE_MASTER_WRIT) then
-            subcategory.subfilters = subcategory.subfilters or {}
-            table.insert(subcategory.subfilters, SUBFILTER_WRITWORTHY)
-        end
-    end
 
-    if not WritWorthy.ags_filter_class then
-        WritWorthy.ags_filter_class = WritWorthy.AGS_CreateFilterClass()
-    end
-                        -- Insert a subfilter definition for
-                        -- SUBFILTER_WRITWORTHY.
-    local filter_preset = {
-        type = FILTER_TYPE_ID_WRITWORTHY
-    ,   label  = "Per Voucher:" -- user visible if we relay this to
-                                -- label:SetText() in Initialize()
-    ,   filter = FILTER_TYPE_ID_WRITWORTHY
-    ,   class  = WritWorthy.ags_filter_class
-    }
-    AwesomeGuildStore.SUBFILTER_PRESETS[SUBFILTER_WRITWORTHY] = filter_preset
+    AGS:RegisterCallback( AGS.callback.AFTER_FILTER_SETUP
+                        , WritWorthy.InitAGSIntegration
+                        )
 end
 
 local CACHED_MAT_COST_MAX_CT = 100
@@ -101,8 +141,6 @@ function WritWorthy.SetCachedMatCost(item_link, mat_cost)
         if CACHED_MAT_COST_MAX_CT <= WritWorthy.cached_mat_cost_ct then
             WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct - 1
             WritWorthy.cached_mat_cost[k] = nil
-            -- Log:Add("SetCachedMatCost removed:"..tostring(k)
-            --         .." ct:"..tostring(WritWorthy.cached_mat_cost_ct))
         else
             break
         end
@@ -110,8 +148,6 @@ function WritWorthy.SetCachedMatCost(item_link, mat_cost)
 
     WritWorthy.cached_mat_cost_ct = WritWorthy.cached_mat_cost_ct + 1
     WritWorthy.cached_mat_cost[item_link] = mat_cost
-    -- Log:Add("SetCachedMatCost added  :"..tostring(item_link)
-    --         .." ct:"..tostring(WritWorthy.cached_mat_cost_ct))
 end
 
 function WritWorthy.GetMatCost(item_link)
@@ -130,147 +166,3 @@ function WritWorthy.GetMatCost(item_link)
     WritWorthy.SetCachedMatCost(item_link, mat_gold)
     return mat_gold
 end
-
--- begin editor inheritance from Master Merchant -----------------------------
-
-function WritWorthy.AGS_CreateFilterClass()
-    local gettext           = LibStub("LibGetText")("AwesomeGuildStore").gettext
-    local FilterBase        = AwesomeGuildStore.FilterBase
-    local WWAGSFilter       = FilterBase:Subclass()
-    local LINE_SPACING      = 4
-
-    function WWAGSFilter:New(name, tradingHouseWrapper, ...)
-                        -- FilterBase.New() internally calls
-                        --   InitializeBase(), creating container control
-                        --      and resetButton
-                        --   Initialize() overridable
-        return FilterBase.New(self, FILTER_TYPE_ID_WRITWORTHY, name, tradingHouseWrapper, ...)
-    end
-
-    function WWAGSFilter:Initialize(name, tradingHouseWrapper, filter_preset)
-        local tradingHouse = tradingHouseWrapper.tradingHouse
-        local saveData = tradingHouseWrapper.saveData
-        local container = self.container
-
-                        -- Red (pink!) title for our portion of
-                        -- the filter sidebar.
-        local label = container:CreateControl(name .. "Label", CT_LABEL)
-        label:SetFont("ZoFontWinH4")
-        label:SetText(filter_preset.label)
-        self:SetLabelControl(label)
-
-                        -- Edit field.
-        local bg = CreateControlFromVirtual(
-                          "WritWorthyAGSEditBG"
-                        , container
-                        , "WritWorthyAGSEditBox"
-                        )
-        bg:SetAnchor(TOPLEFT    , label    , BOTTOMLEFT , 0,  LINE_SPACING)
-        bg:SetAnchor(BOTTOMRIGHT, container, BOTTOMRIGHT, 0,  0)
-        self.edit = bg:GetNamedChild("Box")
-        ZO_EditDefaultText_Initialize(self.edit, "Filter by crafted cost")
-        self.edit:SetMaxInputChars(6)
-        self.edit:SetHandler("OnTextChanged",
-            function()
-                ZO_EditDefaultText_OnTextChanged(self.edit)
-                self:HandleChange()
-            end
-        )
-        self.edit:SetTextType(TEXT_TYPE_NUMERIC_UNSIGNED_INT)
-
-        container:SetHeight(  label:GetHeight() + LINE_SPACING
-                            + 28 )
-
-        local tooltipText = gettext("Reset <<1>> Filter", label:GetText():gsub(":", ""))
-        self.resetButton:SetTooltipText(tooltipText)
-    end
-
-    function WWAGSFilter:GetTextAsNumber()
-        local s = self.edit:GetText()
-        local n = tonumber(s)
-        if n and 0 <= n and n <= 99999 then return n end
-        return nil
-    end
-
-    function WWAGSFilter:BeforeRebuildSearchResultsPage(tradingHouseWrapper)
-        if(not self:IsDefault()) then
-            self.max_gold_per_voucher = self:GetTextAsNumber()
-            return true
-        end
-        return false
-    end
-
-    function WWAGSFilter:ApplyFilterValues(filterArray)
-        -- do nothing here as we want to filter on the result page
-    end
-
-    function WWAGSFilter:FilterPageResult(index, icon, name, quality, stackCount, sellerName, timeRemaining, purchasePrice)
-                        -- Is this a sealed master writ that WritWorthy
-                        -- can understand?
-        local item_link  = GetTradingHouseSearchResultItemLink(index,LINK_STYLE_DEFAULT)
-        local voucher_ct = WritWorthy.ToVoucherCount(item_link)
-        if not voucher_ct then
-            return true
-        end
-        local mat_gold   = WritWorthy.GetMatCost(item_link)
-        if not mat_gold then
-            return true
-        end
-        local total_gold = (mat_gold or 0) + (purchasePrice or 0)
-        local gold_per_voucher = Util.round(total_gold / voucher_ct)
-        return gold_per_voucher <= self.max_gold_per_voucher
-    end
-
-    function WWAGSFilter:Reset()
-        self.edit:SetText("")
-    end
-
-    function WWAGSFilter:IsDefault()
-        local n = self:GetTextAsNumber()
-        local is_default = not n
-        return is_default
-    end
-
-    function WWAGSFilter:Serialize()
-        local per_voucher = self:GetTextAsNumber()
-        if not per_voucher then return "" end
-        return tostring(per_voucher)
-    end
-
-    function WWAGSFilter:Deserialize(state)
-        local text   = state
-        local number = tonumber(text)
-        if number then
-            self.edit:SetText(tostring(number))
-        else
-            self.edit:SetText("")
-        end
-    end
-
-    function WWAGSFilter:GetTooltipText(state)
-                        -- Return a list of { label, text } tuples
-                        -- that appear in the AGS search history.
-        local tip_line_list = {}
-
-        local text   = state
-        local number = tonumber(text)
-        if number then
-            local line = { label = "Crafted per-voucher cost"
-                         , text  = Util.ToMoney(number).."g"
-                         }
-            table.insert(tip_line_list, line)
-        end
-        return tip_line_list
-    end
-
-    return WWAGSFilter
-end
-
---[[ Still not working yet
-
-* sporadic "duplicate name" errors on load
-
--- Not adding for now, but I could see this being useful:
-* filter by "motif and traits known, writ is craftable"
-
-]]

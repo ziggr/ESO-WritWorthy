@@ -551,9 +551,7 @@ function WritWorthy.OnAddOnLoaded(event, addonName)
     if addonName == WritWorthy.name then
         if not WritWorthy.version then return end
         WritWorthy:Initialize()
-        WritWorthy.InitAGSIntegration()
-    -- elseif addonName == "AwesomeGuildStore" then
-    --     WritWorthy.InitAGSIntegration()
+        WritWorthy.RegisterAGSInitCallback()
     end
 end
 
