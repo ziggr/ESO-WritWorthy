@@ -1,3 +1,8 @@
+[B]4.3.3 2019-03-20[/B]
+[LIST]
+[*] Integrate with sirinsidiator's AwesomeGuildStore 1.0-beta so that once again you can search guild stores for writs whose purchase price + crafting cost is under N gold per voucher. Thank you TNTKokser for the bug report, and sirinsidator for AwesomeGuildStore and its easy-to-use API.
+[/LIST]
+
 [B]4.3.2 2019-03-03[/B]
 [LIST]
 [*] Remove embedded LibLazyCrafting. It is now a standalone library. Thank you, Dolgubon!
