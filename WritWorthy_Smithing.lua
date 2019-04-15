@@ -377,6 +377,11 @@ Smithing.REQUEST_ITEMS = {
 -- Learned by iterating over itemLink strings and dumping their baseText.
 -- Dump still around somewhere in doc/item_link.txt.
 --
+-- 2019-04-15 DEPRECATED use LibSets.GetSetInfo(set_num) once
+--            Baertram publishes it.
+--            Will retain this table as long as we still need
+--            Dolgubon-proprietary dol_set_index, which hopefully won't
+--            be very long.
 Smithing.SET_BONUS = {
     [  1] = nil
   , [  2] = nil
@@ -973,6 +978,39 @@ function Parser:New()
     return o
 end
 
+function Parser:GetSetBonus(set_id)
+    local r = {}
+
+    Parser.client_lang = Parser.client_lang or GetCVar("language.2")
+    if LibSets and LibSets.GetSetInfo then
+        local si = LibSets.GetSetInfo(set_id)
+        if si then
+            r.name           = si.names and (si.names[Parser.client_lang] or si.names["en"])
+            r.trait_ct       = si.traitsNeeded
+            r.dol_set_index  = nil      -- Eventually this needs to go away.
+        end
+    end
+
+-- d("Set Bonus:")
+-- d(r)
+                        -- 2019-04-15
+                        -- Fallback to old SET_BONUS table until Baertram
+                        -- publishes the new LibSet.GetSetInfo() API.
+    if not r.name then
+        r.name = Smithing.SET_BONUS[set_id].name
+-- d("Fallback name: "..tostring(r.name))
+    end
+    if not r.trait_ct then
+        r.trait_ct = Smithing.SET_BONUS[set_id].trait_ct
+-- d("Fallback trait_ct: "..tostring(r.trait_ct))
+    end
+    if not r.dol_set_index then
+        r.dol_set_index = Smithing.SET_BONUS[set_id].dol_set_index
+-- d("Fallback dol: "..tostring(r.dol_set_index))
+    end
+    return r
+end
+
 function Parser:ParseItemLink(item_link)
     local fields        = Util.ToWritFields(item_link)
     local item_num      = fields.writ1
@@ -995,7 +1033,7 @@ function Parser:ParseItemLink(item_link)
     Log:Add("request_item:"..tostring(item_num).." "
             ..tostring(self.request_item.item_name))
     self.crafting_type = self.request_item.school.trade_skill_type
-    self.set_bonus      = Smithing.SET_BONUS[set_num]
+    self.set_bonus      = self:GetSetBonus(set_num) -- Smithing.SET_BONUS[set_num]
     if not self.set_bonus then return Fail("set not found "..tostring(set_num)) end
     Log:Add("set_bonus:"..tostring(set_num))
     Log:Add(self.set_bonus)
