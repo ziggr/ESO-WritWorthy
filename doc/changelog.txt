@@ -1,3 +1,9 @@
+[B]5.0.1 2019-04-15[/B]
+[LIST]
+[*] Update 22/5.0.0/API 100027/Elsweyr
+[*] Use Baertram's LibSets for set info (number of traits required for a requested set). Optional. If LibSets isn't loaded, WritWorthy still has its own table of the same data.
+[/LIST]
+
 [B]4.3.3 2019-03-20[/B]
 [LIST]
 [*] Integrate with sirinsidiator's AwesomeGuildStore 1.0-beta so that once again you can search guild stores for writs whose purchase price + crafting cost is under N gold per voucher. Thank you TNTKokser for the bug report, and sirinsidator for AwesomeGuildStore and its easy-to-use API.
