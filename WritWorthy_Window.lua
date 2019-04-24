@@ -704,7 +704,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         inventory_data.ui_detail1 = parser.set_bonus.name
         inventory_data.ui_detail2 = ri.item_name
         inventory_data.ui_detail3 = (parser.motif and parser.motif.motif_name) or ""
-        inventory_data.ui_detail4 = ri.trait_set[parser.trait_num].trait_name
+        inventory_data.ui_detail4 = GetString("SI_ITEMTRAITTYPE", parser.trait_num) -- or ri.trait_set[parser.trait_num].trait_name
         inventory_data.ui_detail5 = parser.improve_level.name
     elseif parser.class == WritWorthy.Alchemy.Parser.class then
         inventory_data.ui_type =  UI_TYPE_ALCHEMY
