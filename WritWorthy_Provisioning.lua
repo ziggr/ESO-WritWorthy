@@ -611,7 +611,7 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     o.fooddrink_link = GetItemLinkRecipeResultItemLink(
                                       o.recipe_link
                                     , LINK_STYLE_DEFAULT)
-    o.fooddrink_name    = GetItemLinkName(o.fooddrink_link)
+    o.fooddrink_name    = zo_strformat("<<1>>", GetItemLinkName(o.fooddrink_link))
     o.is_known = IsItemLinkRecipeKnown(o.recipe_link)
 
     Log:Add("recipe_link:"..tostring(o.recipe_link))
