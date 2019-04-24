@@ -40,7 +40,8 @@ libs/LibCustomTitles/LibCustomTitles.lua
 
 WritWorthy_Define.lua
 
-# lang/default.lua
+# Load EN as default, then overwrite with any localized replacements.
+lang/en.lua
 lang/$(language).lua
 
 WritWorthy_Price.lua

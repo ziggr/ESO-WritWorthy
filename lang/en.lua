@@ -61,6 +61,116 @@ WW.STR = {
 , ["tooltip_queued"             ] = "queued for crafting"
 , ["tooltip_crafted"            ] = "crafting completed"
 
-, ["currency_suffix_gold"       ] = "g"
+, ["currency_suffix_gold"            ] = "g"
+, ["currency_suffix_voucher"         ] = "v"
+, ["currency_suffix_gold_per_voucher"] = "g/v"
+
+-- WritWorthy main window
+    -- Column headers
+, ["header_Type"                ] = "Type"
+, ["header_V"                   ] = "V"         -- Voucher Count, but only room for 1 character.
+, ["header_Detail 1"            ] = "Detail 1"
+, ["header_Detail 2"            ] = "Detail 2"
+, ["header_Detail 3"            ] = "Detail 3"
+, ["header_Detail 4"            ] = "Detail 4"
+, ["header_Detail 5"            ] = "Detail 5"
+, ["header_Q"                   ] = "Q"         -- Enqueued checkboxes, only room for 1 character.
+
+, ["header_tooltip_Type"        ] = nil
+, ["header_tooltip_V"           ] = "Voucher count"
+, ["header_tooltip_Detail1"     ] = nil
+, ["header_tooltip_Detail2"     ] = nil
+, ["header_tooltip_Detail3"     ] = nil
+, ["header_tooltip_Detail4"     ] = nil
+, ["header_tooltip_Detail5"     ] = nil
+, ["header_tooltip_Q"           ] = "Enqueued for crafting"
+
+, ["button_enqueue_all"         ] = "Enqueue All"
+, ["button_dequeue_all"         ] = "Dequeue All"
+, ["button_sort_by_station"     ] = "Sort by Station"
+
+, ["title_writ_inventory_player"            ] = "Writ Inventory: %s"
+, ["title_writ_inventory_player_bank"       ] = "Writ Inventory: %s + bank"
+
+, ["summary_queued_voucher_ct"              ] = "total vouchers queued"
+, ["summary_queued_mat_cost"                ] = "total materials queued"
+, ["summary_queued_average_voucher_cost"    ] = "average queued voucher cost"
+
+, ["summary_completed_voucher_ct"           ] = "total vouchers completed"
+, ["summary_completed_mat_cost"             ] = "total materials completed"
+, ["summary_completed_average_voucher_cost" ] = "average completed voucher cost"
+
+, ["status_list_empty_no_writs"             ] = "This character has no sealed master writs in its inventory."
 
 }
+
+
+-- list window, abbreviations/shortenings to keep strings short enough
+-- to fit in narrow column widths.
+--
+-- Keys on the left
+WW.SHORTEN = {
+-- DO NOT change the              DO CHANGE the
+-- keys on the left               strings on the
+-- here! These are                right.
+-- internal keys, NOT
+-- translated.
+--
+-- DO NOT CHANGE left             DO CHANGE right
+--   |  |  |                       |  |  |
+--   v  v  v                       v  v  v
+--
+  ["Alchemy"                  ] = "Alchemy"
+, ["Enchanting"               ] = "Enchant"
+, ["Provisioning"             ] = "Provis"
+
+, ["Rubedite Axe"             ] = "1h axe"
+, ["Rubedite Mace"            ] = "1h mace"
+, ["Rubedite Sword"           ] = "1h sword"
+, ["Rubedite Greataxe"        ] = "2h battle axe"
+, ["Rubedite Greatsword"      ] = "2h greatsword"
+, ["Rubedite Maul"            ] = "2h maul"
+, ["Rubedite Dagger"          ] = "dagger"
+
+, ["Rubedite Cuirass"         ] = "cuirass"
+, ["Rubedite Sabatons"        ] = "sabatons"
+, ["Rubedite Gauntlets"       ] = "gauntlets"
+, ["Rubedite Helm"            ] = "helm"
+, ["Rubedite Greaves"         ] = "greaves"
+, ["Rubedite Pauldron"        ] = "pauldron"
+, ["Rubedite Girdle"          ] = "girdle"
+
+, ["Ancestor Silk Robe"       ] = "robe"
+, ["Ancestor Silk Jerkin"     ] = "shirt"
+, ["Ancestor Silk Shoes"      ] = "shoes"
+, ["Ancestor Silk Gloves"     ] = "gloves"
+, ["Ancestor Silk Hat"        ] = "hat"
+, ["Ancestor Silk Breeches"   ] = "breeches"
+, ["Ancestor Silk Epaulets"   ] = "epaulets"
+, ["Ancestor Silk Sash"       ] = "sash"
+
+, ["Rubedo Leather Jack"      ] = "jack"
+, ["Rubedo Leather Boots"     ] = "boots"
+, ["Rubedo Leather Bracers"   ] = "bracers"
+, ["Rubedo Leather Helmet"    ] = "helmet"
+, ["Rubedo Leather Guards"    ] = "guards"
+, ["Rubedo Leather Arm Cops"  ] = "arm cops"
+, ["Rubedo Leather Belt"      ] = "belt"
+
+, ["Ruby Ash Bow"             ] = "bow"
+, ["Ruby Ash Inferno Staff"   ] = "flame"
+, ["Ruby Ash Frost Staff"     ] = "frost"
+, ["Ruby Ash Lightning Staff" ] = "lightning"
+, ["Ruby Ash Healing Staff"   ] = "resto"
+, ["Ruby Ash Shield"          ] = "shield"
+
+, ["Whitestrake's Retribution"] = "Whitestrake's"
+, ["Armor of the Seducer"     ] = "Seducer"
+, ["Night Mother's Gaze"      ] = "Night Mother's"
+, ["Alessia's Bulwark"        ] = "Alessia's"
+, ["Pelinal's Aptitude"       ] = "Pelinal's"
+
+, ["Epic"                     ] = "|c973dd8Epic|r"
+, ["Legendary"                ] = "|ce6c859Legendary|r"
+}
+

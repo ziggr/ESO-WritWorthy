@@ -4,7 +4,7 @@
 -- window.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
-
+local WW = WritWorthy
 WritWorthyInventoryList = ZO_SortFilterList:Subclass()
 -- Inherits field "self.list" which is the scroll list control.
 -- "WritWorthyInventoryList" is NOT the actual list control that has useful
@@ -108,14 +108,14 @@ WritWorthyInventoryList.CELL_UNTEXT_LIST = {
   [WritWorthyInventoryList.CELL_ENQUEUE] = true
 }
 WritWorthyInventoryList.HEADER_TOOLTIPS = {
-  [WritWorthyInventoryList.CELL_TYPE      ] = nil
-, [WritWorthyInventoryList.CELL_VOUCHERCT ] = "Voucher count"
-, [WritWorthyInventoryList.CELL_DETAIL1   ] = nil
-, [WritWorthyInventoryList.CELL_DETAIL2   ] = nil
-, [WritWorthyInventoryList.CELL_DETAIL3   ] = nil
-, [WritWorthyInventoryList.CELL_DETAIL4   ] = nil
-, [WritWorthyInventoryList.CELL_DETAIL5   ] = nil
-, [WritWorthyInventoryList.CELL_ENQUEUE   ] = "Enqueued for crafting"
+  [WritWorthyInventoryList.CELL_TYPE      ] = WW.STR.header_tooltip_Type
+, [WritWorthyInventoryList.CELL_VOUCHERCT ] = WW.STR.header_tooltip_V
+, [WritWorthyInventoryList.CELL_DETAIL1   ] = WW.STR.header_tooltip_Detail1
+, [WritWorthyInventoryList.CELL_DETAIL2   ] = WW.STR.header_tooltip_Detail2
+, [WritWorthyInventoryList.CELL_DETAIL3   ] = WW.STR.header_tooltip_Detail3
+, [WritWorthyInventoryList.CELL_DETAIL4   ] = WW.STR.header_tooltip_Detail4
+, [WritWorthyInventoryList.CELL_DETAIL5   ] = WW.STR.header_tooltip_Detail5
+, [WritWorthyInventoryList.CELL_ENQUEUE   ] = WW.STR.header_tooltip_Q
 }
 
 -- WritWorthyUI: The window around the inventory list ------------------------
@@ -196,11 +196,13 @@ function WritWorthyUI_ToggleUI()
         WritWorthyUI_RestorePos()
         local t = WritWorthyUIInventoryListTitle
         if t then
-            local s = "Writ Inventory: "..GetUnitName("player")
+
+            local fmt = WW.STR.title_writ_inventory_player
             if WritWorthy.savedVariables.enable_banked_vouchers then
-                s = "Writ Inventory: "..GetUnitName("player").. " + bank"
+                fmt = WW.STR.title_writ_inventory_player_bank
             end
-            t:SetText(s)
+            local ss = string.format(fmt, GetUnitName("player"))
+            t:SetText(ss)
         end
         WritWorthuUI_Refresh()
     end
@@ -221,8 +223,9 @@ end
 -- Inventory List ------------------------------------------------------------
 
 function WritWorthyInventoryList_HeaderInit(control, name, text, key)
+    local l10n_text = WW.STR["header_"..text] or text
     ZO_SortHeader_Initialize( control                   -- control
-                            , text                      -- name
+                            , l10n_text                 -- name
                             , key or string.lower(text) -- key
                             , ZO_SORT_ORDER_DOWN        -- initialDirection
                             , align or TEXT_ALIGN_LEFT  -- alignment
@@ -257,7 +260,7 @@ end
 function WritWorthyInventoryList:Initialize(control)
     ZO_SortFilterList.Initialize(self, control)
     self.inventory_data_list = {}
-    self:SetEmptyText("This character has no sealed master writs in its inventory.")
+    self:SetEmptyText(WW.STR.status_list_empty_no_writs)
 
                         -- Tell ZO_ScrollList how it can ask us to
                         -- create row controls.
@@ -317,25 +320,25 @@ function WritWorthyInventoryList:Initialize(control)
     , ["SummaryQueuedMatCost"            ] = { 1, 2, R, "" }
     , ["SummaryQueuedVoucherCost"        ] = { 1, 3, R, "" }
 
-    , ["SummaryQueuedVoucherCtUnit"      ] = { 2, 1, L, "v"   }
-    , ["SummaryQueuedMatCostUnit"        ] = { 2, 2, L, "g"   }
-    , ["SummaryQueuedVoucherCostUnit"    ] = { 2, 3, L, "g/v" }
+    , ["SummaryQueuedVoucherCtUnit"      ] = { 2, 1, L, WW.STR.currency_suffix_voucher }
+    , ["SummaryQueuedMatCostUnit"        ] = { 2, 2, L, WW.STR.currency_suffix_gold    }
+    , ["SummaryQueuedVoucherCostUnit"    ] = { 2, 3, L, WW.STR.currency_suffix_gold_per_voucher }
 
-    , ["SummaryQueuedVoucherCtLabel"     ] = { 3, 1, L, "total vouchers queued"      }
-    , ["SummaryQueuedMatCostLabel"       ] = { 3, 2, L, "total materials queued"     }
-    , ["SummaryQueuedVoucherCostLabel"   ] = { 3, 3, L, "average queued voucher cost" }
+    , ["SummaryQueuedVoucherCtLabel"     ] = { 3, 1, L, WW.STR.summary_queued_voucher_ct }
+    , ["SummaryQueuedMatCostLabel"       ] = { 3, 2, L, WW.STR.summary_queued_mat_cost   }
+    , ["SummaryQueuedVoucherCostLabel"   ] = { 3, 3, L, WW.STR.summary_queued_average_voucher_cost }
 
     , ["SummaryCompletedVoucherCt"       ] = { 4, 1, R, "" }
     , ["SummaryCompletedMatCost"         ] = { 4, 2, R, "" }
     , ["SummaryCompletedVoucherCost"     ] = { 4, 3, R, "" }
 
-    , ["SummaryCompletedVoucherCtUnit"   ] = { 5, 1, L, "v"   }
-    , ["SummaryCompletedMatCostUnit"     ] = { 5, 2, L, "g"   }
-    , ["SummaryCompletedVoucherCostUnit" ] = { 5, 3, L, "g/v" }
+    , ["SummaryCompletedVoucherCtUnit"   ] = { 5, 1, L, WW.STR.currency_suffix_voucher }
+    , ["SummaryCompletedMatCostUnit"     ] = { 5, 2, L, WW.STR.currency_suffix_gold    }
+    , ["SummaryCompletedVoucherCostUnit" ] = { 5, 3, L, WW.STR.currency_suffix_gold_per_voucher }
 
-    , ["SummaryCompletedVoucherCtLabel"  ] = { 6, 1, L, "total vouchers completed"      }
-    , ["SummaryCompletedMatCostLabel"    ] = { 6, 2, L, "total materials completed"     }
-    , ["SummaryCompletedVoucherCostLabel"] = { 6, 3, L, "average completed voucher cost" }
+    , ["SummaryCompletedVoucherCtLabel"  ] = { 6, 1, L, WW.STR.summary_completed_voucher_ct }
+    , ["SummaryCompletedMatCostLabel"    ] = { 6, 2, L, WW.STR.summary_completed_mat_cost   }
+    , ["SummaryCompletedVoucherCostLabel"] = { 6, 3, L, WW.STR.summary_completed_average_voucher_cost }
     }
     for name, def in pairs(GRID) do
         local offset_x   = OFFSET_X[def[1]]
@@ -596,57 +599,6 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
     end
 end
 
-local SHORTEN = {
-  ["Alchemy"                  ] = "Alchemy"
-, ["Enchanting"               ] = "Enchant"
-, ["Provisioning"             ] = "Provis"
-
-, ["Rubedite Axe"             ] = "1h axe"
-, ["Rubedite Mace"            ] = "1h mace"
-, ["Rubedite Sword"           ] = "1h sword"
-, ["Rubedite Greataxe"        ] = "2h battle axe"
-, ["Rubedite Greatsword"      ] = "2h greatsword"
-, ["Rubedite Maul"            ] = "2h maul"
-, ["Rubedite Dagger"          ] = "dagger"
-, ["Rubedite Cuirass"         ] = "cuirass"
-, ["Rubedite Sabatons"        ] = "sabatons"
-, ["Rubedite Gauntlets"       ] = "gauntlets"
-, ["Rubedite Helm"            ] = "helm"
-, ["Rubedite Greaves"         ] = "greaves"
-, ["Rubedite Pauldron"        ] = "pauldron"
-, ["Rubedite Girdle"          ] = "girdle"
-, ["Ancestor Silk Robe"       ] = "robe"
-, ["Ancestor Silk Jerkin"     ] = "shirt"
-, ["Ancestor Silk Shoes"      ] = "shoes"
-, ["Ancestor Silk Gloves"     ] = "gloves"
-, ["Ancestor Silk Hat"        ] = "hat"
-, ["Ancestor Silk Breeches"   ] = "breeches"
-, ["Ancestor Silk Epaulets"   ] = "epaulets"
-, ["Ancestor Silk Sash"       ] = "sash"
-, ["Rubedo Leather Jack"      ] = "jack"
-, ["Rubedo Leather Boots"     ] = "boots"
-, ["Rubedo Leather Bracers"   ] = "bracers"
-, ["Rubedo Leather Helmet"    ] = "helmet"
-, ["Rubedo Leather Guards"    ] = "guards"
-, ["Rubedo Leather Arm Cops"  ] = "arm cops"
-, ["Rubedo Leather Belt"      ] = "belt"
-, ["Ruby Ash Bow"             ] = "bow"
-, ["Ruby Ash Inferno Staff"   ] = "flame"
-, ["Ruby Ash Frost Staff"     ] = "frost"
-, ["Ruby Ash Lightning Staff" ] = "lightning"
-, ["Ruby Ash Healing Staff"   ] = "resto"
-, ["Ruby Ash Shield"          ] = "shield"
-
-, ["Whitestrake's Retribution"] = "Whitestrake's"
-, ["Armor of the Seducer"     ] = "Seducer"
-, ["Night Mother's Gaze"      ] = "Night Mother's"
-, ["Alessia's Bulwark"        ] = "Alessia's"
-, ["Pelinal's Aptitude"       ] = "Pelinal's"
-
-, ["Epic"                     ] = "|c973dd8Epic|r"
-, ["Legendary"                ] = "|ce6c859Legendary|r"
-}
-
 -- Abbreviate strings so that they fit in narrow columns.
 -- Increase data display density.
 --
@@ -654,7 +606,7 @@ local SHORTEN = {
 --
 function WritWorthyInventoryList.Shorten(text)
     if not text then return "" end
-    local s = SHORTEN[text]
+    local s = WW.SHORTEN[text]
     if s then return s end
     return text
 end
@@ -1533,6 +1485,12 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
 
     WritWorthyUIEnqueueAll:SetEnabled(can_enqueue_any)
     WritWorthyUIDequeueAll:SetEnabled(can_dequeue_any)
+
+    WritWorthyUIEnqueueAll:SetText(WW.STR.button_enqueue_all)
+    WritWorthyUIDequeueAll:SetText(WW.STR.button_dequeue_all)
+    WritWorthyUISortByStation:SetText(WW.STR.button_sort_by_station)
+
+
 end
 
 function WritWorthyInventoryList:EnqueueAll()
