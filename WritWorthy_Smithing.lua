@@ -1,6 +1,7 @@
 -- Parse a Blacksmithing/Clothier/Woodworking master writ.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
+local WW = WritWorthy
 
 WritWorthy.Smithing = {}
 
@@ -33,7 +34,7 @@ Smithing.SCHOOL_HEAVY =  {
 ,   blue_mat_name       = "dwarven oil"
 ,   purple_mat_name     = "grain solvent"
 ,   gold_mat_name       = "tempering alloy"
-,   armor_weight_name   = "Heavy"
+,   armor_weight_name   = GetString(SI_ARMORTYPE3)
 ,   temper_skill        = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
 ,   motif_required      = true
     -- research lines
@@ -60,7 +61,7 @@ Smithing.SCHOOL_MEDIUM = {
 ,   blue_mat_name       = "embroidery"
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
-,   armor_weight_name   = "Medium"
+,   armor_weight_name   = GetString(SI_ARMORTYPE2)
 ,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
 ,   motif_required      = true
     -- research lines
@@ -80,7 +81,7 @@ Smithing.SCHOOL_LIGHT  = {
 ,   blue_mat_name       = "embroidery"
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
-,   armor_weight_name   = "Light"
+,   armor_weight_name   = GetString(SI_ARMORTYPE1)
 ,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
 ,   motif_required      = true
     -- research lines
