@@ -39,6 +39,10 @@ Libs/LibStub/LibStub.lua
 libs/LibCustomTitles/LibCustomTitles.lua
 
 WritWorthy_Define.lua
+
+# lang/default.lua
+lang/$(language).lua
+
 WritWorthy_Price.lua
 WritWorthy_Util.lua
 WritWorthy_Log.lua
@@ -57,3 +61,4 @@ WritWorthy_Profiler.lua
 WritWorthy.lua
 WritWorthy.xml
 Bindings.xml
+

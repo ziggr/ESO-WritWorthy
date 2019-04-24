@@ -4,6 +4,7 @@
 -- as both a gold total, and a gold per writ voucher reward.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
+local WW = WritWorthy
 local LAM2 = LibStub("LibAddonMenu-2.0")
 
 WritWorthy.name            = "WritWorthy"
@@ -13,9 +14,9 @@ WritWorthy.savedVarVersion = 1
 -- Constants for savedVariables.enable_mat_list_chat
 -- Appear as user-visible text in dropdown and also used as programmatic keys
 -- which is usually a bad idea but I'm suboptimally lazy today.
-WritWorthy.MAT_LIST_CHAT_OFF          = "Off"
-WritWorthy.MAT_LIST_CHAT_ALL          = "All"
-WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY = "Alchemy Only"
+WritWorthy.MAT_LIST_CHAT_OFF          = WW.STR.lam_mat_list_off          -- "Off"
+WritWorthy.MAT_LIST_CHAT_ALL          = WW.STR.lam_mat_list_all          -- "All"
+WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY = WW.STR.lam_mat_list_alchemy_only -- "Alchemy Only"
 WritWorthy.default = {
     enable_mat_list_chat = WritWorthy.MAT_LIST_CHAT_OFF
 
@@ -76,7 +77,7 @@ function WritWorthy.ToMatKnowList(item_link)
     if not parser then return nil end
     Log:Add(parser.class)
     if not parser:ParseItemLink(item_link) then
-        return Fail("WritWorthy: could not parse."), nil, parser
+        return Fail("WritWorthy: "..WW.STR.err_could_not_parse), nil, parser
     end
     local mat_list = parser:ToMatList()
     local know_list = nil
@@ -124,6 +125,12 @@ function WritWorthy.ToLinkBaseText(item_link)
     return item_link .. "\t" .. req_text .."\t".. writ_text
 end
 
+local function tt_money(label, count, suffix)
+    return label..": "
+        .. Util.ToMoney(count)
+        .. (suffix or WW.STR.currency_suffix_gold)
+end
+
 -- Return the text we should add to a tooltip.
 function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
                         -- No vouchers? No per-voucher cost.
@@ -142,7 +149,7 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
         if mat_gold then
             total_gold   = total_gold + mat_gold
         end
-        local s = "Mat total: " .. Util.ToMoney(mat_gold) .. "g"
+        local s = tt_money(WW.STR.tooltip_mat_total, mat_gold)
         if not mat_gold then
             s = "|c"..WritWorthy.Util.COLOR_RED..s.."|r"
         end
@@ -152,23 +159,25 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
     if purchase_gold then
         total_gold       = total_gold + purchase_gold
         table.insert( tooltip_elements
-                    , "Purchase: " .. Util.ToMoney(purchase_gold) .. "g" )
+                    , tt_money(WW.STR.tooltip_purchase, purchase_gold)
+                    )
     end
 
     local per_voucher_gold = total_gold / voucher_ct
     table.insert( tooltip_elements
-                , "Per voucher: " .. Util.ToMoney(per_voucher_gold) .. "g" )
+                , tt_money(WW.STR.tooltip_per_voucher, per_voucher_gold)
+                )
 
     if WritWorthy.savedVariables.sell_per_voucher then
         local sell_total = WritWorthy.savedVariables.sell_per_voucher * voucher_ct
         local sell_net   = sell_total - (mat_gold or sell_total)
         local msg        = nil
         if 0 < sell_net then
-            msg = string.format( "|c%sSell for %s g"
+            msg = string.format( "|c%s" .. WW.STR.tooltip_sell_for
                                , WritWorthy.Util.COLOR_GREEN
                                , Util.ToMoney(sell_net))
         else
-            msg = string.format( "|c%sCannot sell for %s g"
+            msg = string.format( "|c%s" .. WW.STR.tooltip_sell_for_cannot
                                , WritWorthy.Util.COLOR_ORANGE
                                , Util.ToMoney(sell_net))
         end
@@ -258,10 +267,10 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
             local text = nil
             local color = nil
             if inventory_data.ui_is_queued then
-                text = "WritWorthy: queued for crafting"
+                text = "WritWorthy: " .. WW.STR.tooltip_queued
                 color = WritWorthyInventoryList.COLOR_TEXT_QUEUED
             elseif inventory_data.ui_is_completed then
-                text = "WritWorthy: crafting completed"
+                text = "WritWorthy: " .. WW.STR.tooltip_crafted
                 color = WritWorthyInventoryList.COLOR_TEXT_COMPLETED
             end
             if color and text then
@@ -397,9 +406,8 @@ function WritWorthy:CreateSettingsWindow()
                                                      )
     local optionsData = {
         { type      = "checkbox"
-        , name      = "Show material price in tooltip"
-        , tooltip   = "Insert text into tooltip with the cost of all the"
-                      .." materials that crafting this writ would consume."
+        , name      = WW.STR.lam_mat_price_tt_title
+        , tooltip   = WW.STR.lam_mat_price_tt_desc
         , getFunc   = function()
                         return self.savedVariables.enable_mat_price_tooltip ~= false
                       end
@@ -409,9 +417,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "dropdown"
-        , name      = "Show material list in chat"
-        , tooltip   = "Write several lines of materials to chat each"
-                      .." time a Master Writ tooltip appears."
+        , name      = WW.STR.lam_mat_list_title
+        , tooltip   = WW.STR.lam_mat_list_desc
         , choices   = { WritWorthy.MAT_LIST_CHAT_OFF
                       , WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY
                       , WritWorthy.MAT_LIST_CHAT_ALL
@@ -425,10 +432,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
-        , name      = "M.M. Fallback: hardcoded prices if no M.M. data"
-        , tooltip   = "If M.M. has no price average for some materials:"
-                      .."\n* use 15g for basic style materials such as Molybdenum"
-                      .."\n* use 5g for common trait materials such as Quartz."
+        , name      = WW.STR.lam_mm_fallback_title
+        , tooltip   = WW.STR.lam_mm_fallback_desc
         , getFunc   = function()
                         return self.savedVariables.enable_mm_fallback
                       end
@@ -438,9 +443,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
-        , name      = "Station colors in window"
-        , tooltip   = "Use different colors for blacksmithing, clothing, and"
-                      .." woodworking items in the WritWorthy window."
+        , name      = WW.STR.lam_station_colors_title
+        , tooltip   = WW.STR.lam_station_colors_desc
         , getFunc   = function()
                         return self.savedVariables.enable_station_colors
                       end
@@ -450,13 +454,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
-        , name      = "Include writs from bank in auto-crafting window"
-        , tooltip   = "Scan bank and include those writs in the list of"
-                        .." writs available to automatically craft."
-                        .."\n|cFF3333BE CAREFUL if you craft on multiple"
-                        .." characters! WritWorthy will not warn you if you"
-                        .." craft the same banked writ on multiple"
-                        .." characters.|r"
+        , name      = WW.STR.lam_banked_vouchers_title
+        , tooltip   = WW.STR.lam_banked_vouchers_desc
         , getFunc   = function()
                         return self.savedVariables.enable_banked_vouchers
                       end
@@ -481,13 +480,13 @@ function WritWorthy.Forget()
 end
 
 function WritWorthy.SlashCommand(arg1)
-    if arg1:lower() == "discover" then
-        d("|c999999WritWorthy: scanning writ fields...|r")
+    if arg1:lower() == WW.STR.slash_discover then
+        d("|c999999WritWorthy: ".. WW.STR.status_discover.."|r")
         WritWorthy.Smithing.Discover()
-    elseif arg1:lower() == "forget" then
-        d("|c999999WritWorthy: forgetting everything this character already crafted...|r")
+    elseif arg1:lower() == WW.STR.slash_forget then
+        d("|c999999WritWorthy: "..WW.STR.status_forget .."|r")
         WritWorthy.Forget()
-    elseif arg1:lower() == "count" then
+    elseif arg1:lower() == WW.STR.slash_count then
         local mwlist = WritWorthy:ScanInventoryForMasterWrits()
         local mw_ct = #mwlist
         local voucher_ct = 0
@@ -495,11 +494,11 @@ function WritWorthy.SlashCommand(arg1)
             local vc  = WritWorthy.ToVoucherCount(mw.item_link)
             voucher_ct = voucher_ct + vc
         end
-        d(string.format( "|c999999WritWorthy: %d writs, %s vouchers|r"
+        d(string.format( "|c999999WritWorthy: "..WW.STR.count_writs_vouchers.."|r"
                        , mw_ct
                        , Util.ToMoney(voucher_ct)
                        ))
-    elseif arg1:lower() == "auto" then
+    elseif arg1:lower() == WW.STR.slash_auto then
         if WritWorthy_AutoQuest then
             WritWorthy_AutoQuest()
         end
@@ -513,30 +512,30 @@ function WritWorthy.RegisterSlashCommands()
     if lsc then
         local cmd = lsc:Register( "/writworthy"
                                 , function(arg) WritWorthy.SlashCommand(arg) end
-                                , "Show/hide WritWorthy window")
+                                , WW.STR.slash_writworthy_desc)
 
         local sub_forget = cmd:RegisterSubCommand()
-        sub_forget:AddAlias("forget")
-        sub_forget:SetCallback(function() WritWorthy.SlashCommand("forget") end)
-        sub_forget:SetDescription("Forget this character's crafted master writs")
+        sub_forget:AddAlias(WW.STR.slash_forget)
+        sub_forget:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_forget) end)
+        sub_forget:SetDescription(WW.STR.slash_forget_desc)
 
         local sub_count = cmd:RegisterSubCommand()
-        sub_count:AddAlias("count")
-        sub_count:SetCallback(function() WritWorthy.SlashCommand("count") end)
-        sub_count:SetDescription("How many master writs in this character's inventory/bank?")
+        sub_count:AddAlias(WW.STR.slash_count)
+        sub_count:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_count) end)
+        sub_count:SetDescription(WW.STR.slash_count_desc)
 
         if (GetDisplayName() == "@ziggr") then
             local sub_discover = cmd:RegisterSubCommand()
-            sub_discover:AddAlias("discover")
-            sub_discover:SetCallback(function() WritWorthy.SlashCommand("discover") end)
-            sub_discover:SetDescription("Dump item_link writ fields to tables in log")
+            sub_discover:AddAlias(WW.STR.slash_discover)
+            sub_discover:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_discover) end)
+            sub_discover:SetDescription(WW.STR.slash_discover_desc)
         end
 
         if WritWorthy.AQAddKeyBind then
             local sub_auto = cmd:RegisterSubCommand()
-            sub_auto:AddAlias("auto")
-            sub_auto:SetCallback(function() WritWorthy.SlashCommand("auto") end)
-            sub_auto:SetDescription("Automatically accept quests from inventory.")
+            sub_auto:AddAlias(WW.STR.slash_auto)
+            sub_auto:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_auto) end)
+            sub_auto:SetDescription(WW.STR.slash_auto_desc)
         end
 
     else
@@ -608,6 +607,6 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
                               )
 
 ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY",    "WritWorthy")
-ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  "Show/Hide WritWorthy")
+ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  WW.STR.keybind_writworthy)
 
 WritWorthy.RegisterSlashCommands()

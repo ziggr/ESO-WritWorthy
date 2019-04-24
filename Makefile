@@ -1,10 +1,14 @@
 .PHONY: put parse zip
 
 put:
-	#git commit -am auto
-	cp -f ./WritWorthy*.lua /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
-	cp -f ./WritWorthy.txt /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
-	cp -f ./*.xml /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy/
+	rsync -vrt --delete --exclude=.git \
+		--exclude=.gitignore \
+		--exclude=.gitmodules \
+		--exclude=data \
+		--exclude=doc \
+		--exclude=published \
+		--exclude=save \
+		. /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy
 
 get:
 	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/WritWorthy.lua ../../SavedVariables/
@@ -16,13 +20,6 @@ getpts:
 
 parse:
 	lua wwparse.lua
-
-lua:
-	-lua WritWorthy.lua
-	-lua WritWorthy_Link.lua
-	-lua WritWorthy_MatRow.lua
-	-lua WritWorthy_Util.lua
-	-lua WritWorthy_Smithing.lua
 
 zip:
 	-rm -rf published/WritWorthy published/WritWorthy\ x.x.x.zip

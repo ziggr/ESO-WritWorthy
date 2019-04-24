@@ -23,6 +23,7 @@ push @files, 'WritWorthy_AutoQuest.lua';
 push @files, 'WritWorthy_Util.lua';
 push @files, 'WritWorthy_AGS.lua';
 push @files, 'Bindings.xml';
+push @files, 'lang/en.lua';
 print join("\n", @files) . "\n";
 
 @prev_mtime = ();
