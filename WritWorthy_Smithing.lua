@@ -913,7 +913,7 @@ end
 --
 Smithing.PURPLE = {
     index          = 4
-,   name           = "Epic"
+,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
 ,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
@@ -922,7 +922,7 @@ Smithing.PURPLE = {
 
 Smithing.GOLD = {
     index          = 5
-,   name           = "Legendary"
+,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
 ,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
@@ -931,7 +931,7 @@ Smithing.GOLD = {
 
 Smithing.PURPLE_JEWELRY = {
     index          = 4
-,   name           = "Epic"
+,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
 ,   green_mat_ct   = 1
 ,   blue_mat_ct    = 2
 ,   purple_mat_ct  = 3
@@ -940,7 +940,7 @@ Smithing.PURPLE_JEWELRY = {
 
 Smithing.GOLD_JEWELRY = {
     index          = 5
-,   name           = "Legendary"
+,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
 ,   green_mat_ct   = 1
 ,   blue_mat_ct    = 2
 ,   purple_mat_ct  = 3

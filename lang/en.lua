@@ -102,6 +102,8 @@ WW.STR = {
 
 , ["status_list_empty_no_writs"             ] = "This character has no sealed master writs in its inventory."
 
+, ["enchanting_cp150"           ] = "Superb"
+, ["enchanting_cp160"           ] = "Truly Superb"
 }
 
 
@@ -170,7 +172,5 @@ WW.SHORTEN = {
 , ["Alessia's Bulwark"        ] = "Alessia's"
 , ["Pelinal's Aptitude"       ] = "Pelinal's"
 
-, ["Epic"                     ] = "|c973dd8Epic|r"
-, ["Legendary"                ] = "|ce6c859Legendary|r"
 }
 

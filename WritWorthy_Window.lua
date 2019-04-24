@@ -667,14 +667,14 @@ end
 -- Thank you, Manavortex!
 -- Cache these, because with inline == the string will be created just to compare
 -- it each time the fn runs
-local UI_TYPE_WOOD          = "Wood"
-local UI_TYPE_HEAVY         = "Heavy"
-local UI_TYPE_MEDIUM        = "Medium"
-local UI_TYPE_LIGHT         = "Light"
-local UI_TYPE_JEWELRY       = "Jewelry"
-local UI_TYPE_ALCHEMY       = "Alchemy"
-local UI_TYPE_ENCHANTING    = "Enchanting"
-local UI_TYPE_PROVISIONING  = "Provisioning"
+local UI_TYPE_WOOD          = GetString(SI_ITEMFILTERTYPE15)
+local UI_TYPE_HEAVY         = GetString(SI_ARMORTYPE3)
+local UI_TYPE_MEDIUM        = GetString(SI_ARMORTYPE2)
+local UI_TYPE_LIGHT         = GetString(SI_ARMORTYPE1)
+local UI_TYPE_JEWELRY       = GetString(SI_ITEMFILTERTYPE25)
+local UI_TYPE_ALCHEMY       = GetString(SI_ITEMFILTERTYPE16)
+local UI_TYPE_ENCHANTING    = GetString(SI_ITEMFILTERTYPE17)
+local UI_TYPE_PROVISIONING  = GetString(SI_ITEMFILTERTYPE18)
 
 -- Fill in all inventory_data.ui_xxx fields.
 -- Here is where our data gets translated into user-visible text.
@@ -716,16 +716,16 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     elseif parser.class == WritWorthy.Enchanting.Parser.class then
         inventory_data.ui_type =  UI_TYPE_ENCHANTING
         if parser.level == 150 then
-            inventory_data.ui_detail1 = "Superb"
+            inventory_data.ui_detail1 = WW.STR.enchanting_cp150
         else
-            inventory_data.ui_detail1 = "Truly Superb"
+            inventory_data.ui_detail1 = WW.STR.enchanting_cp160
         end
         inventory_data.ui_detail2 = parser.glyph.name
 
         if parser.quality_num == 4 then
-           inventory_data.ui_detail5 = "Epic"
+           inventory_data.ui_detail5 = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
         else
-           inventory_data.ui_detail5 = "Legendary"
+           inventory_data.ui_detail5 = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
         end
     elseif parser.class == WritWorthy.Provisioning.Parser.class then
         inventory_data.ui_type    = UI_TYPE_PROVISIONING
