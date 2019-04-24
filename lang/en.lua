@@ -61,6 +61,13 @@ WW.STR = {
 , ["tooltip_queued"             ] = "queued for crafting"
 , ["tooltip_crafted"            ] = "crafting completed"
 
+, ["skill_not_maxed"            ] = "!Insufficient skill '%s': %d/%d"
+, ["skill_missing"              ] = "!Missing skill: %s"
+, ["motif_not_known"            ] = "!Motif %s not known"
+, ["trait_not_known"            ] = "!Trait %s %s not known"
+, ["trait_ct_too_low"           ] = "!%d of %d traits required for set %s"
+, ["recipe_not_known"           ] = "!Recipe not known"
+
 , ["currency_suffix_gold"            ] = "g"
 , ["currency_suffix_voucher"         ] = "v"
 , ["currency_suffix_gold_per_voucher"] = "g/v"

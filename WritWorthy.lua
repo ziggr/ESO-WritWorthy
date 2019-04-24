@@ -583,10 +583,8 @@ function WritWorthy:Initialize()
                         -- data to consume when deciding which checkboxes to
                         -- initially mark checked.
     WritWorthyInventoryList.RestoreFromSavedChariables()
-
     WritWorthy.InventoryList:BuildMasterlist()
     WritWorthy.InventoryList:Refresh()
-
     WritWorthyUI_RestorePos()
 
                         -- If WritWorthy_AutoQuest.lua is un-commented-out

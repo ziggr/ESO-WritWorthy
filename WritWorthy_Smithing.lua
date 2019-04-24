@@ -1,7 +1,7 @@
 -- Parse a Blacksmithing/Clothier/Woodworking master writ.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
-local WW = WritWorthy
+-- Do not define WW=WritWorthy here. We already use WW=Wood Working.
 
 WritWorthy.Smithing = {}
 
@@ -1146,7 +1146,8 @@ function Parser:ToKnowList()
             Log:Add("pages known:"..table.concat(pg_known, " "))
         end
         local title = string.format("motif %s", self.motif.motif_name)
-        local msg   = string.format("Motif %s not known", self.motif.motif_name)
+        local fmt = WritWorthy.STR.motif_not_known
+        local msg   = string.format(fmt, self.motif.motif_name)
         table.insert(r, Know:New({ name     = title
                                  , is_known = motif_known
                                  , lack_msg = msg
@@ -1172,7 +1173,8 @@ function Parser:ToKnowList()
             ..", trait="..tostring(self.trait.trait_index)
             ..") = " ..tostring(trait_known))
     local title = string.format("trait %s %s", self.trait.trait_name, line_name)
-    local msg   = string.format("Trait %s %s not known", self.trait.trait_name, line_name)
+    local fmt = WritWorthy.STR.trait_not_known
+    local msg   = string.format(fmt, self.trait.trait_name, line_name)
     table.insert(r, Know:New({ name     = title
                              , is_known = trait_known
                              , lack_msg = msg
@@ -1199,7 +1201,7 @@ function Parser:ToKnowList()
                 ..", line="..tostring(self.request_item.research_line)
                 ..", trait_index=?):"..table.concat(known_t," "))
         local title = string.format( "%d traits for set bonus", self.set_bonus.trait_ct)
-        local msg   = string.format( "%d of %d traits required for set %s"
+        local msg   = string.format( WritWorthy.STR.trait_ct_too_low
                                , known_trait_ct
                                , self.set_bonus.trait_ct
                                , tostring(self.set_bonus.name)

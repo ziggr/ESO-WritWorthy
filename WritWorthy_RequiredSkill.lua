@@ -1,6 +1,7 @@
 -- Do you have enough skill points in some crafting passive?
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
+local WW = WritWorthy
 
 WritWorthy.RequiredSkill = {}
 
@@ -33,7 +34,7 @@ end
 function RequiredSkill:ToKnow()
     if self.function_name == "IsMaxxed" then
         local known = self:IsKnown()
-        local text  = string.format( "Insufficient skill '%s': %d/%d"
+        local text  = string.format( WW.STR.skill_not_maxed
                                    , self:Name()
                                    , self._have or -1
                                    , self._max or -1
@@ -45,7 +46,7 @@ function RequiredSkill:ToKnow()
             })
     else
         local known = self:IsKnown()
-        local text  = string.format("Missing skill: %s", self:Name())
+        local text  = string.format(WW.STR.skill_missing, self:Name())
         return WritWorthy.Know:New({ name = "Skill: "..self:Name()
                                    , is_known = known
                                    , lack_msg = text
