@@ -1,6 +1,7 @@
 -- Parse a potion or poison request.
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
+local WW = WritWorthy
 
 WritWorthy.Enchanting = {
     Glyphs = {} -- "Absorb Health"  --> Glyph("Absorb Health", OKO, SUB)
@@ -63,7 +64,7 @@ Enchanting.ASPECT_RUNES = {
 Enchanting.Glyph  = {}
 function Enchanting.Glyph:New(name, essence_rune, add_sub, glyph_id)
     local o = {
-        name         = name         -- "Absorb Health"
+        name         = WW.STR[name] -- "Absorb Health"
     ,   essence_rune = essence_rune -- OKO
     ,   add_sub      = add_sub      -- SUB
     ,   glyph_id     = glyph_id
@@ -88,44 +89,44 @@ local E = Enchanting -- for shorter tables
 --        glyph name                 essence        potency_type  glyph
 --                                                                item_id
 -- armor
-Glyph:New("Magicka"                , E.MAKKO      , ADD ,         26582 )
-Glyph:New("Stamina"                , E.DENI       , ADD ,         26588 )
-Glyph:New("Health"                 , E.OKO        , ADD ,         26580 )
-Glyph:New("Prismatic Defense"      , E.HAKEIJO    , ADD ,         68343 )
+Glyph:New("glyph_magicka"                , E.MAKKO      , ADD ,         26582 )
+Glyph:New("glyph_stamina"                , E.DENI       , ADD ,         26588 )
+Glyph:New("glyph_health"                 , E.OKO        , ADD ,         26580 )
+Glyph:New("glyph_prismatic_defense"      , E.HAKEIJO    , ADD ,         68343 )
 -- weapons
-Glyph:New("Flame"                  , E.RAKEIPA    , ADD ,         26848 )
-Glyph:New("Decrease Health"        , E.OKOMA      , SUB ,         45869 )
-Glyph:New("Weapon Damage"          , E.OKORI      , ADD ,         54484 )
-Glyph:New("Foulness"               , E.HAOKO      , ADD ,         26841 )
-Glyph:New("Poison"                 , E.KUOKO      , ADD ,         26587 )
-Glyph:New("Frost"                  , E.DEKEIPA    , ADD ,          5365 )
-Glyph:New("Shock"                  , E.MEIP       , ADD ,         26844 )
-Glyph:New("Hardening"              , E.DETERI     , ADD ,          5366 )
-Glyph:New("Crushing"               , E.DETERI     , SUB ,         26845 )
-Glyph:New("Weakening"              , E.OKORI      , SUB ,         26591 )
-Glyph:New("Absorb Health"          , E.OKO        , SUB ,         43573 )
-Glyph:New("Absorb Stamina"         , E.DENI       , SUB ,         45867 )
-Glyph:New("Absorb Magicka"         , E.MAKKO      , SUB ,         45868 )
-Glyph:New("Prismatic Onslaught"    , E.HAKEIJO    , SUB ,         68344 )
+Glyph:New("glyph_flame"                  , E.RAKEIPA    , ADD ,         26848 )
+Glyph:New("glyph_decrease_health"        , E.OKOMA      , SUB ,         45869 )
+Glyph:New("glyph_weapon_damage"          , E.OKORI      , ADD ,         54484 )
+Glyph:New("glyph_foulness"               , E.HAOKO      , ADD ,         26841 )
+Glyph:New("glyph_poison"                 , E.KUOKO      , ADD ,         26587 )
+Glyph:New("glyph_frost"                  , E.DEKEIPA    , ADD ,          5365 )
+Glyph:New("glyph_shock"                  , E.MEIP       , ADD ,         26844 )
+Glyph:New("glyph_hardening"              , E.DETERI     , ADD ,          5366 )
+Glyph:New("glyph_crushing"               , E.DETERI     , SUB ,         26845 )
+Glyph:New("glyph_weakening"              , E.OKORI      , SUB ,         26591 )
+Glyph:New("glyph_absorb_health"          , E.OKO        , SUB ,         43573 )
+Glyph:New("glyph_absorb_stamina"         , E.DENI       , SUB ,         45867 )
+Glyph:New("glyph_absorb_magicka"         , E.MAKKO      , SUB ,         45868 )
+Glyph:New("glyph_prismatic_onslaught"    , E.HAKEIJO    , SUB ,         68344 )
 -- jewelry
-Glyph:New("Frost Resist"           , E.DEKEIPA    , SUB ,          5364 )
-Glyph:New("Stamina Recovery"       , E.DENIMA     , ADD ,         26589 )
-Glyph:New("Reduce Feat Cost"       , E.DENIMA     , SUB ,         45871 )
-Glyph:New("Disease Resist"         , E.HAOKO      , SUB ,         26847 )
-Glyph:New("Bashing"                , E.KADERI     , ADD ,         45872 )
-Glyph:New("Shielding"              , E.KADERI     , SUB ,         45873 )
-Glyph:New("Poison Resist"          , E.KUOKO      , SUB ,         26586 )
-Glyph:New("Increase Magical Harm"  , E.MAKDERI    , ADD ,         45884 )
-Glyph:New("Decrease Spell Harm"    , E.MAKDERI    , SUB ,         45886 )
-Glyph:New("Magicka Recovery"       , E.MAKKOMA    , ADD ,         26583 )
-Glyph:New("Reduce Spell Cost"      , E.MAKKOMA    , SUB ,         45870 )
-Glyph:New("Shock Resist"           , E.MEIP       , SUB ,         43570 )
-Glyph:New("Health Recovery"        , E.OKOMA      , ADD ,         26581 )
-Glyph:New("Potion Boost"           , E.ORU        , ADD ,         45874 )
-Glyph:New("Potion Speed"           , E.ORU        , SUB ,         45875 )
-Glyph:New("Flame Resist"           , E.RAKEIPA    , SUB ,         26849 )
-Glyph:New("Increase Physical Harm" , E.TADERI     , ADD ,         45883 )
-Glyph:New("Decrease Physical Harm" , E.TADERI     , SUB ,         45885 )
+Glyph:New("glyph_frost_resist"           , E.DEKEIPA    , SUB ,          5364 )
+Glyph:New("glyph_stamina_recovery"       , E.DENIMA     , ADD ,         26589 )
+Glyph:New("glyph_reduce_feat_cost"       , E.DENIMA     , SUB ,         45871 )
+Glyph:New("glyph_disease_resist"         , E.HAOKO      , SUB ,         26847 )
+Glyph:New("glyph_bashing"                , E.KADERI     , ADD ,         45872 )
+Glyph:New("glyph_shielding"              , E.KADERI     , SUB ,         45873 )
+Glyph:New("glyph_poison_resist"          , E.KUOKO      , SUB ,         26586 )
+Glyph:New("glyph_increase_magical_harm"  , E.MAKDERI    , ADD ,         45884 )
+Glyph:New("glyph_decrease_spell_harm"    , E.MAKDERI    , SUB ,         45886 )
+Glyph:New("glyph_magicka_recovery"       , E.MAKKOMA    , ADD ,         26583 )
+Glyph:New("glyph_reduce_spell_cost"      , E.MAKKOMA    , SUB ,         45870 )
+Glyph:New("glyph_shock_resist"           , E.MEIP       , SUB ,         43570 )
+Glyph:New("glyph_health_recovery"        , E.OKOMA      , ADD ,         26581 )
+Glyph:New("glyph_potion_boost"           , E.ORU        , ADD ,         45874 )
+Glyph:New("glyph_potion_speed"           , E.ORU        , SUB ,         45875 )
+Glyph:New("glyph_flame_resist"           , E.RAKEIPA    , SUB ,         26849 )
+Glyph:New("glyph_increase_physical_harm" , E.TADERI     , ADD ,         45883 )
+Glyph:New("glyph_decrease_physical_harm" , E.TADERI     , SUB ,         45885 )
 
 Enchanting.Parser = {
     class = "enchanting"
