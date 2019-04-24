@@ -317,49 +317,49 @@ local TJW    = Smithing.TRAITS_JEWELRY
 local PG     = Smithing.MOTIF_PAGE
 
 Smithing.REQUEST_ITEMS = {
-  [53] = { item_id = 53, item_name = "Rubedite Axe",                school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_AXE,         motif_page = PG.AXES     , dol_pattern_index =  1 }
-, [56] = { item_id = 56, item_name = "Rubedite Mace",               school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_MACE,        motif_page = PG.MACES    , dol_pattern_index =  2 }
-, [59] = { item_id = 59, item_name = "Rubedite Sword",              school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_SWORD,       motif_page = PG.SWORDS   , dol_pattern_index =  3 }
-, [68] = { item_id = 68, item_name = "Rubedite Greataxe",           school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_BATTLE_AXE,  motif_page = PG.AXES     , dol_pattern_index =  4 }
-, [67] = { item_id = 67, item_name = "Rubedite Greatsword",         school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_GREATSWORD,  motif_page = PG.SWORDS   , dol_pattern_index =  6 }
-, [69] = { item_id = 69, item_name = "Rubedite Maul",               school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_MAUL,        motif_page = PG.MACES    , dol_pattern_index =  5 }
-, [62] = { item_id = 62, item_name = "Rubedite Dagger",             school = HVY, base_mat_ct = 10, trait_set = WEAPON, research_line = HVY.DAGGER,         motif_page = PG.DAGGERS  , dol_pattern_index =  7 }
+  [53] = { item_id = 53, example_item_id = 43529, item_name = "Rubedite Axe",                school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_AXE,         motif_page = PG.AXES     , dol_pattern_index =  1 }
+, [56] = { item_id = 56, example_item_id = 43530, item_name = "Rubedite Mace",               school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_MACE,        motif_page = PG.MACES    , dol_pattern_index =  2 }
+, [59] = { item_id = 59, example_item_id = 43531, item_name = "Rubedite Sword",              school = HVY, base_mat_ct = 11, trait_set = WEAPON, research_line = HVY.H1_SWORD,       motif_page = PG.SWORDS   , dol_pattern_index =  3 }
+, [68] = { item_id = 68, example_item_id = 43532, item_name = "Rubedite Greataxe",           school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_BATTLE_AXE,  motif_page = PG.AXES     , dol_pattern_index =  4 }
+, [67] = { item_id = 67, example_item_id = 43534, item_name = "Rubedite Greatsword",         school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_GREATSWORD,  motif_page = PG.SWORDS   , dol_pattern_index =  6 }
+, [69] = { item_id = 69, example_item_id = 43533, item_name = "Rubedite Maul",               school = HVY, base_mat_ct = 14, trait_set = WEAPON, research_line = HVY.H2_MAUL,        motif_page = PG.MACES    , dol_pattern_index =  5 }
+, [62] = { item_id = 62, example_item_id = 43535, item_name = "Rubedite Dagger",             school = HVY, base_mat_ct = 10, trait_set = WEAPON, research_line = HVY.DAGGER,         motif_page = PG.DAGGERS  , dol_pattern_index =  7 }
 
-, [46] = { item_id = 46, item_name = "Rubedite Cuirass",            school = HVY, base_mat_ct = 15, trait_set = ARMOR , research_line = HVY.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  8 }
-, [50] = { item_id = 50, item_name = "Rubedite Sabatons",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.FEET,           motif_page = PG.BOOTS    , dol_pattern_index =  9 }
-, [52] = { item_id = 52, item_name = "Rubedite Gauntlets",          school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index = 10 }
-, [44] = { item_id = 44, item_name = "Rubedite Helm",               school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index = 11 }
-, [49] = { item_id = 49, item_name = "Rubedite Greaves",            school = HVY, base_mat_ct = 14, trait_set = ARMOR , research_line = HVY.LEGS,           motif_page = PG.LEGS     , dol_pattern_index = 12 }
-, [47] = { item_id = 47, item_name = "Rubedite Pauldron",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index = 13 }
-, [48] = { item_id = 48, item_name = "Rubedite Girdle",             school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.WAIST,          motif_page = PG.BELTS    , dol_pattern_index = 14 }
+, [46] = { item_id = 46, example_item_id = 43537, item_name = "Rubedite Cuirass",            school = HVY, base_mat_ct = 15, trait_set = ARMOR , research_line = HVY.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  8 }
+, [50] = { item_id = 50, example_item_id = 43538, item_name = "Rubedite Sabatons",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.FEET,           motif_page = PG.BOOTS    , dol_pattern_index =  9 }
+, [52] = { item_id = 52, example_item_id = 43539, item_name = "Rubedite Gauntlets",          school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index = 10 }
+, [44] = { item_id = 44, example_item_id = 43562, item_name = "Rubedite Helm",               school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index = 11 }
+, [49] = { item_id = 49, example_item_id = 43540, item_name = "Rubedite Greaves",            school = HVY, base_mat_ct = 14, trait_set = ARMOR , research_line = HVY.LEGS,           motif_page = PG.LEGS     , dol_pattern_index = 12 }
+, [47] = { item_id = 47, example_item_id = 43541, item_name = "Rubedite Pauldron",           school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index = 13 }
+, [48] = { item_id = 48, example_item_id = 43542, item_name = "Rubedite Girdle",             school = HVY, base_mat_ct = 13, trait_set = ARMOR , research_line = HVY.WAIST,          motif_page = PG.BELTS    , dol_pattern_index = 14 }
 
-, [28] = { item_id = 28, item_name = "Ancestor Silk Robe",          school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  1 }
-, [75] = { item_id = 75, item_name = "Ancestor Silk Jerkin",        school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  2 }
-, [32] = { item_id = 32, item_name = "Ancestor Silk Shoes",         school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.FEET,           motif_page = PG.BOOTS    , dol_pattern_index =  3 }
-, [34] = { item_id = 34, item_name = "Ancestor Silk Gloves",        school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index =  4 }
-, [26] = { item_id = 26, item_name = "Ancestor Silk Hat",           school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index =  5 }
-, [31] = { item_id = 31, item_name = "Ancestor Silk Breeches",      school = LGT, base_mat_ct = 14, trait_set = ARMOR , research_line = LGT.LEGS,           motif_page = PG.LEGS     , dol_pattern_index =  6 }
-, [29] = { item_id = 29, item_name = "Ancestor Silk Epaulets",      school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index =  7 }
-, [30] = { item_id = 30, item_name = "Ancestor Silk Sash",          school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.WAIST,          motif_page = PG.BELTS    , dol_pattern_index =  8 }
+, [28] = { item_id = 28, example_item_id = 43543, item_name = "Ancestor Silk Robe",          school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  1 }
+, [75] = { item_id = 75, example_item_id = 44241, item_name = "Ancestor Silk Jerkin",        school = LGT, base_mat_ct = 15, trait_set = ARMOR , research_line = LGT.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  2 }
+, [32] = { item_id = 32, example_item_id = 43544, item_name = "Ancestor Silk Shoes",         school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.FEET,           motif_page = PG.BOOTS    , dol_pattern_index =  3 }
+, [34] = { item_id = 34, example_item_id = 43545, item_name = "Ancestor Silk Gloves",        school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index =  4 }
+, [26] = { item_id = 26, example_item_id = 43564, item_name = "Ancestor Silk Hat",           school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index =  5 }
+, [31] = { item_id = 31, example_item_id = 43546, item_name = "Ancestor Silk Breeches",      school = LGT, base_mat_ct = 14, trait_set = ARMOR , research_line = LGT.LEGS,           motif_page = PG.LEGS     , dol_pattern_index =  6 }
+, [29] = { item_id = 29, example_item_id = 43547, item_name = "Ancestor Silk Epaulets",      school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index =  7 }
+, [30] = { item_id = 30, example_item_id = 43548, item_name = "Ancestor Silk Sash",          school = LGT, base_mat_ct = 13, trait_set = ARMOR , research_line = LGT.WAIST,          motif_page = PG.BELTS    , dol_pattern_index =  8 }
 
-, [37] = { item_id = 37, item_name = "Rubedo Leather Jack",         school = MED, base_mat_ct = 15, trait_set = ARMOR , research_line = MED.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  9 }
-, [41] = { item_id = 41, item_name = "Rubedo Leather Boots",        school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.FEET,           motif_page = PG.BOOTS    , dol_pattern_index = 10 }
-, [43] = { item_id = 43, item_name = "Rubedo Leather Bracers",      school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index = 11 }
-, [35] = { item_id = 35, item_name = "Rubedo Leather Helmet",       school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index = 12 }
-, [40] = { item_id = 40, item_name = "Rubedo Leather Guards",       school = MED, base_mat_ct = 14, trait_set = ARMOR , research_line = MED.LEGS,           motif_page = PG.LEGS     , dol_pattern_index = 13 }
-, [38] = { item_id = 38, item_name = "Rubedo Leather Arm Cops",     school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index = 14 }
-, [39] = { item_id = 39, item_name = "Rubedo Leather Belt",         school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.WAIST,          motif_page = PG.BELTS    , dol_pattern_index = 15 }
+, [37] = { item_id = 37, example_item_id = 43550, item_name = "Rubedo Leather Jack",         school = MED, base_mat_ct = 15, trait_set = ARMOR , research_line = MED.CHEST,          motif_page = PG.CHESTS   , dol_pattern_index =  9 }
+, [41] = { item_id = 41, example_item_id = 43551, item_name = "Rubedo Leather Boots",        school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.FEET,           motif_page = PG.BOOTS    , dol_pattern_index = 10 }
+, [43] = { item_id = 43, example_item_id = 43552, item_name = "Rubedo Leather Bracers",      school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HANDS,          motif_page = PG.GLOVES   , dol_pattern_index = 11 }
+, [35] = { item_id = 35, example_item_id = 43563, item_name = "Rubedo Leather Helmet",       school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.HEAD,           motif_page = PG.HELMETS  , dol_pattern_index = 12 }
+, [40] = { item_id = 40, example_item_id = 43553, item_name = "Rubedo Leather Guards",       school = MED, base_mat_ct = 14, trait_set = ARMOR , research_line = MED.LEGS,           motif_page = PG.LEGS     , dol_pattern_index = 13 }
+, [38] = { item_id = 38, example_item_id = 43554, item_name = "Rubedo Leather Arm Cops",     school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.SHOULDERS,      motif_page = PG.SHOULDERS, dol_pattern_index = 14 }
+, [39] = { item_id = 39, example_item_id = 43555, item_name = "Rubedo Leather Belt",         school = MED, base_mat_ct = 13, trait_set = ARMOR , research_line = MED.WAIST,          motif_page = PG.BELTS    , dol_pattern_index = 15 }
 
-, [70] = { item_id = 70, item_name = "Ruby Ash Bow",                school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.BOW,             motif_page = PG.BOWS     , dol_pattern_index =  1 }
-, [72] = { item_id = 72, item_name = "Ruby Ash Inferno Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.FLAME_STAFF,     motif_page = PG.STAVES   , dol_pattern_index =  3 }
-, [73] = { item_id = 73, item_name = "Ruby Ash Frost Staff",        school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.ICE_STAFF,       motif_page = PG.STAVES   , dol_pattern_index =  4 }
-, [74] = { item_id = 74, item_name = "Ruby Ash Lightning Staff",    school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.LIGHTNING_STAFF, motif_page = PG.STAVES   , dol_pattern_index =  5 }
-, [71] = { item_id = 71, item_name = "Ruby Ash Healing Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.RESTO_STAFF,     motif_page = PG.STAVES   , dol_pattern_index =  6 }
+, [70] = { item_id = 70, example_item_id = 43549, item_name = "Ruby Ash Bow",                school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.BOW,             motif_page = PG.BOWS     , dol_pattern_index =  1 }
+, [72] = { item_id = 72, example_item_id = 43557, item_name = "Ruby Ash Inferno Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.FLAME_STAFF,     motif_page = PG.STAVES   , dol_pattern_index =  3 }
+, [73] = { item_id = 73, example_item_id = 43558, item_name = "Ruby Ash Frost Staff",        school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.ICE_STAFF,       motif_page = PG.STAVES   , dol_pattern_index =  4 }
+, [74] = { item_id = 74, example_item_id = 43559, item_name = "Ruby Ash Lightning Staff",    school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.LIGHTNING_STAFF, motif_page = PG.STAVES   , dol_pattern_index =  5 }
+, [71] = { item_id = 71, example_item_id = 43560, item_name = "Ruby Ash Healing Staff",      school = WW,  base_mat_ct = 12, trait_set = WEAPON, research_line = WW.RESTO_STAFF,     motif_page = PG.STAVES   , dol_pattern_index =  6 }
 
-, [65] = { item_id = 65, item_name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR , research_line = WW.SHIELD,          motif_page = PG.SHIELDS  , dol_pattern_index =  2 }
+, [65] = { item_id = 65, example_item_id = 43556, item_name = "Ruby Ash Shield",             school = WW,  base_mat_ct = 14, trait_set = ARMOR , research_line = WW.SHIELD,          motif_page = PG.SHIELDS  , dol_pattern_index =  2 }
 
-, [24] = { item_id = 24 ,item_name = "Platinum Ring",               school = JW,  base_mat_ct = 10, trait_set = TJW   , research_line = JW.RING,            motif_page = nil         , dol_pattern_index =  1 }
-, [18] = { item_id = 18 ,item_name = "Platinum Necklace",           school = JW,  base_mat_ct = 15, trait_set = TJW   , research_line = JW.NECKLACE,        motif_page = nil         , dol_pattern_index =  2 }
+, [24] = { item_id = 24 ,example_item_id = 43536, item_name = "Platinum Ring",               school = JW,  base_mat_ct = 10, trait_set = TJW   , research_line = JW.RING,            motif_page = nil         , dol_pattern_index =  1 }
+, [18] = { item_id = 18 ,example_item_id = 43561, item_name = "Platinum Necklace",           school = JW,  base_mat_ct = 15, trait_set = TJW   , research_line = JW.NECKLACE,        motif_page = nil         , dol_pattern_index =  2 }
 
 }
 
@@ -1031,6 +1031,13 @@ function Parser:ParseItemLink(item_link)
 
     self.request_item   = Smithing.REQUEST_ITEMS[item_num]
     if not self.request_item then return nil end
+                        -- Replace hardcoded US English name with a l10n one.
+    if not self.request_item.tr then
+        local fmt = "|H0:item:%d:308:50:0:0:0:0:0:0:0:0:0:0:0:0:2:0:0:0:0:0|h|h"
+        local ll = string.format(fmt, self.request_item.example_item_id)
+        self.request_item.tr = self.request_item.item_name -- retain old name for debugging.
+        self.request_item.item_name = zo_strformat("<<t:1>>", GetItemLinkName(ll))
+    end
     Log:Add("request_item:"..tostring(item_num).." "
             ..tostring(self.request_item.item_name))
     self.crafting_type = self.request_item.school.trade_skill_type
