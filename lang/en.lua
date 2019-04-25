@@ -109,7 +109,10 @@ WW.STR = {
 
 , ["status_list_empty_no_writs"             ] = "This character has no sealed master writs in its inventory."
 
--- ENchanting
+-- Awesome Guild Store integration
+, ["ags_label"                   ] = "!WritWorthy cost per voucher"
+
+-- Enchanting
 , ["enchanting_cp150"            ] = "Superb"
 , ["enchanting_cp160"            ] = "Truly Superb"
 

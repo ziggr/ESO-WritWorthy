@@ -45,7 +45,7 @@ function WritWorthy.InitAGSIntegration(trading_house_wrapper)
                     , FILTER_ID.WRIT_WORTHY_WRIT_COST_FILTER
                     , FilterBase.GROUP_LOCAL
                     , {
-                          label     = "WritWorthy cost per voucher"
+                          label     = WritWorthy.STR.ags_label
                         , currency  = CURT_MONEY
                         , min       = MIN_VALUE
                         , max       = MAX_VALUE
