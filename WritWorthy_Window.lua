@@ -306,7 +306,7 @@ function WritWorthyInventoryList:Initialize(control)
 
 
                         -- Create the summary grid at the bottom of the window.
-    local OFFSET_X = { 0, 72, 100,   350, 350+72, 350+100, 700 }
+    local OFFSET_X = { 0, 72, 100,   400, 400+72, 400+100, 800 }
     local OFFSET_Y = { 5, 30, 55 }
     local L = TEXT_ALIGN_LEFT       -- for a LOT less typing
     local R = TEXT_ALIGN_RIGHT
