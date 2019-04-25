@@ -14,9 +14,9 @@
         allowBringToTop="true"
         clampedToScreen="false"
         >
-      <Dimensions              x="1075"      y="550" />
+      <Dimensions              x="1125"      y="550" />
       <DimensionConstraints minX="1075"   minY="350"
-                            maxX="1505"   maxY="950" />
+                            maxX="1805"   maxY="950" />
 
             <!-- Positive LT/Negative RB offsets allow sliding
                past edge of screen. Negative LT/Positive RB
@@ -192,8 +192,8 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-460" />
-                  <Dimensions x="150" y="20" />
+                      offsetX="-510" />
+                  <Dimensions x="200" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
                   </OnInitialized>
