@@ -41,8 +41,13 @@ libs/LibCustomTitles/LibCustomTitles.lua
 WritWorthy_Define.lua
 
 # Load EN as default, then overwrite with any localized replacements.
+#
+# If you don't want WritWorthy UI in DE German, comment out
+# "lang/$(language).lua" below.
+#
 lang/en.lua
 lang/$(language).lua
+lang/l10n_merge.lua
 
 WritWorthy_Price.lua
 WritWorthy_Util.lua
