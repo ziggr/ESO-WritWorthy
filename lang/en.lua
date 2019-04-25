@@ -159,67 +159,57 @@ WW.STR = {
 -- list window, abbreviations/shortenings to keep strings short enough
 -- to fit in narrow column widths.
 --
--- Keys on the left
+-- Long strings on the left will be replaced by strings on the right.
 WW.SHORTEN = {
--- DO NOT change the              DO CHANGE the
--- keys on the left               strings on the
--- here! These are                right.
--- internal keys, NOT
--- translated.
---
--- DO NOT CHANGE left             DO CHANGE right
---   |  |  |                       |  |  |
---   v  v  v                       v  v  v
---
-  ["Alchemy"                  ] = "Alchemy"
-, ["Enchanting"               ] = "Enchant"
-, ["Provisioning"             ] = "Provis"
+  ["Alchemy"                        ] = "Alchemy"
+, ["Enchanting"                     ] = "Enchant"
+, ["Provisioning"                   ] = "Provis"
 
--- , ["Rubedite Axe"             ] = "1h axe"
--- , ["Rubedite Mace"            ] = "1h mace"
--- , ["Rubedite Sword"           ] = "1h sword"
--- , ["Rubedite Greataxe"        ] = "2h battle axe"
--- , ["Rubedite Greatsword"      ] = "2h greatsword"
--- , ["Rubedite Maul"            ] = "2h maul"
--- , ["Rubedite Dagger"          ] = "dagger"
+, ["Rubedite Axe"                   ] = "1h axe"
+, ["Rubedite Mace"                  ] = "1h mace"
+, ["Rubedite Sword"                 ] = "1h sword"
+, ["Rubedite Battle Axe"            ] = "2h battle axe"
+, ["Rubedite Greatsword"            ] = "2h greatsword"
+, ["Rubedite Maul"                  ] = "2h maul"
+, ["Rubedite Dagger"                ] = "dagger"
 
--- , ["Rubedite Cuirass"         ] = "cuirass"
--- , ["Rubedite Sabatons"        ] = "sabatons"
--- , ["Rubedite Gauntlets"       ] = "gauntlets"
--- , ["Rubedite Helm"            ] = "helm"
--- , ["Rubedite Greaves"         ] = "greaves"
--- , ["Rubedite Pauldron"        ] = "pauldron"
--- , ["Rubedite Girdle"          ] = "girdle"
+, ["Rubedite Cuirass"               ] = "cuirass"
+, ["Rubedite Sabatons"              ] = "sabatons"
+, ["Rubedite Gauntlets"             ] = "gauntlets"
+, ["Rubedite Helm"                  ] = "helm"
+, ["Rubedite Greaves"               ] = "greaves"
+, ["Rubedite Pauldron"              ] = "pauldron"
+, ["Rubedite Girdle"                ] = "girdle"
 
--- , ["Ancestor Silk Robe"       ] = "robe"
--- , ["Ancestor Silk Jerkin"     ] = "shirt"
--- , ["Ancestor Silk Shoes"      ] = "shoes"
--- , ["Ancestor Silk Gloves"     ] = "gloves"
--- , ["Ancestor Silk Hat"        ] = "hat"
--- , ["Ancestor Silk Breeches"   ] = "breeches"
--- , ["Ancestor Silk Epaulets"   ] = "epaulets"
--- , ["Ancestor Silk Sash"       ] = "sash"
+, ["Ancestor Silk Robe"             ] = "robe"
+, ["Ancestor Silk Jerkin"           ] = "shirt"
+, ["Ancestor Silk Shoes"            ] = "shoes"
+, ["Ancestor Silk Gloves"           ] = "gloves"
+, ["Ancestor Silk Hat"              ] = "hat"
+, ["Ancestor Silk Breeches"         ] = "breeches"
+, ["Ancestor Silk Epaulets"         ] = "epaulets"
+, ["Ancestor Silk Sash"             ] = "sash"
 
--- , ["Rubedo Leather Jack"      ] = "jack"
--- , ["Rubedo Leather Boots"     ] = "boots"
--- , ["Rubedo Leather Bracers"   ] = "bracers"
--- , ["Rubedo Leather Helmet"    ] = "helmet"
--- , ["Rubedo Leather Guards"    ] = "guards"
--- , ["Rubedo Leather Arm Cops"  ] = "arm cops"
--- , ["Rubedo Leather Belt"      ] = "belt"
+, ["Rubedo Leather Jack"            ] = "jack"
+, ["Rubedo Leather Boots"           ] = "boots"
+, ["Rubedo Leather Bracers"         ] = "bracers"
+, ["Rubedo Leather Helmet"          ] = "helmet"
+, ["Rubedo Leather Guards"          ] = "guards"
+, ["Rubedo Leather Arm Cops"        ] = "arm cops"
+, ["Rubedo Leather Belt"            ] = "belt"
 
--- , ["Ruby Ash Bow"             ] = "bow"
--- , ["Ruby Ash Inferno Staff"   ] = "flame"
--- , ["Ruby Ash Frost Staff"     ] = "frost"
--- , ["Ruby Ash Lightning Staff" ] = "lightning"
--- , ["Ruby Ash Healing Staff"   ] = "resto"
--- , ["Ruby Ash Shield"          ] = "shield"
+, ["Ruby Ash Bow"                   ] = "bow"
+, ["Ruby Ash Inferno Staff"         ] = "flame"
+, ["Ruby Ash Ice Staff"             ] = "frost"
+, ["Ruby Ash Lightning Staff"       ] = "lightning"
+, ["Ruby Ash Restoration Staff"     ] = "resto"
+, ["Ruby Ash Shield"                ] = "shield"
 
-, ["Whitestrake's Retribution"] = "Whitestrake's"
-, ["Armor of the Seducer"     ] = "Seducer"
-, ["Night Mother's Gaze"      ] = "Night Mother's"
-, ["Alessia's Bulwark"        ] = "Alessia's"
-, ["Pelinal's Aptitude"       ] = "Pelinal's"
+, ["Whitestrake's Retribution"      ] = "Whitestrake's"
+, ["Armor of the Seducer"           ] = "Seducer"
+, ["Night Mother's Gaze"            ] = "Night Mother's"
+, ["Alessia's Bulwark"              ] = "Alessia's"
+, ["Pelinal's Aptitude"             ] = "Pelinal's"
 
 }
 
