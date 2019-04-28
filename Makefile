@@ -36,3 +36,7 @@ profile:
 	lua ZZProfiler_Dump.lua > profile.txt
 
 
+lang/en2.lua: data/WritWorthy.lua make_lang.lua
+	lua make_lang.lua
+	lua lang/en2.lua
+

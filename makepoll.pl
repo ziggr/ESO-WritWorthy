@@ -21,7 +21,8 @@ sub dirls($)
 push @files, 'WritWorthy.lua';
 push @files, 'WritWorthy_AutoQuest.lua';
 push @files, 'WritWorthy_Util.lua';
-push @files, 'WritWorthy_AGS.lua';
+push @files, 'WritWorthy_I18N.lua';
+push @files, 'lang/en.lua';
 push @files, 'Bindings.xml';
 push @files, 'lang/en.lua';
 print join("\n", @files) . "\n";

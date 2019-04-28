@@ -62,6 +62,7 @@ WritWorthy_MatRow.lua
 WritWorthy_Know.lua
 WritWorthy_Window.lua
 WritWorthy_AGS.lua
+WritWorthy_I18N.lua
 WritWorthy_Profiler.lua
 # WritWorthy_AutoQuest.lua
 WritWorthy.lua

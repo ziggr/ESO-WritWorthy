@@ -483,6 +483,7 @@ function WritWorthy.SlashCommand(arg1)
     if arg1:lower() == WW.STR.slash_discover then
         d("|c999999WritWorthy: ".. WW.STR.status_discover.."|r")
         WritWorthy.Smithing.Discover()
+        WritWorthy.DiscoverI18N()
     elseif arg1:lower() == WW.STR.slash_forget then
         d("|c999999WritWorthy: "..WW.STR.status_forget .."|r")
         WritWorthy.Forget()
