@@ -46,6 +46,7 @@ WritWorthy_Define.lua
 # "lang/$(language).lua" below.
 #
 lang/en.lua
+lang/en2.lua
 lang/$(language).lua
 lang/l10n_merge.lua
 

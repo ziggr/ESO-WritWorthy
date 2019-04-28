@@ -21,14 +21,21 @@ function sortedkeys(t)
 end
 
 OUT_FILE:write("local WritWorthy = _G['WritWorthy'] or {} -- defined in WritWorthy_Define.lua\n\n")
-OUT_FILE:write("WritWorthy.I18N = {}\n")
+OUT_FILE:write("WritWorthy.I18N = WritWorthy.I18N or {}\n")
 
 KEY_FMT = {
-    static = "%-20.20s"
+    static = "%-40s"
 ,   mat    = "%6d"
 ,   gear   = "%6d"
 ,   set    = "%6d"
 }
+
+local function sanitize(s)
+    s = string.gsub(s,'"','\"')
+    s = string.gsub(s,'\n','\\n')
+    return s
+end
+
 for _,how_name in ipairs(sortedkeys(I18N)) do
     local key_fmt = KEY_FMT[how_name]
     OUT_FILE:write(string.format("\nWritWorthy.I18N['%s'] = {}\n",how_name))
@@ -41,9 +48,11 @@ for _,how_name in ipairs(sortedkeys(I18N)) do
         local kv      = I18N[how_name][lang]
         local lines   = {}
         for _,k in ipairs(sortedkeys(kv)) do
-            if type(k) == "string" then k = string.format('"%s"', k) end
             local key_str = string.format(key_fmt, k)
-            local val_str = kv[k]
+            if type(k) == "string" then
+                key_str = string.format(key_fmt, '"'..k..'"')
+            end
+            local val_str = sanitize(kv[k])
             local line = string.format( '[%s] = "%s"'
                                       , key_str
                                       , val_str

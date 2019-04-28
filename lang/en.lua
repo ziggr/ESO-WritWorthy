@@ -155,6 +155,9 @@ WW.STR = {
 
 }
 
+WW.I18N = WW.I18N or {}
+WW.I18N["static"] = WW.I18N["static"] or {}
+WW.I18N["static"]["en"] = WW.STR
 
 -- list window, abbreviations/shortenings to keep strings short enough
 -- to fit in narrow column widths.
