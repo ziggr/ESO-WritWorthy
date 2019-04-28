@@ -69,7 +69,7 @@ function WritWorthy.ToMatKnowList(item_link)
     if not parser then return nil end
     Log:Add(parser.class)
     if not parser:ParseItemLink(item_link) then
-        return Fail("WritWorthy: "..WW.STR.err_could_not_parse), nil, parser
+        return Fail("WritWorthy: "..WW.Str("err_could_not_parse")), nil, parser
     end
     local mat_list = parser:ToMatList()
     local know_list = nil
@@ -120,7 +120,7 @@ end
 local function tt_money(label, count, suffix)
     return label..": "
         .. Util.ToMoney(count)
-        .. (suffix or WW.STR.currency_suffix_gold)
+        .. (suffix or WW.Str("currency_suffix_gold"))
 end
 
 -- Return the text we should add to a tooltip.
@@ -141,7 +141,7 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
         if mat_gold then
             total_gold   = total_gold + mat_gold
         end
-        local s = tt_money(WW.STR.tooltip_mat_total, mat_gold)
+        local s = tt_money(WW.Str("tooltip_mat_total"), mat_gold)
         if not mat_gold then
             s = "|c"..WritWorthy.Util.COLOR_RED..s.."|r"
         end
@@ -151,13 +151,13 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
     if purchase_gold then
         total_gold       = total_gold + purchase_gold
         table.insert( tooltip_elements
-                    , tt_money(WW.STR.tooltip_purchase, purchase_gold)
+                    , tt_money(WW.Str("tooltip_purchase"), purchase_gold)
                     )
     end
 
     local per_voucher_gold = total_gold / voucher_ct
     table.insert( tooltip_elements
-                , tt_money(WW.STR.tooltip_per_voucher, per_voucher_gold)
+                , tt_money(WW.Str("tooltip_per_voucher"), per_voucher_gold)
                 )
 
     if WritWorthy.savedVariables.sell_per_voucher then
@@ -165,11 +165,11 @@ function WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
         local sell_net   = sell_total - (mat_gold or sell_total)
         local msg        = nil
         if 0 < sell_net then
-            msg = string.format( "|c%s" .. WW.STR.tooltip_sell_for
+            msg = string.format( "|c%s" .. WW.Str("tooltip_sell_for")
                                , WritWorthy.Util.COLOR_GREEN
                                , Util.ToMoney(sell_net))
         else
-            msg = string.format( "|c%s" .. WW.STR.tooltip_sell_for_cannot
+            msg = string.format( "|c%s" .. WW.Str("tooltip_sell_for_cannot")
                                , WritWorthy.Util.COLOR_ORANGE
                                , Util.ToMoney(sell_net))
         end
@@ -259,10 +259,10 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
             local text = nil
             local color = nil
             if inventory_data.ui_is_queued then
-                text = "WritWorthy: " .. WW.STR.tooltip_queued
+                text = "WritWorthy: " .. WW.Str("tooltip_queued")
                 color = WritWorthyInventoryList.COLOR_TEXT_QUEUED
             elseif inventory_data.ui_is_completed then
-                text = "WritWorthy: " .. WW.STR.tooltip_crafted
+                text = "WritWorthy: " .. WW.Str("tooltip_crafted")
                 color = WritWorthyInventoryList.COLOR_TEXT_COMPLETED
             end
             if color and text then
@@ -398,8 +398,8 @@ function WritWorthy:CreateSettingsWindow()
                                                      )
     local optionsData = {
         { type      = "checkbox"
-        , name      = WW.STR.lam_mat_price_tt_title
-        , tooltip   = WW.STR.lam_mat_price_tt_desc
+        , name      = WW.Str("lam_mat_price_tt_title")
+        , tooltip   = WW.Str("lam_mat_price_tt_desc")
         , getFunc   = function()
                         return self.savedVariables.enable_mat_price_tooltip ~= false
                       end
@@ -409,8 +409,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "dropdown"
-        , name      = WW.STR.lam_mat_list_title
-        , tooltip   = WW.STR.lam_mat_list_desc
+        , name      = WW.Str("lam_mat_list_title")
+        , tooltip   = WW.Str("lam_mat_list_desc")
         , choices   = { WW.Str("lam_mat_list_off")
                       , WW.Str("lam_mat_list_all")
                       , WW.Str("lam_mat_list_alchemy_only")
@@ -424,8 +424,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
-        , name      = WW.STR.lam_mm_fallback_title
-        , tooltip   = WW.STR.lam_mm_fallback_desc
+        , name      = WW.Str("lam_mm_fallback_title")
+        , tooltip   = WW.Str("lam_mm_fallback_desc")
         , getFunc   = function()
                         return self.savedVariables.enable_mm_fallback
                       end
@@ -435,8 +435,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
-        , name      = WW.STR.lam_station_colors_title
-        , tooltip   = WW.STR.lam_station_colors_desc
+        , name      = WW.Str("lam_station_colors_title")
+        , tooltip   = WW.Str("lam_station_colors_desc")
         , getFunc   = function()
                         return self.savedVariables.enable_station_colors
                       end
@@ -446,8 +446,8 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
-        , name      = WW.STR.lam_banked_vouchers_title
-        , tooltip   = WW.STR.lam_banked_vouchers_desc
+        , name      = WW.Str("lam_banked_vouchers_title")
+        , tooltip   = WW.Str("lam_banked_vouchers_desc")
         , getFunc   = function()
                         return self.savedVariables.enable_banked_vouchers
                       end
@@ -472,14 +472,14 @@ function WritWorthy.Forget()
 end
 
 function WritWorthy.SlashCommand(arg1)
-    if arg1:lower() == WW.STR.slash_discover then
-        d("|c999999WritWorthy: ".. WW.STR.status_discover.."|r")
+    if arg1:lower() == WW.Str("slash_discover") then
+        d("|c999999WritWorthy: ".. WW.Str("status_discover").."|r")
         WritWorthy.Smithing.Discover()
         WritWorthy.DiscoverI18N()
-    elseif arg1:lower() == WW.STR.slash_forget then
-        d("|c999999WritWorthy: "..WW.STR.status_forget .."|r")
+    elseif arg1:lower() == WW.Str("slash_forget") then
+        d("|c999999WritWorthy: "..WW.Str("status_forget") .."|r")
         WritWorthy.Forget()
-    elseif arg1:lower() == WW.STR.slash_count then
+    elseif arg1:lower() == WW.Str("slash_count") then
         local mwlist = WritWorthy:ScanInventoryForMasterWrits()
         local mw_ct = #mwlist
         local voucher_ct = 0
@@ -487,11 +487,11 @@ function WritWorthy.SlashCommand(arg1)
             local vc  = WritWorthy.ToVoucherCount(mw.item_link)
             voucher_ct = voucher_ct + vc
         end
-        d(string.format( "|c999999WritWorthy: "..WW.STR.count_writs_vouchers.."|r"
+        d(string.format( "|c999999WritWorthy: "..WW.Str("count_writs_vouchers").."|r"
                        , mw_ct
                        , Util.ToMoney(voucher_ct)
                        ))
-    elseif arg1:lower() == WW.STR.slash_auto then
+    elseif arg1:lower() == WW.Str("slash_auto") then
         if WritWorthy_AutoQuest then
             WritWorthy_AutoQuest()
         end
@@ -505,30 +505,30 @@ function WritWorthy.RegisterSlashCommands()
     if lsc then
         local cmd = lsc:Register( "/writworthy"
                                 , function(arg) WritWorthy.SlashCommand(arg) end
-                                , WW.STR.slash_writworthy_desc)
+                                , WW.Str("slash_writworthy_desc"))
 
         local sub_forget = cmd:RegisterSubCommand()
-        sub_forget:AddAlias(WW.STR.slash_forget)
-        sub_forget:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_forget) end)
-        sub_forget:SetDescription(WW.STR.slash_forget_desc)
+        sub_forget:AddAlias(WW.Str("slash_forget"))
+        sub_forget:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_forget")) end)
+        sub_forget:SetDescription(WW.Str("slash_forget_desc"))
 
         local sub_count = cmd:RegisterSubCommand()
-        sub_count:AddAlias(WW.STR.slash_count)
-        sub_count:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_count) end)
-        sub_count:SetDescription(WW.STR.slash_count_desc)
+        sub_count:AddAlias(WW.Str("slash_count"))
+        sub_count:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_count")) end)
+        sub_count:SetDescription(WW.Str("slash_count_desc"))
 
         if (GetDisplayName() == "@ziggr") then
             local sub_discover = cmd:RegisterSubCommand()
-            sub_discover:AddAlias(WW.STR.slash_discover)
-            sub_discover:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_discover) end)
-            sub_discover:SetDescription(WW.STR.slash_discover_desc)
+            sub_discover:AddAlias(WW.Str("slash_discover"))
+            sub_discover:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_discover")) end)
+            sub_discover:SetDescription(WW.Str("slash_discover_desc"))
         end
 
         if WritWorthy.AQAddKeyBind then
             local sub_auto = cmd:RegisterSubCommand()
-            sub_auto:AddAlias(WW.STR.slash_auto)
-            sub_auto:SetCallback(function() WritWorthy.SlashCommand(WW.STR.slash_auto) end)
-            sub_auto:SetDescription(WW.STR.slash_auto_desc)
+            sub_auto:AddAlias(WW.Str("slash_auto"))
+            sub_auto:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_auto")) end)
+            sub_auto:SetDescription(WW.Str("slash_auto_desc"))
         end
 
     else
@@ -565,6 +565,11 @@ function WritWorthy:Initialize()
                             , self.defaultChar
                             )
 
+    -- ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY",    "WritWorthy")
+    -- ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  WW.Str("keybind_writworthy"))
+
+    WritWorthy.RegisterSlashCommands()
+
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
 
@@ -597,6 +602,4 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
                               )
 
 ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY",    "WritWorthy")
-ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  WW.STR.keybind_writworthy)
-
-WritWorthy.RegisterSlashCommands()
+ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  "Bob" or WW.Str("keybind_writworthy"))
