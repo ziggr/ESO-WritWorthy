@@ -720,7 +720,7 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         else
             inventory_data.ui_detail1 = WW.STR.enchanting_cp160
         end
-        inventory_data.ui_detail2 = parser.glyph.name
+        inventory_data.ui_detail2 = WW.Str(parser.glyph.name)
 
         if parser.quality_num == 4 then
            inventory_data.ui_detail5 = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"

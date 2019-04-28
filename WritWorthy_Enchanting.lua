@@ -64,7 +64,7 @@ Enchanting.ASPECT_RUNES = {
 Enchanting.Glyph  = {}
 function Enchanting.Glyph:New(name, essence_rune, add_sub, glyph_id)
     local o = {
-        name         = WW.STR[name] -- "Absorb Health"
+        name         = name         -- "glyph_absorb_health"
     ,   essence_rune = essence_rune -- OKO
     ,   add_sub      = add_sub      -- SUB
     ,   glyph_id     = glyph_id
