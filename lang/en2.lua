@@ -319,7 +319,7 @@ WritWorthy.I18N['set']['en'] = {
 
 WritWorthy.I18N['static'] = {}
 WritWorthy.I18N['static']['en'] = {
-    ["ags_label"                             ] = "!WritWorthy cost per voucher"
+    ["ags_label"                             ] = "WritWorthy cost per voucher"
 ,   ["button_dequeue_all"                    ] = "Dequeue All"
 ,   ["button_enqueue_all"                    ] = "Enqueue All"
 ,   ["button_sort_by_station"                ] = "Sort by Station"
