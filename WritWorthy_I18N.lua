@@ -10,7 +10,7 @@ WritWorthy.STR_HOW = {
                         --"Motif not known" and so on.
                         --
                         -- Key is a lookup key into
-                        -- WritWorthy.STR[lang][key] = "result"
+                        -- WritWorthy.I18N.static[lang][key] = "result"
   STATIC    = { name    = "static"
               , dynamic = nil
               }
