@@ -109,6 +109,7 @@ WW.STR = {
 
 , ["status_list_empty_no_writs"             ] = "This character has no sealed master writs in its inventory."
 
+, ["keybind_writworthy"          ] = "XToggle window"
 -- Awesome Guild Store integration
 , ["ags_label"                   ] = "!WritWorthy cost per voucher"
 
@@ -154,10 +155,6 @@ WW.STR = {
 , ["glyph_decrease_physical_harm"] = "Decrease Physical Harm"
 
 }
-
-WW.I18N = WW.I18N or {}
-WW.I18N["static"] = WW.I18N["static"] or {}
-WW.I18N["static"]["en"] = WW.STR
 
 -- list window, abbreviations/shortenings to keep strings short enough
 -- to fit in narrow column widths.

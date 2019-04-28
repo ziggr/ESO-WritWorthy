@@ -377,6 +377,7 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["header_V"                              ] = "V"
 ,   ["header_tooltip_Q"                      ] = "Enqueued for crafting"
 ,   ["header_tooltip_V"                      ] = "Voucher count"
+,   ["keybind_writworthy"                    ] = "Toggle window"
 ,   ["lam_banked_vouchers_desc"              ] = "Scan bank and include those writs in the list of writs available to automatically craft.\n|cFF3333BE CAREFUL if you craft on multiple characters! WritWorthy will not warn you if you craft the same banked writ on multiple characters.|r"
 ,   ["lam_banked_vouchers_title"             ] = "Include writs from bank in auto-crafting window"
 ,   ["lam_mat_list_alchemy_only"             ] = "Alchemy Only"

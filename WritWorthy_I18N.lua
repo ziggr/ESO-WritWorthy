@@ -71,12 +71,20 @@ function WritWorthy.LangList()
 
                         -- Prefer forced language code if set in savedVariables,
                         -- or current client language if no forced language.
-        table.insert(l, WritWorthy.savedVariables.lang or GetCVar("language.2"))
+        table.insert(l, (WritWorthy.savedVariables and WritWorthy.savedVariables.lang)
+                        or GetCVar("language.2"))
 
                         -- Fall back to US English, if not already in
                         -- first/preferred position.
         if l[0] ~= "en" then
             table.insert(l, "en")
+        end
+
+                        -- Cache result, unless we were called before
+                        -- OnAddOnLoaded() loaded savedVariables: do NOT cache
+                        -- results that ignore user prefs in savedVariables.
+        if not WritWorthy.savedVariables then
+            return l
         end
         WritWorthy.lang_list = l
     end

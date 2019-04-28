@@ -565,10 +565,11 @@ function WritWorthy:Initialize()
                             , self.defaultChar
                             )
 
-    -- ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY",    "WritWorthy")
-    -- ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  WW.Str("keybind_writworthy"))
-
     WritWorthy.RegisterSlashCommands()
+
+                        -- Swap in a preferred-language version of the
+                        -- keybind string.
+    ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  WW.Str("keybind_writworthy"))
 
     WritWorthy.TooltipInterceptInstall()
     self:CreateSettingsWindow()
@@ -601,5 +602,16 @@ EVENT_MANAGER:RegisterForEvent( WritWorthy.name
                               , WritWorthy.OnAddOnLoaded
                               )
 
+                        -- Key binding strings must be defined earlier than
+                        -- OnAddOnLoaded() time or the key binding will not
+                        -- appear in Controls/Keybindings.
+                        --
+                        -- Category string is locked at file-load time and
+                        -- cannot be changed. That's okay, we don't translate
+                        -- our add-on name anyway.
+                        --
+                        -- Individual key binds can and should be replaced with
+                        -- i18n strings later, once we've loaded savedVariables
+                        -- and know which language the user prefers.
 ZO_CreateStringId("SI_KEYBINDINGS_CATEGORY_WRIT_WORTHY",    "WritWorthy")
-ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  "Bob" or WW.Str("keybind_writworthy"))
+ZO_CreateStringId("SI_BINDING_NAME_WritWorthyUI_ToggleUI",  "Toggle window")
