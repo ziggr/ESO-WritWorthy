@@ -11,17 +11,9 @@ WritWorthy.name            = "WritWorthy"
 WritWorthy.version         = "5.0.1"
 WritWorthy.savedVarVersion = 1
 
--- Constants for savedVariables.enable_mat_list_chat
--- Appear as user-visible text in dropdown and also used as programmatic keys
--- which is usually a bad idea but I'm suboptimally lazy today.
-WritWorthy.MAT_LIST_CHAT_OFF          = WW.STR.lam_mat_list_off          -- "Off"
-WritWorthy.MAT_LIST_CHAT_ALL          = WW.STR.lam_mat_list_all          -- "All"
-WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY = WW.STR.lam_mat_list_alchemy_only -- "Alchemy Only"
 WritWorthy.default = {
-    enable_mat_list_chat = WritWorthy.MAT_LIST_CHAT_OFF
-
                         -- UI topleft, used by WritWorthyInventoryList.
-,   position = { 50, 50 }
+    position = { 50, 50 }
 }
                         -- Default savedChariables: per-character saved data.
                         -- Initially just data about that character's inventory.
@@ -94,7 +86,7 @@ function WritWorthy.ToMatCost(item_link)
                         -- Temporarily suspend all "dump matlist to chat"
                         -- to avoid scroll blindness
     local save_mat_list_chat = WritWorthy.savedVariables.enable_mat_list_chat
-    WritWorthy.savedVariables.enable_mat_list_chat = WritWorthy.MAT_LIST_CHAT_OFF
+    WritWorthy.savedVariables.enable_mat_list_chat = nil
 
     local mat_list = WritWorthy.ToMatKnowList(item_link)
     local mat_total = WritWorthy.MatRow.ListTotal(mat_list)
@@ -207,9 +199,9 @@ function WritWorthy.KnowTooltipText(know_list)
 end
 
 local function can_dump_matlist(enable, parser)
-    if enable == WritWorthy.MAT_LIST_CHAT_ALL then
+    if enable == WW.Str("lam_mat_list_all") then
         return true
-    elseif enable == WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY
+    elseif enable == WW.Str("lam_mat_list_alchemy_only")
         and parser
         and parser.class == WritWorthy.Alchemy.Parser.class then
         return true
@@ -304,7 +296,7 @@ function WritWorthy:ScanInventoryForMasterWrits()
                         -- Temporarily suspend all "dump matlist to chat"
                         -- to avoid scroll blindness
     local save_mat_list_chat = self.savedVariables.enable_mat_list_chat
-    self.savedVariables.enable_mat_list_chat = WritWorthy.MAT_LIST_CHAT_OFF
+    self.savedVariables.enable_mat_list_chat = nil
     for _,bag_id in ipairs(bag_list) do
         local slot_ct = GetBagSize(bag_id)
         for slot_index = 0, slot_ct do
@@ -419,9 +411,9 @@ function WritWorthy:CreateSettingsWindow()
         { type      = "dropdown"
         , name      = WW.STR.lam_mat_list_title
         , tooltip   = WW.STR.lam_mat_list_desc
-        , choices   = { WritWorthy.MAT_LIST_CHAT_OFF
-                      , WritWorthy.MAT_LIST_CHAT_ALCHEMY_ONLY
-                      , WritWorthy.MAT_LIST_CHAT_ALL
+        , choices   = { WW.Str("lam_mat_list_off")
+                      , WW.Str("lam_mat_list_all")
+                      , WW.Str("lam_mat_list_alchemy_only")
                       }
         , getFunc   = function()
                         return self.savedVariables.enable_mat_list_chat
