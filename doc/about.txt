@@ -3,6 +3,7 @@
 [*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info1594-LibLazyCrafting.html"]LibLazyCrafting[/URL]
 [*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info7-LibAddonMenu.html"]LibAddonMenu-2.0[/URL]
 [*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info2204-LibPrice.html"]LibPrice[/URL]
+[*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info2241-LibSets.html"]LibSets[/URL]
 [*] (Optional) uses any of [URL="https://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL], [URL="https://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html"]Arkadius' Trade Tools[/URL], [URL="https://www.esoui.com/downloads/info1245-TamrielTradeCentre.html"]Tamriel Trade Centre[/URL] for material price data.
 [/LIST]
 
