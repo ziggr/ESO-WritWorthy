@@ -1,10 +1,6 @@
 -- ### ZIG YOU LEFT OFF HERE
 --
--- Set name (!)
 -- recipe
--- alch materials
--- motif
--- gear  item name
 
 -- WritWorthy UI window
 --

@@ -1043,7 +1043,7 @@ function Parser:ParseItemLink(item_link)
         local fmt = "|H0:item:%d:308:50:0:0:0:0:0:0:0:0:0:0:0:0:2:0:0:0:0:0|h|h"
         local ll = string.format(fmt, self.request_item.example_item_id)
         self.request_item.tr = self.request_item.item_name -- retain old name for debugging.
-        self.request_item.item_name = zo_strformat("<<t:1>>", GetItemLinkName(ll))
+        self.request_item.item_name = WritWorthy.Gear(self.request_item.example_item_id)
     end
     Log:Add("request_item:"..tostring(item_num).." "
             ..tostring(self.request_item.item_name))
