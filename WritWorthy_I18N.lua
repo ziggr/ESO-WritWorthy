@@ -222,10 +222,25 @@ function WritWorthy.DiscoverI18N()
     d(string.format("WritWorthy: discovered string_id:%d", ct))
 
                         -- Fooddrink names
-    rr = { [lang] = {} }
+    local fd = {
+        [ 64221] = "Psijic Ambrosia"
+    ,   [ 68251] = "Capon Tomato-Beet Casserole"
+    ,   [ 68252] = "Jugged Rabbit in Preserves"
+    ,   [ 68253] = "Longfin Pasty with Melon Sauce"
+    ,   [ 68254] = "Withered Tree Inn Venison Pot Roast"
+    ,   [ 68273] = "Senche-Tiger Single Malt"
+    ,   [ 68274] = "Velothi View Vintage Malbec"
+    ,   [ 68275] = "Orcrest Agony Pale Ale"
+    ,   [ 68276] = "Lusty Argonian Maid Mazte"
+    ,   [ 71056] = "Orzorga's Red Frothgar"
+    ,   [ 71057] = "Orzorga's Tripe Trifle Pocket"
+    ,   [ 71058] = "Orzorga's Blood Price Pie"
+    ,   [ 71059] = "Orzorga's Smoked Bear Haunch"
+    }
+   rr = { [lang] = {} }
     ct = 0
     r[WritWorthy.STR_HOW.FOODDRINK.name] = rr
-    for fooddrink_item_id,recipie_item_id in pairs(WritWorthy.Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID) do
+    for fooddrink_item_id,_ in pairs(fd) do
         rr[lang][fooddrink_item_id] = WritWorthy.I18NFoodDrinkDyn(fooddrink_item_id)
         ct = ct + 1
     end
