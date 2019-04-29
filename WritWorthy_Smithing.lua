@@ -987,7 +987,7 @@ end
 
 function Parser:GetSetBonus(set_id)
     local r = {}
-
+                        -- Fetch set data from Baertram's LibSets, if possible.
     Parser.client_lang = Parser.client_lang or GetCVar("language.2")
     if LibSets and LibSets.GetSetInfo then
         local si = LibSets.GetSetInfo(set_id)
@@ -997,9 +997,10 @@ function Parser:GetSetBonus(set_id)
             r.dol_set_index  = nil      -- Eventually this needs to go away.
         end
     end
+                        -- Force set name to I18N name, in case user
+                        -- wants EN names on a DE client.
+    r.name = WritWorthy.SetName(set_id) or r.name
 
--- d("Set Bonus:")
--- d(r)
                         -- 2019-04-15
                         -- Fallback to old SET_BONUS table until Baertram
                         -- publishes the new LibSet.GetSetInfo() API.

@@ -494,6 +494,7 @@ WritWorthy.I18N['shorten']['en'] = {
 ,   ["Ruby Ash Restoration Staff"  ] = "resto"
 ,   ["Ruby Ash Shield"             ] = "shield"
 ,   ["Whitestrake's Retribution"   ] = "Whitestrake's"
+,   ["Woodworking"                 ] = "Wood"
 }
 
 WritWorthy.I18N['static'] = {}

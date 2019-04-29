@@ -89,6 +89,10 @@ function WritWorthy.Str(key, how)
     end
 end
 
+function WritWorthy.SetName(key)
+    return WritWorthy.Str(key, WritWorthy.STR_HOW.SET)
+end
+
 function WritWorthy.Shorten(key)
     return WritWorthy.Str(key, WritWorthy.STR_HOW.SHORTEN)
 end
