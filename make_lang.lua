@@ -26,15 +26,16 @@ OUT_FILE:write("WritWorthy.I18N = WritWorthy.I18N or {}\n")
 KEY_FMT = {
     static      = "%-40s"
 ,   client_si   = "%-30s"
-,   shorten     = "%-30s"
-,   mat         = "%6d"
+,   fooddrink   = "%6d"
 ,   gear        = "%6d"
-,   set         = "%6d"
+,   mat         = "%6d"
 ,   motif       = "%6d"
+,   set         = "%6d"
+,   shorten     = "%-30s"
 }
 
 local function sanitize(s)
-    s = string.gsub(s,'"','\"')
+    s = string.gsub(s,'"','\\"')
     s = string.gsub(s,'\n','\\n')
     return s
 end
@@ -43,6 +44,7 @@ for _,how_name in ipairs(sortedkeys(I18N)) do
     local key_fmt = KEY_FMT[how_name]
     if not key_fmt then
         print(string.format("unknown how_name:'%s'", how_name))
+        key_fmt = "%6d"
     end
     OUT_FILE:write(string.format("\nWritWorthy.I18N['%s'] = {}\n",how_name))
 

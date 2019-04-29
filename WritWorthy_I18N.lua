@@ -54,6 +54,13 @@ WritWorthy.STR_HOW = {
               , dynamic = "I18NMotifDyn"
               }
 
+                        -- Food/Drink name such as "Orzorga's Red Frothgar"
+                        --
+                        -- key is fooddrink item id such as 33526 for FIshy Sticks
+, FOODDRINK = { name    = "fooddrink"
+              , dynamic = "I18NFoodDrinkDyn"
+              }
+
                         -- ESO Client SI_XXX string index.
                         --
                         -- key is a string "SI_XXX" constant such as
@@ -87,6 +94,10 @@ function WritWorthy.Str(key, how)
             if dynamic then return dynamic end
         end
     end
+end
+
+function WritWorthy.FoodDrink(key)
+    return WritWorthy.Str(key, WritWorthy.STR_HOW.FOODDRINK)
 end
 
 function WritWorthy.Gear(key)
@@ -146,9 +157,13 @@ end
 
 -- Dynamic Strings, fetched from current client language ---------------------
 
-function WritWorthy.I18NMatDyn(item_id)
-    local fmt = "|H0:item:%d:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
-    local item_link = string.format(fmt, tonumber(item_id))
+function WritWorthy.I18NClientSIDyn(string_index)
+    return GetString(_G[string_index])
+end
+
+function WritWorthy.I18NFoodDrinkDyn(fooddrink_id)
+    local fmt = "|H0:item:%d:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
+    local item_link = string.format(fmt, tonumber(fooddrink_id))
     return zo_strformat("<<t:1>>",GetItemLinkName(item_link))
 end
 
@@ -158,16 +173,18 @@ function WritWorthy.I18NGearDyn(example_item_id)
     return zo_strformat("<<t:1>>",GetItemLinkName(item_link))
 end
 
-function WritWorthy.I18NSetDyn(set_id)
-    return LibSets.GetSetName(set_id)
-end
-
 function WritWorthy.I18NMotifDyn(motif_id)
     return zo_strformat("<<1>>",GetItemStyleName(motif_id))
 end
 
-function WritWorthy.I18NClientSIDyn(string_index)
-    return GetString(_G[string_index])
+function WritWorthy.I18NMatDyn(item_id)
+    local fmt = "|H0:item:%d:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
+    local item_link = string.format(fmt, tonumber(item_id))
+    return zo_strformat("<<t:1>>",GetItemLinkName(item_link))
+end
+
+function WritWorthy.I18NSetDyn(set_id)
+    return LibSets.GetSetName(set_id)
 end
 
 -- Discover ------------------------------------------------------------------
@@ -189,16 +206,31 @@ function WritWorthy.DiscoverI18N()
                         -- Clobber current strings with
                         -- dynamic strings from every dynamic source.
 
-                        -- Material names
+                        -- Client SI string constants
+                        -- Use en.lua's keys as iteration range.
+                        -- Because this is a circular read+write
+                        -- on I18N['client_si'], don't swap in the
+                        -- results of this scan until AFTER the scan.
     rr = { [lang] = {} }
     ct = 0
-    r[WritWorthy.STR_HOW.MAT.name] = rr
-    for k,item_link in pairs(WritWorthy.LINK) do
-        local item_id = GetItemLinkItemId(item_link)
-        rr[lang][item_id] = WritWorthy.I18NMatDyn(item_id)
+    for k,_ in pairs(WritWorthy.I18N['client_si']['en']) do
+        local as_num = _G[k]
+        rr[lang][k] = GetString(as_num)
         ct = ct + 1
     end
-    d(string.format("WritWorthy: discovered mats:%d", ct))
+    r[WritWorthy.STR_HOW.CLIENT_SI.name] = rr
+    d(string.format("WritWorthy: discovered string_id:%d", ct))
+
+                        -- Fooddrink names
+    rr = { [lang] = {} }
+    ct = 0
+    r[WritWorthy.STR_HOW.FOODDRINK.name] = rr
+    for fooddrink_item_id,recipie_item_id in pairs(WritWorthy.Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID) do
+        rr[lang][fooddrink_item_id] = WritWorthy.I18NFoodDrinkDyn(fooddrink_item_id)
+        ct = ct + 1
+    end
+    d(string.format("WritWorthy: discovered fooddrink:%d", ct))
+
                         -- Gear names
     rr = { [lang] = {} }
     ct = 0
@@ -210,18 +242,16 @@ function WritWorthy.DiscoverI18N()
     end
     d(string.format("WritWorthy: discovered gear:%d", ct))
 
-                        -- Set Names
+                        -- Material names
     rr = { [lang] = {} }
     ct = 0
-    r[WritWorthy.STR_HOW.SET.name] = rr
-    for set_id = 1,1000 do
-        local set_info = LibSets.GetSetInfo(set_id)
-        if set_info and set_info.setTypes and set_info.setTypes.isCrafted then
-            rr[lang][set_id] = set_info.names[lang]
-            ct = ct + 1
-        end
+    r[WritWorthy.STR_HOW.MAT.name] = rr
+    for k,item_link in pairs(WritWorthy.LINK) do
+        local item_id = GetItemLinkItemId(item_link)
+        rr[lang][item_id] = WritWorthy.I18NMatDyn(item_id)
+        ct = ct + 1
     end
-    d(string.format("WritWorthy: discovered set:%d", ct))
+    d(string.format("WritWorthy: discovered mats:%d", ct))
 
                         -- Motif names
     rr = { [lang] = {} }
@@ -236,21 +266,19 @@ function WritWorthy.DiscoverI18N()
     end
     d(string.format("WritWorthy: discovered motif:%d", ct))
 
-
-                        -- SI string constants
-                        -- Use en.lua's keys as iteration range.
-                        -- Because this is a circular read+write
-                        -- on I18N['client_si'], don't swap in the
-                        -- results of this scan until AFTER the scan.
+                        -- Set Names
     rr = { [lang] = {} }
     ct = 0
-    for k,_ in pairs(WritWorthy.I18N['client_si']['en']) do
-        local as_num = _G[k]
-        rr[lang][k] = GetString(as_num)
-        ct = ct + 1
+    r[WritWorthy.STR_HOW.SET.name] = rr
+    for set_id = 1,1000 do
+        local set_info = LibSets.GetSetInfo(set_id)
+        if set_info and set_info.setTypes and set_info.setTypes.isCrafted then
+            rr[lang][set_id] = set_info.names[lang]
+            ct = ct + 1
+        end
     end
-    r[WritWorthy.STR_HOW.CLIENT_SI.name] = rr
-    d(string.format("WritWorthy: discovered string_id:%d", ct))
+    d(string.format("WritWorthy: discovered set:%d", ct))
+
 
                         -- Save results.
     WritWorthy.I18N = r
