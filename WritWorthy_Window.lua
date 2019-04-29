@@ -607,7 +607,7 @@ end
 --
 function WritWorthyInventoryList.Shorten(text)
     if not text then return "" end
-    local s = WW.SHORTEN[text]
+    local s = WritWorthy.Shorten(text)
     if s then return s end
     return text
 end

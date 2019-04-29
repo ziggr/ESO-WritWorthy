@@ -425,3 +425,61 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["tooltip_sell_for"                      ] = "Sell for %s g"
 ,   ["tooltip_sell_for_cannot"               ] = "Cannot sell for %s g"
 }
+
+-- list window, abbreviations/shortenings to keep strings short enough
+-- to fit in narrow column widths.
+--
+-- Long strings on the left will be replaced by strings on the right.
+WritWorthy.I18N['shorten'] = {}
+WritWorthy.I18N['shorten']['en'] = {
+  ["Alchemy"                        ] = "Alchemy"
+, ["Enchanting"                     ] = "Enchant"
+, ["Provisioning"                   ] = "Provis"
+
+, ["Rubedite Axe"                   ] = "1h axe"
+, ["Rubedite Mace"                  ] = "1h mace"
+, ["Rubedite Sword"                 ] = "1h sword"
+, ["Rubedite Battle Axe"            ] = "2h battle axe"
+, ["Rubedite Greatsword"            ] = "2h greatsword"
+, ["Rubedite Maul"                  ] = "2h maul"
+, ["Rubedite Dagger"                ] = "dagger"
+
+, ["Rubedite Cuirass"               ] = "cuirass"
+, ["Rubedite Sabatons"              ] = "sabatons"
+, ["Rubedite Gauntlets"             ] = "gauntlets"
+, ["Rubedite Helm"                  ] = "helm"
+, ["Rubedite Greaves"               ] = "greaves"
+, ["Rubedite Pauldron"              ] = "pauldron"
+, ["Rubedite Girdle"                ] = "girdle"
+
+, ["Ancestor Silk Robe"             ] = "robe"
+, ["Ancestor Silk Jerkin"           ] = "shirt"
+, ["Ancestor Silk Shoes"            ] = "shoes"
+, ["Ancestor Silk Gloves"           ] = "gloves"
+, ["Ancestor Silk Hat"              ] = "hat"
+, ["Ancestor Silk Breeches"         ] = "breeches"
+, ["Ancestor Silk Epaulets"         ] = "epaulets"
+, ["Ancestor Silk Sash"             ] = "sash"
+
+, ["Rubedo Leather Jack"            ] = "jack"
+, ["Rubedo Leather Boots"           ] = "boots"
+, ["Rubedo Leather Bracers"         ] = "bracers"
+, ["Rubedo Leather Helmet"          ] = "helmet"
+, ["Rubedo Leather Guards"          ] = "guards"
+, ["Rubedo Leather Arm Cops"        ] = "arm cops"
+, ["Rubedo Leather Belt"            ] = "belt"
+
+, ["Ruby Ash Bow"                   ] = "bow"
+, ["Ruby Ash Inferno Staff"         ] = "flame"
+, ["Ruby Ash Ice Staff"             ] = "frost"
+, ["Ruby Ash Lightning Staff"       ] = "lightning"
+, ["Ruby Ash Restoration Staff"     ] = "resto"
+, ["Ruby Ash Shield"                ] = "shield"
+
+, ["Whitestrake's Retribution"      ] = "Whitestrake's"
+, ["Armor of the Seducer"           ] = "Seducer"
+, ["Night Mother's Gaze"            ] = "Night Mother's"
+, ["Alessia's Bulwark"              ] = "Alessia's"
+, ["Pelinal's Aptitude"             ] = "Pelinal's"
+
+}

@@ -15,6 +15,13 @@ WritWorthy.STR_HOW = {
               , dynamic = nil
               }
 
+                        -- Hand-crafted abbreviations for long names.
+                        --
+                        -- Key is a lookup key into
+                        -- WritWorthy.I18N.shorten[lang][key] = "result"
+, SHORTEN   = { name    = "shorten"
+              , dynamic = nil
+              }
                         -- Crafting materials such as Rubedite Ingot
                         -- or Blessed Thistle.
                         --
@@ -25,7 +32,6 @@ WritWorthy.STR_HOW = {
               , dynamic = "I18NMatDyn"
               }
 
-
                         -- Crafted gear item such as "Rubedite Axe"
                         --
                         -- key is crafted item's example_item_id such as
@@ -33,7 +39,6 @@ WritWorthy.STR_HOW = {
 , GEAR      = { name    = "gear"
               , dynamic = "I18NGearDyn"
               }
-
 
                         -- Set name such as "Alessia's Bullwark"
                         --
@@ -63,6 +68,10 @@ function WritWorthy.Str(key, how)
             if dynamic then return dynamic end
         end
     end
+end
+
+function WritWorthy.Shorten(key)
+    return WritWorthy.Str(key, WritWorthy.STR_HOW.SHORTEN)
 end
 
 function WritWorthy.LangList()
