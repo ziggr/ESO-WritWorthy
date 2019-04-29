@@ -1,3 +1,5 @@
+--[[
+
 -- If current language has a file in lang/XX.lua , then load its strings
 -- on top of EN strings. Leaves untouched EN strings intact (such as any
 -- slash command or shortened string that aren't currently translated).
@@ -15,3 +17,5 @@ function WritWorthy.L10N_Merge()
     end
 end
 WritWorthy.L10N_Merge()
+
+--]]

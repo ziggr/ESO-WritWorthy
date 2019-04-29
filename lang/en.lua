@@ -1,3 +1,5 @@
+--[[
+
 local WW = WritWorthy or {}
 
 WW.STR = {
@@ -213,3 +215,4 @@ WW.SHORTEN = {
 
 }
 
+--]]

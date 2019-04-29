@@ -45,10 +45,10 @@ WritWorthy_Define.lua
 # If you don't want WritWorthy UI in DE German, comment out
 # "lang/$(language).lua" below.
 #
-lang/en.lua
+#lang/en.lua
 lang/en2.lua
 lang/$(language).lua
-lang/l10n_merge.lua
+#lang/l10n_merge.lua
 
 WritWorthy_Price.lua
 WritWorthy_Util.lua
