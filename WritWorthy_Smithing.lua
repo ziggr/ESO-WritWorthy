@@ -1146,7 +1146,7 @@ function Parser:ToKnowList()
             Log:Add("pages known:"..table.concat(pg_known, " "))
         end
         local title = string.format("motif %s", self.motif.motif_name)
-        local fmt = WritWorthy.Str("motif_not_known")
+        local fmt = WritWorthy.Str("know_err_motif")
         local msg   = string.format(fmt, self.motif.motif_name)
         table.insert(r, Know:New({ name     = title
                                  , is_known = motif_known
@@ -1173,7 +1173,7 @@ function Parser:ToKnowList()
             ..", trait="..tostring(self.trait.trait_index)
             ..") = " ..tostring(trait_known))
     local title = string.format("trait %s %s", self.trait.trait_name, line_name)
-    local fmt = WritWorthy.Str("trait_not_known")
+    local fmt = WritWorthy.Str("know_err_trait")
     local msg   = string.format(fmt, self.trait.trait_name, line_name)
     table.insert(r, Know:New({ name     = title
                              , is_known = trait_known
@@ -1201,7 +1201,7 @@ function Parser:ToKnowList()
                 ..", line="..tostring(self.request_item.research_line)
                 ..", trait_index=?):"..table.concat(known_t," "))
         local title = string.format( "%d traits for set bonus", self.set_bonus.trait_ct)
-        local msg   = string.format( WritWorthy.Str("trait_ct_too_low")
+        local msg   = string.format( WritWorthy.Str("know_err_trait_ct_too_low")
                                , known_trait_ct
                                , self.set_bonus.trait_ct
                                , tostring(self.set_bonus.name)

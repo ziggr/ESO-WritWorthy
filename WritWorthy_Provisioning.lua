@@ -686,7 +686,7 @@ function Parser:ToKnowList()
     local Know = WritWorthy.Know
     local k = Know:New({ name = "recipe"
                        , is_known = self.recipe.is_known
-                       , lack_msg = WritWorthy.Str("recipe_not_known")
+                       , lack_msg = WritWorthy.Str("know_err_recipe")
                        })
     local chef   = WritWorthy.RequiredSkill.PR_FOOD_4X:ToKnow()
     local brewer = WritWorthy.RequiredSkill.PR_DRINK_4X:ToKnow()
