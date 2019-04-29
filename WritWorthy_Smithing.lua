@@ -16,6 +16,8 @@ local c = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
 
 local CRAFTING_TYPE_JEWELRYCRAFTING = CRAFTING_TYPE_JEWELRYCRAFTING or 7
 
+function Smithing.Init()
+
 -- Schools: HVY MED LGT WOOD -------------------------------------------------
 --
 -- Clothing split into two since base mats differ (silk vs. leather).
@@ -775,6 +777,60 @@ Smithing.SET_BONUS = {
 }
 
 
+-- Improvement Material Counts -----------------------------------------------
+--
+-- Material counts for improving to purple or gold.
+--
+Smithing.PURPLE = {
+    index          = 4
+,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
+,   green_mat_ct   = 2
+,   blue_mat_ct    = 3
+,   purple_mat_ct  = 4
+,   gold_mat_ct    = 0
+}
+
+Smithing.GOLD = {
+    index          = 5
+,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
+,   green_mat_ct   = 2
+,   blue_mat_ct    = 3
+,   purple_mat_ct  = 4
+,   gold_mat_ct    = 8
+}
+
+Smithing.PURPLE_JEWELRY = {
+    index          = 4
+,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
+,   green_mat_ct   = 1
+,   blue_mat_ct    = 2
+,   purple_mat_ct  = 3
+,   gold_mat_ct    = 0
+}
+
+Smithing.GOLD_JEWELRY = {
+    index          = 5
+,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
+,   green_mat_ct   = 1
+,   blue_mat_ct    = 2
+,   purple_mat_ct  = 3
+,   gold_mat_ct    = 4
+}
+
+-- indices are item_link writ3 numbers (1-3 are white..blue, not used here)
+Smithing.QUALITY = {
+    [4] = Smithing.PURPLE
+,   [5] = Smithing.GOLD
+}
+Smithing.QUALITY_JEWELRY = {
+    [4] = Smithing.PURPLE_JEWELRY
+,   [5] = Smithing.GOLD_JEWELRY
+}
+
+end -- function WritWorthy.Smithing.Init()
+-- end of Init() =============================================================
+
+
 -- Roll through different values to explore set indexes or whatever.
 -- Record results to savedVariables.discover.XXX
 --
@@ -906,56 +962,6 @@ function Smithing.Discover()
     d("WritWorthy: discovered ability_ct:"..tostring(total_ability_ct))
 end
 
-
--- Improvement Material Counts -----------------------------------------------
---
--- Material counts for improving to purple or gold.
---
-Smithing.PURPLE = {
-    index          = 4
-,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
-,   green_mat_ct   = 2
-,   blue_mat_ct    = 3
-,   purple_mat_ct  = 4
-,   gold_mat_ct    = 0
-}
-
-Smithing.GOLD = {
-    index          = 5
-,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
-,   green_mat_ct   = 2
-,   blue_mat_ct    = 3
-,   purple_mat_ct  = 4
-,   gold_mat_ct    = 8
-}
-
-Smithing.PURPLE_JEWELRY = {
-    index          = 4
-,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
-,   green_mat_ct   = 1
-,   blue_mat_ct    = 2
-,   purple_mat_ct  = 3
-,   gold_mat_ct    = 0
-}
-
-Smithing.GOLD_JEWELRY = {
-    index          = 5
-,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
-,   green_mat_ct   = 1
-,   blue_mat_ct    = 2
-,   purple_mat_ct  = 3
-,   gold_mat_ct    = 4
-}
-
--- indices are item_link writ3 numbers (1-3 are white..blue, not used here)
-Smithing.QUALITY = {
-    [4] = Smithing.PURPLE
-,   [5] = Smithing.GOLD
-}
-Smithing.QUALITY_JEWELRY = {
-    [4] = Smithing.PURPLE_JEWELRY
-,   [5] = Smithing.GOLD_JEWELRY
-}
 
 -- Parser ====================================================================
 

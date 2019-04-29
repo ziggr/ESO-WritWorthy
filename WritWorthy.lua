@@ -566,6 +566,7 @@ function WritWorthy:Initialize()
                             )
 
     WritWorthy.RegisterSlashCommands()
+    WritWorthy.Smithing.Init()
 
                         -- Swap in a preferred-language version of the
                         -- keybind string.

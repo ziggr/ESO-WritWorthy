@@ -1,3 +1,10 @@
+-- ### ZIG YOU LEFT OFF HERE
+--
+-- There are still many file-load strings in WW_Smithing. Move them.
+--      -- Grep for GetString() and crush.
+-- Motif names need to get discovered/stored in en2.lang.
+
+
 -- WritWorthy UI window
 --
 -- Do NOT put tooltip or settings UI code here. Just the big list-of-writs
