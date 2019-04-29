@@ -107,16 +107,6 @@ WritWorthyInventoryList.CELL_NAME_LIST = {
 WritWorthyInventoryList.CELL_UNTEXT_LIST = {
   [WritWorthyInventoryList.CELL_ENQUEUE] = true
 }
-WritWorthyInventoryList.HEADER_TOOLTIPS = {
-  [WritWorthyInventoryList.CELL_TYPE      ] = WW.STR.header_tooltip_Type
-, [WritWorthyInventoryList.CELL_VOUCHERCT ] = WW.STR.header_tooltip_V
-, [WritWorthyInventoryList.CELL_DETAIL1   ] = WW.STR.header_tooltip_Detail1
-, [WritWorthyInventoryList.CELL_DETAIL2   ] = WW.STR.header_tooltip_Detail2
-, [WritWorthyInventoryList.CELL_DETAIL3   ] = WW.STR.header_tooltip_Detail3
-, [WritWorthyInventoryList.CELL_DETAIL4   ] = WW.STR.header_tooltip_Detail4
-, [WritWorthyInventoryList.CELL_DETAIL5   ] = WW.STR.header_tooltip_Detail5
-, [WritWorthyInventoryList.CELL_ENQUEUE   ] = WW.STR.header_tooltip_Q
-}
 
 -- WritWorthyUI: The window around the inventory list ------------------------
 
@@ -197,9 +187,9 @@ function WritWorthyUI_ToggleUI()
         local t = WritWorthyUIInventoryListTitle
         if t then
 
-            local fmt = WW.STR.title_writ_inventory_player
+            local fmt = WW.Str("title_writ_inventory_player")
             if WritWorthy.savedVariables.enable_banked_vouchers then
-                fmt = WW.STR.title_writ_inventory_player_bank
+                fmt = WW.Str("title_writ_inventory_player_bank")
             end
             local ss = string.format(fmt, GetUnitName("player"))
             t:SetText(ss)
@@ -223,7 +213,7 @@ end
 -- Inventory List ------------------------------------------------------------
 
 function WritWorthyInventoryList_HeaderInit(control, name, text, key)
-    local l10n_text = WW.STR["header_"..text] or text
+    local l10n_text = WW.Str("header_"..text) or text
     ZO_SortHeader_Initialize( control                   -- control
                             , l10n_text                 -- name
                             , key or string.lower(text) -- key
@@ -245,6 +235,17 @@ function WritWorthyInventoryList_HeaderInit(control, name, text, key)
                         -- thanks to its two anchors).
     WritWorthyInventoryList.list_header_controls[name] = control
 
+    WritWorthyInventoryList.HEADER_TOOLTIPS = {
+      [WritWorthyInventoryList.CELL_TYPE      ] = WW.Str("header_tooltip_Type")
+    , [WritWorthyInventoryList.CELL_VOUCHERCT ] = WW.Str("header_tooltip_V")
+    , [WritWorthyInventoryList.CELL_DETAIL1   ] = WW.Str("header_tooltip_Detail1")
+    , [WritWorthyInventoryList.CELL_DETAIL2   ] = WW.Str("header_tooltip_Detail2")
+    , [WritWorthyInventoryList.CELL_DETAIL3   ] = WW.Str("header_tooltip_Detail3")
+    , [WritWorthyInventoryList.CELL_DETAIL4   ] = WW.Str("header_tooltip_Detail4")
+    , [WritWorthyInventoryList.CELL_DETAIL5   ] = WW.Str("header_tooltip_Detail5")
+    , [WritWorthyInventoryList.CELL_ENQUEUE   ] = WW.Str("header_tooltip_Q")
+    }
+
     local tooltip_text = WritWorthyInventoryList.HEADER_TOOLTIPS[name]
     if tooltip_text then
         ZO_SortHeader_SetTooltip(control, tooltip_text)
@@ -260,7 +261,7 @@ end
 function WritWorthyInventoryList:Initialize(control)
     ZO_SortFilterList.Initialize(self, control)
     self.inventory_data_list = {}
-    self:SetEmptyText(WW.STR.status_list_empty_no_writs)
+    self:SetEmptyText(WW.Str("status_list_empty_no_writs"))
 
                         -- Tell ZO_ScrollList how it can ask us to
                         -- create row controls.
@@ -320,25 +321,25 @@ function WritWorthyInventoryList:Initialize(control)
     , ["SummaryQueuedMatCost"            ] = { 1, 2, R, "" }
     , ["SummaryQueuedVoucherCost"        ] = { 1, 3, R, "" }
 
-    , ["SummaryQueuedVoucherCtUnit"      ] = { 2, 1, L, WW.STR.currency_suffix_voucher }
-    , ["SummaryQueuedMatCostUnit"        ] = { 2, 2, L, WW.STR.currency_suffix_gold    }
-    , ["SummaryQueuedVoucherCostUnit"    ] = { 2, 3, L, WW.STR.currency_suffix_gold_per_voucher }
+    , ["SummaryQueuedVoucherCtUnit"      ] = { 2, 1, L, WW.Str("currency_suffix_voucher") }
+    , ["SummaryQueuedMatCostUnit"        ] = { 2, 2, L, WW.Str("currency_suffix_gold")    }
+    , ["SummaryQueuedVoucherCostUnit"    ] = { 2, 3, L, WW.Str("currency_suffix_gold_per_voucher") }
 
-    , ["SummaryQueuedVoucherCtLabel"     ] = { 3, 1, L, WW.STR.summary_queued_voucher_ct }
-    , ["SummaryQueuedMatCostLabel"       ] = { 3, 2, L, WW.STR.summary_queued_mat_cost   }
-    , ["SummaryQueuedVoucherCostLabel"   ] = { 3, 3, L, WW.STR.summary_queued_average_voucher_cost }
+    , ["SummaryQueuedVoucherCtLabel"     ] = { 3, 1, L, WW.Str("summary_queued_voucher_ct") }
+    , ["SummaryQueuedMatCostLabel"       ] = { 3, 2, L, WW.Str("summary_queued_mat_cost")   }
+    , ["SummaryQueuedVoucherCostLabel"   ] = { 3, 3, L, WW.Str("summary_queued_average_voucher_cost") }
 
     , ["SummaryCompletedVoucherCt"       ] = { 4, 1, R, "" }
     , ["SummaryCompletedMatCost"         ] = { 4, 2, R, "" }
     , ["SummaryCompletedVoucherCost"     ] = { 4, 3, R, "" }
 
-    , ["SummaryCompletedVoucherCtUnit"   ] = { 5, 1, L, WW.STR.currency_suffix_voucher }
-    , ["SummaryCompletedMatCostUnit"     ] = { 5, 2, L, WW.STR.currency_suffix_gold    }
-    , ["SummaryCompletedVoucherCostUnit" ] = { 5, 3, L, WW.STR.currency_suffix_gold_per_voucher }
+    , ["SummaryCompletedVoucherCtUnit"   ] = { 5, 1, L, WW.Str("currency_suffix_voucher") }
+    , ["SummaryCompletedMatCostUnit"     ] = { 5, 2, L, WW.Str("currency_suffix_gold")    }
+    , ["SummaryCompletedVoucherCostUnit" ] = { 5, 3, L, WW.Str("currency_suffix_gold_per_voucher") }
 
-    , ["SummaryCompletedVoucherCtLabel"  ] = { 6, 1, L, WW.STR.summary_completed_voucher_ct }
-    , ["SummaryCompletedMatCostLabel"    ] = { 6, 2, L, WW.STR.summary_completed_mat_cost   }
-    , ["SummaryCompletedVoucherCostLabel"] = { 6, 3, L, WW.STR.summary_completed_average_voucher_cost }
+    , ["SummaryCompletedVoucherCtLabel"  ] = { 6, 1, L, WW.Str("summary_completed_voucher_ct") }
+    , ["SummaryCompletedMatCostLabel"    ] = { 6, 2, L, WW.Str("summary_completed_mat_cost")   }
+    , ["SummaryCompletedVoucherCostLabel"] = { 6, 3, L, WW.Str("summary_completed_average_voucher_cost") }
     }
     for name, def in pairs(GRID) do
         local offset_x   = OFFSET_X[def[1]]
@@ -716,9 +717,9 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     elseif parser.class == WritWorthy.Enchanting.Parser.class then
         inventory_data.ui_type =  UI_TYPE_ENCHANTING
         if parser.level == 150 then
-            inventory_data.ui_detail1 = WW.STR.enchanting_cp150
+            inventory_data.ui_detail1 = WW.Str("enchanting_cp150")
         else
-            inventory_data.ui_detail1 = WW.STR.enchanting_cp160
+            inventory_data.ui_detail1 = WW.Str("enchanting_cp160")
         end
         inventory_data.ui_detail2 = WW.Str(parser.glyph.name)
 
@@ -1486,9 +1487,9 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
     WritWorthyUIEnqueueAll:SetEnabled(can_enqueue_any)
     WritWorthyUIDequeueAll:SetEnabled(can_dequeue_any)
 
-    WritWorthyUIEnqueueAll:SetText(WW.STR.button_enqueue_all)
-    WritWorthyUIDequeueAll:SetText(WW.STR.button_dequeue_all)
-    WritWorthyUISortByStation:SetText(WW.STR.button_sort_by_station)
+    WritWorthyUIEnqueueAll:SetText(WW.Str("button_enqueue_all"))
+    WritWorthyUIDequeueAll:SetText(WW.Str("button_dequeue_all"))
+    WritWorthyUISortByStation:SetText(WW.Str("button_sort_by_station"))
 
 
 end
