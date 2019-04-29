@@ -24,6 +24,7 @@ parse:
 zip:
 	-rm -rf published/WritWorthy published/WritWorthy\ x.x.x.zip
 	mkdir -p published/WritWorthy
+	cp -R lang published/WritWorthy/lang
 	cp -R Libs published/WritWorthy/Libs
 	cp ./WritWorthy* Bindings.xml published/WritWorthy/
 	rm -rf published/WritWorthy/Libs/LibCustomTitles/.git

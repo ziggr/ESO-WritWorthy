@@ -1,3 +1,12 @@
+[B]5.0.2 2019-04-29[/B]
+[LIST]
+[*] Expect and report bugs! I touched a lot of code to support multiple languages.
+[*] DE German "translation"
+    WritWorthy now honors the ESO Client's language for things such as material, set, trait, and other names.
+    Includes a _terrible_ Google Translate DE German translation for the rest of the WritWorthy UI such as window titles and controls.
+[*] Baertram's LibSets is no longer optional: required so that WritWorthy can show set names in German or whatever language.
+[/LIST]
+
 [B]5.0.1 2019-04-15[/B]
 [LIST]
 [*] Update 22/5.0.0/API 100027/Elsweyr

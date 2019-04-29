@@ -1,4 +1,4 @@
--- Parse a potion or poison request.
+-- Parse a potion or poison request
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 local WW = WritWorthy
