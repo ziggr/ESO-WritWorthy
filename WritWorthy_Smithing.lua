@@ -36,7 +36,7 @@ Smithing.SCHOOL_HEAVY =  {
 ,   blue_mat_name       = "dwarven oil"
 ,   purple_mat_name     = "grain solvent"
 ,   gold_mat_name       = "tempering alloy"
-,   armor_weight_name   = GetString(SI_ARMORTYPE3)
+,   armor_weight_name   = WritWorthy.SI("SI_ARMORTYPE3")
 ,   temper_skill        = WritWorthy.RequiredSkill.BS_TEMPER_EXPERTISE
 ,   motif_required      = true
     -- research lines
@@ -63,7 +63,7 @@ Smithing.SCHOOL_MEDIUM = {
 ,   blue_mat_name       = "embroidery"
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
-,   armor_weight_name   = GetString(SI_ARMORTYPE2)
+,   armor_weight_name   = WritWorthy.SI("SI_ARMORTYPE2")
 ,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
 ,   motif_required      = true
     -- research lines
@@ -83,7 +83,7 @@ Smithing.SCHOOL_LIGHT  = {
 ,   blue_mat_name       = "embroidery"
 ,   purple_mat_name     = "elegant lining"
 ,   gold_mat_name       = "dreugh wax"
-,   armor_weight_name   = GetString(SI_ARMORTYPE1)
+,   armor_weight_name   = WritWorthy.SI("SI_ARMORTYPE1")
 ,   temper_skill        = WritWorthy.RequiredSkill.CL_TEMPER_EXPERTISE
 ,   motif_required      = true
     -- research lines
@@ -783,7 +783,7 @@ Smithing.SET_BONUS = {
 --
 Smithing.PURPLE = {
     index          = 4
-,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
+,   name           = "|c973dd8"..WritWorthy.SI("SI_ITEMQUALITY4").."|r"
 ,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
@@ -792,7 +792,7 @@ Smithing.PURPLE = {
 
 Smithing.GOLD = {
     index          = 5
-,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
+,   name           = "|ce6c859"..WritWorthy.SI("SI_ITEMQUALITY5").."|r"
 ,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
@@ -801,7 +801,7 @@ Smithing.GOLD = {
 
 Smithing.PURPLE_JEWELRY = {
     index          = 4
-,   name           = "|c973dd8"..GetString(SI_ITEMQUALITY4).."|r"
+,   name           = "|c973dd8"..WritWorthy.SI("SI_ITEMQUALITY4").."|r"
 ,   green_mat_ct   = 1
 ,   blue_mat_ct    = 2
 ,   purple_mat_ct  = 3
@@ -810,7 +810,7 @@ Smithing.PURPLE_JEWELRY = {
 
 Smithing.GOLD_JEWELRY = {
     index          = 5
-,   name           = "|ce6c859"..GetString(SI_ITEMQUALITY5).."|r"
+,   name           = "|ce6c859"..WritWorthy.SI("SI_ITEMQUALITY5").."|r"
 ,   green_mat_ct   = 1
 ,   blue_mat_ct    = 2
 ,   purple_mat_ct  = 3
