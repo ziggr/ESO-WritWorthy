@@ -2,6 +2,20 @@ local WritWorthy = _G['WritWorthy'] or {} -- defined in WritWorthy_Define.lua
 
 WritWorthy.I18N = WritWorthy.I18N or {}
 
+WritWorthy.I18N['client_si'] = {}
+WritWorthy.I18N['client_si']['en'] = {
+    ["SI_ITEMFILTERTYPE15"                   ] = "Woodworking"
+,   ["SI_ARMORTYPE3"                         ] = "Heavy"
+,   ["SI_ARMORTYPE2"                         ] = "Medium"
+,   ["SI_ARMORTYPE1"                         ] = "Light"
+,   ["SI_ITEMFILTERTYPE25"                   ] = "Jewelry"
+,   ["SI_ITEMFILTERTYPE16"                   ] = "Alchemy"
+,   ["SI_ITEMFILTERTYPE17"                   ] = "Enchanting"
+,   ["SI_ITEMFILTERTYPE18"                   ] = "Provisioning"
+,   ["SI_ITEMQUALITY4"                       ] = "Epic"
+,   ["SI_ITEMQUALITY5"                       ] = "Legendary"
+}
+
 WritWorthy.I18N['gear'] = {}
 WritWorthy.I18N['gear']['en'] = {
     [ 43529] = "Rubedite Axe"

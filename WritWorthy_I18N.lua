@@ -46,6 +46,18 @@ WritWorthy.STR_HOW = {
 , SET       = { name    = "set"
               , dynamic = "I18NSetDyn"
               }
+
+                        -- ESO Client SI_XXX string index.
+                        --
+                        -- key is a string "SI_XXX" constant such as
+                        -- "SI_ARMORTYPE3" for "Heavy".
+                        --
+                        -- Keep keys as strings so that the en.lua file is
+                        -- readable: "SI_ARMORTYPE3" means a lot more to a
+                        -- human than "1360".
+, CLIENT_SI = { name    = "client_si"
+              , dynamic = "I18NClientSIDyn"
+              }
 }
 
 
@@ -72,6 +84,10 @@ end
 
 function WritWorthy.Shorten(key)
     return WritWorthy.Str(key, WritWorthy.STR_HOW.SHORTEN)
+end
+
+function WritWorthy.SI(key)
+    return WritWorthy.Str(key, WritWorthy.STR_HOW.CLIENT_SI)
 end
 
 function WritWorthy.LangList()
@@ -121,6 +137,10 @@ end
 
 function WritWorthy.I18NSetDyn(set_id)
     return LibSets.GetSetName(set_id)
+end
+
+function WritWorthy.I18NClientSIDyn(string_index)
+    return GetString(_G[string_index])
 end
 
 -- Discover ------------------------------------------------------------------

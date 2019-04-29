@@ -259,6 +259,7 @@ function WritWorthyInventoryList:New()
 end
 
 function WritWorthyInventoryList:Initialize(control)
+    self.InitUITypeStr()
     ZO_SortFilterList.Initialize(self, control)
     self.inventory_data_list = {}
     self:SetEmptyText(WW.Str("status_list_empty_no_writs"))
@@ -668,14 +669,28 @@ end
 -- Thank you, Manavortex!
 -- Cache these, because with inline == the string will be created just to compare
 -- it each time the fn runs
-local UI_TYPE_WOOD          = GetString(SI_ITEMFILTERTYPE15)
-local UI_TYPE_HEAVY         = GetString(SI_ARMORTYPE3)
-local UI_TYPE_MEDIUM        = GetString(SI_ARMORTYPE2)
-local UI_TYPE_LIGHT         = GetString(SI_ARMORTYPE1)
-local UI_TYPE_JEWELRY       = GetString(SI_ITEMFILTERTYPE25)
-local UI_TYPE_ALCHEMY       = GetString(SI_ITEMFILTERTYPE16)
-local UI_TYPE_ENCHANTING    = GetString(SI_ITEMFILTERTYPE17)
-local UI_TYPE_PROVISIONING  = GetString(SI_ITEMFILTERTYPE18)
+local UI_TYPE_WOOD          = nil -- GetString(SI_ITEMFILTERTYPE15)
+local UI_TYPE_HEAVY         = nil -- GetString(SI_ARMORTYPE3)
+local UI_TYPE_MEDIUM        = nil -- GetString(SI_ARMORTYPE2)
+local UI_TYPE_LIGHT         = nil -- GetString(SI_ARMORTYPE1)
+local UI_TYPE_JEWELRY       = nil -- GetString(SI_ITEMFILTERTYPE25)
+local UI_TYPE_ALCHEMY       = nil -- GetString(SI_ITEMFILTERTYPE16)
+local UI_TYPE_ENCHANTING    = nil -- GetString(SI_ITEMFILTERTYPE17)
+local UI_TYPE_PROVISIONING  = nil -- GetString(SI_ITEMFILTERTYPE18)
+
+function WritWorthyInventoryList.InitUITypeStr()
+    if UI_TYPE_WOOD then return end
+
+    UI_TYPE_WOOD          = WritWorthy.SI("SI_ITEMFILTERTYPE15"  )
+    UI_TYPE_HEAVY         = WritWorthy.SI("SI_ARMORTYPE3"        )
+    UI_TYPE_MEDIUM        = WritWorthy.SI("SI_ARMORTYPE2"        )
+    UI_TYPE_LIGHT         = WritWorthy.SI("SI_ARMORTYPE1"        )
+    UI_TYPE_JEWELRY       = WritWorthy.SI("SI_ITEMFILTERTYPE25"  )
+    UI_TYPE_ALCHEMY       = WritWorthy.SI("SI_ITEMFILTERTYPE16"  )
+    UI_TYPE_ENCHANTING    = WritWorthy.SI("SI_ITEMFILTERTYPE17"  )
+    UI_TYPE_PROVISIONING  = WritWorthy.SI("SI_ITEMFILTERTYPE18"  )
+
+end
 
 -- Fill in all inventory_data.ui_xxx fields.
 -- Here is where our data gets translated into user-visible text.
