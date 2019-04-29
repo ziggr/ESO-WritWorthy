@@ -24,10 +24,12 @@ OUT_FILE:write("local WritWorthy = _G['WritWorthy'] or {} -- defined in WritWort
 OUT_FILE:write("WritWorthy.I18N = WritWorthy.I18N or {}\n")
 
 KEY_FMT = {
-    static = "%-40s"
-,   mat    = "%6d"
-,   gear   = "%6d"
-,   set    = "%6d"
+    static      = "%-40s"
+,   client_si   = "%-30s"
+,   shorten     = "%-30s"
+,   mat         = "%6d"
+,   gear        = "%6d"
+,   set         = "%6d"
 }
 
 local function sanitize(s)
@@ -38,6 +40,9 @@ end
 
 for _,how_name in ipairs(sortedkeys(I18N)) do
     local key_fmt = KEY_FMT[how_name]
+    if not key_fmt then
+        print(string.format("unknown how_name:'%s'", how_name))
+    end
     OUT_FILE:write(string.format("\nWritWorthy.I18N['%s'] = {}\n",how_name))
 
     for _,lang in ipairs(sortedkeys(I18N[how_name])) do
