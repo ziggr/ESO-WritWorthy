@@ -455,6 +455,18 @@ function WritWorthy:CreateSettingsWindow()
                         self.savedVariables.enable_banked_vouchers = e
                       end
         },
+
+        { type      = "checkbox"
+        , name      = WW.Str("lam_force_en_title")
+        , tooltip   = WW.Str("lam_force_en_desc")
+        , getFunc   = function()
+                        return self.savedVariables.lang == "en"
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.lang = e and "en"
+                      end
+        , requiresReload = true
+        },
     }
 
     LAM2:RegisterOptionControls(lam_addon_id, optionsData)

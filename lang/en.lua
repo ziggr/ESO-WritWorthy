@@ -52,7 +52,7 @@ WritWorthy.I18N['shorten']['en'] = {
 ,   ["Woodworking"                 ] = "Wood"
 }
 
-WritWorthy.I18N['static'] = {}
+WritWorthy.I18N['static'] = WritWorthy.I18N['static'] or {}
 WritWorthy.I18N['static']['en'] = {
     ["ags_label"                             ] = "WritWorthy cost per voucher"
 ,   ["button_dequeue_all"                    ] = "Dequeue All"
@@ -121,6 +121,8 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["know_err_trait_ct_too_low"             ] = "%d of %d traits required for set %s"
 ,   ["lam_banked_vouchers_desc"              ] = "Scan bank and include those writs in the list of writs available to automatically craft.\n|cFF3333BE CAREFUL if you craft on multiple characters! WritWorthy will not warn you if you craft the same banked writ on multiple characters.|r"
 ,   ["lam_banked_vouchers_title"             ] = "Include writs from bank in auto-crafting window"
+,   ["lam_force_en_desc"                     ] = "Ignore client language setting and use EN English for all WritWorthy text."
+,   ["lam_force_en_title"                    ] = "Force EN English"
 ,   ["lam_mat_list_alchemy_only"             ] = "Alchemy Only"
 ,   ["lam_mat_list_all"                      ] = "All"
 ,   ["lam_mat_list_desc"                     ] = "Write several lines of materials to chat each time a Master Writ tooltip appears."
