@@ -6,7 +6,7 @@
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting
+## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets
 ## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
 
 # LibAddonMenuLibAddonMenu-2.0  required
@@ -21,6 +21,9 @@
 
 # LibLazyCrafting  required
 #   How we can queue and craft items.
+
+# LibSets required
+#   Set names such as "Alessia's Bullwark"
 
 # Optional libraries used only for unreleased WritWorthy_AutoQuest.lua.
 # Optional as long as I refuse to publish the autoquest feature.
