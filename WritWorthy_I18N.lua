@@ -196,6 +196,21 @@ function WritWorthy.DiscoverI18N()
     end
     d(string.format("WritWorthy: discovered set:%d", ct))
 
+                        -- SI string constants
+                        -- Use en.lua's keys as iteration range.
+                        -- Because this is a circular read+write
+                        -- on I18N['client_si'], don't swap in the
+                        -- results of this scan until AFTER the scan.
+    rr = { [lang] = {} }
+    ct = 0
+    for k,_ in pairs(WritWorthy.I18N['client_si']['en']) do
+        local as_num = _G[k]
+        rr[lang][k] = GetString(as_num)
+        ct = ct + 1
+    end
+    r[WritWorthy.STR_HOW.CLIENT_SI.name] = rr
+    d(string.format("WritWorthy: discovered string_id:%d", ct))
+
                         -- Save results.
     WritWorthy.I18N = r
     WritWorthy.savedVariables.I18N = r
