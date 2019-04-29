@@ -31,7 +31,8 @@ function MatRow:FromName(mat_name, ct)
     o.link = WritWorthy.FindLink(mat_name)
     if not o.link then return Fail("link not found:"..tostring(mat_name)) end
     o.name_tr = o.name
-    o.name    = zo_strformat("<<t:1>>",GetItemLinkName(o.link))
+    o.item_id = GetItemLinkItemId(o.link)
+    o.name    = WritWorthy.Mat(o.item_id)
     if ct then
         o.ct = tonumber(ct)
     else
@@ -47,7 +48,8 @@ function MatRow:FromLink(mat_link, ct)
     o.link = mat_link
     if not o.link then return Fail("name not found:"..tostring(mat_link)) end
     o.name_tr = o.name
-    o.name    = zo_strformat("<<t:1>>",o.link)
+    o.item_id = GetItemLinkItemId(o.link)
+    o.name    = WritWorthy.Mat(o.item_id)
     if ct then
         o.ct = tonumber(ct)
     else

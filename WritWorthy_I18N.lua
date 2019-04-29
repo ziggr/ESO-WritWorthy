@@ -97,6 +97,10 @@ function WritWorthy.SI(key)
     return WritWorthy.Str(key, WritWorthy.STR_HOW.CLIENT_SI)
 end
 
+function WritWorthy.Mat(key)
+    return WritWorthy.Str(key, WritWorthy.STR_HOW.MAT)
+end
+
 function WritWorthy.Motif(key)
     return WritWorthy.Str(key, WritWorthy.STR_HOW.MOTIF)
 end
