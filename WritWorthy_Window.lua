@@ -1,9 +1,10 @@
 -- ### ZIG YOU LEFT OFF HERE
 --
--- There are still many file-load strings in WW_Smithing. Move them.
---      -- Grep for GetString() and crush.
--- Motif names need to get discovered/stored in en2.lang.
-
+-- Set name (!)
+-- recipe
+-- alch materials
+-- motif
+-- gear  item name
 
 -- WritWorthy UI window
 --
@@ -689,14 +690,14 @@ local UI_TYPE_PROVISIONING  = nil -- GetString(SI_ITEMFILTERTYPE18)
 function WritWorthyInventoryList.InitUITypeStr()
     if UI_TYPE_WOOD then return end
 
-    UI_TYPE_WOOD          = "<"..WritWorthy.SI("SI_ITEMFILTERTYPE15"  )
-    UI_TYPE_HEAVY         = "<"..WritWorthy.SI("SI_ARMORTYPE3"        )
-    UI_TYPE_MEDIUM        = "<"..WritWorthy.SI("SI_ARMORTYPE2"        )
-    UI_TYPE_LIGHT         = "<"..WritWorthy.SI("SI_ARMORTYPE1"        )
-    UI_TYPE_JEWELRY       = "<"..WritWorthy.SI("SI_ITEMFILTERTYPE25"  )
-    UI_TYPE_ALCHEMY       = "<"..WritWorthy.SI("SI_ITEMFILTERTYPE16"  )
-    UI_TYPE_ENCHANTING    = "<"..WritWorthy.SI("SI_ITEMFILTERTYPE17"  )
-    UI_TYPE_PROVISIONING  = "<"..WritWorthy.SI("SI_ITEMFILTERTYPE18"  )
+    UI_TYPE_WOOD          = WritWorthy.SI("SI_ITEMFILTERTYPE15"  )
+    UI_TYPE_HEAVY         = WritWorthy.SI("SI_ARMORTYPE3"        )
+    UI_TYPE_MEDIUM        = WritWorthy.SI("SI_ARMORTYPE2"        )
+    UI_TYPE_LIGHT         = WritWorthy.SI("SI_ARMORTYPE1"        )
+    UI_TYPE_JEWELRY       = WritWorthy.SI("SI_ITEMFILTERTYPE25"  )
+    UI_TYPE_ALCHEMY       = WritWorthy.SI("SI_ITEMFILTERTYPE16"  )
+    UI_TYPE_ENCHANTING    = WritWorthy.SI("SI_ITEMFILTERTYPE17"  )
+    UI_TYPE_PROVISIONING  = WritWorthy.SI("SI_ITEMFILTERTYPE18"  )
 
 end
 

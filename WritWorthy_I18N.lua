@@ -47,6 +47,13 @@ WritWorthy.STR_HOW = {
               , dynamic = "I18NSetDyn"
               }
 
+                        -- Motif/style name such as "Dark Elf"
+                        --
+                        -- key is motif id such as 4 for Dark Elf
+, MOTIF     = { name    = "motif"
+              , dynamic = "I18NMotifDyn"
+              }
+
                         -- ESO Client SI_XXX string index.
                         --
                         -- key is a string "SI_XXX" constant such as
@@ -88,6 +95,10 @@ end
 
 function WritWorthy.SI(key)
     return WritWorthy.Str(key, WritWorthy.STR_HOW.CLIENT_SI)
+end
+
+function WritWorthy.Motif(key)
+    return WritWorthy.Str(key, WritWorthy.STR_HOW.MOTIF)
 end
 
 function WritWorthy.LangList()
@@ -137,6 +148,10 @@ end
 
 function WritWorthy.I18NSetDyn(set_id)
     return LibSets.GetSetName(set_id)
+end
+
+function WritWorthy.I18NMotifDyn(motif_id)
+    return zo_strformat("<<1>>",GetItemStyleName(motif_id))
 end
 
 function WritWorthy.I18NClientSIDyn(string_index)
@@ -195,6 +210,20 @@ function WritWorthy.DiscoverI18N()
         end
     end
     d(string.format("WritWorthy: discovered set:%d", ct))
+
+                        -- Motif names
+    rr = { [lang] = {} }
+    ct = 0
+    r[WritWorthy.STR_HOW.MOTIF.name] = rr
+    for motif_id = 1,100 do
+        local s = WritWorthy.I18NMotifDyn(motif_id)
+        if s and s ~= "" then
+            rr[lang][motif_id] = s
+            ct = ct + 1
+        end
+    end
+    d(string.format("WritWorthy: discovered motif:%d", ct))
+
 
                         -- SI string constants
                         -- Use en.lua's keys as iteration range.

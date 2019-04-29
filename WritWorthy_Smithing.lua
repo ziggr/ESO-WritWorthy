@@ -1058,7 +1058,7 @@ function Parser:ParseItemLink(item_link)
     self.motif_num      = motif_num
     self.motif          = Smithing.MOTIF[motif_num]
     if self.motif then
-        self.motif.motif_name = zo_strformat("<<1>>",GetItemStyleName(motif_num)) or self.motif.motif_name
+        self.motif.motif_name = WritWorthy.Motif(motif_num) or self.motif.motif_name
         self.motif.motif_num  = motif_num
     end
     Log:Add("motif:"..tostring(motif_num))

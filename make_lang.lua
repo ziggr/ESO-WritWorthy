@@ -30,6 +30,7 @@ KEY_FMT = {
 ,   mat         = "%6d"
 ,   gear        = "%6d"
 ,   set         = "%6d"
+,   motif       = "%6d"
 }
 
 local function sanitize(s)
