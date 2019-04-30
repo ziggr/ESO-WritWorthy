@@ -47,9 +47,13 @@ It also shows orange warnings for missing skills that are not required, but whic
 [*]Once you have crafted items for your writs, you can open them, accept their quest, and the quest will automatically advance to "Turn in".
 [/LIST]
 
-Thanks to Dolgubon's LibLazyCrafting which makes automatic crafting possible.
-
 Automatic crafting requires that the appropriate cost-reduction skills have been maxed out: Temper Expertise, Chef, Brewer, or Chemistry.
+
+[B]Thank you[/B]
+[LIST]
+[*]Dolgubon for LibLazyCrafting
+[*]Baetram for DE translation
+[/LIST]
 
 [B]Follow development on GitHub[/B]
 [URL=https://github.com/ziggr/ESO-WritWorthy]ESO-WritWorthy on GitHub[/URL]

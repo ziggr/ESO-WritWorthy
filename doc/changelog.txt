@@ -1,3 +1,8 @@
+[B]5.0.3 2019-04-30[/B]
+[LIST]
+[*] DE German translation, made [I]Better By Baertram.[/I] Thank you!
+[/LIST]
+
 [B]5.0.2 2019-04-29[/B]
 [LIST]
 [*] Expect and report bugs! I touched a lot of code to support multiple languages.
