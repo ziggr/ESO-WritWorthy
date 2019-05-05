@@ -1,3 +1,8 @@
+[B]5.0.4 2019-05-05[/B]
+[LIST]
+[*] Delay API calls into LibSets until after LibSets' initial scan completes. Avoids UI Error if you try to show a Master Writ tooltip while LibSets is still scanning. Thanks, Baertram for the find and fix!
+[/LIST]
+
 [B]5.0.3 2019-04-30[/B]
 [LIST]
 [*] DE German translation, made [I]Better By Baertram.[/I] Thank you!
