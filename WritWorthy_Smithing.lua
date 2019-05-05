@@ -989,8 +989,8 @@ function Parser:GetSetBonus(set_id)
     local r = {}
                         -- Fetch set data from Baertram's LibSets, if possible.
     Parser.client_lang = Parser.client_lang or GetCVar("language.2")
-    if LibSets and LibSets.GetSetInfo then
-        local si = LibSets.GetSetInfo(set_id)
+    if WritWorthy.LibSets() and WritWorthy.LibSets().GetSetInfo then
+        local si = WritWorthy.LibSets().GetSetInfo(set_id)
         if si then
             r.name           = si.names and (si.names[Parser.client_lang] or si.names["en"])
             r.trait_ct       = si.traitsNeeded

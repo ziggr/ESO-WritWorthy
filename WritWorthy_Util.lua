@@ -119,3 +119,19 @@ function Util.MatPrice(link)
                         -- No price for you!
     return WritWorthy.GOLD_UNKNOWN
 end
+
+                        -- Prevent access to LibSets until
+                        -- it is done scanning sets.
+                        --
+                        -- SURPRISE this isn't a "util" function, but I need
+                        -- it defined early in the load order, so might as
+                        -- well put it here in util.lua.
+function WritWorthy.LibSets()
+    if not WritWorthy.lib_sets then
+        if LibSets and (not LibSets.IsSetsScanning())
+            and LibSets.AreSetsLoaded() then
+                WritWorthy.lib_sets = LibSets
+        end
+    end
+    return WritWorthy.lib_sets
+end

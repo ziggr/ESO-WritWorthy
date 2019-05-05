@@ -184,7 +184,7 @@ function WritWorthy.I18NMatDyn(item_id)
 end
 
 function WritWorthy.I18NSetDyn(set_id)
-    return LibSets.GetSetName(set_id)
+    return WritWorthy.LibSets() and WritWorthy.LibSets().GetSetName(set_id)
 end
 
 -- Discover ------------------------------------------------------------------
@@ -286,7 +286,7 @@ function WritWorthy.DiscoverI18N()
     ct = 0
     r[WritWorthy.STR_HOW.SET.name] = rr
     for set_id = 1,1000 do
-        local set_info = LibSets.GetSetInfo(set_id)
+        local set_info = WritWorthy.LibSets() and WritWorthy.LibSets().GetSetInfo(set_id)
         if set_info and set_info.setTypes and set_info.setTypes.isCrafted then
             rr[lang][set_id] = set_info.names[lang]
             ct = ct + 1
