@@ -1016,6 +1016,9 @@ function Parser:GetSetBonus(set_id)
         r.dol_set_index = Smithing.SET_BONUS[set_id].dol_set_index
 -- d("Fallback dol: "..tostring(r.dol_set_index))
     end
+    if not r.set_id then
+        r.set_id = set_id
+    end
     return r
 end
 
@@ -1312,7 +1315,7 @@ function Parser:ToDolRequest(unique_id)
     o.traitIndex   = self.trait_num + 1
     o.useUniversalStyleItem = false
     o.station      = self.request_item.school.trade_skill_type
-    o.setIndex     = self.set_bonus.dol_set_index
+    o.setIndex     = self.ToDolSetID(self.set_bonus) -- self.set_bonus.dol_set_index
     o.quality      = self.improve_level.index
     o.autocraft    = true
     o.reference    = unique_id
@@ -1333,4 +1336,31 @@ function Parser:ToDolRequest(unique_id)
     return { ["function"]        = "CraftSmithingItemByLevel"
            , ["args"    ]        = args
            }
+end
+
+
+-- Temporary switch between old Dolgubon-proprietary setId numbers and
+-- ESO Client setId numbers. Dolgubon dropped the proprietary numbers
+-- in May 2019, in a private unreleased version of LLC/Smithing version 2.71.
+-- But there's no new smithing or llc version number to use to see if this LLC
+-- uses proprietary numbers or not.
+--
+function Parser.ToDolSetID(set_bonus)
+
+                        -- There is no craftable ESO setId 1, but Dolgubon
+                        -- used/uses setId 1 for  Ashen Grip or something. So
+                        -- if LLC has an entry for setId 1, we know to use the
+                        -- proprietary setIds.
+    if WritWorthy.dol_private_set_id == nil then
+        local llc = WritWorthyInventoryList:GetLLC()
+        if llc then
+            local t = llc.GetSetIndexes()
+            WritWorthy.dol_private_set_id = t and (t[1] ~= nil)
+        end
+    end
+
+    if WritWorthy.dol_private_set_id then
+        return set_bonus.dol_set_index
+    end
+    return set_bonus.set_id
 end
