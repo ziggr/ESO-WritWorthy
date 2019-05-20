@@ -209,6 +209,7 @@ function WritWorthyUI_RefreshUI()
 end
 
 function WritWorthuUI_Refresh()
+    WritWorthy.RequiredSkill.ResetCache()
     list = WritWorthyInventoryList.singleton
     list:BuildMasterlist()
     list:Refresh()

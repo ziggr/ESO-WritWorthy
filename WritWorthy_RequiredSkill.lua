@@ -28,7 +28,20 @@ function RequiredSkill:New(function_name, skill_name_list)
     }
     setmetatable(o, self)
     self.__index = self
+
+    RequiredSkill.ALL = RequiredSkill.ALL or {}
+    table.insert(RequiredSkill.ALL, o)
     return o
+end
+
+function RequiredSkill.ResetCache()
+    for _,r in ipairs(RequiredSkill.ALL or {}) do
+        r._name           = nil
+        r._is_purchased   = nil
+        r._is_maxxed      = nil
+        r._have           = nil
+        r._max            = nil
+    end
 end
 
 function RequiredSkill:ToKnow()
