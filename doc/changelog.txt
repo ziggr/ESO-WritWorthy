@@ -1,3 +1,8 @@
+[B]5.0.6 2019-05-20[/B]
+[LIST]
+[*] Refresh: clear cached skills. Refreshing the main WritWorthy window will now update to reflect any newly purchased skills such as Brewer or Temper Expertise. Thanks, Dolgubon, for the bug report.
+[/LIST]
+
 [B]5.0.5 2019-05-13[/B]
 [LIST]
 [*] LibLazyCrafting: Use ESO setId values instead of LLC-proprietary when LLC supports ESO values.
