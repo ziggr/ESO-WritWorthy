@@ -268,6 +268,16 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_DREMORA            or 74 ] = { mat_name = "warrior's heart ashes" , motif_name = "Dremora"              , pages_id  =  2188 }
 ,   [ITEMSTYLE_PYANDONEAN         or 75 ] = { mat_name = "sea serpent hide"      , motif_name = "Pyandonean"           , pages_id  =  2285 }
 ,   [ITEMSTYLE_DIVINE_PROSECUTION or 76 ] = nil
+,   [                                77 ] = { mat_name = "bloodscent dew"        , motif_name = "Huntsman"            , pages_id  =  2317 }
+,   [                                78 ] = { mat_name = "argent pelt"           , motif_name = "Silver Dawn"         , pages_id  =  2318 }
+,   [                                79 ] = { mat_name = "crocodile leather"     , motif_name = "Dead-Water"          , pages_id  =  2360 }
+,   [                                80 ] = { mat_name = "red diamond seal"      , motif_name = "Honor Guard"         , pages_id  =  2359 }
+,   [                                81 ] = { mat_name = "hackwing plumage"      , motif_name = "Elder Argonian"      , pages_id  =  2361 }
+,   [                                82 ] = { mat_name = "goblin-cloth scrap"    , motif_name = "Coldsnap"            , pages_id  =  2503 }
+,   [                                83 ] = { mat_name = "auroran dust"          , motif_name = "Meridian"            , pages_id  =  2504 }
+,   [                                84 ] = nil -- { mat_name = ""               , motif_name = "Anequina"            , pages_id  =  2505 }
+,   [                                85 ] = nil -- { mat_name = ""               , motif_name = "Pelletine"           , pages_id  =  2506 }
+
 }
 
 -- Motif page numbers --------------------------------------------------------
