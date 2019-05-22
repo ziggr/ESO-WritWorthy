@@ -1,3 +1,16 @@
+[B]5.0.7 2019-05-21[/B]
+Add motif and style mats for 7 recent styles:
+[LIST]
+[*] Huntsman
+[*] Silver Dawn
+[*] Dead-Water
+[*] Honor Guard
+[*] Elder Argonian
+[*] Coldsnap
+[*] Meridian
+[/LIST]
+Thanks, Molleggiato, for the bug report.
+
 [B]5.0.6 2019-05-20[/B]
 [LIST]
 [*] Refresh: clear cached skills. Refreshing the main WritWorthy window will now update to reflect any newly purchased skills such as Brewer or Temper Expertise. Thanks, Dolgubon, for the bug report.
