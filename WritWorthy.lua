@@ -349,6 +349,7 @@ end
 -- own stuff.
 --
 -- Based on CraftStore's CS.TooltipHandler().
+-- Updated 2019-05 by Sirinsidiator to work with AwesomeGuildStore 1.1.
 --
 function WritWorthy.TooltipInterceptInstall()
     local tt=ItemTooltip.SetBagItem
@@ -368,14 +369,22 @@ function WritWorthy.TooltipInterceptInstall()
         tt(control,link,...)
         WritWorthy.TooltipInsertOurText(control,link)
     end
-    local tt=ItemTooltip.SetTradingHouseItem
-    ItemTooltip.SetTradingHouseItem=function(control,tradingHouseIndex,...)
-        tt(control,tradingHouseIndex,...)
-        local _,_,_,_,_,_,purchase_gold = GetTradingHouseSearchResultItemInfo(tradingHouseIndex)
-        WritWorthy.TooltipInsertOurText(control
-                , GetTradingHouseSearchResultItemLink(tradingHouseIndex)
-                , purchase_gold
-                )
+
+    local function SetupTradingHouseItemTooltipHook()
+        local tt=ItemTooltip.SetTradingHouseItem
+        ItemTooltip.SetTradingHouseItem=function(control,tradingHouseIndex,...)
+            tt(control,tradingHouseIndex,...)
+            local _,_,_,_,_,_,purchase_gold = GetTradingHouseSearchResultItemInfo(tradingHouseIndex)
+            WritWorthy.TooltipInsertOurText(control
+                    , GetTradingHouseSearchResultItemLink(tradingHouseIndex)
+                    , purchase_gold
+                    )
+        end
+    end
+    if AwesomeGuildStore then
+        AwesomeGuildStore:RegisterCallback(AwesomeGuildStore.callback.AFTER_INITIAL_SETUP, SetupTradingHouseItemTooltipHook)
+    else
+        SetupTradingHouseItemTooltipHook()
     end
 end
 
