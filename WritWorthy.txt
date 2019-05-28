@@ -6,48 +6,72 @@
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets
+## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibStub
 ## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
 
-# LibAddonMenuLibAddonMenu-2.0  required
-#   is the "Settings/Addons" UI library that everybody uses.
-#   contains its own manifest, must be installed separately.
+# LibAddonMenu-2.0  required
+#   by Seerah, sirinsidiator
+#       https://www.esoui.com/downloads/info7-LibAddonMenu.html
+#       https://github.com/sirinsidiator/ESO-LibAddonMenu
+#   The "Settings/Addons" UI library that everybody uses.
 
 # LibPrice  required
-#   provides material price lookups from
-#       Master Merchant
-#       Arkadius' Trade Tools
-#       Tamriel Trade Centre.
+#   by ziggr
+#       https://www.esoui.com/downloads/info2204-LibPrice.html
+#       https://github.com/ziggr/ESO-LibPrice
+#   Provides material price lookups from
+#     - Master Merchant
+#     - Arkadius' Trade Tools
+#     - Tamriel Trade Centre.
 
 # LibLazyCrafting  required
-#   How we can queue and craft items.
+#   by Dolgubon
+#       https://www.esoui.com/downloads/info1594-LibLazyCrafting.html
+#       https://github.com/Dolgubon/LibLazyCrafting
+#   How WritWorthy queues and crafts items.
 
 # LibSets required
-#   Set names such as "Alessia's Bullwark"
+#   by Baertram
+#       https://www.esoui.com/downloads/info2241-LibSets.html
+#       https://github.com/Baertram/LibSets
+#   Set names such as "Alessia's Bullwark" and their required trait counts.
+
+# LibStub required
+#   by Seerah, sirinsidiator
+#       https://www.esoui.com/downloads/info44-LibStub.html
+#       https://github.com/sirinsidiator/ESO-LibStub
+#   Versioning library required by LibCustomTitles.
+
+# LibSlashCommander optional
+#   by sirinsidiator
+#       https://www.esoui.com/downloads/info1508-LibSlashCommander.html
+#   Provides autocompletion and help text for /writworthy
+#   subcommands like "count".
+
+# AwesomeGuildStore
+#   by sirinsidiator
+#       https://www.esoui.com/downloads/info695-AwesomeGuildStore.html
+#   OptionalDependsOn so that WritWorthy can detect that AwesomeGuildStore
+#   is present, and add its "crafted price per voucher" filter.
 
 # Optional libraries used only for unreleased WritWorthy_AutoQuest.lua.
 # Optional as long as I refuse to publish the autoquest feature.
 #
 # LibCustomMenu     optional
-#   allows "Accept Writ Quests" button in inventory window
+#   by votan
+#       https://www.esoui.com/downloads/info1146-LibCustomMenu.html
+#   Allows "Accept Writ Quests" button in inventory window
 #
 # LibCraftText      optional
-#   allows Accept/Rolis dialog automation in languages other than EN English.
+#   by ziggr
+#       https://www.esoui.com/downloads/info2184-LibCraftText.html
+#       https://github.com/ziggr/ESO-LibCraftText
+#   Allows Accept/Rolis dialog automation in languages other than EN English.
 
-# LibSlashCommander optional
-#   provides autocompletion and help text for /writworthy
-#   subcommands like "count".
-
-Libs/LibStub/LibStub.lua
 libs/LibCustomTitles/LibCustomTitles.lua
 
 WritWorthy_Define.lua
 
-# Load EN as default, then overwrite with any localized replacements.
-#
-# If you don't want WritWorthy UI in DE German, comment out
-# "lang/$(language).lua" below.
-#
 lang/en.lua
 lang/$(language).lua
 lang/en_forced.lua
@@ -71,4 +95,3 @@ WritWorthy_Profiler.lua
 WritWorthy.lua
 WritWorthy.xml
 Bindings.xml
-
