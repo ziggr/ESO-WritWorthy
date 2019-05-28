@@ -280,6 +280,19 @@ Smithing.MOTIF = {
 
 }
 
+-- New as of 2019 (Elseweyr?)
+--
+-- * GetHighestItemStyleId()
+-- ** _Returns:_ *integer* _highestItemStyleDefId_
+
+-- * GetItemStyleInfo(*integer* _itemStyleId_)
+-- ** _Returns:_ *bool* _alwaysHideIfLocked_
+
+-- * GetItemStyleMaterialLink(*integer* _itemStyleId_, *[LinkStyle|#LinkStyle]* _linkStyle_)
+-- ** _Returns:_ *string* _link_
+
+
+
 -- Motif page numbers --------------------------------------------------------
 --
 -- For checking whether we know the motif page for a requested item
