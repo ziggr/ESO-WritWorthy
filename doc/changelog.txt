@@ -1,3 +1,8 @@
+[B]5.0.8 2019-05-27[/B]
+[LIST]
+[*] Tooltips work with AwesomeGuildStore 1.1. Thanks, Sirinsidator, for the fix!
+[/LIST]
+
 [B]5.0.7 2019-05-21[/B]
 Add motif and style mats for 7 recent styles:
 [LIST]
