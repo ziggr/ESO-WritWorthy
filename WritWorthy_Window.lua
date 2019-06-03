@@ -1063,6 +1063,7 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     inventory_data = self:UniqueIDToInventoryData(unique_id)
     if inventory_data then
         self:UpdateUISoon(inventory_data)
+        self:HSMDeleteMark(inventory_data)
     end
 end
 
@@ -1287,6 +1288,7 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
     end
 
     self.EnqueueLLC(unique_id, inventory_data)
+    self:HSMAddMark(inventory_data)
 
                         -- Remember this in savedChariables so that
                         -- we can restore checkbox state after /reloadui.
@@ -1371,6 +1373,8 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     if WritWorthy.savedChariables.writ_unique_id then
         WritWorthy.savedChariables.writ_unique_id[unique_id] = nil
     end
+
+    self:HSMDeleteMark(inventory_data)
 end
 
 -- Reload the LibLazyCrafting queue from savedChariables
@@ -1540,3 +1544,36 @@ function WritWorthyInventoryList:DequeueAll()
     end
 end
 
+function WritWorthyInventoryList:HSMAddMark(inventory_data)
+    if not HomeStationMarker then return end
+    self.hsm_marks = self.hsm_marks or {}
+    local set_id, station_id = self:InventoryDataToHSMTuple(inventory_data)
+    if not station_id then return end
+    self.hsm_marks[set_id] = self.hsm_marks[set_id] or {}
+    self.hsm_marks[set_id][station_id] = (self.hsm_marks[set_id][station_id] or 0) + 1
+    HomeStationMarker.AddMarker(set_id, station_id)
+end
+
+function WritWorthyInventoryList:HSMDeleteMark(inventory_data)
+    if not HomeStationMarker then return end
+    self.hsm_marks = self.hsm_marks or {}
+    local set_id, station_id = self:InventoryDataToHSMTuple(inventory_data)
+    if not station_id then return end
+    self.hsm_marks[set_id] = self.hsm_marks[set_id] or {}
+    self.hsm_marks[set_id][station_id] = (self.hsm_marks[set_id][station_id] or 1) - 1
+    if 0 == self.hsm_marks[set_id][station_id] then
+        HomeStationMarker.DeleteMarker(set_id, station_id)
+    end
+end
+
+function WritWorthyInventoryList:InventoryDataToHSMTuple(inventory_data)
+    local parser = inventory_data.parser
+    if not parser then return end
+    local set_id     = HomeStationMarker.SET_ID_NONE
+    local station_id = parser.crafting_type
+    if parser.set_bonus
+        and parser.set_bonus.set_id then
+            set_id = parser.set_bonus.set_id
+    end
+    return set_id, station_id
+end
