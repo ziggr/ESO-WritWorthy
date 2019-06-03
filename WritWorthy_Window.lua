@@ -1546,24 +1546,16 @@ end
 
 function WritWorthyInventoryList:HSMAddMark(inventory_data)
     if not HomeStationMarker then return end
-    self.hsm_marks = self.hsm_marks or {}
     local set_id, station_id = self:InventoryDataToHSMTuple(inventory_data)
     if not station_id then return end
-    self.hsm_marks[set_id] = self.hsm_marks[set_id] or {}
-    self.hsm_marks[set_id][station_id] = (self.hsm_marks[set_id][station_id] or 0) + 1
     HomeStationMarker.AddMarker(set_id, station_id)
 end
 
 function WritWorthyInventoryList:HSMDeleteMark(inventory_data)
     if not HomeStationMarker then return end
-    self.hsm_marks = self.hsm_marks or {}
     local set_id, station_id = self:InventoryDataToHSMTuple(inventory_data)
     if not station_id then return end
-    self.hsm_marks[set_id] = self.hsm_marks[set_id] or {}
-    self.hsm_marks[set_id][station_id] = (self.hsm_marks[set_id][station_id] or 1) - 1
-    if 0 == self.hsm_marks[set_id][station_id] then
-        HomeStationMarker.DeleteMarker(set_id, station_id)
-    end
+    HomeStationMarker.DeleteMarker(set_id, station_id)
 end
 
 function WritWorthyInventoryList:InventoryDataToHSMTuple(inventory_data)
