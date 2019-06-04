@@ -1,3 +1,10 @@
+[B]5.0.9 2019-06-04[/B]
+[LIST]
+[*] New and experimental: Integrate with HomeStationMarker to mark stations you need to visit for enqueued writs.
+[*] Remove embedded LibStub.
+[*] Minor text changes.
+[/LIST]
+
 [B]5.0.8 2019-05-27[/B]
 [LIST]
 [*] Tooltips work with AwesomeGuildStore 1.1. Thanks, Sirinsidator, for the fix!

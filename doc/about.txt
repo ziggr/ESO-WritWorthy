@@ -5,6 +5,7 @@
 [*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info2204-LibPrice.html"]LibPrice[/URL]
 [*] [COLOR="Red"]Required, install separately:[/COLOR] [URL="https://www.esoui.com/downloads/info2241-LibSets.html"]LibSets[/URL]
 [*] (Optional) uses any of [URL="https://www.esoui.com/downloads/info928-MasterMerchant.html"]Master Merchant[/URL], [URL="https://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html"]Arkadius' Trade Tools[/URL], [URL="https://www.esoui.com/downloads/info1245-TamrielTradeCentre.html"]Tamriel Trade Centre[/URL] for material price data.
+[*] (Optional) [URL=https://www.esoui.com/downloads/info2396-HomeStationMarker.html]HomeStationMarker[/URL] shows markers over the crafting stations for any enqueued writs.  [COLOR="Gold"]New and experimental as of 2019-06-04.[/COLOR]
 [/LIST]
 
 [B]Why WritWorthy?[/B]
