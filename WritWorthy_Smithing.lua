@@ -1046,7 +1046,7 @@ function Parser:GetSetBonus(set_id)
 end
 
 function Parser:ParseItemLink(item_link)
-    Log:StartNewEvent("ParseItemLink: smithing %s", item_link)
+    Log:StartNewEvent("ParseItemLink: %s %s", self.class, item_link)
     local fields        = Util.ToWritFields(item_link)
     local item_num      = fields.writ1
     local material_num  = fields.writ2
@@ -1109,6 +1109,7 @@ end
 
 -- Convert result of ParseBaseText() into  a flat list of items.
 function Parser:ToMatList()
+    -- Log:StartNewEvent("ToMatList: %s", self.class)
     local MatRow = WritWorthy.MatRow
     local ml = {}
     table.insert(ml, MatRow:FromName( self.request_item.school.base_mat_name
@@ -1133,6 +1134,7 @@ end
 
 -- Do we know the required motif and traits?
 function Parser:ToKnowList()
+    Log:StartNewEvent("ToKnowList: %s", self.class)
     local Know = WritWorthy.Know
     local r = {}
 

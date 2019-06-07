@@ -305,7 +305,7 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
-    Log:StartNewEvent("ParseItemLink: alchemy %s", item_link)
+    Log:StartNewEvent("ParseItemLink: %s %s", self.class, item_link)
     local fields      = Util.ToWritFields(item_link)
     local solvent_id  = fields.writ1
     self.is_poison    = solvent_id == 239 -- Lorkhan's Tears
@@ -396,6 +396,7 @@ function Parser:ToMatList()
 end
 
 function Parser:ToKnowList()
+    Log:StartNewEvent("ToKnowList: %s", self.class)
     local three_reagents = WritWorthy.RequiredSkill.AL_LABORATORY_USE:ToKnow()
     local four_pots_per  = WritWorthy.RequiredSkill.AL_POTION_4X:ToKnow()
     four_pots_per.is_warn = true

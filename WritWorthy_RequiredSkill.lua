@@ -172,7 +172,7 @@ end
 -- +++ If I did, I could cache the 6 or 7 interesting rows in savedVariables.
 --
 function RequiredSkill.FindAllSkills()
-    Log:StartNewEvent()
+    Log:StartNewEvent("FindAllSkills")
     local t = {}
     Log:Add("Scanning all skills...")
     local skill_type = SKILL_TYPE_TRADESKILL
@@ -204,6 +204,7 @@ function RequiredSkill.FindAllSkills()
                                }
         end
     end
+    Log:EndEvent()
     return t
 end
 

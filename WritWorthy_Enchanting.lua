@@ -149,7 +149,7 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
-    Log:StartNewEvent("ParseItemLink: enchanting %s", item_link)
+    Log:StartNewEvent("ParseItemLink: %s %s", self.class, item_link)
     local fields      = Util.ToWritFields(item_link)
     local glyph_id    = fields.writ1
     local level_num   = fields.writ2
@@ -190,6 +190,7 @@ end
 
 function Parser:ToKnowList()
     if self.aspect_rune == Enchanting.KUTA then
+        Log:StartNewEvent("ToKnowList: %s", self.class)
         local kuta = WritWorthy.RequiredSkill.EN_ASPECT_GOLD:ToKnow()
         return { kuta }
     else

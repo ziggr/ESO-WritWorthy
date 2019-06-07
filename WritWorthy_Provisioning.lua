@@ -675,7 +675,7 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
-    Log:StartNewEvent("ParseItemLink: provisioning %s", item_link)
+    Log:StartNewEvent("ParseItemLink: %s %s", self.class, item_link)
     local fields = Util.ToWritFields(item_link)
     self.recipe = Provisioning.FindRecipe(fields.writ1)
     if not self.recipe then return nil end
@@ -687,6 +687,7 @@ function Parser:ToMatList()
 end
 
 function Parser:ToKnowList()
+    Log:StartNewEvent("ToKnowList: %s", self.class)
     local Know = WritWorthy.Know
     local k = Know:New({ name = "recipe"
                        , is_known = self.recipe.is_known
