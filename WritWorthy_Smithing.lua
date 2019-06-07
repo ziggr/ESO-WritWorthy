@@ -1046,6 +1046,7 @@ function Parser:GetSetBonus(set_id)
 end
 
 function Parser:ParseItemLink(item_link)
+    Log:StartNewEvent("ParseItemLink: smithing %s", item_link)
     local fields        = Util.ToWritFields(item_link)
     local item_num      = fields.writ1
     local material_num  = fields.writ2
