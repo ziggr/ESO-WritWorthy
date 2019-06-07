@@ -305,26 +305,26 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
+    Log:StartNewEvent("ParseItemLink: alchemy %s", item_link)
     local fields      = Util.ToWritFields(item_link)
     local solvent_id  = fields.writ1
     self.is_poison    = solvent_id == 239 -- Lorkhan's Tears
-    Log:Add("solvent_id:"..tostring(solvent_id))
-    Log:Add("is_poison:"..tostring(self.is_poison))
+    local log_t = {}
+    log_t.solvent_id = solvent_id
+    log_t.is_poison  = self.is_poison
+    log_t.effects    = {}
     for i, effect_id in ipairs({ fields.writ2
                                , fields.writ3
                                , fields.writ4 }) do
         local effect = Alchemy.Effects[effect_id]
-        if effect then
-            Log:Add("effect_id:"..tostring(effect_id)
-                    .." name:"..tostring(effect.name))
-            table.insert(self.effects, effect)
-        else
-            Log:Add("effect_id:"..tostring(effect_id)
-                    .." pos:"..tostring(i)
-                    .." unknown")
+        if not effect then
             return Fail("Unknown potion effect:"..tostring(effect_id))
         end
+        log_t.effects[i] = tostring(effect_id).." "..tostring(effect.name)
+        table.insert(self.effects, effect)
     end
+    log_t.effects = Log:Flatten("",log_t.effects)
+    Log:Add(log_t)
     self.r3list = Alchemy.ToReagentThreeList( self.effects[1]
                                             , self.effects[2]
                                             , self.effects[3]

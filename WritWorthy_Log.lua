@@ -74,7 +74,7 @@ function Log:Flatten(name, value)
     end
                         -- Short enough to squeeze onto a single line?
                         -- Please do. The log is already way too long.
-    if #lines < 10 and max_line_len < 40 then
+    if #lines < 10 and max_line_len < 80 then
         return prefix..table.concat(lines, "  ")
     end
                         -- Too long for one line. Return as lines.
