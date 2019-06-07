@@ -47,4 +47,33 @@ function InRangePins:GetNewWorldControl(
     ^ These are ZOS functions for controls
     http://wiki.esoui.com/Controls
 
+----
+2019-06-07
 
+GetNumSmithingTraitItems() → 34
+
+Weird
+GetSmithingResearchLineTraitDescriptions(
+      number TradeskillType craftingSkillType
+    , number researchLineIndex
+    , number traitIndex
+    )
+Returns: 
+    string traitDescription
+    , string traitResearchSourceDescription
+    , string traitMaterialSourceDescription 
+No "Nirnhoned" or anything useful like that.
+"Increases healing done". Yawn
+
+GetSmithingTraitItemInfo(ITEM_TRAIT_TYPE_ARMOR_DIVINES + 1)
+    1     Search on ESOUI Source Code GetSmithingTraitItemInfo(number traitItemIndex)
+        Returns: number:nilable ItemTraitType traitType, string itemName, textureName icon, number sellPrice, boolean meetsUsageRequirement, number itemStyleId, number ItemQuality quality 
+
+
+Nope: ITEM_TRAIT_TYPE_ARMOR_DIVINES → link to Garnet
+    Uh wait, Garnet isn't Divines. Need to +1. Ugh.
+
+GetSmithingTraitItemLink(number traitItemIndex + 1, number LinkStyle linkStyle)
+        Returns: string link 
+
+GetHighestItemStyleId()  → 86

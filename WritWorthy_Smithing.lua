@@ -147,6 +147,13 @@ Smithing.SCHOOL_JEWELRY = {
 --            , i                 -- 1..9
 --            )
 --
+-- 2019-06-07 Thinking about removing some of the columns here, replace with API calls:
+-- API to go from trait index to trait material:
+--  GetSmithingTraitItemLink(ITEM_TRAIT_TYPE_WEAPON_POWERED + 1))
+--  → link to Chysolite.
+--
+--
+
 Smithing.TRAITS_WEAPON = {
     [ITEM_TRAIT_TYPE_WEAPON_POWERED    ] = { trait_name = "powered",      mat_name = "chysolite"          , trait_index = 1 }
 ,   [ITEM_TRAIT_TYPE_WEAPON_CHARGED    ] = { trait_name = "charged",      mat_name = "amethyst"           , trait_index = 2 }
@@ -193,90 +200,89 @@ Smithing.TRAITS_JEWELRY = {
 -- pages_id  = The achievement ID that goes with learning a page of a motif.
 --             IDs from CraftStore Fixed and Improved.
 --
-
 Smithing.MOTIF = {
-    [ITEMSTYLE_RACIAL_BRETON            ] = { mat_name = "molybdenum"            , motif_name = "Breton"               , is_simple =  true } -- 01
-,   [ITEMSTYLE_RACIAL_REDGUARD          ] = { mat_name = "starmetal"             , motif_name = "Redguard"             , is_simple =  true } -- 02
-,   [ITEMSTYLE_RACIAL_ORC               ] = { mat_name = "manganese"             , motif_name = "Orc"                  , is_simple =  true } -- 03
-,   [ITEMSTYLE_RACIAL_DARK_ELF          ] = { mat_name = "obsidian"              , motif_name = "Dunmer"               , is_simple =  true } -- 04
-,   [ITEMSTYLE_RACIAL_NORD              ] = { mat_name = "corundum"              , motif_name = "Nord"                 , is_simple =  true } -- 05
-,   [ITEMSTYLE_RACIAL_ARGONIAN          ] = { mat_name = "flint"                 , motif_name = "Argonian"             , is_simple =  true } -- 06
-,   [ITEMSTYLE_RACIAL_HIGH_ELF          ] = { mat_name = "adamantite"            , motif_name = "Altmer"               , is_simple =  true } -- 07
-,   [ITEMSTYLE_RACIAL_WOOD_ELF          ] = { mat_name = "bone"                  , motif_name = "Bosmer"               , is_simple =  true } -- 08
-,   [ITEMSTYLE_RACIAL_KHAJIIT           ] = { mat_name = "moonstone"             , motif_name = "Khajiit"              , is_simple =  true } -- 09
-,   [ITEMSTYLE_UNIQUE                   ] = nil --                               , motif_name = "Unique"                                   } -- 10
-,   [ITEMSTYLE_ORG_THIEVES_GUILD        ] = { mat_name = "fine chalk"            , motif_name = "Thieves Guild"        , pages_id  =  1423 } -- 11
-,   [ITEMSTYLE_ORG_DARK_BROTHERHOOD     ] = { mat_name = "black beeswax"         , motif_name = "Dark Brotherhood"     , pages_id  =  1661 } -- 12
-,   [ITEMSTYLE_DEITY_MALACATH           ] = { mat_name = "potash"                , motif_name = "Malacath"             , pages_id  =  1412 } -- 13
-,   [ITEMSTYLE_AREA_DWEMER              ] = { mat_name = "dwemer frame"          , motif_name = "Dwemer"               , pages_id  =  1144 } -- 14
-,   [ITEMSTYLE_AREA_ANCIENT_ELF         ] = { mat_name = "palladium"             , motif_name = "Ancient Elf"          , is_simple =  true } -- 15
-,   [ITEMSTYLE_DEITY_AKATOSH            ] = { mat_name = "pearl sand"            , motif_name = "Order of the Hour"    , pages_id  =  1660 } -- 16
-,   [ITEMSTYLE_AREA_REACH               ] = { mat_name = "copper"                , motif_name = "Barbaric"             , is_simple =  true } -- 17
-,   [ITEMSTYLE_ENEMY_BANDIT             ] = nil --                               , motif_name = "Bandit"                                   } -- 18
-,   [ITEMSTYLE_ENEMY_PRIMITIVE          ] = { mat_name = "argentum"              , motif_name = "Primal"               , is_simple =  true } -- 19
-,   [ITEMSTYLE_ENEMY_DAEDRIC            ] = { mat_name = "daedra heart"          , motif_name = "Daedric"              , is_simple =  true } -- 20
-,   [ITEMSTYLE_DEITY_TRINIMAC           ] = { mat_name = "auric tusk"            , motif_name = "Trinimac"             , pages_id  =  1411 } -- 21
-,   [ITEMSTYLE_AREA_ANCIENT_ORC         ] = { mat_name = "cassiterite"           , motif_name = "Ancient Orc"          , pages_id  =  1341 } -- 22
-,   [ITEMSTYLE_ALLIANCE_DAGGERFALL      ] = { mat_name = "lion fang"             , motif_name = "Daggerfall Covenant"  , pages_id  =  1416 } -- 23
-,   [ITEMSTYLE_ALLIANCE_EBONHEART       ] = { mat_name = "dragon scute"          , motif_name = "Ebonheart Pact"       , pages_id  =  1414 } -- 24
-,   [ITEMSTYLE_ALLIANCE_ALDMERI         ] = { mat_name = "eagle feather"         , motif_name = "Aldmeri Dominion"     , pages_id  =  1415 } -- 25
-,   [ITEMSTYLE_UNDAUNTED                ] = { mat_name = "laurel"                , motif_name = "Mercenary"            , pages_id  =  1348 } -- 26
-,   [ITEMSTYLE_RAIDS_CRAGLORN           ] = { mat_name = "star sapphire"         , motif_name = "Celestial"            , pages_id  =  1714 } -- 27
-,   [ITEMSTYLE_GLASS                    ] = { mat_name = "malachite"             , motif_name = "Glass"                , pages_id  =  1319 } -- 28
-,   [ITEMSTYLE_AREA_XIVKYN              ] = { mat_name = "charcoal of remorse"   , motif_name = "Xivkyn"               , pages_id  =  1181 } -- 29
-,   [ITEMSTYLE_AREA_SOUL_SHRIVEN        ] = { mat_name = "azure plasm"           , motif_name = "Soul-Shriven"         , is_simple =  true } -- 30
-,   [ITEMSTYLE_ENEMY_DRAUGR             ] = { mat_name = "pristine shroud"       , motif_name = "Draugr"               , pages_id  =  1715 } -- 31
-,   [ITEMSTYLE_ENEMY_MAORMER            ] = nil --                               , motif_name = "Maormer"                                  } -- 32
-,   [ITEMSTYLE_AREA_AKAVIRI             ] = { mat_name = "goldscale"             , motif_name = "Akaviri"              , pages_id  =  1318 } -- 33
-,   [ITEMSTYLE_RACIAL_IMPERIAL          ] = { mat_name = "nickel"                , motif_name = "Imperial"             , is_simple =  true } -- 34
-,   [ITEMSTYLE_AREA_YOKUDAN             ] = { mat_name = "ferrous salts"         , motif_name = "Yokudan"              , pages_id  =  1713 } -- 35
-,   [ITEMSTYLE_UNIVERSAL                ] = nil --                               , motif_name = "unused"                                   } -- 36
-,   [ITEMSTYLE_AREA_REACH_WINTER        ] = nil --                               , motif_name = "Reach Winter"                             } -- 37
-,   [ITEMSTYLE_AREA_TSAESCI             ] = { mat_name = "snake fang"            , motif_name = "Taesci"                                   } -- 38
-,   [ITEMSTYLE_ENEMY_MINOTAUR           ] = { mat_name = "oxblood fungus"        , motif_name = "Minotaur"             , pages_id  =  1662 } -- 39
-,   [ITEMSTYLE_EBONY                    ] = { mat_name = "night pumice"          , motif_name = "Ebony"                , pages_id  =  1798 } -- 40
-,   [ITEMSTYLE_ORG_ABAHS_WATCH          ] = { mat_name = "polished shilling"     , motif_name = "Abah's Watch"         , pages_id  =  1422 } -- 41
-,   [ITEMSTYLE_HOLIDAY_SKINCHANGER      ] = { mat_name = "wolfsbane incense"     , motif_name = "Skinchanger"          , pages_id  =  1676 } -- 42
-,   [ITEMSTYLE_ORG_MORAG_TONG           ] = { mat_name = "boiled carapace"       , motif_name = "Morag Tong"           , pages_id  =  1933 } -- 43
-,   [ITEMSTYLE_AREA_RA_GADA             ] = { mat_name = "ancient sandstone"     , motif_name = "Ra Gada"              , pages_id  =  1797 } -- 44
-,   [ITEMSTYLE_ENEMY_DROMOTHRA          ] = { mat_name = "defiled whiskers"      , motif_name = "Dro-m'Athra"          , pages_id  =  1659 } -- 45
-,   [ITEMSTYLE_ORG_ASSASSINS            ] = { mat_name = "tainted blood"         , motif_name = "Assassins League"     , pages_id  =  1424 } -- 46
-,   [ITEMSTYLE_ORG_OUTLAW               ] = { mat_name = "rogue's soot"          , motif_name = "Outlaw"               , pages_id  =  1417 } -- 47
-,   [ITEMSTYLE_ORG_REDORAN              ] = { mat_name = "polished scarab elytra", motif_name = "Redoran"              , pages_id  =  2022 } -- 48
-,   [ITEMSTYLE_ORG_HLAALU               ] = { mat_name = "refined bonemold resin", motif_name = "Hlaalu"               , pages_id  =  2021 } -- 49
-,   [ITEMSTYLE_ORG_ORDINATOR            ] = { mat_name = "lustrous sphalerite"   , motif_name = "Militant Ordinator"   , pages_id  =  1935 } -- 50
-,   [ITEMSTYLE_ORG_TELVANNI             ] = { mat_name = "wrought ferrofungus"   , motif_name = "Telvanni"             , pages_id  =  2023 } -- 51
-,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER      ] = { mat_name = "volcanic viridian"     , motif_name = "Buoyant Armiger"      , pages_id  =  1934 } -- 52
-,   [ITEMSTYLE_HOLIDAY_FROSTCASTER      ] = { mat_name = "stalhrim shard"        , motif_name = "Stalhrim Frostcaster" , crown_id  = 96954 } -- 53
-,   [ITEMSTYLE_AREA_ASHLANDER           ] = { mat_name = "ash canvas"            , motif_name = "Ashlander"            , pages_id  =  1932 } -- 54
-,   [ITEMSTYLE_ORG_WORM_CULT      or 55 ] = { mat_name = "desecrated grave soil" , motif_name = "Worm Cult"            , pages_id  =  2120 } -- 56
-,   [ITEMSTYLE_ENEMY_SILKEN_RING        ] = { mat_name = "distilled slowsilver"  , motif_name = "Silken Ring"          , pages_id  =  1796 } -- 56
-,   [ITEMSTYLE_ENEMY_MAZZATUN           ] = { mat_name = "leviathan scrimshaw"   , motif_name = "Mazzatun"             , pages_id  =  1795 } -- 57
-,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN   ] = { mat_name = "grinstones"            , motif_name = "Grim Harlequin"       , crown_id  = 82039 } -- 58
-,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK       ] = { mat_name = "amber marble"          , motif_name = "Hollowjack"           , pages_id  =  1545 }
-,   [ITEMSTYLE_BLOODFORGE         or 61 ] = { mat_name = "bloodroot flux"        , motif_name = "Bloodforge"           , pages_id  =  2098 }
-,   [ITEMSTYLE_DREADHORN          or 62 ] = { mat_name = "minotaur bezoar"       , motif_name = "Dreadhorn"            , pages_id  =  2097 }
-,   [ITEMSTYLE_APOSTLE            or 65 ] = { mat_name = "tempered brass"        , motif_name = "Apostle"              , pages_id  =  2044 }
-,   [ITEMSTYLE_EBONSHADOW         or 66 ] = { mat_name = "tenebrous cord"        , motif_name = "Ebonshadow"           , pages_id  =  2045 }
+    [ITEMSTYLE_RACIAL_BRETON            ] = { is_simple =  true } -- Breton
+,   [ITEMSTYLE_RACIAL_REDGUARD          ] = { is_simple =  true } -- Redguard
+,   [ITEMSTYLE_RACIAL_ORC               ] = { is_simple =  true } -- Orc
+,   [ITEMSTYLE_RACIAL_DARK_ELF          ] = { is_simple =  true } -- Dunmer
+,   [ITEMSTYLE_RACIAL_NORD              ] = { is_simple =  true } -- Nord
+,   [ITEMSTYLE_RACIAL_ARGONIAN          ] = { is_simple =  true } -- Argonian
+,   [ITEMSTYLE_RACIAL_HIGH_ELF          ] = { is_simple =  true } -- Altmer
+,   [ITEMSTYLE_RACIAL_WOOD_ELF          ] = { is_simple =  true } -- Bosmer
+,   [ITEMSTYLE_RACIAL_KHAJIIT           ] = { is_simple =  true } -- Khajiit
+,   [ITEMSTYLE_UNIQUE                   ] = nil                   -- Unique
+,   [ITEMSTYLE_ORG_THIEVES_GUILD        ] = { pages_id  =  1423 } -- Thieves Guild
+,   [ITEMSTYLE_ORG_DARK_BROTHERHOOD     ] = { pages_id  =  1661 } -- Dark Brotherhood
+,   [ITEMSTYLE_DEITY_MALACATH           ] = { pages_id  =  1412 } -- Malacath
+,   [ITEMSTYLE_AREA_DWEMER              ] = { pages_id  =  1144 } -- Dwemer
+,   [ITEMSTYLE_AREA_ANCIENT_ELF         ] = { is_simple =  true } -- Ancient Elf
+,   [ITEMSTYLE_DEITY_AKATOSH            ] = { pages_id  =  1660 } -- Order of the Hour
+,   [ITEMSTYLE_AREA_REACH               ] = { is_simple =  true } -- Barbaric
+,   [ITEMSTYLE_ENEMY_BANDIT             ] = nil                   -- Bandit
+,   [ITEMSTYLE_ENEMY_PRIMITIVE          ] = { is_simple =  true } -- Primal
+,   [ITEMSTYLE_ENEMY_DAEDRIC            ] = { is_simple =  true } -- Daedric
+,   [ITEMSTYLE_DEITY_TRINIMAC           ] = { pages_id  =  1411 } -- Trinimac
+,   [ITEMSTYLE_AREA_ANCIENT_ORC         ] = { pages_id  =  1341 } -- Ancient Orc
+,   [ITEMSTYLE_ALLIANCE_DAGGERFALL      ] = { pages_id  =  1416 } -- Daggerfall Covenant
+,   [ITEMSTYLE_ALLIANCE_EBONHEART       ] = { pages_id  =  1414 } -- Ebonheart Pact
+,   [ITEMSTYLE_ALLIANCE_ALDMERI         ] = { pages_id  =  1415 } -- Aldmeri Dominion
+,   [ITEMSTYLE_UNDAUNTED                ] = { pages_id  =  1348 } -- Mercenary
+,   [ITEMSTYLE_RAIDS_CRAGLORN           ] = { pages_id  =  1714 } -- Celestial
+,   [ITEMSTYLE_GLASS                    ] = { pages_id  =  1319 } -- Glass
+,   [ITEMSTYLE_AREA_XIVKYN              ] = { pages_id  =  1181 } -- Xivkyn
+,   [ITEMSTYLE_AREA_SOUL_SHRIVEN        ] = { is_simple =  true } -- Soul-Shriven
+,   [ITEMSTYLE_ENEMY_DRAUGR             ] = { pages_id  =  1715 } -- Draugr
+,   [ITEMSTYLE_ENEMY_MAORMER            ] = nil                   -- Maormer
+,   [ITEMSTYLE_AREA_AKAVIRI             ] = { pages_id  =  1318 } -- Akaviri
+,   [ITEMSTYLE_RACIAL_IMPERIAL          ] = { is_simple =  true } -- Imperial
+,   [ITEMSTYLE_AREA_YOKUDAN             ] = { pages_id  =  1713 } -- Yokudan
+,   [ITEMSTYLE_UNIVERSAL                ] = nil                   -- unused
+,   [ITEMSTYLE_AREA_REACH_WINTER        ] = nil                   -- Reach Winter
+,   [ITEMSTYLE_AREA_TSAESCI             ] = {                   } -- Taesci
+,   [ITEMSTYLE_ENEMY_MINOTAUR           ] = { pages_id  =  1662 } -- Minotaur
+,   [ITEMSTYLE_EBONY                    ] = { pages_id  =  1798 } -- Ebony
+,   [ITEMSTYLE_ORG_ABAHS_WATCH          ] = { pages_id  =  1422 } -- Abah's Watch
+,   [ITEMSTYLE_HOLIDAY_SKINCHANGER      ] = { pages_id  =  1676 } -- Skinchanger
+,   [ITEMSTYLE_ORG_MORAG_TONG           ] = { pages_id  =  1933 } -- Morag Tong
+,   [ITEMSTYLE_AREA_RA_GADA             ] = { pages_id  =  1797 } -- Ra Gada
+,   [ITEMSTYLE_ENEMY_DROMOTHRA          ] = { pages_id  =  1659 } -- Dro-m'Athra
+,   [ITEMSTYLE_ORG_ASSASSINS            ] = { pages_id  =  1424 } -- Assassins League
+,   [ITEMSTYLE_ORG_OUTLAW               ] = { pages_id  =  1417 } -- Outlaw
+,   [ITEMSTYLE_ORG_REDORAN              ] = { pages_id  =  2022 } -- Redoran
+,   [ITEMSTYLE_ORG_HLAALU               ] = { pages_id  =  2021 } -- Hlaalu
+,   [ITEMSTYLE_ORG_ORDINATOR            ] = { pages_id  =  1935 } -- Militant Ordinator
+,   [ITEMSTYLE_ORG_TELVANNI             ] = { pages_id  =  2023 } -- Telvanni
+,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER      ] = { pages_id  =  1934 } -- Buoyant Armiger
+,   [ITEMSTYLE_HOLIDAY_FROSTCASTER      ] = { crown_id  = 96954 } -- Stalhrim Frostcaster
+,   [ITEMSTYLE_AREA_ASHLANDER           ] = { pages_id  =  1932 } -- Ashlander
+,   [ITEMSTYLE_ORG_WORM_CULT      or 55 ] = { pages_id  =  2120 } -- Worm Cult
+,   [ITEMSTYLE_ENEMY_SILKEN_RING        ] = { pages_id  =  1796 } -- Silken Ring
+,   [ITEMSTYLE_ENEMY_MAZZATUN           ] = { pages_id  =  1795 } -- Mazzatun
+,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN   ] = { crown_id  = 82039 } -- Grim Harlequin
+,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK       ] = { pages_id  =  1545 } -- Hollowjack
+,   [ITEMSTYLE_BLOODFORGE         or 61 ] = { pages_id  =  2098 } -- Bloodforge
+,   [ITEMSTYLE_DREADHORN          or 62 ] = { pages_id  =  2097 } -- Dreadhorn
+,   [ITEMSTYLE_APOSTLE            or 65 ] = { pages_id  =  2044 } -- Apostle
+,   [ITEMSTYLE_EBONSHADOW         or 66 ] = { pages_id  =  2045 } -- Ebonshadow
 ,   [ITEMSTYLE_UNDAUNTED_67       or 67 ] = nil
 ,   [ITEMSTYLE_USE_ME             or 68 ] = nil
-,   [ITEMSTYLE_FANG_LAIR          or 69 ] = { mat_name = "dragon bone"           , motif_name = "Fang Lair"            , pages_id  =  2190 }
-,   [ITEMSTYLE_SCALECALLER        or 70 ] = { mat_name = "infected flesh"        , motif_name = "Scalecaller"          , pages_id  =  2189 }
-,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = { mat_name = "vitrified malondo"     , motif_name = "Psijic Order"         , pages_id  =  2186 }
-,   [ITEMSTYLE_SAPIARCH           or 72 ] = { mat_name = "culanda lacquer"       , motif_name = "Sapiarch"             , pages_id  =  2187 }
-,   [ITEMSTYLE_WELKYNAR           or 73 ] = { mat_name = "gryphon plume"         , motif_name = "Welkynar"             , pages_id  =  2319 }
-,   [ITEMSTYLE_DREMORA            or 74 ] = { mat_name = "warrior's heart ashes" , motif_name = "Dremora"              , pages_id  =  2188 }
-,   [ITEMSTYLE_PYANDONEAN         or 75 ] = { mat_name = "sea serpent hide"      , motif_name = "Pyandonean"           , pages_id  =  2285 }
+,   [ITEMSTYLE_FANG_LAIR          or 69 ] = { pages_id  =  2190 } -- Fang Lair
+,   [ITEMSTYLE_SCALECALLER        or 70 ] = { pages_id  =  2189 } -- Scalecaller
+,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = { pages_id  =  2186 } -- Psijic Order
+,   [ITEMSTYLE_SAPIARCH           or 72 ] = { pages_id  =  2187 } -- Sapiarch
+,   [ITEMSTYLE_WELKYNAR           or 73 ] = { pages_id  =  2319 } -- Welkynar
+,   [ITEMSTYLE_DREMORA            or 74 ] = { pages_id  =  2188 } -- Dremora
+,   [ITEMSTYLE_PYANDONEAN         or 75 ] = { pages_id  =  2285 } -- Pyandonean
 ,   [ITEMSTYLE_DIVINE_PROSECUTION or 76 ] = nil
-,   [                                77 ] = { mat_name = "bloodscent dew"        , motif_name = "Huntsman"            , pages_id  =  2317 }
-,   [                                78 ] = { mat_name = "argent pelt"           , motif_name = "Silver Dawn"         , pages_id  =  2318 }
-,   [                                79 ] = { mat_name = "crocodile leather"     , motif_name = "Dead-Water"          , pages_id  =  2360 }
-,   [                                80 ] = { mat_name = "red diamond seal"      , motif_name = "Honor Guard"         , pages_id  =  2359 }
-,   [                                81 ] = { mat_name = "hackwing plumage"      , motif_name = "Elder Argonian"      , pages_id  =  2361 }
-,   [                                82 ] = { mat_name = "goblin-cloth scrap"    , motif_name = "Coldsnap"            , pages_id  =  2503 }
-,   [                                83 ] = { mat_name = "auroran dust"          , motif_name = "Meridian"            , pages_id  =  2504 }
-,   [                                84 ] = nil -- { mat_name = ""               , motif_name = "Anequina"            , pages_id  =  2505 }
-,   [                                85 ] = nil -- { mat_name = ""               , motif_name = "Pelletine"           , pages_id  =  2506 }
+,   [                                77 ] = { pages_id  =  2317 } -- Huntsman
+,   [                                78 ] = { pages_id  =  2318 } -- Silver Dawn
+,   [                                79 ] = { pages_id  =  2360 } -- Dead-Water
+,   [                                80 ] = { pages_id  =  2359 } -- Honor Guard
+,   [                                81 ] = { pages_id  =  2361 } -- Elder Argonian
+,   [                                82 ] = { pages_id  =  2503 } -- Coldsnap
+,   [                                83 ] = { pages_id  =  2504 } -- Meridian
+,   [                                84 ] = nil -- { pages_id  =  2505 } -- Anequina
+,   [                                85 ] = nil -- { pages_id  =  2506 } -- Pelletine
 
 }
 
@@ -291,6 +297,8 @@ Smithing.MOTIF = {
 -- * GetItemStyleMaterialLink(*integer* _itemStyleId_, *[LinkStyle|#LinkStyle]* _linkStyle_)
 -- ** _Returns:_ *string* _link_
 
+-- * GetItemStyleName(*integer* _styleId_)
+-- ** _Returns:_ *string* _styleName_
 
 
 -- Motif page numbers --------------------------------------------------------
@@ -1086,6 +1094,7 @@ function Parser:ParseItemLink(item_link)
     if self.motif then
         self.motif.motif_name = WritWorthy.Motif(motif_num) or self.motif.motif_name
         self.motif.motif_num  = motif_num
+        self.motif.mat_item_link = self.motif.mat_item_link or GetItemStyleMaterialLink(motif_num)
     end
     Log:Add("motif", self.motif)
     if self.request_item.school.motif_required then
@@ -1115,8 +1124,10 @@ function Parser:ToMatList()
     table.insert(ml, MatRow:FromName( self.request_item.school.base_mat_name
                                     , self.request_item.base_mat_ct ))
     table.insert(ml, MatRow:FromName( self.trait.mat_name ))
-    if self.motif and self.motif.mat_name then
-        table.insert(ml, MatRow:FromName( self.motif.mat_name ))
+    if self.motif and self.motif.mat_item_link then
+        table.insert(ml, MatRow:FromLink( self.motif.mat_item_link ))
+    -- elseif self.motif and self.motif.mat_name then
+    --     table.insert(ml, MatRow:FromName( self.motif.mat_name ))
     end
     table.insert(ml, MatRow:FromName( self.request_item.school.green_mat_name
                                     , self.improve_level.green_mat_ct ))
