@@ -575,10 +575,13 @@ function WritWorthy:Initialize()
                             , nil
                             , self.default
                             )
-    if self.savedVariables.log then
-        Log:LoadPreviousQueue(self.savedVariables.log)
+
+                        -- Old pre-LibDebugLogger log? No lonnger useful,
+                        -- remove it and save some SavedVariables space.
+    if self.savedVariables.log then 
+        self.savedVariables.log = nil
     end
-    self.savedVariables.log = Log.q
+
                         -- Per-character for each character's inventory list.
     self.savedChariables = ZO_SavedVars:New("WritWorthyVars"
                             , self.savedVarVersion

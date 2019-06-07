@@ -7,66 +7,72 @@
 ## Author: ziggr
 ## SavedVariables: WritWorthyVars
 ## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibStub
-## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander
+## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander LibDebugLogger
 
-# LibAddonMenu-2.0  required
-#   by Seerah, sirinsidiator
-#       https://www.esoui.com/downloads/info7-LibAddonMenu.html
-#       https://github.com/sirinsidiator/ESO-LibAddonMenu
-#   The "Settings/Addons" UI library that everybody uses.
+            # LibAddonMenu-2.0  required
+            #   by Seerah, sirinsidiator
+            #       https://www.esoui.com/downloads/info7-LibAddonMenu.html
+            #       https://github.com/sirinsidiator/ESO-LibAddonMenu
+            #   The "Settings/Addons" UI library that everybody uses.
 
-# LibPrice  required
-#   by ziggr
-#       https://www.esoui.com/downloads/info2204-LibPrice.html
-#       https://github.com/ziggr/ESO-LibPrice
-#   Provides material price lookups from
-#     - Master Merchant
-#     - Arkadius' Trade Tools
-#     - Tamriel Trade Centre.
+            # LibPrice  required
+            #   by ziggr
+            #       https://www.esoui.com/downloads/info2204-LibPrice.html
+            #       https://github.com/ziggr/ESO-LibPrice
+            #   Provides material price lookups from
+            #     - Master Merchant
+            #     - Arkadius' Trade Tools
+            #     - Tamriel Trade Centre.
 
-# LibLazyCrafting  required
-#   by Dolgubon
-#       https://www.esoui.com/downloads/info1594-LibLazyCrafting.html
-#       https://github.com/Dolgubon/LibLazyCrafting
-#   How WritWorthy queues and crafts items.
+            # LibLazyCrafting  required
+            #   by Dolgubon
+            #       https://www.esoui.com/downloads/info1594-LibLazyCrafting.html
+            #       https://github.com/Dolgubon/LibLazyCrafting
+            #   How WritWorthy queues and crafts items.
 
-# LibSets required
-#   by Baertram
-#       https://www.esoui.com/downloads/info2241-LibSets.html
-#       https://github.com/Baertram/LibSets
-#   Set names such as "Alessia's Bullwark" and their required trait counts.
+            # LibSets required
+            #   by Baertram
+            #       https://www.esoui.com/downloads/info2241-LibSets.html
+            #       https://github.com/Baertram/LibSets
+            #   Set names such as "Alessia's Bullwark" and their required trait counts.
 
-# LibStub required
-#   by Seerah, sirinsidiator
-#       https://www.esoui.com/downloads/info44-LibStub.html
-#       https://github.com/sirinsidiator/ESO-LibStub
-#   Versioning library required by LibCustomTitles.
+            # LibStub required
+            #   by Seerah, sirinsidiator
+            #       https://www.esoui.com/downloads/info44-LibStub.html
+            #       https://github.com/sirinsidiator/ESO-LibStub
+            #   Versioning library required by LibCustomTitles.
 
-# LibSlashCommander optional
-#   by sirinsidiator
-#       https://www.esoui.com/downloads/info1508-LibSlashCommander.html
-#   Provides autocompletion and help text for /writworthy
-#   subcommands like "count".
+            # LibSlashCommander optional
+            #   by sirinsidiator
+            #       https://www.esoui.com/downloads/info1508-LibSlashCommander.html
+            #   Provides autocompletion and help text for /writworthy
+            #   subcommands like "count".
 
-# AwesomeGuildStore
-#   by sirinsidiator
-#       https://www.esoui.com/downloads/info695-AwesomeGuildStore.html
-#   OptionalDependsOn so that WritWorthy can detect that AwesomeGuildStore
-#   is present, and add its "crafted price per voucher" filter.
+            # AwesomeGuildStore
+            #   by sirinsidiator
+            #       https://www.esoui.com/downloads/info695-AwesomeGuildStore.html
+            #   OptionalDependsOn so that WritWorthy can detect that AwesomeGuildStore
+            #   is present, and add its "crafted price per voucher" filter.
 
-# Optional libraries used only for unreleased WritWorthy_AutoQuest.lua.
-# Optional as long as I refuse to publish the autoquest feature.
-#
-# LibCustomMenu     optional
-#   by votan
-#       https://www.esoui.com/downloads/info1146-LibCustomMenu.html
-#   Allows "Accept Writ Quests" button in inventory window
-#
-# LibCraftText      optional
-#   by ziggr
-#       https://www.esoui.com/downloads/info2184-LibCraftText.html
-#       https://github.com/ziggr/ESO-LibCraftText
-#   Allows Accept/Rolis dialog automation in languages other than EN English.
+            # LibDebugLogger
+            # by Sirinsidiator
+            # Allows error/warn/info/debug logging to saved variables.
+            # https://www.esoui.com/downloads/info2275-LibDebugLogger.html
+            # Can be omitted. Only useful for Zig while developing.
+
+            # Optional libraries used only for unreleased WritWorthy_AutoQuest.lua.
+            # Optional as long as I refuse to publish the autoquest feature.
+            #
+            # LibCustomMenu     optional
+            #   by votan
+            #       https://www.esoui.com/downloads/info1146-LibCustomMenu.html
+            #   Allows "Accept Writ Quests" button in inventory window
+            #
+            # LibCraftText      optional
+            #   by ziggr
+            #       https://www.esoui.com/downloads/info2184-LibCraftText.html
+            #       https://github.com/ziggr/ESO-LibCraftText
+            #   Allows Accept/Rolis dialog automation in languages other than EN English.
 
 libs/LibCustomTitles/LibCustomTitles.lua
 

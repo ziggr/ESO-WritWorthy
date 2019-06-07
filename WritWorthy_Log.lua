@@ -4,87 +4,79 @@
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 
-WritWorthy.Log = {
-    q = {
-        left_index = 0
-    ,   right_index = -1
-    ,   current = nil
-    }
-,   MAX_EVENT_CT = 5
-}
+WritWorthy.Log = {}
 
 local Log = WritWorthy.Log
 
--- Generic Queue -------------------------------------------------------------
-
-function Log:PushRight(e)
-    self.q.right_index = self.q.right_index + 1
-    self.q[self.q.right_index] = e
-    return e
-end
-
-function Log:PopLeft()
-    if self.q.right_index < self.q.left_index then return nil end
-    local e = self.q[self.q.left_index]
-    self.q.left_index = self.q.left_index + 1
-    self.q[self.q.left_index] = nil
-    return e
-end
-
-function Log:EventCt()
-    return 1 + self.q.right_index - self.q.left_index
-end
-
 -- Event ---------------------------------------------------------------------
+--
+-- In earlier days, WritWorthy grouped log records into "events". This function
+-- ended the previous  event and started a new one. But as of 2019-06-07,
+-- WritWorthy now uses LibDebugLogger and has no use for events.
 
 function Log:StartNewEvent()
-    self:TruncateEventList()
-    self.current = self:PushRight({})
-    return self.current
+    return
 end
 
--- If we're at max capacity, throw out the oldest event.
-function Log:TruncateEventList()
-    if self:EventCt() < self.MAX_EVENT_CT then return end
-    self:PopLeft()
-end
-
--- Append one value to the current event
+-- Append one value to the current event.
+--
+-- Deprecated, this API was really designed to put arbitrary Lua values into
+-- the old log's Lua table. But this LibDebugLogger adapter just flattens
+-- everything to a string, which isn't so great for code that used to write 
+-- entire tables to the old log with a single Log:Add(table).
+--
 function Log:Add(value)
-    if not self.current then
-        self:StartNewEvent()
-    end
-    table.insert(self.current,  value)
+    WritWorthy.Debug(tostring(value))
 end
 
--- File I/O (well, just I) ---------------------------------------------------
+-- LibDebugLogger ------------------------------------------------------------
 
--- If prev_q looks like a valid saved copy of Log.q, then use prev_q as
--- our new Log.q.  If not, NOP, leaving our default Log.q in place.
-function Log:LoadPreviousQueue(prev_q)
-                        -- Validate: don't let corruption in SavedVariables
-                        -- afflict us after a /reloadui.
-    if not prev_q then return end
-    if not prev_q.left_index then return end
-    if not prev_q.right_index then return end
-                        -- Too many events in log, just start empty rather
-                        -- than try to purge the oldest.
-    if Log.MAX_EVENT_CT <= (prev_q.right_index - prev_q.left_index) then
-        return
+-- If Sirinsidiator's LibDebugLogger is installed, then return a logger from
+-- that. If not, return a NOP replacement.
+
+local NOP = {}
+function NOP:Debug(...) end
+function NOP:Info(...) end
+function NOP:Warn(...) end
+function NOP:Error(...) end
+
+WritWorthy.log_to_chat = false
+
+function WritWorthy.Logger()
+    local self = WritWorthy
+    if not self.logger then
+        if LibDebugLogger then
+            self.logger = LibDebugLogger.Create(self.name)
+        end
+        if not self.logger then
+            self.logger = NOP
+        end
     end
-                        -- Make sure everything between the head and tail
-                        -- pointers are filled. And while scanning, retain
-                        -- ONLY those elements in this range, skipping any
-                        -- that try to sneak in from outside the range, and
-                        -- sliding everyone down to 0 again while we're at it.
-    local new_q = {}
-    for i = prev_q.left_index+1,prev_q.right_index do
-        if not prev_q[i] then return end
-        table.insert(new_q, prev_q[i])
-    end
-    new_q.right_index = #new_q - 1
-    new_q.left_index = 0
-    new_q.current = nil
-    self.q = new_q
+    return self.logger
 end
 
+function WritWorthy.LogOne(color, ...)
+    if WritWorthy.log_to_chat then
+        d("|c"..color..WritWorthy.name..": "..string.format(...).."|r")
+    end
+end
+
+function WritWorthy.Debug(...)
+    WritWorthy.LogOne("666666",...)
+    WritWorthy.Logger():Debug(...)
+end
+
+function WritWorthy.Info(...)
+    WritWorthy.LogOne("999999",...)
+    WritWorthy.Logger():Info(...)
+end
+
+function WritWorthy.Warn(...)
+    WritWorthy.LogOne("FF8800",...)
+    WritWorthy.Logger():Warn(...)
+end
+
+function WritWorthy.Error(...)
+    WritWorthy.LogOne("FF6666",...)
+    WritWorthy.Logger():Error(...)
+end

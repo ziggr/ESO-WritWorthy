@@ -20,6 +20,7 @@ sub dirls($)
 # push @files, dirls('src');
 push @files, 'WritWorthy.lua';
 push @files, 'WritWorthy_AutoQuest.lua';
+push @files, 'WritWorthy_Log.lua';
 push @files, 'WritWorthy_Util.lua';
 push @files, 'WritWorthy_I18N.lua';
 push @files, 'WritWorthy_Smithing.lua';
