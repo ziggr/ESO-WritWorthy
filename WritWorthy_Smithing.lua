@@ -1072,25 +1072,22 @@ function Parser:ParseItemLink(item_link)
         self.request_item.tr = self.request_item.item_name -- retain old name for debugging.
         self.request_item.item_name = WritWorthy.Gear(self.request_item.example_item_id)
     end
-    Log:Add("request_item:"..tostring(item_num).." "
-            ..tostring(self.request_item.item_name))
+    Log:Add("request_item"
+           , tostring(item_num).." "..tostring(self.request_item.item_name))
     self.crafting_type = self.request_item.school.trade_skill_type
     self.set_bonus      = self:GetSetBonus(set_num) -- Smithing.SET_BONUS[set_num]
     if not self.set_bonus then return Fail("set not found "..tostring(set_num)) end
-    Log:Add("set_bonus:"..tostring(set_num))
-    Log:Add(self.set_bonus)
+    Log:Add("set_bonus", self.set_bonus)
     self.trait          = self.request_item.trait_set[trait_num]
     self.trait_num      = trait_num
-    Log:Add("trait:"..tostring(trait_num))
-    Log:Add(self.trait)
+    Log:Add("trait", self.trait)
     self.motif_num      = motif_num
     self.motif          = Smithing.MOTIF[motif_num]
     if self.motif then
         self.motif.motif_name = WritWorthy.Motif(motif_num) or self.motif.motif_name
         self.motif.motif_num  = motif_num
     end
-    Log:Add("motif:"..tostring(motif_num))
-    Log:Add(self.motif)
+    Log:Add("motif", self.motif)
     if self.request_item.school.motif_required then
         if not self.motif then
             return Fail("motif not found "..tostring(motif_num))
@@ -1103,8 +1100,7 @@ function Parser:ParseItemLink(item_link)
     else
         self.improve_level  = Smithing.QUALITY[quality_num]
     end
-    Log:Add("improve:"..tostring(quality_num))
-    Log:Add(self.improve_level)
+    Log:Add("improve", self.improve_level)
     if not self.improve_level then
         return Fail("quality not found "..tostring(quality_num))
     end

@@ -35,16 +35,28 @@ end
 -- everything to a string, which isn't so great for code that used to write 
 -- entire tables to the old log with a single Log:Add(table).
 --
-function Log:Add(value)
+function Log:Add(arg1, arg2)
+    local name  = arg1
+    local value = arg2
+    if not value then
+        name = ""
+        value = arg1
+    end
+
     if not self.log_event then
         self:StartNewEvent()
     end
-    table.insert(self.log_event, Log:ToString(value))
+    table.insert(self.log_event, Log:Flatten(name, value))
 end
 
-function Log:ToString(value)
+function Log:Flatten(name, value)
+    local prefix = ""
+    if name and name ~= "" then
+        prefix = name..": "
+    end
+
     if type(value) ~= "table" then
-        return tostring(value)
+        return prefix..tostring(value)
     end
 
     local max_line_len = 0
@@ -63,10 +75,10 @@ function Log:ToString(value)
                         -- Short enough to squeeze onto a single line?
                         -- Please do. The log is already way too long.
     if #lines < 10 and max_line_len < 40 then
-        return table.concat(lines, "  ")
+        return prefix..table.concat(lines, "  ")
     end
                         -- Too long for one line. Return as lines.
-    return table.concat(lines,"\n")
+    return prefix..table.concat(lines,"\n")
 end
 
 -- LibDebugLogger ------------------------------------------------------------
