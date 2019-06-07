@@ -8,15 +8,17 @@ put:
 		--exclude=doc \
 		--exclude=published \
 		--exclude=save \
+		--exclude=tool \
 		. /Volumes/Elder\ Scrolls\ Online/live/AddOns/WritWorthy
 
 get:
-	cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/WritWorthy.lua ../../SavedVariables/
-	cp -f ../../SavedVariables/WritWorthy.lua data/
+	cp  -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/WritWorthy.lua     data/
+	-cp -f /Volumes/Elder\ Scrolls\ Online/live/SavedVariables/LibDebugLogger.lua data/
+
 
 getpts:
-	cp -f /Volumes/Elder\ Scrolls\ Online/pts/SavedVariables/WritWorthy.lua ../../SavedVariables/
-	cp -f ../../SavedVariables/WritWorthy.lua data/
+	cp  -f /Volumes/Elder\ Scrolls\ Online/pts/SavedVariables/WritWorthy.lua     data/
+	-cp -f /Volumes/Elder\ Scrolls\ Online/pts/SavedVariables/LibDebugLogger.lua data/
 
 parse:
 	lua wwparse.lua
@@ -40,4 +42,7 @@ profile:
 lang/en2.lua: data/WritWorthy.lua make_lang.lua
 	lua make_lang.lua
 	lua lang/en2.lua
+
+log:
+	lua tool/log_to_text.lua > data/log.txt
 

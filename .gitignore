@@ -1,4 +1,6 @@
 .DS_Store
 data/WritWorthy.lua
+data/LibDebugLogger.lua
+data/log.txt
 
 
