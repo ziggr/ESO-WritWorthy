@@ -152,40 +152,39 @@ Smithing.SCHOOL_JEWELRY = {
 --  GetSmithingTraitItemLink(ITEM_TRAIT_TYPE_WEAPON_POWERED + 1))
 --  → link to Chysolite.
 --
---
 
 Smithing.TRAITS_WEAPON = {
-    [ITEM_TRAIT_TYPE_WEAPON_POWERED    ] = { trait_name = "powered",      mat_name = "chysolite"          , trait_index = 1 }
-,   [ITEM_TRAIT_TYPE_WEAPON_CHARGED    ] = { trait_name = "charged",      mat_name = "amethyst"           , trait_index = 2 }
-,   [ITEM_TRAIT_TYPE_WEAPON_PRECISE    ] = { trait_name = "precise",      mat_name = "ruby"               , trait_index = 3 }
-,   [ITEM_TRAIT_TYPE_WEAPON_INFUSED    ] = { trait_name = "infused",      mat_name = "jade"               , trait_index = 4 }
-,   [ITEM_TRAIT_TYPE_WEAPON_DEFENDING  ] = { trait_name = "defending",    mat_name = "turquoise"          , trait_index = 5 }
-,   [ITEM_TRAIT_TYPE_WEAPON_TRAINING   ] = { trait_name = "training",     mat_name = "carnelian"          , trait_index = 6 }
-,   [ITEM_TRAIT_TYPE_WEAPON_SHARPENED  ] = { trait_name = "sharpened",    mat_name = "fire opal"          , trait_index = 7 }
-,   [ITEM_TRAIT_TYPE_WEAPON_DECISIVE   ] = { trait_name = "decisive",     mat_name = "citrine"            , trait_index = 8 }  -- nee weighted
-,   [ITEM_TRAIT_TYPE_WEAPON_NIRNHONED  ] = { trait_name = "nirnhoned",    mat_name = "potent nirncrux"    , trait_index = 9 }
+    [ITEM_TRAIT_TYPE_WEAPON_POWERED      ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_POWERED       , trait_index = 1 }
+,   [ITEM_TRAIT_TYPE_WEAPON_CHARGED      ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_CHARGED       , trait_index = 2 }
+,   [ITEM_TRAIT_TYPE_WEAPON_PRECISE      ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_PRECISE       , trait_index = 3 }
+,   [ITEM_TRAIT_TYPE_WEAPON_INFUSED      ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_INFUSED       , trait_index = 4 }
+,   [ITEM_TRAIT_TYPE_WEAPON_DEFENDING    ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_DEFENDING     , trait_index = 5 }
+,   [ITEM_TRAIT_TYPE_WEAPON_TRAINING     ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_TRAINING      , trait_index = 6 }
+,   [ITEM_TRAIT_TYPE_WEAPON_SHARPENED    ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_SHARPENED     , trait_index = 7 }
+,   [ITEM_TRAIT_TYPE_WEAPON_DECISIVE     ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_DECISIVE      , trait_index = 8 }
+,   [ITEM_TRAIT_TYPE_WEAPON_NIRNHONED    ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_NIRNHONED     , trait_index = 9 }
 }
 Smithing.TRAITS_ARMOR = {
-    [ITEM_TRAIT_TYPE_ARMOR_STURDY      ] = { trait_name = "sturdy",       mat_name = "quartz"             , trait_index = 1 }
-,   [ITEM_TRAIT_TYPE_ARMOR_IMPENETRABLE] = { trait_name = "impenetrable", mat_name = "diamond"            , trait_index = 2 }
-,   [ITEM_TRAIT_TYPE_ARMOR_REINFORCED  ] = { trait_name = "reinforced",   mat_name = "sardonyx"           , trait_index = 3 }
-,   [ITEM_TRAIT_TYPE_ARMOR_WELL_FITTED ] = { trait_name = "well-fitted",  mat_name = "almandine"          , trait_index = 4 }
-,   [ITEM_TRAIT_TYPE_ARMOR_TRAINING    ] = { trait_name = "training",     mat_name = "emerald"            , trait_index = 5 }
-,   [ITEM_TRAIT_TYPE_ARMOR_INFUSED     ] = { trait_name = "infused",      mat_name = "bloodstone"         , trait_index = 6 }
-,   [ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS  ] = { trait_name = "invigorating", mat_name = "garnet"             , trait_index = 7 } -- nee exploration
-,   [ITEM_TRAIT_TYPE_ARMOR_DIVINES     ] = { trait_name = "divines",      mat_name = "sapphire"           , trait_index = 8 }
-,   [ITEM_TRAIT_TYPE_ARMOR_NIRNHONED   ] = { trait_name = "nirnhoned",    mat_name = "fortified nirncrux" , trait_index = 9 }
+    [ITEM_TRAIT_TYPE_ARMOR_STURDY        ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_STURDY         , trait_index = 1 }
+,   [ITEM_TRAIT_TYPE_ARMOR_IMPENETRABLE  ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_IMPENETRABLE   , trait_index = 2 }
+,   [ITEM_TRAIT_TYPE_ARMOR_REINFORCED    ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_REINFORCED     , trait_index = 3 }
+,   [ITEM_TRAIT_TYPE_ARMOR_WELL_FITTED   ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_WELL_FITTED    , trait_index = 4 }
+,   [ITEM_TRAIT_TYPE_ARMOR_TRAINING      ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_TRAINING       , trait_index = 5 }
+,   [ITEM_TRAIT_TYPE_ARMOR_INFUSED       ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_INFUSED        , trait_index = 6 }
+,   [ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS    ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_PROSPEROUS     , trait_index = 7 }
+,   [ITEM_TRAIT_TYPE_ARMOR_DIVINES       ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_DIVINES        , trait_index = 8 }
+,   [ITEM_TRAIT_TYPE_ARMOR_NIRNHONED     ] = { trait_num = ITEM_TRAIT_TYPE_ARMOR_NIRNHONED      , trait_index = 9 }
 }
 Smithing.TRAITS_JEWELRY = {
-    [ITEM_TRAIT_TYPE_JEWELRY_ARCANE       or 22] = { trait_name = "arcane",         mat_name = "cobalt"        , trait_index = 1 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_HEALTHY      or 21] = { trait_name = "healthy",        mat_name = "antimony"      , trait_index = 2 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_ROBUST       or 23] = { trait_name = "robust",         mat_name = "zinc"          , trait_index = 3 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_TRIUNE       or 30] = { trait_name = "triune",         mat_name = "dawn-prism"    , trait_index = 4 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_INFUSED      or 33] = { trait_name = "infused",        mat_name = "aurbic amber"  , trait_index = 5 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_PROTECTIVE   or 32] = { trait_name = "protective",     mat_name = "titanium"      , trait_index = 6 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_SWIFT        or 28] = { trait_name = "swift",          mat_name = "gilding wax"   , trait_index = 7 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_HARMONY      or 29] = { trait_name = "harmony",        mat_name = "dibellium"     , trait_index = 8 }
-,   [ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY or 31] = { trait_name = "bloodthirsty",   mat_name = "slaughterstone", trait_index = 9 }
+    [ITEM_TRAIT_TYPE_JEWELRY_ARCANE      ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_ARCANE       , trait_index = 1 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_HEALTHY     ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_HEALTHY      , trait_index = 2 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_ROBUST      ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_ROBUST       , trait_index = 3 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_TRIUNE      ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_TRIUNE       , trait_index = 4 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_INFUSED     ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_INFUSED      , trait_index = 5 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_PROTECTIVE  ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_PROTECTIVE   , trait_index = 6 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_SWIFT       ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_SWIFT        , trait_index = 7 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_HARMONY     ] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_HARMONY      , trait_index = 8 }
+,   [ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY , trait_index = 9 }
 }
 
 -- Motifs --------------------------------------------------------------------
@@ -662,17 +661,29 @@ function Parser:ParseItemLink(item_link)
     self.set_bonus      = self:GetSetBonus(set_num)
     if not self.set_bonus then return Fail("set not found "..tostring(set_num)) end
     Log:Add("set_bonus", self.set_bonus)
+
     self.trait          = self.request_item.trait_set[trait_num]
     self.trait_num      = trait_num
+                        -- trait_name used just for debugging,
+                        -- not as a key or UI string anywhere.
+    self.trait.trait_name = self.trait.trait_name
+                            or WritWorthy.SI("SI_ITEMTRAITTYPE"..tostring(trait_num))
+
+    self.trait.mat_link = self.trait.mat_link
+                          or GetSmithingTraitItemLink(trait_num + 1)
     Log:Add("trait", self.trait)
+
     self.motif_num      = motif_num
     self.motif          = Smithing.MOTIF[motif_num]
     if self.motif then
-        self.motif.motif_name = WritWorthy.Motif(motif_num) or self.motif.motif_name
-        self.motif.motif_num  = motif_num
-        self.motif.mat_item_link = self.motif.mat_item_link or GetItemStyleMaterialLink(motif_num)
+        self.motif.motif_num     = motif_num
+        self.motif.motif_name    = self.motif.motif_name
+                                   or WritWorthy.Motif(motif_num)
+        self.motif.mat_item_link = self.motif.mat_item_link
+                                   or GetItemStyleMaterialLink(motif_num)
     end
     Log:Add("motif", self.motif)
+
     if self.request_item.school.motif_required then
         if not self.motif then
             return Fail("motif not found "..tostring(motif_num))
@@ -699,7 +710,7 @@ function Parser:ToMatList()
     local ml = {}
     table.insert(ml, MatRow:FromName( self.request_item.school.base_mat_name
                                     , self.request_item.base_mat_ct ))
-    table.insert(ml, MatRow:FromName( self.trait.mat_name ))
+    table.insert(ml, MatRow:FromLink( self.trait.mat_link ))
     if self.motif and self.motif.mat_item_link then
         table.insert(ml, MatRow:FromLink( self.motif.mat_item_link ))
     -- elseif self.motif and self.motif.mat_name then
