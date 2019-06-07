@@ -149,6 +149,7 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
+    Log:StartNewEvent("ParseItemLink: enchanting %s", item_link)
     local fields      = Util.ToWritFields(item_link)
     local glyph_id    = fields.writ1
     local level_num   = fields.writ2
