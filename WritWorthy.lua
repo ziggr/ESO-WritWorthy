@@ -55,9 +55,10 @@ function WritWorthy.CreateParser(item_link)
     local icon, _, _, _, item_style = GetItemLinkInfo(item_link)
     local parser_class = WritWorthy.ICON_TO_PARSER[icon]
     if not parser_class then return nil end
-    Log:StartNewEvent()
-    Log:Add(GenerateMasterWritBaseText(item_link))
-    Log:Add(item_link)
+    -- Log.Debug("CreateParser: %s\n%s"
+    --          , item_link
+    --          , GenerateMasterWritBaseText(item_link)
+    --          )
     return parser_class:New()
 end
 
@@ -66,8 +67,11 @@ end
 -- necessary to craft the item.
 function WritWorthy.ToMatKnowList(item_link)
     local parser = WritWorthy.CreateParser(item_link)
+    -- Log.Debug("ToMatKnowList: class:%s item_link:%s"
+    --          , (parser and parser.class) or "nil"
+    --          , item_link
+    --          )
     if not parser then return nil end
-    Log:Add(parser.class)
     if not parser:ParseItemLink(item_link) then
         return Fail("WritWorthy: "..WW.Str("err_could_not_parse")), nil, parser
     end

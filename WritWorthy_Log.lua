@@ -26,7 +26,7 @@ end
 -- entire tables to the old log with a single Log:Add(table).
 --
 function Log:Add(value)
-    WritWorthy.Debug(tostring(value))
+    Log.Debug(tostring(value))
 end
 
 -- LibDebugLogger ------------------------------------------------------------
@@ -61,22 +61,22 @@ function WritWorthy.LogOne(color, ...)
     end
 end
 
-function WritWorthy.Debug(...)
+function Log.Debug(...)
     WritWorthy.LogOne("666666",...)
     WritWorthy.Logger():Debug(...)
 end
 
-function WritWorthy.Info(...)
+function Log.Info(...)
     WritWorthy.LogOne("999999",...)
     WritWorthy.Logger():Info(...)
 end
 
-function WritWorthy.Warn(...)
+function Log.Warn(...)
     WritWorthy.LogOne("FF8800",...)
     WritWorthy.Logger():Warn(...)
 end
 
-function WritWorthy.Error(...)
+function Log.Error(...)
     WritWorthy.LogOne("FF6666",...)
     WritWorthy.Logger():Error(...)
 end
