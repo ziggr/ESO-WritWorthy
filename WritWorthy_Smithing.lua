@@ -237,7 +237,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_AREA_YOKUDAN             ] = { pages_id  =  1713 } -- Yokudan
 ,   [ITEMSTYLE_UNIVERSAL                ] = nil                   -- unused
 ,   [ITEMSTYLE_AREA_REACH_WINTER        ] = nil                   -- Reach Winter
-,   [ITEMSTYLE_AREA_TSAESCI             ] = {                   } -- Taesci
+,   [ITEMSTYLE_AREA_TSAESCI             ] = { crown_id  =132532 } -- Taesci
 ,   [ITEMSTYLE_ENEMY_MINOTAUR           ] = { pages_id  =  1662 } -- Minotaur
 ,   [ITEMSTYLE_EBONY                    ] = { pages_id  =  1798 } -- Ebony
 ,   [ITEMSTYLE_ORG_ABAHS_WATCH          ] = { pages_id  =  1422 } -- Abah's Watch
@@ -254,51 +254,45 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_ORG_BUOYANT_ARMIGER      ] = { pages_id  =  1934 } -- Buoyant Armiger
 ,   [ITEMSTYLE_HOLIDAY_FROSTCASTER      ] = { crown_id  = 96954 } -- Stalhrim Frostcaster
 ,   [ITEMSTYLE_AREA_ASHLANDER           ] = { pages_id  =  1932 } -- Ashlander
-,   [ITEMSTYLE_ORG_WORM_CULT      or 55 ] = { pages_id  =  2120 } -- Worm Cult
+,   [ITEMSTYLE_ORG_WORM_CULT            ] = { pages_id  =  2120 } -- Worm Cult
 ,   [ITEMSTYLE_ENEMY_SILKEN_RING        ] = { pages_id  =  1796 } -- Silken Ring
 ,   [ITEMSTYLE_ENEMY_MAZZATUN           ] = { pages_id  =  1795 } -- Mazzatun
 ,   [ITEMSTYLE_HOLIDAY_GRIM_HARLEQUIN   ] = { crown_id  = 82039 } -- Grim Harlequin
 ,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK       ] = { pages_id  =  1545 } -- Hollowjack
-,   [ITEMSTYLE_BLOODFORGE         or 61 ] = { pages_id  =  2098 } -- Bloodforge
-,   [ITEMSTYLE_DREADHORN          or 62 ] = { pages_id  =  2097 } -- Dreadhorn
-,   [ITEMSTYLE_APOSTLE            or 65 ] = { pages_id  =  2044 } -- Apostle
-,   [ITEMSTYLE_EBONSHADOW         or 66 ] = { pages_id  =  2045 } -- Ebonshadow
-,   [ITEMSTYLE_UNDAUNTED_67       or 67 ] = nil
-,   [ITEMSTYLE_USE_ME             or 68 ] = nil
-,   [ITEMSTYLE_FANG_LAIR          or 69 ] = { pages_id  =  2190 } -- Fang Lair
-,   [ITEMSTYLE_SCALECALLER        or 70 ] = { pages_id  =  2189 } -- Scalecaller
-,   [ITEMSTYLE_PSIJIC_ORDER       or 71 ] = { pages_id  =  2186 } -- Psijic Order
-,   [ITEMSTYLE_SAPIARCH           or 72 ] = { pages_id  =  2187 } -- Sapiarch
-,   [ITEMSTYLE_WELKYNAR           or 73 ] = { pages_id  =  2319 } -- Welkynar
-,   [ITEMSTYLE_DREMORA            or 74 ] = { pages_id  =  2188 } -- Dremora
-,   [ITEMSTYLE_PYANDONEAN         or 75 ] = { pages_id  =  2285 } -- Pyandonean
-,   [ITEMSTYLE_DIVINE_PROSECUTION or 76 ] = nil
-,   [                                77 ] = { pages_id  =  2317 } -- Huntsman
-,   [                                78 ] = { pages_id  =  2318 } -- Silver Dawn
-,   [                                79 ] = { pages_id  =  2360 } -- Dead-Water
-,   [                                80 ] = { pages_id  =  2359 } -- Honor Guard
-,   [                                81 ] = { pages_id  =  2361 } -- Elder Argonian
-,   [                                82 ] = { pages_id  =  2503 } -- Coldsnap
-,   [                                83 ] = { pages_id  =  2504 } -- Meridian
-,   [                                84 ] = nil -- { pages_id  =  2505 } -- Anequina
-,   [                                85 ] = nil -- { pages_id  =  2506 } -- Pelletine
+    -- Hollowjack/59 was the last named ITEMSTYLE_X constant.
+    -- It's all numeric from here on out.
+,   [ 61 ] = { pages_id  =  2098 } -- Bloodforge
+,   [ 62 ] = { pages_id  =  2097 } -- Dreadhorn
+,   [ 65 ] = { pages_id  =  2044 } -- Apostle
+,   [ 66 ] = { pages_id  =  2045 } -- Ebonshadow
+,   [ 67 ] = nil                   -- Undaunted 67
+,   [ 68 ] = nil                   -- Use Me
+,   [ 69 ] = { pages_id  =  2190 } -- Fang Lair
+,   [ 70 ] = { pages_id  =  2189 } -- Scalecaller
+,   [ 71 ] = { pages_id  =  2186 } -- Psijic Order
+,   [ 72 ] = { pages_id  =  2187 } -- Sapiarch
+,   [ 73 ] = { pages_id  =  2319 } -- Welkynar
+,   [ 74 ] = { pages_id  =  2188 } -- Dremora
+,   [ 75 ] = { pages_id  =  2285 } -- Pyandonean
+,   [ 76 ] = nil                   -- Divine Prosecution
+,   [ 77 ] = { pages_id  =  2317 } -- Huntsman
+,   [ 78 ] = { pages_id  =  2318 } -- Silver Dawn
+,   [ 79 ] = { pages_id  =  2360 } -- Dead-Water
+,   [ 80 ] = { pages_id  =  2359 } -- Honor Guard
+,   [ 81 ] = { pages_id  =  2361 } -- Elder Argonian
+,   [ 82 ] = { pages_id  =  2503 } -- Coldsnap
+,   [ 83 ] = { pages_id  =  2504 } -- Meridian
+,   [ 84 ] = { pages_id  =  2505 } -- Anequina
+,   [ 85 ] = { pages_id  =  2506 } -- Pellitine
 
+                        -- How to learn pages_id for new motifs:
+                        -- 1. open the 'J' Quest screen
+                        -- 2. select Achievements tab
+                        -- 3. right-click a "X Style Master" achievement
+                        -- 4. Link in chat
+                        -- 5. /breakitem the above
+                        -- The quest id, aka pages_id, is the first number.
 }
-
--- New as of 2019 (Elseweyr?)
---
--- * GetHighestItemStyleId()
--- ** _Returns:_ *integer* _highestItemStyleDefId_
-
--- * GetItemStyleInfo(*integer* _itemStyleId_)
--- ** _Returns:_ *bool* _alwaysHideIfLocked_
-
--- * GetItemStyleMaterialLink(*integer* _itemStyleId_, *[LinkStyle|#LinkStyle]* _linkStyle_)
--- ** _Returns:_ *string* _link_
-
--- * GetItemStyleName(*integer* _styleId_)
--- ** _Returns:_ *string* _styleName_
-
 
 -- Motif page numbers --------------------------------------------------------
 --
