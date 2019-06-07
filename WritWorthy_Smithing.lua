@@ -396,418 +396,6 @@ Smithing.REQUEST_ITEMS = {
 
 }
 
--- Set Bonus required trait counts -------------------------------------------
---
--- How many traits must you know in order to craft an item with this
--- set bonus?
---
--- Table index is writ4 value for smithing writs.
---
--- dol_set_index is for Dolgubon's Lazy Set Crafter, an index into its own
---              internal table of craftable sets.
---              Brittle, likely to change. Could ask Dolgubon to publish
---              its table so that we could connect it up programmatically.
---
--- Learned by iterating over itemLink strings and dumping their baseText.
--- Dump still around somewhere in doc/item_link.txt.
---
--- 2019-04-15 DEPRECATED use LibSets.GetSetInfo(set_num) once
---            Baertram publishes it.
---            Will retain this table as long as we still need
---            Dolgubon-proprietary dol_set_index, which hopefully won't
---            be very long.
-Smithing.SET_BONUS = {
-    [  1] = nil
-  , [  2] = nil
-  , [  3] = nil
-  , [  4] = nil
-  , [  5] = nil
-  , [  6] = nil
-  , [  7] = nil
-  , [  8] = nil
-  , [  9] = nil
- ,  [ 10] = nil
- ,  [ 11] = nil
- ,  [ 12] = nil
- ,  [ 13] = nil
- ,  [ 14] = nil
- ,  [ 15] = nil
- ,  [ 16] = nil
- ,  [ 17] = nil
- ,  [ 18] = nil
- ,  [ 19] = { name = "Vestments of the Warlock",                                         }
- ,  [ 20] = { name = "Witchman Armor",                                                   }
- ,  [ 21] = { name = "Akaviri Dragonguard",                                              }
- ,  [ 22] = { name = "Dreamer's Mantle",                                                 }
- ,  [ 23] = { name = "Archer's Mind",                                                    }
- ,  [ 24] = { name = "Footman's Fortune",                                                }
- ,  [ 25] = { name = "Desert Rose",                                                      }
- ,  [ 26] = { name = "Prisoner's Rags",                                                  }
- ,  [ 27] = { name = "Fiord's Legacy",                                                   }
- ,  [ 28] = { name = "Barkskin",                                                         }
- ,  [ 29] = { name = "Sergeant's Mail",                                                  }
- ,  [ 30] = { name = "Thunderbug's Carapace",                                            }
- ,  [ 31] = { name = "Silks of the Sun",                                                 }
- ,  [ 32] = { name = "Healer's Habit",                                                   }
- ,  [ 33] = { name = "Viper's Sting",                                                    }
- ,  [ 34] = { name = "Night Mother's Embrace",                                           }
- ,  [ 35] = { name = "Knightmare",                                                       }
- ,  [ 36] = { name = "Armor of the Veiled Heritance",                                    }
- ,  [ 37] = { name = "Death's Wind",                    trait_ct = 2, dol_set_index =  2 }
- ,  [ 38] = { name = "Twilight's Embrace",              trait_ct = 3, dol_set_index =  6 }
- ,  [ 39] = { name = "Alessian Order",                               }
- ,  [ 40] = { name = "Night's Silence",                 trait_ct = 2, dol_set_index =  3 }
- ,  [ 41] = { name = "Whitestrake's Retribution",       trait_ct = 4, dol_set_index = 10 }
- ,  [ 42] = nil
- ,  [ 43] = { name = "Armor of the Seducer",            trait_ct = 3, dol_set_index =  7 }
- ,  [ 44] = { name = "Vampire's Kiss",                  trait_ct = 5, dol_set_index = 11 }
- ,  [ 45] = nil
- ,  [ 46] = { name = "Noble Duelist's Silks",                                            }
- ,  [ 47] = { name = "Robes of the Withered Hand",                                       }
- ,  [ 48] = { name = "Magnus' Gift",                    trait_ct = 4, dol_set_index =  8 }
- ,  [ 49] = { name = "Shadow of the Red Mountain",                                       }
- ,  [ 50] = { name = "The Morag Tong",                                                   }
- ,  [ 51] = { name = "Night Mother's Gaze",             trait_ct = 6, dol_set_index = 14 }
- ,  [ 52] = { name = "Beckoning Steel",                                                  }
- ,  [ 53] = { name = "The Ice Furnace",                                                  }
- ,  [ 54] = { name = "Ashen Grip",                      trait_ct = 2, dol_set_index =  4 }
- ,  [ 55] = { name = "Prayer Shawl",                                                     }
- ,  [ 56] = { name = "Stendarr's Embrace",                                               }
- ,  [ 57] = { name = "Syrabane's Grip",                                                  }
- ,  [ 58] = { name = "Hide of the Werewolf",                                             }
- ,  [ 59] = { name = "Kyne's Kiss",                                                      }
- ,  [ 60] = { name = "Darkstride",                                                       }
- ,  [ 61] = { name = "Dreugh King Slayer",                                               }
- ,  [ 62] = { name = "Hatchling's Shell",                                                }
- ,  [ 63] = { name = "The Juggernaut",                                                   }
- ,  [ 64] = { name = "Shadow Dancer's Raiment",                                          }
- ,  [ 65] = { name = "Bloodthorn's Touch",                                               }
- ,  [ 66] = { name = "Robes of the Hist",                                                }
- ,  [ 67] = { name = "Shadow Walker",                                                    }
- ,  [ 68] = { name = "Stygian",                                                          }
- ,  [ 69] = { name = "Ranger's Gait",                                                    }
- ,  [ 70] = { name = "Seventh Legion Brute",                                             }
- ,  [ 71] = { name = "Durok's Bane",                                                     }
- ,  [ 72] = { name = "Nikulas' Heavy Armor",                                             }
- ,  [ 73] = { name = "Oblivion's Foe",                  trait_ct = 8, dol_set_index = 21 }
- ,  [ 74] = { name = "Spectre's Eye",                   trait_ct = 8, dol_set_index = 22 }
- ,  [ 75] = { name = "Torug's Pact",                    trait_ct = 3, dol_set_index =  5 }
- ,  [ 76] = { name = "Robes of Alteration Mastery",                                      }
- ,  [ 77] = { name = "Crusader",                                                         }
- ,  [ 78] = { name = "Hist Bark",                       trait_ct = 4, dol_set_index =  9 }
- ,  [ 79] = { name = "Willow's Path",                   trait_ct = 6, dol_set_index = 15 }
- ,  [ 80] = { name = "Hunding's Rage",                  trait_ct = 6, dol_set_index = 16 }
- ,  [ 81] = { name = "Song of Lamae",                   trait_ct = 5, dol_set_index = 12 }
- ,  [ 82] = { name = "Alessia's Bulwark",               trait_ct = 5, dol_set_index = 13 }
- ,  [ 83] = { name = "Elf Bane",                                                         }
- ,  [ 84] = { name = "Orgnum's Scales",                 trait_ct = 8, dol_set_index = 18 }
- ,  [ 85] = { name = "Almalexia's Mercy",                                                }
- ,  [ 86] = { name = "Queen's Elegance",                                                 }
- ,  [ 87] = { name = "Eyes of Mara",                    trait_ct = 8, dol_set_index = 19 }
- ,  [ 88] = { name = "Robes of Destruction Mastery",                                     }
- ,  [ 89] = { name = "Sentry",                                                           }
- ,  [ 90] = { name = "Senche's Bite",                                                    }
- ,  [ 91] = { name = "Oblivion's Edge",                                                  }
- ,  [ 92] = { name = "Kagrenac's Hope",                 trait_ct = 8, dol_set_index = 17 }
- ,  [ 93] = { name = "Storm Knight's Plate",                                             }
- ,  [ 94] = { name = "Meridia's Blessed Armor",                                          }
- ,  [ 95] = { name = "Shalidor's Curse",                trait_ct = 8, dol_set_index = 20 }
- ,  [ 96] = { name = "Armor of Truth",                                                   }
- ,  [ 97] = { name = "The Arch-Mage",                                                    }
- ,  [ 98] = { name = "Necropotence",                                                     }
- ,  [ 99] = { name = "Salvation",                                                        }
-,   [100] = { name = "Hawk's Eye",                                                       }
-,   [101] = { name = "Affliction",                                                       }
-,   [102] = { name = "Duneripper's Scales",                                              }
-,   [103] = { name = "Magicka Furnace",                                                  }
-,   [104] = { name = "Curse Eater",                                                      }
-,   [105] = { name = "Twin Sisters",                                                     }
-,   [106] = { name = "Wilderqueen's Arch",                                               }
-,   [107] = { name = "Wyrd Tree's Blessing",                                             }
-,   [108] = { name = "Ravager",                                                          }
-,   [109] = { name = "Light of Cyrodiil",                                                }
-,   [110] = { name = "Sanctuary",                                                        }
-,   [111] = { name = "Ward of Cyrodiil",                                                 }
-,   [112] = { name = "Night Terror",                                                     }
-,   [113] = { name = "Crest of Cyrodiil",                                                }
-,   [114] = { name = "Soulshine",                                                        }
-,   [115] = nil
-,   [116] = { name = "The Destruction Suite",                                            }
-,   [117] = { name = "Relics of the Physician, Ansur",                                   }
-,   [118] = { name = "Treasures of the Earthforge",                                      }
-,   [119] = { name = "Relics of the Rebellion",                                          }
-,   [120] = { name = "Arms of Infernace",                                                }
-,   [121] = { name = "Arms of the Ancestors",                                            }
-,   [122] = { name = "Ebon Armory",                                                      }
-,   [123] = { name = "Hircine's Veneer",                                                 }
-,   [124] = { name = "The Worm's Raiment",                                               }
-,   [125] = { name = "Wrath of the Imperium",                                            }
-,   [126] = { name = "Grace of the Ancients",                                            }
-,   [127] = { name = "Deadly Strike",                                                    }
-,   [128] = { name = "Blessing of the Potentates",                                       }
-,   [129] = { name = "Vengeance Leech",                                                  }
-,   [130] = { name = "Eagle Eye",                                                        }
-,   [131] = { name = "Bastion of the Heartland",                                         }
-,   [132] = { name = "Shield of the Valiant",                                            }
-,   [133] = { name = "Buffer of the Swift",                                              }
-,   [134] = { name = "Shroud of the Lich",                                               }
-,   [135] = { name = "Draugr's Heritage",                                                }
-,   [136] = { name = "Immortal Warrior",                                                 }
-,   [137] = { name = "Berserking Warrior",                                               }
-,   [138] = { name = "Defending Warrior",                                                }
-,   [139] = { name = "Wise Mage",                                                        }
-,   [140] = { name = "Destructive Mage",                                                 }
-,   [141] = { name = "Healing Mage",                                                     }
-,   [142] = { name = "Quick Serpent",                                                    }
-,   [143] = { name = "Poisonous Serpent",                                                }
-,   [144] = { name = "Twice-Fanged Serpent",                                             }
-,   [145] = { name = "Way of Fire",                                                      }
-,   [146] = { name = "Way of Air",                                                       }
-,   [147] = { name = "Way of Martial Knowledge",                                         }
-,   [148] = { name = "Way of the Arena",                trait_ct = 8, dol_set_index = 23 }
-,   [149] = nil
-,   [150] = nil
-,   [151] = nil
-,   [152] = nil
-,   [153] = nil
-,   [154] = nil
-,   [155] = { name = "Undaunted Bastion",                                                }
-,   [156] = { name = "Undaunted Infiltrator",                                            }
-,   [157] = { name = "Undaunted Unweaver",                                               }
-,   [158] = { name = "Embershield",                                                      }
-,   [159] = { name = "Sunderflame",                                                      }
-,   [160] = { name = "Burning Spellweave",                                               }
-,   [161] = { name = "Twice-Born Star",                 trait_ct = 9, dol_set_index = 24 }
-,   [162] = { name = "Spawn of Mephala",                                                 }
-,   [163] = { name = "Blood Spawn",                                                      }
-,   [164] = { name = "Lord Warden",                                                      }
-,   [165] = { name = "Scourge Harvester",                                                }
-,   [166] = { name = "Engine Guardian",                                                  }
-,   [167] = { name = "Nightflame",                                                       }
-,   [168] = { name = "Nerien'eth",                                                       }
-,   [169] = { name = "Valkyn Skoria",                                                    }
-,   [170] = { name = "Maw of the Infernal",                                              }
-,   [171] = { name = "Eternal Warrior",                                                  }
-,   [172] = { name = "Infallible Mage",                                                  }
-,   [173] = { name = "Vicious Serpent",                                                  }
-,   [174] = nil
-,   [175] = nil
-,   [176] = { name = "Noble's Conquest",                trait_ct = 5, dol_set_index = 25 }
-,   [177] = { name = "Redistributor",                   trait_ct = 7, dol_set_index = 26 }
-,   [178] = { name = "Armor Master",                    trait_ct = 9, dol_set_index = 27 }
-,   [179] = { name = "Black Rose",                                                       }
-,   [180] = { name = "Powerful Assault",                                                 }
-,   [181] = { name = "Meritorious Service",                                              }
-,   [182] = nil
-,   [183] = { name = "Molag Kena",                                                       }
-,   [184] = { name = "Brands of Imperium",                                               }
-,   [185] = { name = "Spell Power Cure",                                                 }
-,   [186] = { name = "Jolting Arms",                                                     }
-,   [187] = { name = "Swamp Raider",                                                     }
-,   [188] = { name = "Storm Master",                                                     }
-,   [189] = nil
-,   [190] = { name = "Scathing Mage",                                                    }
-,   [191] = nil
-,   [192] = nil
-,   [193] = { name = "Overwhelming Surge",                                               }
-,   [194] = { name = "Combat Physician",                                                 }
-,   [195] = { name = "Sheer Venom",                                                      }
-,   [196] = { name = "Leeching Plate",                                                   }
-,   [197] = { name = "Tormentor",                                                        }
-,   [198] = { name = "Essence Thief",                                                    }
-,   [199] = { name = "Shield Breaker",                                                   }
-,   [200] = { name = "Phoenix",                                                          }
-,   [201] = { name = "Reactive Armor",                                                   }
-,   [202] = nil
-,   [203] = nil
-,   [204] = { name = "Endurance",                                                        }
-,   [205] = { name = "Willpower",                                                        }
-,   [206] = { name = "Agility",                                                          }
-,   [207] = { name = "Law of Julianos",                 trait_ct = 6, dol_set_index = 29 }
-,   [208] = { name = "Trial by Fire",                   trait_ct = 3, dol_set_index = 28 }
-,   [209] = { name = "Armor of the Code",                                                }
-,   [210] = { name = "Mark of the Pariah",                                               }
-,   [211] = { name = "Permafrost",                                                       }
-,   [212] = { name = "Briarheart",                                                       }
-,   [213] = { name = "Glorious Defender",                                                }
-,   [214] = { name = "Para Bellum",                                                      }
-,   [215] = { name = "Elemental Succession",                                             }
-,   [216] = { name = "Hunt Leader",                                                      }
-,   [217] = { name = "Winterborn",                                                       }
-,   [218] = { name = "Trinimac's Valor",                                                 }
-,   [219] = { name = "Morkuldin",                       trait_ct = 9, dol_set_index = 30 }
-,   [220] = nil
-,   [221] = nil
-,   [222] = nil
-,   [223] = nil
-,   [224] = { name = "Tava's Favor",                    trait_ct = 5, dol_set_index = 31 }
-,   [225] = { name = "Clever Alchemist",                trait_ct = 7, dol_set_index = 32 }
-,   [226] = { name = "Eternal Hunt",                    trait_ct = 9, dol_set_index = 33 }
-,   [227] = { name = "Bahraha's Curse",                                                  }
-,   [228] = { name = "Syvarra's Scales",                                                 }
-,   [229] = { name = "Twilight Remedy",                                                  }
-,   [230] = { name = "Moondancer",                                                       }
-,   [231] = { name = "Lunar Bastion",                                                    }
-,   [232] = { name = "Roar of Alkosh",                                                   }
-,   [233] = nil
-,   [234] = { name = "Marksman's Crest",                                                 }
-,   [235] = { name = "Robes of Transmutation",                                           }
-,   [236] = { name = "Vicious Death",                                                    }
-,   [237] = { name = "Leki's Focus",                                                     }
-,   [238] = { name = "Fasalla's Guile",                                                  }
-,   [239] = { name = "Warrior's Fury",                                                   }
-,   [240] = { name = "Kvatch Gladiator",                trait_ct = 5, dol_set_index = 34 }
-,   [241] = { name = "Varen's Legacy",                  trait_ct = 7, dol_set_index = 35 }
-,   [242] = { name = "Pelinal's Aptitude",              trait_ct = 9, dol_set_index = 36 }
-,   [243] = { name = "Hide of Morihaus",                                                 }
-,   [244] = { name = "Flanking Strategist",                                              }
-,   [245] = { name = "Sithis' Touch",                                                    }
-,   [246] = { name = "Galerion's Revenge",                                               }
-,   [247] = { name = "Vicecanon of Venom",                                               }
-,   [248] = { name = "Thews of the Harbinger",                                           }
-,   [249] = nil
-,   [250] = nil
-,   [251] = nil
-,   [252] = nil
-,   [253] = { name = "Imperial Physique",                                                }
-,   [254] = nil
-,   [255] = nil
-,   [256] = { name = "Mighty Chudan",                                                    }
-,   [257] = { name = "Velidreth",                                                        }
-,   [258] = { name = "Amber Plasm",                                                      }
-,   [259] = { name = "Heem-Jas' Retribution",                                            }
-,   [260] = { name = "Aspect of Mazzatun",                                               }
-,   [261] = { name = "Gossamer",                                                         }
-,   [262] = { name = "Widowmaker",                                                       }
-,   [263] = { name = "Hand of Mephala",                                                  }
-,   [264] = { name = "Giant Spider",                                                     }
-,   [265] = { name = "Shadowrend",                                                       }
-,   [266] = { name = "Kra'gh",                                                           }
-,   [267] = { name = "Swarm Mother",                                                     }
-,   [268] = { name = "Sentinel of Rkugamz",                                              }
-,   [269] = { name = "Chokethorn",                                                       }
-,   [270] = { name = "Slimecraw",                                                        }
-,   [271] = { name = "Sellistrix",                                                       }
-,   [272] = { name = "Infernal Guardian",                                                }
-,   [273] = { name = "Ilambris",                                                         }
-,   [274] = { name = "Iceheart",                                                         }
-,   [275] = { name = "Stormfist",                                                        }
-,   [276] = { name = "Tremorscale",                                                      }
-,   [277] = { name = "Pirate Skeleton",                                                  }
-,   [278] = { name = "The Troll King",                                                   }
-,   [279] = { name = "Selene",                                                           }
-,   [280] = { name = "Grothdarr",                                                        }
-,   [281] = { name = "Armor of the Trainee",                                             }
-,   [282] = { name = "Vampire Cloak",                                                    }
-,   [283] = { name = "Sword-Singer",                                                     }
-,   [284] = { name = "Order of Diagna",                                                  }
-,   [285] = { name = "Vampire Lord",                                                     }
-,   [286] = { name = "Spriggan's Thorns",                                                }
-,   [287] = { name = "Green Pact",                                                       }
-,   [288] = { name = "Beekeeper's Gear",                                                 }
-,   [289] = { name = "Spinner's Garments",                                               }
-,   [290] = { name = "Skooma Smuggler",                                                  }
-,   [291] = { name = "Shalk Exoskeleton",                                                }
-,   [292] = { name = "Mother's Sorrow",                                                  }
-,   [293] = { name = "Plague Doctor",                                                    }
-,   [294] = { name = "Ysgramor's Birthright",                                            }
-,   [295] = { name = "Jailbreaker",                                                      }
-,   [296] = { name = "Spelunker",                                                        }
-,   [297] = { name = "Spider Cultist Cowl",                                              }
-,   [298] = { name = "Light Speaker",                                                    }
-,   [299] = { name = "Toothrow",                                                         }
-,   [300] = { name = "Netch's Touch",                                                    }
-,   [301] = { name = "Strength of the Automaton",                                        }
-,   [302] = { name = "Leviathan",                                                        }
-,   [303] = { name = "Lamia's Song",                                                     }
-,   [304] = { name = "Medusa",                                                           }
-,   [305] = { name = "Treasure Hunter",                                                  }
-,   [306] = nil
-,   [307] = { name = "Draugr Hulk",                                                      }
-,   [308] = { name = "Bone Pirate's Tatters",                                            }
-,   [309] = { name = "Knight-errant's Mail",                                             }
-,   [310] = { name = "Sword Dancer",                                                     }
-,   [311] = { name = "Rattlecage",                                                       }
-,   [312] = { name = "Tremorscale",                                                      }
-,   [313] = { name = "Masters Duel Wield",                                               }
-,   [314] = { name = "Masters Two Handed",                                               }
-,   [315] = { name = "Masters One Hand and Shield",                                      }
-,   [316] = { name = "Masters Destruction Staff",                                        }
-,   [317] = { name = "Masters Duel Wield",                                               }
-,   [318] = { name = "Masters Restoration Staff",                                        }
-,   [319] = nil
-,   [320] = { name= "War Maiden",                                                        }
-,   [321] = { name= "Defiler",                                                           }
-,   [322] = { name= "Warrior-Poet",                                                      }
-,   [323] = { name= "Assassin's Guile",                 trait_ct = 3, dol_set_index = 37 }
-,   [324] = { name= "Daedric Trickery",                 trait_ct = 8, dol_set_index = 39 }
-,   [325] = { name= "Shacklebreaker",                   trait_ct = 6, dol_set_index = 38 }
-,   [326] = { name= "Vanguard's Challenge",                                              }
-,   [327] = { name= "Coward's Gear",                                                     }
-,   [328] = { name= "Knight Slayer",                                                     }
-,   [329] = { name= "Wizard's Riposte",                                                  }
-,   [330] = { name= "Automated Defense",                                                 }
-,   [331] = { name= "War Machine",                                                       }
-,   [332] = { name= "Master Architect",                                                  }
-,   [333] = { name= "Inventor's Guard",                                                  }
-,   [334] = { name= "Impregnable Armor",                                                 }
-,   [335] = { name= "Draugr's Rest",                                                     }
-,   [336] = { name= "Pillar of Nirn",                                                    }
-,   [337] = { name= "Ironblood",                                                         }
-,   [338] = { name= "Flame Blossom",                                                     }
-,   [339] = { name= "Blooddrinker",                                                      }
-,   [340] = { name= "Hagraven's Garden",                                                 }
-,   [341] = { name= "Earthgore",                                                         }
-,   [342] = { name= "Domihaus",                                                          }
-,   [343] = { name = "Caluurion's Legacy",                                               }
-,   [344] = { name = "Trappings of Invigoration",                                        }
-,   [345] = { name = "Ulfnor's Favor",                                                   }
-,   [346] = { name = "Jorvuld's Guidance",                                               }
-,   [347] = { name = "Plague Slinger",                                                   }
-,   [348] = { name = "Curse of Doylemish",                                               }
-,   [349] = { name = "Thurvokun",                                                        }
-,   [350] = { name = "Zaan",                                                             }
-,   [351] = { name = "Innate Axiom",                    trait_ct = 2, dol_set_index = 41 }
-,   [352] = { name = "Fortified Brass",                 trait_ct = 4, dol_set_index = 42 }
-,   [353] = { name = "Mechanical Acuity",               trait_ct = 6, dol_set_index = 40 }
-,   [354] = { name = "Mad Tinkerer",                                                     }
-,   [355] = { name = "Unfathomable Darkness",                                            }
-,   [356] = { name = "Livewire",                                                         }
-,   [357] = { name = "Disciplined Slash (Perfected)",                                    }
-,   [358] = { name = "Defensive Position (Perfected)",                                   }
-,   [359] = { name = "Chaotic Whirlwind (Perfected)",                                    }
-,   [360] = { name = "Piercing Spray (Perfected)",                                       }
-,   [361] = { name = "Concentrated Force (Perfected)",                                   }
-,   [362] = { name = "Timeless Blessing (Perfected)",                                    }
-,   [363] = { name = "Disciplined Slash",                                                }
-,   [364] = { name = "Defensive Position",                                               }
-,   [365] = { name = "Chaotic Whirlwind",                                                }
-,   [366] = { name = "Piercing Spray",                                                   }
-,   [367] = { name = "Concentrated Force",                                               }
-,   [368] = { name = "Timeless Blessing",                                                }
-,   [369] = { name = "Merciless Charge",                                                 }
-,   [370] = { name = "Rampaging Slash",                                                  }
-,   [371] = { name = "Cruel Flurry",                                                     }
-,   [372] = { name = "Thunderous Volley",                                                }
-,   [373] = { name = "Crushing Wall",                                                    }
-,   [374] = { name = "Precise Regeneration",                                             }
-,   [375] = nil
-,   [376] = nil
-,   [377] = nil
-,   [378] = nil
-,   [379] = nil
-,   [380] = { name = "Prophet's",                                                        }
-,   [381] = { name = "Broken Soul",                                                      }
-,   [382] = { name = "Grace of Gloom",                                                   }
-,   [383] = { name = "Gryphon's Ferocity",                                               }
-,   [384] = { name = "Wisdom of Vanus",                                                  }
-,   [385] = { name = "Adept Rider",                     trait_ct = 3, dol_set_index = 43 }
-,   [386] = { name = "Sload's Semblance",               trait_ct = 6, dol_set_index = 45 }
-,   [387] = { name = "Nocturnal's Favor",               trait_ct = 9, dol_set_index = 44 }
-
-}
-
-
 -- Improvement Material Counts -----------------------------------------------
 --
 -- Material counts for improving to purple or gold.
@@ -1004,7 +592,7 @@ local Parser = Smithing.Parser
 function Parser:New()
     local o = {
         request_item    = nil   -- Smithing.REQUEST_ITEMS[n]
-    ,   set_bonus       = nil   -- Smithing.SET_BONUS[n]
+    ,   set_bonus       = nil   -- { name, trait_ct }
     ,   trait_num       = nil   -- ITEM_TRAIT_TYPE_WEAPON_DEFENDING
     ,   motif_num       = nil   -- 19 ITEMSTYLE_ENEMY_PRIMITIVE
     ,   motif           = nil   -- Smithing.MOTIF[n]
@@ -1023,30 +611,19 @@ function Parser:GetSetBonus(set_id)
     if WritWorthy.LibSets() and WritWorthy.LibSets().GetSetInfo then
         local si = WritWorthy.LibSets().GetSetInfo(set_id)
         if si then
-            r.name           = si.names and (si.names[Parser.client_lang] or si.names["en"])
-            r.trait_ct       = si.traitsNeeded
-            r.dol_set_index  = nil      -- Eventually this needs to go away.
+            r.name      = si.names and (si.names[Parser.client_lang] or si.names["en"])
+            r.trait_ct  = si.traitsNeeded
+        else
+            r.name      = string.format("Unknown Set %d", set_id)
+            r.trait_ct  = 0
+            Log.Warn("LibSets lacks data for set_id:%d, using hardcoded: "..tostring(r.name))
         end
     end
                         -- Force set name to I18N name, in case user
                         -- wants EN names on a DE client.
     r.name = WritWorthy.SetName(set_id) or r.name
 
-                        -- 2019-04-15
-                        -- Fallback to old SET_BONUS table until Baertram
-                        -- publishes the new LibSet.GetSetInfo() API.
-    if not r.name then
-        r.name = Smithing.SET_BONUS[set_id].name
--- d("Fallback name: "..tostring(r.name))
-    end
-    if not r.trait_ct then
-        r.trait_ct = Smithing.SET_BONUS[set_id].trait_ct
--- d("Fallback trait_ct: "..tostring(r.trait_ct))
-    end
-    if not r.dol_set_index then
-        r.dol_set_index = Smithing.SET_BONUS[set_id].dol_set_index
--- d("Fallback dol: "..tostring(r.dol_set_index))
-    end
+                        -- Remember the set_id because it's helpful elsewhere.
     if not r.set_id then
         r.set_id = set_id
     end
@@ -1062,7 +639,6 @@ function Parser:ParseItemLink(item_link)
     local set_num       = fields.writ4
     local trait_num     = fields.writ5
     local motif_num     = fields.writ6
-
 
 -- wr 1 item_num      24  "Ring"
 --    2 material_num 255  "platinum"
@@ -1083,7 +659,7 @@ function Parser:ParseItemLink(item_link)
     Log:Add("request_item"
            , tostring(item_num).." "..tostring(self.request_item.item_name))
     self.crafting_type = self.request_item.school.trade_skill_type
-    self.set_bonus      = self:GetSetBonus(set_num) -- Smithing.SET_BONUS[set_num]
+    self.set_bonus      = self:GetSetBonus(set_num)
     if not self.set_bonus then return Fail("set not found "..tostring(set_num)) end
     Log:Add("set_bonus", self.set_bonus)
     self.trait          = self.request_item.trait_set[trait_num]
@@ -1348,7 +924,7 @@ function Parser:ToDolRequest(unique_id)
     o.traitIndex   = self.trait_num + 1
     o.useUniversalStyleItem = false
     o.station      = self.request_item.school.trade_skill_type
-    o.setIndex     = self.ToDolSetID(self.set_bonus) -- self.set_bonus.dol_set_index
+    o.setIndex     = self.ToDolSetID(self.set_bonus)
     o.quality      = self.improve_level.index
     o.autocraft    = true
     o.reference    = unique_id
@@ -1390,10 +966,12 @@ function Parser.ToDolSetID(set_bonus)
             local t = llc.GetSetIndexes()
             WritWorthy.dol_private_set_id = t and (t[1] ~= nil)
         end
+
+        if WritWorthy.dol_private_set_id then
+            Log.Error("Please update LibLazyCrafting.")
+            assert(not WritWorthy.dol_private_set_id, "LibLazyCrafting too old.")
+        end
     end
 
-    if WritWorthy.dol_private_set_id then
-        return set_bonus.dol_set_index
-    end
     return set_bonus.set_id
 end
