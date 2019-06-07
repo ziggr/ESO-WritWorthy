@@ -600,9 +600,7 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     local MatRow = WritWorthy.MatRow
 
     local o = Recipe:New({ fooddrink_item_id= fooddrink_item_id })
-    Log:Add("fooddrink_item_id:"..tostring(fooddrink_item_id))
     o.recipe_item_id = Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID[fooddrink_item_id]
-    Log:Add("recipe_item_id:"..tostring(o.recipe_item_id))
     if not o.recipe_item_id then return nil end
     o.recipe_link = string.format(
               "|H1:item:%d:1:36:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
@@ -614,10 +612,15 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     o.fooddrink_name    = WritWorthy.FoodDrink(GetItemLinkItemId(o.fooddrink_link))
     o.is_known = IsItemLinkRecipeKnown(o.recipe_link)
 
-    Log:Add("recipe_link:"..tostring(o.recipe_link))
-    Log:Add("fooddrink_link:"..tostring(o.fooddrink_link))
-    Log:Add("fooddrink_name:"..tostring(o.fooddrink_name))
-    Log:Add("is_known:"..tostring(o.is_known))
+    local log_t = {}
+    log_t.fooddrink_item_id = fooddrink_item_id
+    log_t.recipe_item_id    = o.recipe_item_id
+    log_t.recipe_link       = o.recipe_link
+    log_t.fooddrink_link    = o.fooddrink_link
+    log_t.fooddrink_name    = o.fooddrink_name
+    log_t.is_known          = o.is_known
+    Log:Add(log_t)
+
     local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
     local cook_ct = 2 -- Usually need to craft 2x batches for master writs
     for ingr_index = 1,mat_ct do
@@ -672,6 +675,7 @@ function Parser:New()
 end
 
 function Parser:ParseItemLink(item_link)
+    Log:StartNewEvent("ParseItemLink: provisioning %s", item_link)
     local fields = Util.ToWritFields(item_link)
     self.recipe = Provisioning.FindRecipe(fields.writ1)
     if not self.recipe then return nil end
