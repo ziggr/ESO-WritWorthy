@@ -10,9 +10,10 @@ local Log = WritWorthy.Log
 
 -- Event ---------------------------------------------------------------------
 --
--- In earlier days, WritWorthy grouped log records into "events". This function
--- ended the previous  event and started a new one. But as of 2019-06-07,
--- WritWorthy now uses LibDebugLogger and has no use for events.
+-- Group multiple log lines under a single umbreslla "event".
+-- This reduces the number of LibDebugLogger records, by a LOT.
+-- It also makes it much easier to read the log, see were each
+-- writ's parse happened, and so on.
 
 function Log:StartNewEvent(event_name, ...)
     if self.log_event then
@@ -30,10 +31,12 @@ end
 
 -- Append one value to the current event.
 --
--- Deprecated, this API was really designed to put arbitrary Lua values into
--- the old log's Lua table. But this LibDebugLogger adapter just flattens
--- everything to a string, which isn't so great for code that used to write 
--- entire tables to the old log with a single Log:Add(table).
+-- Single-arg overload just writes that value to the log.
+-- Double-arg overload includes a name, so that you can write things
+-- like "motif:" <motif data>
+--
+-- Values, if scalar, are written as is. If tables, the table is
+-- expanded and written, usually as a single long line of key:value pairs.
 --
 function Log:Add(arg1, arg2)
     local name  = arg1

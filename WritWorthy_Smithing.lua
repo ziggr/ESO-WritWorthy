@@ -147,12 +147,6 @@ Smithing.SCHOOL_JEWELRY = {
 --            , i                 -- 1..9
 --            )
 --
--- 2019-06-07 Thinking about removing some of the columns here, replace with API calls:
--- API to go from trait index to trait material:
---  GetSmithingTraitItemLink(ITEM_TRAIT_TYPE_WEAPON_POWERED + 1))
---  → link to Chysolite.
---
-
 Smithing.TRAITS_WEAPON = {
     [ITEM_TRAIT_TYPE_WEAPON_POWERED      ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_POWERED       , trait_index = 1 }
 ,   [ITEM_TRAIT_TYPE_WEAPON_CHARGED      ] = { trait_num = ITEM_TRAIT_TYPE_WEAPON_CHARGED       , trait_index = 2 }
