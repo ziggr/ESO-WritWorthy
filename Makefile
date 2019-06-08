@@ -1,4 +1,4 @@
-.PHONY: put parse zip
+.PHONY: put parse zip doc
 
 put:
 	rsync -vrt --delete --exclude=.git \
@@ -46,3 +46,6 @@ lang/en2.lua: data/WritWorthy.lua make_lang.lua
 log:
 	lua tool/log_to_text.lua > data/log.txt
 
+doc:
+	tool/2bbcode_phpbb  <README.md >/tmp/md2bbdoc
+	sed sSdoc/hsm_stations_marked.jpgShttps://cdn-eso.mmoui.com/preview/pvw8154.jpgS /tmp/md2bbdoc >doc/README.bbcode
