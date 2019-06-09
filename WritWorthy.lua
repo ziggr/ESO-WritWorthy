@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibStub("LibAddonMenu-2.0")
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "5.0.9"
+WritWorthy.version         = "5.0.10"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -582,7 +582,7 @@ function WritWorthy:Initialize()
 
                         -- Old pre-LibDebugLogger log? No lonnger useful,
                         -- remove it and save some SavedVariables space.
-    if self.savedVariables.log then 
+    if self.savedVariables.log then
         self.savedVariables.log = nil
     end
 

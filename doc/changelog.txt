@@ -1,3 +1,10 @@
+[B]5.0.10 2019-06-09[/B]
+[LIST]
+[*] Provisioning: require only Chef or Brewer, not both.
+[*] Internal table reduction: remove about 30KB worth of tables that can now be replaced with calls into Baertram's LibSets or the ESO Elsweyr API.
+[*] Internal debug log: switch from cheesy internal logging code to sirinsidiator's LibDebugLogger
+[/LIST]
+
 [B]5.0.9 2019-06-04[/B]
 [LIST]
 [*] New and experimental: Integrate with HomeStationMarker to mark stations you need to visit for enqueued writs.
