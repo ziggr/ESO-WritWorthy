@@ -575,7 +575,7 @@ Provisioning.FOODDRINK_TO_RECIPE_ITEM_ID = {
 ,   [112439] = 96961
 }
 
-    -- Recipe --------------------------------------------------------------------
+-- Recipe --------------------------------------------------------------------
 
 Provisioning.Recipe  = {}
 local Recipe = Provisioning.Recipe
@@ -612,13 +612,19 @@ function Recipe:FromFoodDrinkItemID(fooddrink_item_id)
     o.fooddrink_name    = WritWorthy.FoodDrink(GetItemLinkItemId(o.fooddrink_link))
     o.is_known = IsItemLinkRecipeKnown(o.recipe_link)
 
+    local r = { GetItemLinkItemType(o.fooddrink_link) }
+    o.fooddrink_item_type = r[1]
+    o.fooddrink_specialized_item_type = r[2]
+
     local log_t = {}
-    log_t.fooddrink_item_id = fooddrink_item_id
-    log_t.recipe_item_id    = o.recipe_item_id
-    log_t.recipe_link       = o.recipe_link
-    log_t.fooddrink_link    = o.fooddrink_link
-    log_t.fooddrink_name    = o.fooddrink_name
-    log_t.is_known          = o.is_known
+    log_t.fooddrink_item_id                 = fooddrink_item_id
+    log_t.recipe_item_id                    = o.recipe_item_id
+    log_t.recipe_link                       = o.recipe_link
+    log_t.fooddrink_link                    = o.fooddrink_link
+    log_t.fooddrink_name                    = o.fooddrink_name
+    log_t.is_known                          = o.is_known
+    log_t.fooddrink_item_type               = o.fooddrink_item_type
+    log_t.fooddrink_specialized_item_type   = o.fooddrink_specialized_item_type
     Log:Add(log_t)
 
     local mat_ct = GetItemLinkRecipeNumIngredients(o.recipe_link)
@@ -693,11 +699,17 @@ function Parser:ToKnowList()
                        , is_known = self.recipe.is_known
                        , lack_msg = WritWorthy.Str("know_err_recipe")
                        })
-    local chef   = WritWorthy.RequiredSkill.PR_FOOD_4X:ToKnow()
-    local brewer = WritWorthy.RequiredSkill.PR_DRINK_4X:ToKnow()
-    chef.is_warn = true
-    brewer.is_warn = true
-    return { k, chef, brewer }
+    local r = { k }
+    if self.recipe.fooddrink_item_type == ITEMTYPE_FOOD then
+        local chef   = WritWorthy.RequiredSkill.PR_FOOD_4X:ToKnow()
+        chef.is_warn = true
+        table.insert(r, chef)
+    elseif self.recipe.fooddrink_item_type == ITEMTYPE_DRINK then
+        local brewer = WritWorthy.RequiredSkill.PR_DRINK_4X:ToKnow()
+        brewer.is_warn = true
+        table.insert(r, brewer)
+    end
+    return r
 end
 
 function Parser:ToDolRequest(unique_id)
