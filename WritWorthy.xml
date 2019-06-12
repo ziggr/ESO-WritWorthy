@@ -4,7 +4,7 @@
 
 <GuiXml>
   <Controls>
-    <!-- lot list window ---------------------------------------------------->
+    <!-- lot list window -------------------------------------------------- -->
     <TopLevelControl
         hidden="true"
         name="WritWorthyUI"
@@ -15,7 +15,7 @@
         clampedToScreen="false"
         >
       <Dimensions              x="1125"      y="550" />
-      <DimensionConstraints minX="1075"   minY="350"
+      <DimensionConstraints minX="1105"   minY="350"
                             maxX="1805"   maxY="950" />
 
             <!-- Positive LT/Negative RB offsets allow sliding
@@ -180,7 +180,7 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-615" />
+                      offsetX="-645" />
                   <Dimensions x="300" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail1", "Detail 1", "ui_detail1")
@@ -192,12 +192,15 @@
                   <Anchor relativeTo="$(parent)"
                       relativePoint="TOPRIGHT"
                       point="TOPRIGHT"
-                      offsetX="-510" />
+                      offsetX="-540" />
                   <Dimensions x="200" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
                   </OnInitialized>
                 </Control>
+
+                <!-- mimic stones go here right before motif column -->
+
                 <Control name="$(parent)Detail3"
                     inherits="ZO_SortHeader"
                     >
