@@ -640,6 +640,18 @@ function WritWorthyInventoryList:IsQueued(inventory_data)
     return false
 end
 
+function WritWorthyInventoryList:IsUseMimic(inventory_data)
+    if not (    inventory_data
+            and inventory_data.unique_id
+            and WritWorthy.savedChariables
+            and WritWorthy.savedChariables.writ_unique_id
+            and WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id]
+            ) then
+        return false
+    end
+    return WritWorthy.savedChariables.writ_unique_id[inventory_data.unique_id].use_mimic
+end
+
 function WritWorthyInventoryList:IsCompleted(inventory_data)
     if not (    inventory_data
             and inventory_data.unique_id
@@ -684,6 +696,25 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
     return true, ""
 end
 
+-- Can the user choose to use a Crown Mimic Stone on this writ?
+--
+-- Must be BS/CL/WW.
+-- Must not yet be completed.
+function WritWorthyInventoryList:CanMimic(inventory_data)
+    if self:IsCompleted(inventory_data) then
+        return false, "completed"
+    end
+
+    if      inventory_data.parser
+        and inventory_data.parser.request_item
+        and inventory_data.parser.request_item.school
+        and inventory_data.parser.request_item.school.motif_required then
+            return true, ""
+    else
+        return false, "motif not required"
+    end
+end
+
 -- Thank you, Manavortex!
 -- Cache these, because with inline == the string will be created just to compare
 -- it each time the fn runs
@@ -722,6 +753,13 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
         inventory_data.ui_can_queue_tooltip = nil
     else
         inventory_data.ui_can_queue_tooltip = why_not
+    end
+    can, why_not = self:CanMimic(inventory_data)
+    inventory_data.ui_can_mimic    = can
+    if can then
+        inventory_data.ui_use_mimic = self:IsUseMimic(inventory_data)
+    else
+        inventory_data.ui_use_mimic = false
     end
 
                         -- For less typing.
@@ -806,14 +844,19 @@ function WritWorthyInventoryList_MimicToggled(cell_control, checked)
     Log:StartNewEvent()
     Log:Add("WritWorthyInventoryList_MimicToggled() checked:"..tostring(checked)
             .." unique_id:"..tostring(cell_control.inventory_data.unique_id))
-    -- self = WritWorthyInventoryList.singleton
-    -- if checked then
-    --     self:Enqueue(cell_control.inventory_data)
-    -- else
-    --     self:Dequeue(cell_control.inventory_data)
-    -- end
-    -- -- self.LogLLCQueue(self:GetLLC().personalQueue)
-    -- self:UpdateUISoon(cell_control.inventory_data)
+    local unique_id = cell_control.inventory_data.unique_id
+    WritWorthyInventoryList.SaveChariableMimic(unique_id, checked)
+    local self = WritWorthyInventoryList.singleton
+    self:Requeue(cell_control.inventory_data)
+    Log:EndEvent()
+end
+
+-- Toggling mimic stone setting for a queued item means we need to
+-- tell LLC about the change.
+function WritWorthyInventoryList:Requeue(inventory_data)
+    if not self:IsQueued(inventory_data) then return end
+    self:Dequeue(inventory_data)
+    self:Enqueue(inventory_data)
 end
 
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
@@ -964,6 +1007,12 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     rc[self.CELL_DETAIL4  ]:SetText(fn(c , i_d.ui_detail4))
     rc[self.CELL_DETAIL5  ]:SetText(fn(c , i_d.ui_detail5))
 
+    local bm = rc[self.CELL_MIMIC]
+    bm.inventory_data = inventory_data
+    bm:SetHidden(not i_d.ui_can_mimic)
+    if i_d.ui_can_mimic then
+        ZO_CheckButton_SetCheckState(bm, i_d.ui_use_mimic)
+    end
                         -- The "Enqueue" checkbox and its mask that makes it
                         -- look dimmed out when we cannot enqueue this row
                         -- due to lack of knowledge or WritWorthy code:
@@ -1282,21 +1331,23 @@ end
 -- Return the savedChariable record for this unique_id, guaranteed to be non-nil.
 --
 function WritWorthyInventoryList.SaveChariableState(unique_id, state)
-                        -- Force-create the outer writ_unique_id collection to
-                        -- house all our per-writ records.
-    if not WritWorthy.savedChariables.writ_unique_id then
-        WritWorthy.savedChariables.writ_unique_id = {}
-    end
-                        -- Force-create the record itself.
-    if not WritWorthy.savedChariables.writ_unique_id[unique_id] then
-        WritWorthy.savedChariables.writ_unique_id[unique_id] = {}
-    end
-                        -- Now that we know that we have an existing record,
-                        -- fill it with data.
+    WritWorthy.savedChariables.writ_unique_id
+        = WritWorthy.savedChariables.writ_unique_id or {}
+    WritWorthy.savedChariables.writ_unique_id[unique_id]
+        = WritWorthy.savedChariables.writ_unique_id[unique_id] or {}
     WritWorthy.savedChariables.writ_unique_id[unique_id].state = state
-
     return WritWorthy.savedChariables.writ_unique_id[unique_id]
 end
+
+function WritWorthyInventoryList.SaveChariableMimic(unique_id, use_mimic)
+    WritWorthy.savedChariables.writ_unique_id
+        = WritWorthy.savedChariables.writ_unique_id or {}
+    WritWorthy.savedChariables.writ_unique_id[unique_id]
+        = WritWorthy.savedChariables.writ_unique_id[unique_id] or {}
+    WritWorthy.savedChariables.writ_unique_id[unique_id].use_mimic = use_mimic
+    return WritWorthy.savedChariables.writ_unique_id[unique_id]
+end
+
 
 -- Add the given item to LibLazyCrafting's queue of stuff
 -- to be automatically crafted later.
@@ -1355,6 +1406,12 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
         self:LLC_Missing(i_d.llc_func)
         return
     end
+                        -- Enable or disable mimic stone request to LLC
+                        -- depending on savedChariables state.
+    if self:CanMimic(i_d) then
+        i_d.llc_args[6] = self:IsUseMimic(i_d)
+    end
+
                         -- Call LibLazyCrafting to queue it up for later.
     LLC[i_d.llc_func](LLC, unpack(i_d.llc_args))
 end
@@ -1396,9 +1453,7 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     LLC:cancelItemByReference(inventory_data.unique_id)
                         -- Remove from savedChariables so that we do not
                         -- re-queue this row upon /reloadui.
-    if WritWorthy.savedChariables.writ_unique_id then
-        WritWorthy.savedChariables.writ_unique_id[unique_id] = nil
-    end
+    self.SaveChariableState(unique_id, nil)
 
     self:HSMDeleteMark(inventory_data)
 end
