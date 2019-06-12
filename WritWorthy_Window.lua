@@ -65,7 +65,8 @@ WritWorthyInventoryList.SORT_KEYS = {
 , ["ui_detail3"     ] = {tiebreaker="ui_detail4"}
 , ["ui_detail4"     ] = {tiebreaker="ui_detail5"}
 , ["ui_detail5"     ] = {tiebreaker="ui_is_queued"}
-, ["ui_is_queued"   ] = {tiebreaker="ui_can_queue"}
+, ["ui_is_queued"   ] = {tiebreaker="ui_use_mimic"}
+, ["ui_use_mimic"   ] = {tiebreaker="ui_can_queue"}
                         -- Not a visible columns, but still affect sort.
 , ["ui_can_queue"   ] = {}
 , ["ui_station_sort"] = {tiebreaker="ui_voucher_ct"}
@@ -96,6 +97,7 @@ WritWorthyInventoryList.CELL_DETAIL3        = "Detail3"
 WritWorthyInventoryList.CELL_DETAIL4        = "Detail4"
 WritWorthyInventoryList.CELL_DETAIL5        = "Detail5"
 WritWorthyInventoryList.CELL_ENQUEUE        = "Enqueue"
+WritWorthyInventoryList.CELL_MIMIC          = "Mimic"
 WritWorthyInventoryList.CELL_ENQUEUE_MASK   = "EnqueueMask" -- not a cell on its own.
 WritWorthyInventoryList.CELL_NAME_LIST = {
   WritWorthyInventoryList.CELL_TYPE
@@ -106,10 +108,12 @@ WritWorthyInventoryList.CELL_NAME_LIST = {
 , WritWorthyInventoryList.CELL_DETAIL4
 , WritWorthyInventoryList.CELL_DETAIL5
 , WritWorthyInventoryList.CELL_ENQUEUE
+, WritWorthyInventoryList.CELL_MIMIC
 }
 -- Cells that are shown/hidden click buttons, not text data.
 WritWorthyInventoryList.CELL_UNTEXT_LIST = {
   [WritWorthyInventoryList.CELL_ENQUEUE] = true
+, [WritWorthyInventoryList.CELL_MIMIC  ] = true
 }
 
 -- WritWorthyUI: The window around the inventory list ------------------------
@@ -250,6 +254,7 @@ function WritWorthyInventoryList_HeaderInit(control, name, text, key)
     , [WritWorthyInventoryList.CELL_DETAIL4   ] = WW.Str("header_tooltip_Detail4")
     , [WritWorthyInventoryList.CELL_DETAIL5   ] = WW.Str("header_tooltip_Detail5")
     , [WritWorthyInventoryList.CELL_ENQUEUE   ] = WW.Str("header_tooltip_Q")
+    , [WritWorthyInventoryList.CELL_MIMIC     ] = WW.Str("header_tooltip_M")
     }
 
     local tooltip_text = WritWorthyInventoryList.HEADER_TOOLTIPS[name]
@@ -539,7 +544,14 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
         end
     end
 
-    local cb = row_control:GetNamedChild(self.CELL_ENQUEUE)
+    local cb = row_control:GetNamedChild(self.CELL_MIMIC)
+    if cb then
+        ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
+            WritWorthyInventoryList_MimicToggled(checkbox, is_checked)
+        end)
+    end
+
+    cb = row_control:GetNamedChild(self.CELL_ENQUEUE)
     if cb then
         ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
             WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
@@ -790,6 +802,20 @@ function WritWorthyInventoryList:PopulateUIFields(inventory_data)
     end
 end
 
+function WritWorthyInventoryList_MimicToggled(cell_control, checked)
+    Log:StartNewEvent()
+    Log:Add("WritWorthyInventoryList_MimicToggled() checked:"..tostring(checked)
+            .." unique_id:"..tostring(cell_control.inventory_data.unique_id))
+    -- self = WritWorthyInventoryList.singleton
+    -- if checked then
+    --     self:Enqueue(cell_control.inventory_data)
+    -- else
+    --     self:Dequeue(cell_control.inventory_data)
+    -- end
+    -- -- self.LogLLCQueue(self:GetLLC().personalQueue)
+    -- self:UpdateUISoon(cell_control.inventory_data)
+end
+
 -- Called by ZOS code after user clicks in any of our "Enqueue" checkboxes.
 function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     Log:StartNewEvent()
@@ -823,7 +849,7 @@ function WritWorthyInventoryList_DequeueAll()
     self:UpdateSummaryAndQButtons()
 end
 
--- No longer used, but boy howdy tihs was a fun way to get the skill IDs for
+-- No longer used, but boy howdy this was a fun way to get the skill IDs for
 -- all the crafting passives I'm interested in.
 local function DumpSkills()
     Log:StartNewEvent()

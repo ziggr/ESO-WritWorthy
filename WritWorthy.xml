@@ -200,6 +200,18 @@
                 </Control>
 
                 <!-- mimic stones go here right before motif column -->
+                <Control name="$(parent)Mimic"
+                    inherits="ZO_SortHeader"
+                    >
+                  <Anchor relativeTo="$(parent)"
+                      relativePoint="TOPRIGHT"
+                      point="TOPRIGHT"
+                      offsetX="-455" />
+                  <Dimensions x="30" y="20" />
+                  <OnInitialized>
+                    WritWorthyInventoryList_HeaderInit(self, "Mimic", "M", "ui_use_mimic")
+                  </OnInitialized>
+                </Control>
 
                 <Control name="$(parent)Detail3"
                     inherits="ZO_SortHeader"
@@ -333,6 +345,17 @@
           relativeTo="$(parent)"
           />
       <Controls>
+        <Button name="$(parent)Mimic"
+              alpha="1"
+              inherits="ZO_CheckButton"
+              >
+          <Dimensions x="16" y="16" />
+          <TextureCoords
+              left="0.0"  top="0.0"
+              right="1.0" bottom="1.0"
+              />
+        </Button>
+
         <Button name="$(parent)Enqueue"
               alpha="1"
               inherits="ZO_CheckButton"
