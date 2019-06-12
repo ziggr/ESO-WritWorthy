@@ -1,3 +1,8 @@
+[B]5.0.11 2019-06-12[/B]
+[LIST]
+[*] New "Use Mimic Stone?" checkbox column lets you use a Crown Mimic Stone instead of a style material for this writ.
+[/LIST]
+
 [B]5.0.10 2019-06-09[/B]
 [LIST]
 [*] Provisioning: require only Chef or Brewer, not both.
