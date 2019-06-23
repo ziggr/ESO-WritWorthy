@@ -1218,25 +1218,37 @@ function WritWorthyInventoryList:GetLLC()
         Log:Add("LibLazyCrafting API k:"..tostring(k).."  v:"..tostring(v))
     end
 
-                        -- Install our Alchemy and Provisioning pre-craft
-                        -- hooks. LibLazyCrafting 1.3 lacks these checks and
-                        -- erroneously attempts (and fails) to craft items with
-                        -- insufficient materials, causing failure or in
-                        -- Provisioning's case, an infinite loop followed by
-                        -- client disconnect (!).  Hopefully 1.4 will add them.
-                        -- But until then, here, have our own hooks.
+                        -- Install our custom pre-crafting hooks.
+                        -- These write "insufficient materials" errors to chat
+                        -- when LLC cannot craft an item due to missing mats.
     local llc_global = LibStub("LibLazyCrafting")
     if      llc_global
-        and llc_global.craftInteractionTables
-        and llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]
-        and llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING] then
-        llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Alchemy
-        llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Provisioning
-    else
-        d("WritWorthy warning: unable to install code to check"
-          .." provisioning/alchemy materials. Auto-crafting these types"
-          .." will hang if you lack required materials.")
+        and llc_global.craftInteractionTables then
+        self.llc_orig_is_item_craftable = {}
+        for ctype,v in ipairs(llc_global.craftInteractionTables) do
+                        -- First, save original interaction function so that
+                        -- we can still call it.
+            self.llc_orig_is_item_craftable[ctype] = v["isItemCraftable"]
+                        -- Then replace it with our own.
+            v["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable
+        end
+                        -- Promote LLC's internal function
+                        -- GetCurrentSetInteractionIndex() so that we can
+                        -- reuse it later without going through LibStub()
+        self.LibLazyCrafting.GetCurrentSetInteractionIndex
+                = llc_global.functionTable.GetCurrentSetInteractionIndex
     end
+    -- if      llc_global
+    --     and llc_global.craftInteractionTables
+    --     and llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]
+    --     and llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING] then
+    --     llc_global.craftInteractionTables[CRAFTING_TYPE_ALCHEMY     ]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Alchemy
+    --     llc_global.craftInteractionTables[CRAFTING_TYPE_PROVISIONING]["isItemCraftable"] = WritWorthy_LLC_IsItemCraftable_Provisioning
+    -- else
+    --     d("WritWorthy warning: unable to install code to check"
+    --       .." provisioning/alchemy materials. Auto-crafting these types"
+    --       .." will hang if you lack required materials.")
+    -- end
 
                         -- Does this version of LLC support jewelry?
                         -- Ideally we can key off of an LLC version number,
@@ -1248,8 +1260,6 @@ function WritWorthyInventoryList:GetLLC()
        and llc_global.craftInteractionTables[CRAFTING_TYPE_JEWELRYCRAFTING] then
        WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
     end
-
-
 
     return self.LibLazyCrafting
 end
@@ -1281,6 +1291,67 @@ local function HaveMaterials(mat_list)
         end
     end
     return true
+end
+
+function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
+                        -- First ask LLC's original "can this request be
+                        -- crafted right now?" function. If LLC says yes, then
+                        -- there won't be any reason to write a missing
+                        -- material error to chat.
+    self = WritWorthyInventoryList.singleton
+    local orig = self.llc_orig_is_item_craftable[station_crafting_type]
+    local orig_can_craft = orig and orig(self, station_crafting_type, request)
+    if orig_can_craft then return orig_can_craft end
+
+                        -- Was this request one of ours? Don't run our
+                        -- additional error dumpage for other add-ons'
+                        -- requests. (These LLC hooks are global, so we're
+                        -- gonna see some Lazy Set Crafter and other requests
+                        -- pass through our function.)
+    if request.Requester ~= WritWorthy.name then
+        return orig_can_craft
+    end
+                        -- Is this the correct station type for the request?
+                        -- If not, then there's no point in checking materials.
+    if station_crafting_type ~= request.station then
+        return orig_can_craft
+    end
+                        -- Is this a set bonus request but at the wrong
+                        -- set bonus station?
+    local llc = self:GetLLC()
+    if request.setIndex and 1 < request.setIndex
+            and request.setIndex ~= llc.GetCurrentSetInteractionIndex() then
+        return orig_can_craft
+    end
+                        -- The request is one of ours, at the correct station,
+                        -- but LLC cannot craft it. The only remaining reason
+                        -- for failure is material.
+    local inventory_data = self:UniqueIDToInventoryData(request.reference)
+    if not inventory_data then
+        return orig_can_craft
+    end
+    local mat_list = inventory_data.parser:ToMatList()
+    for _,mat_row in ipairs(mat_list) do
+        local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(mat_row.link)
+        local have_ct = bag_ct + bank_ct + craft_bag_ct
+        if have_ct < mat_row.ct then
+            Log.Error( "Cannot craft %s: insufficient materials. %d/%d %s"
+                     , inventory_data.item_link
+                     , have_ct
+                     , mat_row.ct
+                     , mat_row.link
+                     )
+        -- else
+        --     Log.Debug( "Can craft %s: sufficient materials. %d/%d %s"
+        --              , inventory_data.item_link
+        --              , have_ct
+        --              , mat_row.ct
+        --              , mat_row.link
+        --              )
+        end
+    end
+
+    return orig_can_craft
 end
 
 -- Hook called by LibLazyCrafting before attempting to craft each request.
