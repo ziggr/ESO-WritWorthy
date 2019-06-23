@@ -95,7 +95,8 @@ function NOP:Info(...) end
 function NOP:Warn(...) end
 function NOP:Error(...) end
 
-WritWorthy.log_to_chat = false
+WritWorthy.log_to_chat            = false
+WritWorthy.log_to_chat_warn_error = false
 
 function WritWorthy.Logger()
     local self = WritWorthy
@@ -105,6 +106,7 @@ function WritWorthy.Logger()
         end
         if not self.logger then
             self.logger = NOP
+            WritWorthy.log_to_chat_warn_error  = true
         end
     end
     return self.logger
@@ -112,6 +114,12 @@ end
 
 function WritWorthy.LogOne(color, ...)
     if WritWorthy.log_to_chat then
+        d("|c"..color..WritWorthy.name..": "..string.format(...).."|r")
+    end
+end
+
+function WritWorthy.LogOneWarnError(color, ...)
+    if WritWorthy.log_to_chat or WritWorthy.log_to_chat_warn_error then
         d("|c"..color..WritWorthy.name..": "..string.format(...).."|r")
     end
 end
@@ -127,11 +135,11 @@ function Log.Info(...)
 end
 
 function Log.Warn(...)
-    WritWorthy.LogOne("FF8800",...)
+    WritWorthy.LogOneWarnError("FF8800",...)
     WritWorthy.Logger():Warn(...)
 end
 
 function Log.Error(...)
-    WritWorthy.LogOne("FF6666",...)
+    WritWorthy.LogOneWarnError("FF6666",...)
     WritWorthy.Logger():Error(...)
 end
