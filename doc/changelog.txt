@@ -1,3 +1,8 @@
+[B]5.0.12 2019-06-23[/B]
+[LIST]
+[*] New error message in chat when attempting to craft but lack required materials: "Cannot craft [Sealed Woodworking Writ]: insufficient materials. 0/14 Sanded Ruby Ash."
+[/LIST]
+
 [B]5.0.11 2019-06-12[/B]
 [LIST]
 [*] New "Use Mimic Stone?" checkbox column lets you use a Crown Mimic Stone instead of a style material for this writ.
