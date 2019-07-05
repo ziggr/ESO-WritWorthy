@@ -1,3 +1,8 @@
+[B]5.0.13 2019-07-05[/B]
+[LIST]
+[*] Fix MM Fallback prices: was erroneously preferring "NPC Vendor" prices (13g for a Zircon Plating) instead of hardcoded WritWorthy numbers (21,000g) or MM/ATT/TTC (27,214g).
+[/LIST]
+
 [B]5.0.12 2019-06-23[/B]
 [LIST]
 [*] New error message in chat when attempting to craft but lack required materials: "Cannot craft [Sealed Woodworking Writ]: insufficient materials. 0/14 Sanded Ruby Ash."
