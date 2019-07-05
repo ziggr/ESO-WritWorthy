@@ -102,7 +102,11 @@ end
 function Util.MatPrice(link)
                         -- LibPrice required for price lookups
     if LibPrice then
-        local gold,s,f = LibPrice.ItemLinkToPriceGold(link)
+                        -- Explicitly list the guild store sources, omit all
+                        -- others. We don't want "NPC Vencor" price of
+                        -- 13g-per-Zircon-Plating creeping into our price
+                        -- calculations.
+        local gold,s,f = LibPrice.ItemLinkToPriceGold(link, "mm", "att", "ttc")
         -- if gold then
         --     d(string.format( "|c999999%s.%s |cFFFFFF%d|c999999 for %s"
         --                    , s, f, gold,link ))
