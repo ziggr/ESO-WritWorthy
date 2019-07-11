@@ -383,13 +383,20 @@ Smithing.REQUEST_ITEMS = {
 
 }
 
+WritWorthy.COLORIZED_QUALITY = {}
+for quality = 1,5 do
+    local quality_text = WritWorthy.SI("SI_ITEMQUALITY"..tostring(quality))
+    local color_def = ZO_ColorDef:New(GetInterfaceColor(INTERFACE_COLOR_TYPE_ITEM_QUALITY_COLORS, quality))
+    WritWorthy.COLORIZED_QUALITY[quality] = color_def:Colorize(quality_text)
+end
+
 -- Improvement Material Counts -----------------------------------------------
 --
 -- Material counts for improving to purple or gold.
 --
 Smithing.PURPLE = {
     index          = 4
-,   name           = "|c973dd8"..WritWorthy.SI("SI_ITEMQUALITY4").."|r"
+,   name           = WritWorthy.COLORIZED_QUALITY[4]
 ,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
@@ -398,16 +405,34 @@ Smithing.PURPLE = {
 
 Smithing.GOLD = {
     index          = 5
-,   name           = "|ce6c859"..WritWorthy.SI("SI_ITEMQUALITY5").."|r"
+,   name           = WritWorthy.COLORIZED_QUALITY[5]
 ,   green_mat_ct   = 2
 ,   blue_mat_ct    = 3
 ,   purple_mat_ct  = 4
 ,   gold_mat_ct    = 8
 }
 
+Smithing.GREEN_JEWELRY = {
+    index          = 2
+,   name           = WritWorthy.COLORIZED_QUALITY[2]
+,   green_mat_ct   = 1
+,   blue_mat_ct    = 0
+,   purple_mat_ct  = 0
+,   gold_mat_ct    = 0
+}
+
+Smithing.BLUE_JEWELRY = {
+    index          = 3
+,   name           = WritWorthy.COLORIZED_QUALITY[3]
+,   green_mat_ct   = 1
+,   blue_mat_ct    = 2
+,   purple_mat_ct  = 0
+,   gold_mat_ct    = 0
+}
+
 Smithing.PURPLE_JEWELRY = {
     index          = 4
-,   name           = "|c973dd8"..WritWorthy.SI("SI_ITEMQUALITY4").."|r"
+,   name           = WritWorthy.COLORIZED_QUALITY[4]
 ,   green_mat_ct   = 1
 ,   blue_mat_ct    = 2
 ,   purple_mat_ct  = 3
@@ -416,7 +441,7 @@ Smithing.PURPLE_JEWELRY = {
 
 Smithing.GOLD_JEWELRY = {
     index          = 5
-,   name           = "|ce6c859"..WritWorthy.SI("SI_ITEMQUALITY5").."|r"
+,   name           = WritWorthy.COLORIZED_QUALITY[5]
 ,   green_mat_ct   = 1
 ,   blue_mat_ct    = 2
 ,   purple_mat_ct  = 3
