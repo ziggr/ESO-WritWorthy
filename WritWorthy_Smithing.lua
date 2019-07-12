@@ -454,7 +454,9 @@ Smithing.QUALITY = {
 ,   [5] = Smithing.GOLD
 }
 Smithing.QUALITY_JEWELRY = {
-    [4] = Smithing.PURPLE_JEWELRY
+    [2] = Smithing.GREEN_JEWELRY
+,   [3] = Smithing.BLUE_JEWELRY
+,   [4] = Smithing.PURPLE_JEWELRY
 ,   [5] = Smithing.GOLD_JEWELRY
 }
 
@@ -729,12 +731,18 @@ function Parser:ToMatList()
     -- elseif self.motif and self.motif.mat_name then
     --     table.insert(ml, MatRow:FromName( self.motif.mat_name ))
     end
-    table.insert(ml, MatRow:FromName( self.request_item.school.green_mat_name
-                                    , self.improve_level.green_mat_ct ))
-    table.insert(ml, MatRow:FromName( self.request_item.school.blue_mat_name
-                                    , self.improve_level.blue_mat_ct ))
-    table.insert(ml, MatRow:FromName( self.request_item.school.purple_mat_name
-                                    , self.improve_level.purple_mat_ct ))
+    if 0 < self.improve_level.green_mat_ct then
+        table.insert(ml, MatRow:FromName( self.request_item.school.green_mat_name
+                                        , self.improve_level.green_mat_ct ))
+    end
+    if 0 < self.improve_level.blue_mat_ct then
+        table.insert(ml, MatRow:FromName( self.request_item.school.blue_mat_name
+                                        , self.improve_level.blue_mat_ct ))
+    end
+    if 0 < self.improve_level.purple_mat_ct then
+        table.insert(ml, MatRow:FromName( self.request_item.school.purple_mat_name
+                                        , self.improve_level.purple_mat_ct ))
+    end
     if 0 < self.improve_level.gold_mat_ct then
         table.insert(ml, MatRow:FromName( self.request_item.school.gold_mat_name
                                         , self.improve_level.gold_mat_ct ))
