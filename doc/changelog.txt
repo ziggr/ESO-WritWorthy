@@ -1,3 +1,8 @@
+[B]5.1.2 2019-07-11[/B]
+[LIST]
+[*] Tested fix for parsing green/blue jewelry writs. Thank you, wizzard2k, for the blue writ and all the help.
+[/LIST]
+
 [B]5.1.1 2019-07-11[/B]
 [LIST]
 [*] Update 23/5.1.0/API 100028/Scalebreaker
