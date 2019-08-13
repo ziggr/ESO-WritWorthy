@@ -1258,7 +1258,8 @@ function WritWorthyInventoryList:GetLLC()
     if     llc_global
        and llc_global.craftInteractionTables
        and llc_global.craftInteractionTables[CRAFTING_TYPE_JEWELRYCRAFTING] then
-       WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
+       -- 2019-08-13 temp disable until I can figure this out.
+       -- WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
     end
 
     return self.LibLazyCrafting
