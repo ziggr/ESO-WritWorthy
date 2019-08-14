@@ -1,3 +1,8 @@
+[B]5.1.3 2019-08-13[/B]
+[LIST]
+[*] Temporarily disable Jewelry auto-crafting until I can figure out why it infinite-loops.
+[/LIST]
+
 [B]5.1.2 2019-07-11[/B]
 [LIST]
 [*] Tested fix for parsing green/blue jewelry writs. Thank you, wizzard2k, for the blue writ and all the help.
