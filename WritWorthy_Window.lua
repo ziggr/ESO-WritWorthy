@@ -1251,15 +1251,16 @@ function WritWorthyInventoryList:GetLLC()
     -- end
 
                         -- Does this version of LLC support jewelry?
-                        -- Ideally we can key off of an LLC version number,
-                        -- but until there's an official release with it,
-                        -- just look to see if it has any table entries for
-                        -- jewelry
-    if     llc_global
-       and llc_global.craftInteractionTables
-       and llc_global.craftInteractionTables[CRAFTING_TYPE_JEWELRYCRAFTING] then
-       -- 2019-08-13 temp disable until I can figure this out.
-       -- WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
+                        -- LLC Version 2.8 had reports of infinite-looping
+                        -- followed by Error 307 "booted from server" and
+                        -- exhaustion of crafting materials.
+                        -- LLC version 2.9 has reports of not infinite-looping.
+    WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = true
+    if      llc_global
+        and llc_global.version
+        and (2.91 <= llc_global.version)
+        then
+        WritWorthy.Smithing.SCHOOL_JEWELRY.autocraft_not_implemented = false
     end
 
     return self.LibLazyCrafting
