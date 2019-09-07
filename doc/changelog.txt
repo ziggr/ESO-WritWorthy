@@ -1,3 +1,8 @@
+[B]5.1.5 2019-09-06[/B]
+[LIST]
+[*] RU Russian translation by ivann339. Thank you!
+[/LIST]
+
 [B]5.1.4 2019-09-01[/B]
 [LIST]
 [*] Re-enable jewelry auto-crafting. Requires LibLazyCrafting version 2.91 or greater.
