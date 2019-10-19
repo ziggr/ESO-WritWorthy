@@ -1,3 +1,9 @@
+[B]5.2.1 2019-10-19[/B]
+[LIST]
+[*] Update 24/5.2.0/API 100029/Dragonhold
+[*] Motif numbers for Sunspire, Moongrave, Stags of Z'en, Dragonguard
+[/LIST]
+
 [B]5.1.5 2019-09-06[/B]
 [LIST]
 [*] RU Russian translation by ivann339. Thank you!
