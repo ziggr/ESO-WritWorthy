@@ -278,6 +278,16 @@ Smithing.MOTIF = {
 ,   [ 83 ] = { pages_id  =  2504 } -- Meridian
 ,   [ 84 ] = { pages_id  =  2505 } -- Anequina
 ,   [ 85 ] = { pages_id  =  2506 } -- Pellitine
+,   [ 86 ] = { pages_id  =  2507 } -- Sunspire
+,   [ 87 ] = nil                   -- Dragon Bone
+,   [ 88 ] = { pages_id  =  2628 } -- Moongrave
+,   [ 89 ] = { pages_id  =  2629 } -- Stags of Z'en
+,   [ 90 ] = nil                   -- Witches Festival 2019
+,   [ 91 ] = nil                   -- ?
+,   [ 92 ] = { pages_id  =  2630 } -- Dragonguard
+,   [ 93 ] = nil                   -- Moongrave Fane
+,   [ 94 ] = nil                   -- New Moon
+,   [ 95 ] = nil                   -- Shields of Senchal
 
                         -- How to learn pages_id for new motifs:
                         -- 1. open the 'J' Quest screen
