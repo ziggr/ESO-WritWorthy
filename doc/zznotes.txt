@@ -1,3 +1,10 @@
+2019-09-28
+-- /writworthy auto: "Oopening writs..." show N/M how many in bag for progress
+-- Why no auto-disconnect from station after last crafting?
+-- Why 1st several stations no HSM indicator? Did I exceed some limit?
+-- Would like a writ count at bottom of WW window, along with other summary numbers
+
+
 
 A better way to find skill lines for the 7 crafting skills
 
@@ -58,22 +65,22 @@ GetSmithingResearchLineTraitDescriptions(
     , number researchLineIndex
     , number traitIndex
     )
-Returns: 
+Returns:
     string traitDescription
     , string traitResearchSourceDescription
-    , string traitMaterialSourceDescription 
+    , string traitMaterialSourceDescription
 No "Nirnhoned" or anything useful like that.
 "Increases healing done". Yawn
 
 GetSmithingTraitItemInfo(ITEM_TRAIT_TYPE_ARMOR_DIVINES + 1)
     1     Search on ESOUI Source Code GetSmithingTraitItemInfo(number traitItemIndex)
-        Returns: number:nilable ItemTraitType traitType, string itemName, textureName icon, number sellPrice, boolean meetsUsageRequirement, number itemStyleId, number ItemQuality quality 
+        Returns: number:nilable ItemTraitType traitType, string itemName, textureName icon, number sellPrice, boolean meetsUsageRequirement, number itemStyleId, number ItemQuality quality
 
 
 Nope: ITEM_TRAIT_TYPE_ARMOR_DIVINES → link to Garnet
     Uh wait, Garnet isn't Divines. Need to +1. Ugh.
 
 GetSmithingTraitItemLink(number traitItemIndex + 1, number LinkStyle linkStyle)
-        Returns: string link 
+        Returns: string link
 
 GetHighestItemStyleId()  → 86
