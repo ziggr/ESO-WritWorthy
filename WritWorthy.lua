@@ -13,7 +13,9 @@ WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
                         -- UI topleft, used by WritWorthyInventoryList.
-    position = { 50, 50 }
+    position = { 50, 50 },
+                        -- Maximum per voucher cost to craft
+    maxCraftableVoucherCost = 1500, 
 }
                         -- Default savedChariables: per-character saved data.
                         -- Initially just data about that character's inventory.

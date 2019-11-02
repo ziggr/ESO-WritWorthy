@@ -682,6 +682,13 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
         and inventory_data.parser.request_item.school.autocraft_not_implemented then
         return false, "WritWorthy not yet implemented: jewelry crafting."
     end
+    local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
+    local mat_list = inventory_data.parser:ToMatList()
+    local mat_gold = WritWorthy.MatRow.ListTotal(mat_list) or 0
+    -- Is it below the maximum allowed cost per voucher
+    if WritWorthy.savedVariables.maxCraftableVoucherCost < mat_gold/voucher_ct then
+        return false, 'This writ has a high per voucher cost'
+    end
     local text_list = {}
     if inventory_data.parser.ToKnowList then
         for _, know in ipairs(inventory_data.parser:ToKnowList()) do
