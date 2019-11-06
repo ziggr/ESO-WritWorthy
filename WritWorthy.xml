@@ -4,7 +4,7 @@
 
 <GuiXml>
   <Controls>
-    <!-- lot list window -------------------------------------------------- -->
+    <!-- writ list window ------------------------------------------------ -->
     <TopLevelControl
         hidden="true"
         name="WritWorthyUI"
@@ -171,7 +171,7 @@
               relativePoint="BOTTOMRIGHT"
               point="BOTTOMRIGHT"
               offsetX="0"
-              offsetY="-80" />
+              offsetY="-105" />
           <!-- Pointless to set dimensions when the two anchors
                completely and dynamically define our size
           <Dimensions x="990" y="700" />

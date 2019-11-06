@@ -353,7 +353,7 @@ function WritWorthyInventoryList:Initialize(control)
 
                         -- Create the summary grid at the bottom of the window.
     local OFFSET_X = { 0, 72, 100,   400, 400+72, 400+100, 800 }
-    local OFFSET_Y = { 5, 30, 55 }
+    local OFFSET_Y = { 5, 30, 55, 80 }
     local L = TEXT_ALIGN_LEFT       -- for a LOT less typing
     local R = TEXT_ALIGN_RIGHT
 
@@ -362,29 +362,35 @@ function WritWorthyInventoryList:Initialize(control)
                                             -- align
                                             -- text
     local GRID = {                          --
-      ["SummaryQueuedVoucherCt"          ] = { 1, 1, R, "" }
-    , ["SummaryQueuedMatCost"            ] = { 1, 2, R, "" }
-    , ["SummaryQueuedVoucherCost"        ] = { 1, 3, R, "" }
+      ["SummaryQueuedWritCt"             ] = { 1, 1, R, "" }
+    , ["SummaryQueuedVoucherCt"          ] = { 1, 2, R, "" }
+    , ["SummaryQueuedMatCost"            ] = { 1, 3, R, "" }
+    , ["SummaryQueuedVoucherCost"        ] = { 1, 4, R, "" }
 
-    , ["SummaryQueuedVoucherCtUnit"      ] = { 2, 1, L, WW.Str("currency_suffix_voucher") }
-    , ["SummaryQueuedMatCostUnit"        ] = { 2, 2, L, WW.Str("currency_suffix_gold")    }
-    , ["SummaryQueuedVoucherCostUnit"    ] = { 2, 3, L, WW.Str("currency_suffix_gold_per_voucher") }
+    , ["SummaryQueuedWritCtUnit"         ] = { 2, 1, L, "" }
+    , ["SummaryQueuedVoucherCtUnit"      ] = { 2, 2, L, WW.Str("currency_suffix_voucher") }
+    , ["SummaryQueuedMatCostUnit"        ] = { 2, 3, L, WW.Str("currency_suffix_gold")    }
+    , ["SummaryQueuedVoucherCostUnit"    ] = { 2, 4, L, WW.Str("currency_suffix_gold_per_voucher") }
 
-    , ["SummaryQueuedVoucherCtLabel"     ] = { 3, 1, L, WW.Str("summary_queued_voucher_ct") }
-    , ["SummaryQueuedMatCostLabel"       ] = { 3, 2, L, WW.Str("summary_queued_mat_cost")   }
-    , ["SummaryQueuedVoucherCostLabel"   ] = { 3, 3, L, WW.Str("summary_queued_average_voucher_cost") }
+    , ["SummaryQueuedWritCtLabel"        ] = { 3, 1, L, WW.Str("summary_queued_writ_ct") }
+    , ["SummaryQueuedVoucherCtLabel"     ] = { 3, 2, L, WW.Str("summary_queued_voucher_ct") }
+    , ["SummaryQueuedMatCostLabel"       ] = { 3, 3, L, WW.Str("summary_queued_mat_cost")   }
+    , ["SummaryQueuedVoucherCostLabel"   ] = { 3, 4, L, WW.Str("summary_queued_average_voucher_cost") }
 
-    , ["SummaryCompletedVoucherCt"       ] = { 4, 1, R, "" }
-    , ["SummaryCompletedMatCost"         ] = { 4, 2, R, "" }
-    , ["SummaryCompletedVoucherCost"     ] = { 4, 3, R, "" }
+    , ["SummaryCompletedWritCt"          ] = { 4, 1, R, "" }
+    , ["SummaryCompletedVoucherCt"       ] = { 4, 2, R, "" }
+    , ["SummaryCompletedMatCost"         ] = { 4, 3, R, "" }
+    , ["SummaryCompletedVoucherCost"     ] = { 4, 4, R, "" }
 
-    , ["SummaryCompletedVoucherCtUnit"   ] = { 5, 1, L, WW.Str("currency_suffix_voucher") }
-    , ["SummaryCompletedMatCostUnit"     ] = { 5, 2, L, WW.Str("currency_suffix_gold")    }
-    , ["SummaryCompletedVoucherCostUnit" ] = { 5, 3, L, WW.Str("currency_suffix_gold_per_voucher") }
+    , ["SummaryCompletedWritCtUnit"      ] = { 5, 1, L, "" }
+    , ["SummaryCompletedVoucherCtUnit"   ] = { 5, 2, L, WW.Str("currency_suffix_voucher") }
+    , ["SummaryCompletedMatCostUnit"     ] = { 5, 3, L, WW.Str("currency_suffix_gold")    }
+    , ["SummaryCompletedVoucherCostUnit" ] = { 5, 4, L, WW.Str("currency_suffix_gold_per_voucher") }
 
-    , ["SummaryCompletedVoucherCtLabel"  ] = { 6, 1, L, WW.Str("summary_completed_voucher_ct") }
-    , ["SummaryCompletedMatCostLabel"    ] = { 6, 2, L, WW.Str("summary_completed_mat_cost")   }
-    , ["SummaryCompletedVoucherCostLabel"] = { 6, 3, L, WW.Str("summary_completed_average_voucher_cost") }
+    , ["SummaryCompletedWritCtLabel"     ] = { 6, 1, L, WW.Str("summary_completed_writ_ct") }
+    , ["SummaryCompletedVoucherCtLabel"  ] = { 6, 2, L, WW.Str("summary_completed_voucher_ct") }
+    , ["SummaryCompletedMatCostLabel"    ] = { 6, 3, L, WW.Str("summary_completed_mat_cost")   }
+    , ["SummaryCompletedVoucherCostLabel"] = { 6, 4, L, WW.Str("summary_completed_average_voucher_cost") }
     }
     for name, def in pairs(GRID) do
         local offset_x   = OFFSET_X[def[1]]
@@ -1655,8 +1661,10 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
                         -- Accumulators
     local can_enqueue_any            = false
     local can_dequeue_any            = false
+    local total_queued_writ_ct       = 0
     local total_queued_voucher_ct    = 0
     local total_queued_mat_gold      = 0
+    local total_completed_writ_ct    = 0
     local total_completed_voucher_ct = 0
     local total_completed_mat_gold   = 0
 
@@ -1669,6 +1677,7 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
             if queued_ids[inventory_data.unique_id] then
                 local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
                 total_queued_voucher_ct = total_queued_voucher_ct + voucher_ct
+                total_queued_writ_ct    = total_queued_writ_ct + 1
                 local mat_list = inventory_data.parser:ToMatList()
                 local mat_gold = WritWorthy.MatRow.ListTotal(mat_list) or 0
                 total_queued_mat_gold = total_queued_mat_gold + mat_gold
@@ -1679,6 +1688,7 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
             elseif self:IsCompleted(inventory_data) then
                 local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
                 total_completed_voucher_ct = total_completed_voucher_ct + voucher_ct
+                total_completed_writ_ct    = total_completed_writ_ct + 1
                 local mat_list = inventory_data.parser:ToMatList()
                 local mat_gold = WritWorthy.MatRow.ListTotal(mat_list) or 0
                 total_completed_mat_gold = total_completed_mat_gold + mat_gold
@@ -1695,15 +1705,19 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
         completed_mat_per_v = total_completed_mat_gold / total_completed_voucher_ct
     end
 
+    local queued_writ_string    = Util.ToMoney(total_queued_writ_ct)
     local queued_voucher_string = Util.ToMoney(total_queued_voucher_ct)
     local queued_mat_string     = Util.ToMoney(total_queued_mat_gold)
     local queued_mat_per_string = Util.ToMoney(queued_mat_per_v)
+    WritWorthyUISummaryQueuedWritCt:SetText(queued_writ_string)
     WritWorthyUISummaryQueuedVoucherCt:SetText(queued_voucher_string)
     WritWorthyUISummaryQueuedMatCost:SetText(queued_mat_string)
     WritWorthyUISummaryQueuedVoucherCost:SetText(queued_mat_per_string)
+    local completed_writ_string    = Util.ToMoney(total_completed_writ_ct)
     local completed_voucher_string = Util.ToMoney(total_completed_voucher_ct)
     local completed_mat_string     = Util.ToMoney(total_completed_mat_gold)
     local completed_mat_per_string = Util.ToMoney(completed_mat_per_v)
+    WritWorthyUISummaryCompletedWritCt:SetText(completed_writ_string)
     WritWorthyUISummaryCompletedVoucherCt:SetText(completed_voucher_string)
     WritWorthyUISummaryCompletedMatCost:SetText(completed_mat_string)
     WritWorthyUISummaryCompletedVoucherCost:SetText(completed_mat_per_string)
