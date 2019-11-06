@@ -1,3 +1,10 @@
+[B]5.2.2 2019-10-19[/B]
+[LIST]
+[*] "Max gold per voucher" filter disables/reds expensive writs that you don't want to craft. Thank you, Dolgubon!
+[*] Show writ counts in summary at bottom of window. Helps me avoid queuing more items than I have bag space to hold.
+[*] Setting "Use LibPrice for mat prices" lets you skip LibPrice/MM/ATT/TTC and go straight to the hardwired price table in WritWorthy_Price.lua.
+[/LIST]
+
 [B]5.2.1 2019-10-19[/B]
 [LIST]
 [*] Update 24/5.2.0/API 100029/Dragonhold
