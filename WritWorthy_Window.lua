@@ -1073,11 +1073,10 @@ function WritWorthyInventoryList:SetupRowControl(row_control, inventory_data)
     local b_mask = rc[self.CELL_ENQUEUE_MASK]
     b.inventory_data      = inventory_data
     b_mask.inventory_data = inventory_data
+    ZO_CheckButton_SetCheckState(b, i_d.ui_is_queued)
     if i_d.ui_can_queue then
-        ZO_CheckButton_SetCheckState(b, i_d.ui_is_queued)
         b_mask:SetHidden(true)
     else
-        ZO_CheckButton_SetCheckState(b, false)
         b_mask:SetHidden(false)
         b_mask.tooltip_text = i_d.ui_can_queue_tooltip
     end
