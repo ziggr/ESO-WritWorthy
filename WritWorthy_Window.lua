@@ -208,6 +208,7 @@ function WritWorthyUI_ToggleUI()
     WritWorthyUI:SetHidden(not h)
 end
 
+-- Wrapper function called by "Refresh" shark arrow button.
 function WritWorthyUI_RefreshUI()
     WritWorthyUI_Refresh()
 end
@@ -218,6 +219,38 @@ function WritWorthyUI_Refresh()
     list:BuildMasterlist()
     list:Refresh()
     list:UpdateSummaryAndQButtons()
+end
+
+-- Rather than waste CPU time re-calculating window display state
+-- every time the user types a keystroke in a filter edit box,
+-- queue up a request to update the entire UI soon, and then
+-- only do so if the user has stopped typing.
+function WritWorthyUI_RefreshSoon()
+    if not WritWorthy.refreshsoon_ms then
+        zo_callLater(WritWorthyUI_RefreshSoonPoll, 250)
+    end
+    WritWorthy.refreshsoon_ms = GetFrameTimeMilliseconds() + 400
+end
+
+function WritWorthyUI_RefreshSoonPoll()
+    if not WritWorthy.refreshsoon_ms then return end
+    local now = GetFrameTimeMilliseconds() or 0
+    if now <= WritWorthy.refreshsoon_ms then
+        WritWorthy.refreshsoon_ms = nil
+        WritWorthyUI_Refresh()
+    else
+        zo_callLater(WritWorthyUI_RefreshSoonPoll, 250)
+    end
+end
+
+function WritWorthyUI_MaxGPV_TextChanged(new_text)
+    local new_max = tonumber(new_text)
+    if new_max then
+        WritWorthy.savedVariables.maxCraftableVoucherCost = new_max
+    else
+        WritWorthy.savedVariables.maxCraftableVoucherCost = nil
+    end
+    WritWorthyUI_RefreshSoon()
 end
 
 -- Inventory List ------------------------------------------------------------

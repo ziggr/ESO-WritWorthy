@@ -118,50 +118,43 @@
         </Button>
         <Control name="$(parent)VoucherCost" >
           <Dimensions width="200"/>
-          <Anchor point="RIGHT" 
-            relativeTo="$(parent)SortByStation" 
-            relativePoint="LEFT" 
-            offsetX="-50" 
+          <Anchor point="RIGHT"
+            relativeTo="$(parent)SortByStation"
+            relativePoint="LEFT"
+            offsetX="-50"
             offsetY="0" />
           <Controls>
             <Backdrop name="$(parent)Backdrop" tier="HIGH" inherits="ZO_EditBackdrop">
               <Dimensions x="50"/>
-              <Anchor point="LEFT" 
-                relativeTo="$(parent)" 
-                relativePoint="RIGHT" 
+              <Anchor point="LEFT"
+                relativeTo="$(parent)"
+                relativePoint="RIGHT"
                 offsetX="0" />
               <Controls>
-                <EditBox name="$(parent)Edit" 
-                  inherits="ZO_DefaultEditForBackdrop ZO_EditDefaultText" 
-                  textType="NUMERIC_UNSIGNED_INT" 
+                <EditBox name="$(parent)Edit"
+                  inherits="ZO_DefaultEditForBackdrop ZO_EditDefaultText"
+                  textType="NUMERIC_UNSIGNED_INT"
                   maxInputCharacters="4">
 
                   <OnInitialized>
                     ZO_EditDefaultText_Initialize(self, "")
                   </OnInitialized>
                   <OnTextChanged>
-                    local newMax = tonumber(self:GetText())
-                    if newMax then
-                     WritWorthy.savedVariables.maxCraftableVoucherCost = newMax
-                     WritWorthyUI_RefreshUI()
-                    else
-                     WritWorthy.savedVariables.maxCraftableVoucherCost = 0
-                     WritWorthyUI_RefreshUI()
-                    end
+                    WritWorthyUI_MaxGPV_TextChanged(self:GetText())
                   </OnTextChanged>
                 </EditBox>
               </Controls>
             </Backdrop>
 
-            <Label name="$(parent)Label"  
-              text="Max Voucher Cost:" 
-              color="FFFFFF" 
+            <Label name="$(parent)Label"
+              text="Max Voucher Cost:"
+              color="FFFFFF"
               font="ZoFontGameLargeBold">
-              <Anchor point="RIGHT" 
-                relativeTo="$(parent)Backdrop" 
-                relativePoint="LEFT" 
+              <Anchor point="RIGHT"
+                relativeTo="$(parent)Backdrop"
+                relativePoint="LEFT"
                 offsetX="-10" />
-              
+
             </Label>
           </Controls>
         </Control>
