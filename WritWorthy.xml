@@ -116,7 +116,7 @@
             WritWorthyInventoryList_SortByStation()
           </OnClicked>
         </Button>
-        <Control name="$(parent)VoucherCost" >
+        <Control name="$(parent)MaxGPV" >
           <Dimensions width="200"/>
           <Anchor point="RIGHT"
             relativeTo="$(parent)SortByStation"
@@ -131,7 +131,7 @@
                 relativePoint="RIGHT"
                 offsetX="0" />
               <Controls>
-                <EditBox name="$(parent)Edit"
+                <EditBox name="WritWorthyUIMaxGPVEdit"
                   inherits="ZO_DefaultEditForBackdrop ZO_EditDefaultText"
                   textType="NUMERIC_UNSIGNED_INT"
                   maxInputCharacters="4">
@@ -146,7 +146,7 @@
               </Controls>
             </Backdrop>
 
-            <Label name="$(parent)Label"
+            <Label name="WritWorthyUIMaxGPVLabel"
               text="Max Voucher Cost:"
               color="FFFFFF"
               font="ZoFontGameLargeBold">

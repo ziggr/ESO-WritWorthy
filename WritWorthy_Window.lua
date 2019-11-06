@@ -1716,7 +1716,12 @@ function WritWorthyInventoryList:UpdateSummaryAndQButtons()
     WritWorthyUIDequeueAll:SetText(WW.Str("button_dequeue_all"))
     WritWorthyUISortByStation:SetText(WW.Str("button_sort_by_station"))
 
-
+    local max_gpv = WritWorthy.savedVariables.filter_max_gold_per_voucher
+    if max_gpv and 0 < max_gpv then
+        WritWorthyUIMaxGPVEdit:SetText(tostring(max_gpv))
+    else
+        WritWorthyUIMaxGPVEdit:SetText("")
+    end
 end
 
 function WritWorthyInventoryList:EnqueueAll()
