@@ -202,17 +202,17 @@ function WritWorthyUI_ToggleUI()
             local ss = string.format(fmt, GetUnitName("player"))
             t:SetText(ss)
         end
-        WritWorthuUI_Refresh()
+        WritWorthyUI_Refresh()
         WritWorthyInventoryList:UpdateAllCellWidths()
     end
     WritWorthyUI:SetHidden(not h)
 end
 
 function WritWorthyUI_RefreshUI()
-    WritWorthuUI_Refresh()
+    WritWorthyUI_Refresh()
 end
 
-function WritWorthuUI_Refresh()
+function WritWorthyUI_Refresh()
     WritWorthy.RequiredSkill.ResetCache()
     list = WritWorthyInventoryList.singleton
     list:BuildMasterlist()
