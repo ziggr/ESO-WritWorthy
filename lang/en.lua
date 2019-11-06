@@ -136,6 +136,7 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["lam_mm_fallback_title"                 ] = "M.M. Fallback: hardcoded prices if no M.M. data"
 ,   ["lam_station_colors_desc"               ] = "Use different colors for blacksmithing, clothing, and woodworking items in the WritWorthy window."
 ,   ["lam_station_colors_title"              ] = "Station colors in window"
+,   ["max_gold_per_voucher"                  ] = "Max gold per voucher:"
 ,   ["slash_auto"                            ] = "auto"
 ,   ["slash_auto_desc"                       ] = "Automatically accept quests from inventory."
 ,   ["slash_count"                           ] = "count"

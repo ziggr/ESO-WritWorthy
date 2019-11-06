@@ -121,7 +121,7 @@
           <Anchor point="RIGHT"
             relativeTo="$(parent)SortByStation"
             relativePoint="LEFT"
-            offsetX="-50"
+            offsetX="-100"
             offsetY="0" />
           <Controls>
             <Backdrop name="$(parent)Backdrop" tier="HIGH" inherits="ZO_EditBackdrop">
@@ -147,7 +147,7 @@
             </Backdrop>
 
             <Label name="WritWorthyUIMaxGPVLabel"
-              text="Max Voucher Cost:"
+              text="Max gold per voucher:"
               color="FFFFFF"
               font="ZoFontGameLargeBold">
               <Anchor point="RIGHT"
