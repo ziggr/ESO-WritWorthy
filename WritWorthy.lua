@@ -437,6 +437,18 @@ function WritWorthy:CreateSettingsWindow()
         },
 
         { type      = "checkbox"
+        , name      = WW.Str("lam_lib_price_title")
+        , tooltip   = WW.Str("lam_lib_price_desc")
+        , getFunc   = function()
+                        return self.savedVariables.enable_lib_price
+                            or (self.savedVariables.enable_lib_price == nil)
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_lib_price = e
+                      end
+        },
+
+        { type      = "checkbox"
         , name      = WW.Str("lam_mm_fallback_title")
         , tooltip   = WW.Str("lam_mm_fallback_desc")
         , getFunc   = function()
