@@ -522,6 +522,9 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
         end
         row_control[cell_name]   = cell_control
 
+        local y_offset           = 0
+        if is_text then y_offset = 8 end
+
         if i == 1 then
                         -- Leftmost column is flush up against
                         -- the left of the container
@@ -529,7 +532,7 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                                   , row_control         -- relativeTo
                                   , LEFT                -- relativePoint
                                   , 0                   -- offsetX
-                                  , 0 )                 -- offsetY
+                                  , y_offset )          -- offsetY
         else
             local offsetX = header_cell_control:GetLeft()
                           - rel_to_left
@@ -537,7 +540,7 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
                                   , row_control         -- relativeTo
                                   , LEFT                -- relativePoint
                                   , offsetX             -- offsetX
-                                  , 0 )                 -- offsetY
+                                  , y_offset )          -- offsetY
         end
         cell_control:SetHidden(false)
 
@@ -547,7 +550,7 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
             cell_control:SetHeight(20)
         else
             cell_control:SetWidth(header_cell_control:GetWidth())
-            cell_control:SetHeight(self.ROW_HEIGHT)
+            cell_control:SetHeight(self.ROW_HEIGHT - y_offset)
 
             cell_control:SetFont("ZoFontGame")
             cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
