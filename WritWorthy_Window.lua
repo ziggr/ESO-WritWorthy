@@ -246,9 +246,9 @@ end
 function WritWorthyUI_MaxGPV_TextChanged(new_text)
     local new_max = tonumber(new_text)
     if new_max then
-        WritWorthy.savedVariables.maxCraftableVoucherCost = new_max
+        WritWorthy.savedVariables.filter_max_gold_per_voucher = new_max
     else
-        WritWorthy.savedVariables.maxCraftableVoucherCost = nil
+        WritWorthy.savedVariables.filter_max_gold_per_voucher = nil
     end
     WritWorthyUI_RefreshSoon()
 end
@@ -715,13 +715,19 @@ function WritWorthyInventoryList:CanQueue(inventory_data)
         and inventory_data.parser.request_item.school.autocraft_not_implemented then
         return false, "WritWorthy not yet implemented: jewelry crafting."
     end
+
+                        -- Is it below the maximum allowed cost per voucher?
     local voucher_ct = WritWorthy.ToVoucherCount(inventory_data.item_link)
     local mat_list = inventory_data.parser:ToMatList()
     local mat_gold = WritWorthy.MatRow.ListTotal(mat_list) or 0
-    -- Is it below the maximum allowed cost per voucher
-    if WritWorthy.savedVariables.maxCraftableVoucherCost < mat_gold/voucher_ct then
-        return false, 'This writ has a high per voucher cost'
+    local max_gpv = WritWorthy.savedVariables.filter_max_gold_per_voucher
+    if max_gpv then
+        if max_gpv <= mat_gold/voucher_ct then
+            local msg = string.format("> %d gold per voucher", max_gpv)
+            return false, msg
+        end
     end
+                        -- Does this character have the required knowledge?
     local text_list = {}
     if inventory_data.parser.ToKnowList then
         for _, know in ipairs(inventory_data.parser:ToKnowList()) do
