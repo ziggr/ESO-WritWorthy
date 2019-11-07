@@ -103,7 +103,7 @@ function Util.MatPrice(link)
     local sv = WritWorthy.savedVariables
 
                         -- LibPrice required for price lookups
-    if LibPrice and sv.enable_lib_price then
+    if LibPrice and (sv.enable_lib_price or (sv.enable_lib_price == nil)) then
                         -- Explicitly list the guild store sources, omit all
                         -- others. We don't want "NPC Vencor" price of
                         -- 13g-per-Zircon-Plating creeping into our price
