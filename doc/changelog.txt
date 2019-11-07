@@ -1,4 +1,11 @@
-[B]5.2.2 2019-10-19[/B]
+[B]5.2.3 2019-11-07[/B]
+[LIST]
+[*] Bugfix: "Use LibPrice for mat prices" would default to "ON" in the settings window (yay) but erroneously still acted as "OFF" in the actual price-fetching code (boo). Fixed, now defaults to "ON" in both places.
+[*] Bugfix: cell text would be misaligned for some rows.
+[*] Add itemLink for 4 recent style materials, so that folks could set their own hardcoded prices for those in code if they're into that sort of thing.
+[/LIST]
+
+[B]5.2.2 2019-11-06[/B]
 [LIST]
 [*] "Max gold per voucher" filter disables/reds expensive writs that you don't want to craft. Thank you, Dolgubon!
 [*] Show writ counts in summary at bottom of window. Helps me avoid queuing more items than I have bag space to hold.
