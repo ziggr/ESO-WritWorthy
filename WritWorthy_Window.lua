@@ -1,7 +1,3 @@
--- ### ZIG YOU LEFT OFF HERE
---
--- recipe
-
 -- WritWorthy UI window
 --
 -- Do NOT put tooltip or settings UI code here. Just the big list-of-writs
@@ -523,7 +519,7 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
         row_control[cell_name]   = cell_control
 
         local y_offset           = 0
-        if is_text then y_offset = 8 end
+        if is_text then y_offset = 3 end
 
         if i == 1 then
                         -- Leftmost column is flush up against
@@ -640,11 +636,21 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
         local header_cell_control = hcl[cell_name]
         if header_cell_control then
             local offsetX = header_cell_control:GetLeft() - rel_to_left
-            cell_control:SetAnchor( LEFT                -- point
-                                  , row_control         -- relativeTo
-                                  , LEFT                -- relativePoint
-                                  , offsetX             -- offsetX
-                                  , 0 )                 -- offsetY
+                        -- 1 bool    isValidAnchor
+                        -- 2 integer point
+                        -- 3 object  relativeTo
+                        -- 4 integer relativePoint
+                        -- 5 number  offsetX
+                        -- 6 number  offsetY
+                        -- 7 AnchorConstrains anchorConstrains
+            local a = { cell_control:GetAnchor(0) }
+            if a and a[1] then
+                cell_control:SetAnchor( LEFT                -- point
+                                      , row_control         -- relativeTo
+                                      , LEFT                -- relativePoint
+                                      , offsetX             -- offsetX
+                                      , a[6] )           -- offsetY
+            end
                         -- Resize text cells, but leave button cells locked
                         -- to whatever CreateRowControlCells() chose.
             local is_text = not WritWorthyInventoryList.CELL_UNTEXT_LIST[cell_name]
