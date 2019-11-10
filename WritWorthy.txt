@@ -101,6 +101,7 @@ WritWorthy_AGS.lua
 WritWorthy_I18N.lua
 WritWorthy_Profiler.lua
 # WritWorthy_AutoQuest.lua
+WritWorthy_MatListWindow.lua
 WritWorthy.lua
 WritWorthy.xml
 Bindings.xml

@@ -627,6 +627,10 @@ function WritWorthy.SlashCommand(arg1)
         if WritWorthy_AutoQuest then
             WritWorthy_AutoQuest()
         end
+    elseif arg1:lower() == WW.Str("slash_mat") then
+        if WritWorthy.MLToggle then
+            WritWorthy.MLToggle()
+        end
     else
         WritWorthyUI_ToggleUI()
     end
@@ -661,6 +665,13 @@ function WritWorthy.RegisterSlashCommands()
             sub_auto:AddAlias(WW.Str("slash_auto"))
             sub_auto:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_auto")) end)
             sub_auto:SetDescription(WW.Str("slash_auto_desc"))
+        end
+
+        if WritWorthy.MLToggle then
+            local sub_auto = cmd:RegisterSubCommand()
+            sub_auto:AddAlias(WW.Str("slash_mat"))
+            sub_auto:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_mat")) end)
+            sub_auto:SetDescription(WW.Str("slash_mat_desc"))
         end
 
     else

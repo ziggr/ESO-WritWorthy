@@ -27,6 +27,7 @@ push @files, 'WritWorthy_Log.lua';
 push @files, 'WritWorthy_Know.lua';
 push @files, 'WritWorthy_Provisioning.lua';
 push @files, 'WritWorthy_RequiredSkill.lua';
+push @files, 'WritWorthy_MatListWindow.lua';
 push @files, 'WritWorthy_Smithing.lua';
 push @files, 'WritWorthy_Util.lua';
 push @files, 'WritWorthy_Window.lua';
