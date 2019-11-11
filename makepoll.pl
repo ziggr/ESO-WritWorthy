@@ -19,6 +19,7 @@ sub dirls($)
 @files = ( 'Makefile' );
 # push @files, dirls('src');
 push @files, 'WritWorthy.lua';
+push @files, 'WritWorthy.xml';
 push @files, 'WritWorthy_Alchemy.lua';
 push @files, 'WritWorthy_AutoQuest.lua';
 push @files, 'WritWorthy_Enchanting.lua';

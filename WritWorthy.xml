@@ -427,5 +427,104 @@
     </Button>
 
 
+    <TopLevelControl
+        hidden="true"
+        name="WritWorthyMatListUI"
+        movable="true"
+        mouseEnabled="true"
+        resizeHandleSize="2"
+        allowBringToTop="true"
+        clampedToScreen="false"
+        >
+      <Dimensions              x="400"       y="550" />
+      <DimensionConstraints minX="400"    minY="350"
+                            maxX="1805"   maxY="950" />
+      <Controls>
+        <Backdrop name="$(parent)BG"
+            inherits="ZO_DefaultBackdrop"
+            />
+        <Label  name="$(parent)WindowTitle"
+            text="WritWorthy Materials"
+            font="ZoFontWindowTitle"
+            color="CFDCBD"
+            wrapMode="ELLIPSIS"
+            verticalAlignment="TOP">
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPLEFT"
+              point="TOPLEFT"
+              offsetX="5"
+              offsetY="5" />
+        </Label>
+        <Button name="$(parent)Close"
+              alpha="1">
+          <Textures
+              normal="EsoUI/Art/Buttons/closeButton_up.dds"
+              pressed="EsoUI/Art/Buttons/closeButton_down.dds"
+              mouseOver="EsoUI/Art/Buttons/closeButton_mouseOver.dds"
+              disabled="EsoUI/Art/Buttons/closeButton_disabled.dds"
+              />
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPRIGHT"
+              point="TOPRIGHT"
+              offsetX="0"
+              offsetY="0" />
+          <Dimensions x="20" y="20" />
+          <TextureCoords
+              left="0"      top="0"
+              right="0.625" bottom="0.625"
+              />
+          <OnClicked>
+            WritWorthy.MLToggle()
+          </OnClicked>
+        </Button>
+
+        <Button name="$(parent)Refresh"
+              alpha="1">
+          <Textures
+              normal="EsoUI/Art/Help/help_tabicon_feedback_up.dds"
+              pressed="EsoUI/Art/Help/help_tabicon_feedback_down.dds"
+              mouseOver="EsoUI/Art/Help/help_tabicon_feedback_over.dds"
+              disabled="EsoUI/Art/Help/help_tabicon_feedback_disabled.dds"
+              />
+          <Anchor relativeTo="$(parent)"
+              relativePoint="TOPRIGHT"
+              point="TOPRIGHT"
+              offsetX="-30"
+              offsetY="0" />
+          <Dimensions x="20" y="20" />
+          <TextureCoords
+              left="0.1"     top="0.1"
+              right="0.9" bottom="0.9" />
+          <OnClicked>
+            d("WritWorthyMatListUI_RefreshUI()")
+          </OnClicked>
+        </Button>
+
+        <Label name="$(parent)ShowLabel"
+          text="Show:"
+          font="ZoFontGame" >
+          <Dimensions x="100" y="20" />
+          <Anchor relativeTo="$(parent)"
+            relativePoint="TOPLEFT"
+            point="TOPLEFT"
+            offsetX="5"
+            offsetY="40" />
+        </Label>
+
+        <Control name="$(parent)ShowComboBox"
+          inherits="ZO_ComboBox"
+          font="ZoFontGame"
+          >
+          <Anchor relativeTo="$(parent)ShowLabel"
+            relativePoint="TOPRIGHT"
+            point="TOPLEFT"
+            offsetX="5"
+            offsetY="0" />
+          <Dimensions x="100" y="30" />
+        </Control>
+
+      </Controls>
+    </TopLevelControl>
+
   </Controls>
 </GuiXml>
