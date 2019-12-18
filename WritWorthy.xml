@@ -521,6 +521,9 @@
             offsetX="5"
             offsetY="0" />
           <Dimensions x="100" y="30" />
+          <OnInitialized>
+            WritWorthy.MLInitComboBox(self)
+          </OnInitialized>
         </Control>
 
       </Controls>
