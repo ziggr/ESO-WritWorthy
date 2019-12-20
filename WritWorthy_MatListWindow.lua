@@ -10,6 +10,8 @@ local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
 local Log  = WritWorthy.Log
 
+WINDOW_POS_KEY = "mat_list_position"
+
 -- MatUI: The window around the material list --------------------------------
 function WritWorthy.MatUI:New()
     Log.Debug("WWML:New()")
@@ -21,12 +23,12 @@ end
 
 function WritWorthy.MatUI.RestorePos()
     Log.Debug("WWMUI_RestorePos()")
-    Util.RestorePos(WritWorthyMatUI, "ml_position")
+    Util.RestorePos(WritWorthyMatUI, WINDOW_POS_KEY)
 end
 
 function WritWorthy.MatUI.OnMoveStop()
     Log.Debug("WWMUI_OnMoveStop()")
-    Util.OnMoveStop(WritWorthyMatUI, "ml_position")
+    Util.OnMoveStop(WritWorthyMatUI, WINDOW_POS_KEY)
 end
 
 function WritWorthy.MatUI.OnResizeStop()
@@ -34,7 +36,7 @@ function WritWorthy.MatUI.OnResizeStop()
     Util.OnResizeStop( WritWorthyMatUI
                      , WritWorthy.MatUI
                      , WritWorthy.MatUI.singleton
-                     , "ml_position" )
+                     , WINDOW_POS_KEY )
 end
 
 function WritWorthy.MatUI.ToggleUI()
