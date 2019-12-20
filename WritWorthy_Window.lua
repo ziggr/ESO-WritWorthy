@@ -115,69 +115,22 @@ WritWorthyInventoryList.CELL_UNTEXT_LIST = {
 -- WritWorthyUI: The window around the inventory list ------------------------
 
 function WritWorthyUI_RestorePos()
-    local pos = WritWorthy.default.position
-    if      WritWorthy
-        and WritWorthy.savedVariables
-        and WritWorthy.savedVariables.position then
-        pos = WritWorthy.savedVariables.position
-    end
-
-    if not WritWorthyUI then
-                        -- Common crash that occurs when I've messed up
-                        -- the XML somehow. Force it to crash here in this
-                        -- if block rather than mysteriously on the
-                        -- proper SetAnchor() line later.
-        d("Your XML probably did not load. Fix it.")
-        local _ = WritWorthyUI.SetAnchor
-    end
-    WritWorthyUI:ClearAnchors()
-    WritWorthyUI:SetAnchor(
-              TOPLEFT
-            , GuiRoot
-            , TOPLEFT
-            , pos[1]
-            , pos[2]
-            )
-
-    if pos[3] and pos[4] then
-        WritWorthyUI:SetWidth( pos[3] - pos[1])
-        WritWorthyUI:SetHeight(pos[4] - pos[2])
-    end
+    Util.RestorePos(WritWorthyUI, "position")
 end
 
 function WritWorthyUI_SavePos()
-    local l = WritWorthyUI:GetLeft()
-    local t = WritWorthyUI:GetTop()
-    local r = WritWorthyUI:GetRight()
-    local b = WritWorthyUI:GetBottom()
-    -- d("SavePos ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
-    local pos = { l, t, r, b }
-    WritWorthy.savedVariables.position = pos
+    Util.SavePos(WritWorthyUI, "position")
 end
 
 function WritWorthyUI_OnMoveStop()
-    local l = WritWorthyUI:GetLeft()
-    local t = WritWorthyUI:GetTop()
-    local r = WritWorthyUI:GetRight()
-    local b = WritWorthyUI:GetBottom()
-    WritWorthyUI_SavePos()
+    Util.OnMoveStop(WritWorthyUI, "position")
 end
 
 function WritWorthyUI_OnResizeStop()
-    local l = WritWorthyUI:GetLeft()
-    local t = WritWorthyUI:GetTop()
-    local r = WritWorthyUI:GetRight()
-    local b = WritWorthyUI:GetBottom()
-    WritWorthy.InventoryList:UpdateAllCellWidths()
-    WritWorthyUI_SavePos()
-
-                        -- Update vertical scrollbar and extents to
-                        -- match new scrollpane height.
-    if      WritWorthyInventoryList.singleton
-        and WritWorthyInventoryList.singleton.list then
-        local scroll_list = WritWorthyInventoryList.singleton.list
-        ZO_ScrollList_Commit(scroll_list)
-    end
+    Util.OnResizeStop( WritWorthyUI
+                     , WritWorthy.InventoryList
+                     , WritWorthyInventoryList.singleton
+                     , "position" )
 end
 
 function WritWorthyUI_ToggleUI()

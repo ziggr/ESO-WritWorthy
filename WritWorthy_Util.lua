@@ -150,6 +150,70 @@ function WritWorthy.LibSets()
     return WritWorthy.lib_sets
 end
 
+-- Window position -----------------------------------------------------------
+
+function WritWorthy.Util.RestorePos(top_level_control, saved_var_key_name)
+    local pos = WritWorthy.default[saved_var_key_name]
+    if      WritWorthy
+        and WritWorthy.savedVariables
+        and WritWorthy.savedVariables[saved_var_key_name] then
+        pos = WritWorthy.savedVariables[saved_var_key_name]
+    end
+
+    if not top_level_control then
+                        -- Common crash that occurs when I've messed up
+                        -- the XML somehow. Force it to crash here in this
+                        -- if block rather than mysteriously on the
+                        -- proper SetAnchor() line later.
+        d("Your XML probably did not load. Fix it.")
+        local _ = top_level_control.SetAnchor
+    end
+    top_level_control:ClearAnchors()
+    top_level_control:SetAnchor(
+              TOPLEFT
+            , GuiRoot
+            , TOPLEFT
+            , pos[1]
+            , pos[2]
+            )
+
+    if pos[3] and pos[4] then
+        top_level_control:SetWidth( pos[3] - pos[1])
+        top_level_control:SetHeight(pos[4] - pos[2])
+    end
+end
+
+
+function WritWorthy.Util.SavePos(top_level_control, saved_var_key_name)
+    local l = top_level_control:GetLeft()
+    local t = top_level_control:GetTop()
+    local r = top_level_control:GetRight()
+    local b = top_level_control:GetBottom()
+    -- d("SavePos ltrb=".. l .. " " .. t .. " " .. r .. " " .. b)
+    local pos = { l, t, r, b }
+    WritWorthy.savedVariables[saved_var_key_name] = pos
+end
+
+function WritWorthy.Util.OnMoveStop(top_level_control, saved_var_key_name)
+    WritWorthy.Util.SavePos(top_level_control, saved_var_key_name)
+end
+
+function WritWorthy.Util.OnResizeStop( top_level_control
+                                     , list
+                                     , singleton
+                                     , saved_var_key_name )
+    list:UpdateAllCellWidths()
+    WritWorthy.Util.SavePos(top_level_control, saved_var_key_name)
+
+                        -- Update vertical scrollbar and extents to
+                        -- match new scrollpane height.
+    if      singleton
+        and singleton.list then
+        local scroll_list = singleton.list
+        ZO_ScrollList_Commit(scroll_list)
+    end
+end
+
 function Util.MatHaveCt(item_link)
     local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
     return bag_ct + bank_ct + craft_bag_ct
