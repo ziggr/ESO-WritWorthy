@@ -511,7 +511,7 @@
             offsetY="40" />
         </Label>
 
-        <Control name="$(parent)ShowComboBox"
+        <!--Control name="$(parent)ShowComboBox"
           inherits="ZO_ComboBox"
           font="ZoFontGame"
           >
@@ -524,7 +524,7 @@
           <OnInitialized>
             WritWorthy.MLInitComboBox(self)
           </OnInitialized>
-        </Control>
+        </Control -->
 
       </Controls>
     </TopLevelControl>
