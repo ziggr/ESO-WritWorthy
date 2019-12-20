@@ -6,14 +6,14 @@
   <Controls>
     <!-- writ list window ------------------------------------------------ -->
     <TopLevelControl
-        hidden="true"
-        name="WritWorthyUI"
-        movable="true"
-        mouseEnabled="true"
-        resizeHandleSize="2"
-        allowBringToTop="true"
-        clampedToScreen="false"
-        >
+      hidden="true"
+      name="WritWorthyUI"
+      movable="true"
+      mouseEnabled="true"
+      resizeHandleSize="2"
+      allowBringToTop="true"
+      clampedToScreen="false"
+      >
       <Dimensions              x="1125"      y="550" />
       <DimensionConstraints minX="1105"   minY="350"
                             maxX="1805"   maxY="950" />
@@ -41,81 +41,82 @@
 
       <Controls>
         <Backdrop name="$(parent)BG"
-            inherits="ZO_DefaultBackdrop"
-            />
+        inherits="ZO_DefaultBackdrop"
+        />
         <Label  name="$(parent)WindowTitle"
-            text="WritWorthy"
-            font="ZoFontWindowTitle"
-            color="CFDCBD"
-            wrapMode="ELLIPSIS"
-            verticalAlignment="TOP">
+          text="WritWorthy"
+          font="ZoFontWindowTitle"
+          color="CFDCBD"
+          wrapMode="ELLIPSIS"
+          verticalAlignment="TOP">
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPLEFT"
-              point="TOPLEFT"
-              offsetX="5"
-              offsetY="5" />
+            relativePoint="TOPLEFT"
+            point="TOPLEFT"
+            offsetX="5"
+            offsetY="5" />
         </Label>
 
         <Button name="$(parent)Close"
-              alpha="1">
+          alpha="1">
           <Textures
-              normal="EsoUI/Art/Buttons/closeButton_up.dds"
-              pressed="EsoUI/Art/Buttons/closeButton_down.dds"
-              mouseOver="EsoUI/Art/Buttons/closeButton_mouseOver.dds"
-              disabled="EsoUI/Art/Buttons/closeButton_disabled.dds"
-              />
+            normal="EsoUI/Art/Buttons/closeButton_up.dds"
+            pressed="EsoUI/Art/Buttons/closeButton_down.dds"
+            mouseOver="EsoUI/Art/Buttons/closeButton_mouseOver.dds"
+            disabled="EsoUI/Art/Buttons/closeButton_disabled.dds"
+            />
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPRIGHT"
-              point="TOPRIGHT"
-              offsetX="0"
-              offsetY="0" />
+            relativePoint="TOPRIGHT"
+            point="TOPRIGHT"
+            offsetX="0"
+            offsetY="0" />
           <Dimensions x="20" y="20" />
           <TextureCoords
-              left="0"      top="0"
-              right="0.625" bottom="0.625"
-              />
+            left="0"      top="0"
+            right="0.625" bottom="0.625"
+            />
           <OnClicked>
             WritWorthyUI_ToggleUI()
           </OnClicked>
         </Button>
 
         <Button name="$(parent)Refresh"
-              alpha="1">
+          alpha="1">
           <Textures
-              normal="EsoUI/Art/Help/help_tabicon_feedback_up.dds"
-              pressed="EsoUI/Art/Help/help_tabicon_feedback_down.dds"
-              mouseOver="EsoUI/Art/Help/help_tabicon_feedback_over.dds"
-              disabled="EsoUI/Art/Help/help_tabicon_feedback_disabled.dds"
-              />
+            normal="EsoUI/Art/Help/help_tabicon_feedback_up.dds"
+            pressed="EsoUI/Art/Help/help_tabicon_feedback_down.dds"
+            mouseOver="EsoUI/Art/Help/help_tabicon_feedback_over.dds"
+            disabled="EsoUI/Art/Help/help_tabicon_feedback_disabled.dds"
+            />
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPRIGHT"
-              point="TOPRIGHT"
-              offsetX="-30"
-              offsetY="0" />
+            relativePoint="TOPRIGHT"
+            point="TOPRIGHT"
+            offsetX="-30"
+            offsetY="0" />
           <Dimensions x="20" y="20" />
           <TextureCoords
-              left="0.1"     top="0.1"
-              right="0.9" bottom="0.9"
-              />
+            left="0.1"     top="0.1"
+            right="0.9" bottom="0.9"
+            />
           <OnClicked>
             WritWorthyUI_RefreshUI()
           </OnClicked>
         </Button>
 
         <Button   name="$(parent)SortByStation"
-            inherits="ZO_DefaultButton"
-            text="Sort by Station"
-            >
+          inherits="ZO_DefaultButton"
+          text="Sort by Station"
+          >
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPRIGHT"
-              point="TOPRIGHT"
-              offsetX="0"
-              offsetY="35" />
+            relativePoint="TOPRIGHT"
+            point="TOPRIGHT"
+            offsetX="0"
+            offsetY="35" />
           <Dimensions x="200" y="25" />
           <OnClicked>
             WritWorthyInventoryList_SortByStation()
           </OnClicked>
         </Button>
+
         <Control name="$(parent)MaxGPV" >
           <Dimensions width="200"/>
           <Anchor point="RIGHT"
@@ -154,24 +155,23 @@
                 relativeTo="$(parent)Backdrop"
                 relativePoint="LEFT"
                 offsetX="-10" />
-
             </Label>
           </Controls>
         </Control>
                           <!-- WritWorthyUIInventoryList -->
         <Control name="$(parent)InventoryList"
-            inheritAlpha="true"
-            >
+          inheritAlpha="true"
+          >
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPLEFT"
-              point="TOPLEFT"
-              offsetX="5"
-              offsetY="85" />
+            relativePoint="TOPLEFT"
+            point="TOPLEFT"
+            offsetX="5"
+            offsetY="85" />
           <Anchor relativeTo="$(parent)"
-              relativePoint="BOTTOMRIGHT"
-              point="BOTTOMRIGHT"
-              offsetX="0"
-              offsetY="-105" />
+            relativePoint="BOTTOMRIGHT"
+            point="BOTTOMRIGHT"
+            offsetX="0"
+            offsetY="-105" />
           <!-- Pointless to set dimensions when the two anchors
                completely and dynamically define our size
           <Dimensions x="990" y="700" />
@@ -180,60 +180,60 @@
                                       <!-- WritWorthyUIInventoryListHeaders -->
             <Control name="$(parent)Headers">
               <Anchor relativeTo="$(parent)"
-                  relativePoint="TOPLEFT"
-                  point="TOPLEFT" />
+                relativePoint="TOPLEFT"
+                point="TOPLEFT" />
               <Anchor relativeTo="$(parent)"
-                  relativePoint="TOPRIGHT"
-                  point="TOPRIGHT" />
+                relativePoint="TOPRIGHT"
+                point="TOPRIGHT" />
               <Dimensions y="20" />
               <Controls>
                 <Control name="$(parent)Type"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPLEFT"
-                      point="TOPLEFT"
-                      offsetX="0" />
+                    relativePoint="TOPLEFT"
+                    point="TOPLEFT"
+                    offsetX="0" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Type", "Type", "ui_type")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)VoucherCt"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPLEFT"
-                      point="TOPLEFT"
-                      offsetX="105" />
+                    relativePoint="TOPLEFT"
+                    point="TOPLEFT"
+                    offsetX="105" />
                   <Dimensions x="50" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "VoucherCt", "V", "ui_voucher_ct")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail1"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPLEFT"
-                      point="TOPLEFT"
-                      offsetX="160" />
+                    relativePoint="TOPLEFT"
+                    point="TOPLEFT"
+                    offsetX="160" />
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-645" />
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-645" />
                   <Dimensions x="300" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail1", "Detail 1", "ui_detail1")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail2"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-540" />
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-540" />
                   <Dimensions x="200" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail2", "Detail 2", "ui_detail2")
@@ -242,12 +242,12 @@
 
                 <!-- mimic stones go here right before motif column -->
                 <Control name="$(parent)Mimic"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-455" />
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-455" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Mimic", "M", "ui_use_mimic")
@@ -255,48 +255,48 @@
                 </Control>
 
                 <Control name="$(parent)Detail3"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-305" />
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-305" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail3", "Detail 3", "ui_detail3")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail4"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-150" />
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-150" />
                   <Dimensions x="150" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail4", "Detail 4", "ui_detail4")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Detail5"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-45" />
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-45" />
                   <Dimensions x="100" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Detail5", "Quality", "ui_detail5")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)Enqueue"
-                    inherits="ZO_SortHeader"
-                    >
+                  inherits="ZO_SortHeader"
+                  >
                   <Anchor relativeTo="$(parent)"
-                      relativePoint="TOPRIGHT"
-                      point="TOPRIGHT"
-                      offsetX="-10" />
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-10" />
                   <Dimensions x="30" y="20" />
                   <OnInitialized>
                     WritWorthyInventoryList_HeaderInit(self, "Enqueue", "Q", "ui_is_queued")
@@ -307,43 +307,43 @@
 
                                                   <!-- InventoryList itself -->
             <Control name="$(parent)List"
-                inherits="ZO_ScrollList">
+              inherits="ZO_ScrollList">
               <Anchor point="TOPLEFT"
-                  relativeTo="$(parent)Headers"
-                  relativePoint="BOTTOMLEFT"
-                  offsetY="10"
-                  />
+                relativeTo="$(parent)Headers"
+                relativePoint="BOTTOMLEFT"
+                offsetY="10"
+                />
               <Anchor point="BOTTOMRIGHT"
-                  relativeTo="$(parent)"
-                  relativePoint="BOTTOMRIGHT"
-                  />
+                relativeTo="$(parent)"
+                relativePoint="BOTTOMRIGHT"
+                />
             </Control>
           </Controls>
         </Control>
 
         <Label  name="$(parent)InventoryListTitle"
-            text="Writ Inventory"
-            font="ZoFontGame"
-            color="FFFFFF"
-            >
+          text="Writ Inventory"
+          font="ZoFontGame"
+          color="FFFFFF"
+          >
           <Anchor relativeTo="$(parent)InventoryList"
-              relativePoint="TOPLEFT"
-              point="BOTTOMLEFT"
-              offsetX="0"
-              offsetY="-10" />
+            relativePoint="TOPLEFT"
+            point="BOTTOMLEFT"
+            offsetX="0"
+            offsetY="-10" />
           <Dimensions x="500" y="20" />
         </Label>
 
                                      <!-- Enqueue All / Dequeue All buttons -->
         <Button   name="$(parent)EnqueueAll"
-            inherits="ZO_DefaultButton"
-            text="Enqueue All"
-            >
+          inherits="ZO_DefaultButton"
+          text="Enqueue All"
+          >
           <Anchor relativeTo="$(parent)InventoryList"
-              relativePoint="BOTTOMRIGHT"
-              point="TOPRIGHT"
-              offsetX="0"
-              offsetY="5" />
+            relativePoint="BOTTOMRIGHT"
+            point="TOPRIGHT"
+            offsetX="0"
+            offsetY="5" />
           <Dimensions x="200" y="25" />
           <OnClicked>
             WritWorthyInventoryList_EnqueueAll()
@@ -351,14 +351,14 @@
         </Button>
 
         <Button   name="$(parent)DequeueAll"
-            inherits="ZO_DefaultButton"
-            text="Dequeue All"
-            >
+          inherits="ZO_DefaultButton"
+          text="Dequeue All"
+          >
           <Anchor relativeTo="$(parent)InventoryList"
-              relativePoint="BOTTOMRIGHT"
-              point="TOPRIGHT"
-              offsetX="0"
-              offsetY="35" />
+            relativePoint="BOTTOMRIGHT"
+            point="TOPRIGHT"
+            offsetX="0"
+            offsetY="35" />
           <Dimensions x="200" y="25" />
           <OnClicked>
             WritWorthyInventoryList_DequeueAll()
@@ -380,47 +380,47 @@
 
     <!-- rows --------------------------------------------------------- -->
     <Button name="WritWorthyInventoryListRow"
-        virtual="true">
+      virtual="true">
       <Dimensions y="20" />
       <Anchor point="RIGHT"
-          relativeTo="$(parent)"
-          />
+        relativeTo="$(parent)"
+        />
       <Controls>
         <Button name="$(parent)Mimic"
-              alpha="1"
-              inherits="ZO_CheckButton"
-              >
+          alpha="1"
+          inherits="ZO_CheckButton"
+          >
           <Dimensions x="16" y="16" />
           <TextureCoords
-              left="0.0"  top="0.0"
-              right="1.0" bottom="1.0"
-              />
+            left="0.0"  top="0.0"
+            right="1.0" bottom="1.0"
+            />
         </Button>
 
         <Button name="$(parent)Enqueue"
-              alpha="1"
-              inherits="ZO_CheckButton"
-              >
+          alpha="1"
+          inherits="ZO_CheckButton"
+          >
           <Dimensions x="16" y="16" />
           <TextureCoords
-              left="0.0"  top="0.0"
-              right="1.0" bottom="1.0"
-              />
+            left="0.0"  top="0.0"
+            right="1.0" bottom="1.0"
+            />
         </Button>
 
         <Texture name="$(parent)EnqueueMask"
-            color="000000"
-            layer="OVERLAY"
-            alpha="0.75"
-            mouseEnabled="true"
-            >
+          color="000000"
+          layer="OVERLAY"
+          alpha="0.75"
+          mouseEnabled="true"
+          >
           <Dimensions x="20" y="20" />
           <Anchor relativeTo="$(parent)Enqueue"
-              relativePoint="TOPLEFT"
-              point="TOPLEFT"
-              offsetX="0"
-              offsetY="0"
-              />
+            relativePoint="TOPLEFT"
+            point="TOPLEFT"
+            offsetX="0"
+            offsetY="0"
+            />
         </Texture>
 
       </Controls>
@@ -428,73 +428,73 @@
 
 
     <TopLevelControl
-        hidden="true"
-        name="WritWorthyMatListUI"
-        movable="true"
-        mouseEnabled="true"
-        resizeHandleSize="2"
-        allowBringToTop="true"
-        clampedToScreen="false"
-        >
+      hidden="true"
+      name="WritWorthyMatListUI"
+      movable="true"
+      mouseEnabled="true"
+      resizeHandleSize="2"
+      allowBringToTop="true"
+      clampedToScreen="false"
+      >
       <Dimensions              x="400"       y="550" />
       <DimensionConstraints minX="400"    minY="350"
                             maxX="1805"   maxY="950" />
       <Controls>
         <Backdrop name="$(parent)BG"
-            inherits="ZO_DefaultBackdrop"
-            />
+          inherits="ZO_DefaultBackdrop"
+          />
         <Label  name="$(parent)WindowTitle"
-            text="WritWorthy Materials"
-            font="ZoFontWindowTitle"
-            color="CFDCBD"
-            wrapMode="ELLIPSIS"
-            verticalAlignment="TOP">
+          text="WritWorthy Materials"
+          font="ZoFontWindowTitle"
+          color="CFDCBD"
+          wrapMode="ELLIPSIS"
+          verticalAlignment="TOP">
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPLEFT"
-              point="TOPLEFT"
-              offsetX="5"
-              offsetY="5" />
+            relativePoint="TOPLEFT"
+            point="TOPLEFT"
+            offsetX="5"
+            offsetY="5" />
         </Label>
         <Button name="$(parent)Close"
-              alpha="1">
+          alpha="1">
           <Textures
-              normal="EsoUI/Art/Buttons/closeButton_up.dds"
-              pressed="EsoUI/Art/Buttons/closeButton_down.dds"
-              mouseOver="EsoUI/Art/Buttons/closeButton_mouseOver.dds"
-              disabled="EsoUI/Art/Buttons/closeButton_disabled.dds"
-              />
+            normal="EsoUI/Art/Buttons/closeButton_up.dds"
+            pressed="EsoUI/Art/Buttons/closeButton_down.dds"
+            mouseOver="EsoUI/Art/Buttons/closeButton_mouseOver.dds"
+            disabled="EsoUI/Art/Buttons/closeButton_disabled.dds"
+            />
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPRIGHT"
-              point="TOPRIGHT"
-              offsetX="0"
-              offsetY="0" />
+            relativePoint="TOPRIGHT"
+            point="TOPRIGHT"
+            offsetX="0"
+            offsetY="0" />
           <Dimensions x="20" y="20" />
           <TextureCoords
-              left="0"      top="0"
-              right="0.625" bottom="0.625"
-              />
+            left="0"      top="0"
+            right="0.625" bottom="0.625"
+            />
           <OnClicked>
             WritWorthy.MLToggle()
           </OnClicked>
         </Button>
 
         <Button name="$(parent)Refresh"
-              alpha="1">
+          alpha="1">
           <Textures
-              normal="EsoUI/Art/Help/help_tabicon_feedback_up.dds"
-              pressed="EsoUI/Art/Help/help_tabicon_feedback_down.dds"
-              mouseOver="EsoUI/Art/Help/help_tabicon_feedback_over.dds"
-              disabled="EsoUI/Art/Help/help_tabicon_feedback_disabled.dds"
-              />
+            normal="EsoUI/Art/Help/help_tabicon_feedback_up.dds"
+            pressed="EsoUI/Art/Help/help_tabicon_feedback_down.dds"
+            mouseOver="EsoUI/Art/Help/help_tabicon_feedback_over.dds"
+            disabled="EsoUI/Art/Help/help_tabicon_feedback_disabled.dds"
+            />
           <Anchor relativeTo="$(parent)"
-              relativePoint="TOPRIGHT"
-              point="TOPRIGHT"
-              offsetX="-30"
-              offsetY="0" />
+            relativePoint="TOPRIGHT"
+            point="TOPRIGHT"
+            offsetX="-30"
+            offsetY="0" />
           <Dimensions x="20" y="20" />
           <TextureCoords
-              left="0.1"     top="0.1"
-              right="0.9" bottom="0.9" />
+            left="0.1"     top="0.1"
+            right="0.9" bottom="0.9" />
           <OnClicked>
             d("WritWorthyMatListUI_RefreshUI()")
           </OnClicked>
