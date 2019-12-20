@@ -13,9 +13,11 @@ local Log  = WritWorthy.Log
 -- MatUI: The window around the material list --------------------------------
 function WritWorthy.MatUI:New()
     Log.Debug("WWML:New()")
-
+    local xml_control = WritWorthyMatUIList
+    local o = ZO_SortFilterList.New(self, xml_control)
+    WritWorthy.MatUI.singleton = o
+    return o
 end
-
 
 function WritWorthy.MatUI.RestorePos()
     Log.Debug("WWMUI_RestorePos()")
@@ -30,14 +32,24 @@ end
 function WritWorthy.MatUI.OnResizeStop()
     Log.Debug("WWMUI_OnResizeStop()")
     Util.OnResizeStop( WritWorthyMatUI
-                     , WritWorthy.MatList
-                     , WritWorthy.MatList.singleton
+                     , WritWorthy.MatUI
+                     , WritWorthy.MatUI.singleton
                      , "ml_position" )
 end
 
 function WritWorthy.MatUI.ToggleUI()
     Log.Debug("WWMUI_ToggleUI()")
-    -- ###
+    if not WritWorthyMatUI then
+        Log.Error("WritWorthyMatUI missing")
+        return
+    end
+    local h = WritWorthyMatUI:IsHidden()
+    if h then
+        WritWorthy.MatUI.RestorePos()
+        WritWorthy.MatUI.RefreshUI()
+        WritWorthy.MatUI:UpdateAllCellWidths()
+    end
+    WritWorthyMatUI:SetHidden(not h)
 end
 
 
@@ -50,5 +62,10 @@ end
 function WritWorthy.MatUI.HeaderInit(control, name, text, key)
     Log.Debug( "WWMUI_HeaderInit() c:%s n:%s t:%s k:%s"
              , tostring(control), name, text, key )
+    -- ###
+end
+
+function WritWorthy.MatUI:UpdateAllCellWidths()
+    Log.Debug("WWML:UpdateAllCellWidths")
     -- ###
 end

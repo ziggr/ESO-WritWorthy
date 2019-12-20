@@ -138,7 +138,7 @@ function WritWorthyUI_ToggleUI()
     if not ui then
         return
     end
-    h = WritWorthyUI:IsHidden()
+    local h = WritWorthyUI:IsHidden()
     if h then
         WritWorthyUI_RestorePos()
         local t = WritWorthyUIInventoryListTitle
