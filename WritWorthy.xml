@@ -5,9 +5,8 @@
 <GuiXml>
   <Controls>
     <!-- writ list window ------------------------------------------------ -->
-    <TopLevelControl
+    <TopLevelControl name="WritWorthyUI"
       hidden="true"
-      name="WritWorthyUI"
       movable="true"
       mouseEnabled="true"
       resizeHandleSize="2"
@@ -28,16 +27,6 @@
       <!-- React to window move/resize -->
       <OnMoveStop>WritWorthyUI_OnMoveStop()</OnMoveStop>
       <OnResizeStop>WritWorthyUI_OnResizeStop()</OnResizeStop>
-      <!--
-
-      <OnUpdate>
-        WritWorthy_Update()
-      </OnUpdate>
-
-      <OnInitialized>
-        WritWorthy_Initialized()
-      </OnInitialized>
-      -->
 
       <Controls>
         <Backdrop name="$(parent)BG"
@@ -427,22 +416,34 @@
     </Button>
 
 
-    <TopLevelControl
+    <!-- mat list window ------------------------------------------------ -->
+    <TopLevelControl name="WritWorthyMatUI"
       hidden="true"
-      name="WritWorthyMatListUI"
       movable="true"
       mouseEnabled="true"
       resizeHandleSize="2"
       allowBringToTop="true"
       clampedToScreen="false"
       >
-      <Dimensions              x="400"       y="550" />
-      <DimensionConstraints minX="400"    minY="350"
+      <Dimensions              x="620"       y="550" />
+      <DimensionConstraints minX="620"    minY="350"
                             maxX="1805"   maxY="950" />
+
+            <!-- Positive LT/Negative RB offsets allow sliding
+               past edge of screen. Negative LT/Positive RB
+               offsets inset from edge of screen.
+               Neither affect resize. Grr.
+             -->
+      <ClampedToScreenInsets left="-20" top="-20" right="20" bottom="20" />
+
+      <!-- React to window move/resize -->
+      <OnMoveStop>WritWorthy.MatUI.OnMoveStop()</OnMoveStop>
+      <OnResizeStop>WritWorthy.MatUI.OnResizeStop()</OnResizeStop>
+
       <Controls>
         <Backdrop name="$(parent)BG"
-          inherits="ZO_DefaultBackdrop"
-          />
+        inherits="ZO_DefaultBackdrop"
+        />
         <Label  name="$(parent)WindowTitle"
           text="WritWorthy Materials"
           font="ZoFontWindowTitle"
@@ -455,6 +456,7 @@
             offsetX="5"
             offsetY="5" />
         </Label>
+
         <Button name="$(parent)Close"
           alpha="1">
           <Textures
@@ -474,7 +476,7 @@
             right="0.625" bottom="0.625"
             />
           <OnClicked>
-            WritWorthy.MLToggle()
+            WritWorthy.MatUI.ToggleUI()
           </OnClicked>
         </Button>
 
@@ -494,37 +496,149 @@
           <Dimensions x="20" y="20" />
           <TextureCoords
             left="0.1"     top="0.1"
-            right="0.9" bottom="0.9" />
+            right="0.9" bottom="0.9"
+            />
           <OnClicked>
-            d("WritWorthyMatListUI_RefreshUI()")
+            WritWorthy.MatUI.RefreshUI()
           </OnClicked>
         </Button>
 
-        <Label name="$(parent)ShowLabel"
-          text="Show:"
-          font="ZoFontGame" >
-          <Dimensions x="100" y="20" />
+                          <!-- WritWorthyMatUIList -->
+        <Control name="$(parent)List"
+          inheritAlpha="true"
+          >
           <Anchor relativeTo="$(parent)"
             relativePoint="TOPLEFT"
             point="TOPLEFT"
             offsetX="5"
-            offsetY="40" />
-        </Label>
+            offsetY="85" />
+          <Anchor relativeTo="$(parent)"
+            relativePoint="BOTTOMRIGHT"
+            point="BOTTOMRIGHT"
+            offsetX="0"
+            offsetY="-105" />
+          <!-- Pointless to set dimensions when the two anchors
+               completely and dynamically define our size
+          <Dimensions x="990" y="700" />
+          -->
+          <Controls>
+                                            <!-- WritWorthyMatUIListHeaders -->
+            <Control name="$(parent)Headers">
+              <Anchor relativeTo="$(parent)"
+                relativePoint="TOPLEFT"
+                point="TOPLEFT" />
+              <Anchor relativeTo="$(parent)"
+                relativePoint="TOPRIGHT"
+                point="TOPRIGHT" />
+              <Dimensions y="20" />
+              <Controls>
+                <Control name="$(parent)Name"
+                  inherits="ZO_SortHeader"
+                  >
+                  <Anchor relativeTo="$(parent)"
+                    relativePoint="TOPLEFT"
+                    point="TOPLEFT"
+                    offsetX="0" />
+                  <Anchor relativeTo="$(parent)"
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-410" />
+                  <Dimensions x="200" y="20" />
+                  <OnInitialized>
+                    WritWorthy.MatUI.HeaderInit(self, "Name", "Name", "ui_name")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)RequiredCt"
+                  inherits="ZO_SortHeader"
+                  >
+                  <Anchor relativeTo="$(parent)"
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-330" />
+                  <Dimensions x="75" y="20" />
+                  <OnInitialized>
+                    WritWorthy.MatUI.HeaderInit(self, "ReqCt", "Req'd", "ui_required_ct")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)HaveCt"
+                  inherits="ZO_SortHeader"
+                  >
+                  <Anchor relativeTo="$(parent)"
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-250" />
+                  <Dimensions x="75" y="20" />
+                  <OnInitialized>
+                    WritWorthy.MatUI.HeaderInit(self, "HaveCt", "Have", "ui_have_ct")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)BuyCt"
+                  inherits="ZO_SortHeader"
+                  >
+                  <Anchor relativeTo="$(parent)"
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-170" />
+                  <Dimensions x="75" y="20" />
+                  <OnInitialized>
+                    WritWorthy.MatUI.HeaderInit(self, "BuyCt", "Buy", "ui_buy_ct")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)PriceEa"
+                  inherits="ZO_SortHeader"
+                  >
+                  <Anchor relativeTo="$(parent)"
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-90" />
+                  <Dimensions x="75" y="20" />
+                  <OnInitialized>
+                    WritWorthy.MatUI.HeaderInit(self, "PriceEa", "Price", "ui_price_ea")
+                  </OnInitialized>
+                </Control>
+                <Control name="$(parent)BuyTotalCost"
+                  inherits="ZO_SortHeader"
+                  >
+                  <Anchor relativeTo="$(parent)"
+                    relativePoint="TOPRIGHT"
+                    point="TOPRIGHT"
+                    offsetX="-10" />
+                  <Dimensions x="75" y="20" />
+                  <OnInitialized>
+                    WritWorthy.MatUI.HeaderInit(self, "BuyTotalCost", "Subtotal", "ui_buy_total_cost")
+                  </OnInitialized>
+                </Control>
+              </Controls>
+            </Control>                                  <!-- MatListHeaders -->
 
-        <!--Control name="$(parent)ShowComboBox"
-          inherits="ZO_ComboBox"
+                                                        <!-- MatList itself -->
+            <Control name="$(parent)List"
+              inherits="ZO_ScrollList">
+              <Anchor point="TOPLEFT"
+                relativeTo="$(parent)Headers"
+                relativePoint="BOTTOMLEFT"
+                offsetY="10"
+                />
+              <Anchor point="BOTTOMRIGHT"
+                relativeTo="$(parent)"
+                relativePoint="BOTTOMRIGHT"
+                />
+            </Control>
+          </Controls>
+        </Control>
+
+        <Label  name="$(parent)MatListTitle"
+          text="Materials required for all available master writs"
           font="ZoFontGame"
+          color="FFFFFF"
           >
-          <Anchor relativeTo="$(parent)ShowLabel"
-            relativePoint="TOPRIGHT"
-            point="TOPLEFT"
-            offsetX="5"
-            offsetY="0" />
-          <Dimensions x="100" y="30" />
-          <OnInitialized>
-            WritWorthy.MLInitComboBox(self)
-          </OnInitialized>
-        </Control -->
+          <Anchor relativeTo="$(parent)MatList"
+            relativePoint="TOPLEFT"
+            point="BOTTOMLEFT"
+            offsetX="0"
+            offsetY="-10" />
+          <Dimensions x="500" y="20" />
+        </Label>
 
       </Controls>
     </TopLevelControl>

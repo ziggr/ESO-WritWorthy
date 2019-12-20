@@ -7,7 +7,7 @@
     - Interaction with Show Duplicates:
         - switch to SHOW DUPLICATES upon turning Mat tooltips to any ON
         - switch mat tooltips to OFF upon turning off SHOW DUPLICATES
-        
+
 2020-12-23
 - Tooltip support for Marify's Master Writ Confirm
     - Option to hide Tooltip additions and let Marify's tooltip stuff cover it.
@@ -28,13 +28,28 @@
     Make a table, probably under WritWorthy.Know.KNOW.{MOTIF,RECIPE....}
         .duplicates_marify
     Not sure I want to refactor out all the Know:New() calls to table references.
-    
+
 - Finish the damn mat list window
 - AGS integration needs a repair, AGAIN
 - Can I fix the auto-exit from station after last crafting, or is LLC still munged?
 
-2019-09-28
--- /writworthy auto: "Opening writs..." show N/M how many in bag for progress
+# 2019-12-18 /ww inv
+
+Record to SavedVariables each
+- master writ in inventory
+- master writ in bank
+- master writ in accessible home storage
+
+For each record:
+- item_link
+- crafting_type abbr
+- bag_name or char_name
+- smithing item, style, trait, qual, know_list violation string
+- mat_list
+
+
+# 2019-09-28
+-- /writworthy auto: "Oopening writs..." show N/M how many in bag for progress
 -- Why no auto-disconnect from station after last crafting?
 -- Why 1st several stations no HSM indicator? Did I exceed some limit?
 -- Would like a writ count at bottom of WW window, along with other summary numbers

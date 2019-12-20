@@ -739,6 +739,14 @@ function WritWorthy:Initialize()
         WritWorthy:AQAddKeyBind()
     end
 
+                        -- If WritWorthy_MatListWindow is un-commented-out
+                        -- in WritWorthy.txt, install the material list window.
+    if WritWorthy.MatUI then
+        WritWorthy.mat_ui = WritWorthy.MatUI:New()
+        -- build list
+        -- refresh?
+        WritWorthy.MatUI.RestorePos()
+    end
     --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
 
