@@ -118,7 +118,7 @@ function WritWorthyUI_RestorePos()
     Util.RestorePos(WritWorthyUI, "position")
 end
 
-function WritWorthyUI_SavePos()
+function WritWorthyUI_SavePos()  -- 2019-12-20 can dead code strip
     Util.SavePos(WritWorthyUI, "position")
 end
 

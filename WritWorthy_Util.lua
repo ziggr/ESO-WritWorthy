@@ -159,6 +159,11 @@ function WritWorthy.Util.RestorePos(top_level_control, saved_var_key_name)
         and WritWorthy.savedVariables[saved_var_key_name] then
         pos = WritWorthy.savedVariables[saved_var_key_name]
     end
+    if not pos then
+        Log.Debug( "RestorePos: no saved pos for key:'%s'"
+                 , saved_var_key_name )
+        return
+    end
 
     if not top_level_control then
                         -- Common crash that occurs when I've messed up
