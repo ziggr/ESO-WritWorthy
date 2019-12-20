@@ -557,7 +557,7 @@
                     offsetX="-330" />
                   <Dimensions x="75" y="20" />
                   <OnInitialized>
-                    WritWorthy.MatUI.HeaderInit(self, "ReqCt", "Req'd", "ui_required_ct")
+                    WritWorthy.MatUI.HeaderInit(self, "RequiredCt", "Req'd", "ui_required_ct")
                   </OnInitialized>
                 </Control>
                 <Control name="$(parent)HaveCt"
@@ -596,7 +596,7 @@
                     WritWorthy.MatUI.HeaderInit(self, "PriceEa", "Price", "ui_price_ea")
                   </OnInitialized>
                 </Control>
-                <Control name="$(parent)BuyTotalCost"
+                <Control name="$(parent)BuySubtotal"
                   inherits="ZO_SortHeader"
                   >
                   <Anchor relativeTo="$(parent)"
@@ -605,7 +605,7 @@
                     offsetX="-10" />
                   <Dimensions x="75" y="20" />
                   <OnInitialized>
-                    WritWorthy.MatUI.HeaderInit(self, "BuyTotalCost", "Subtotal", "ui_buy_total_cost")
+                    WritWorthy.MatUI.HeaderInit(self, "BuySubtotal", "Subtotal", "ui_buy_subtotal")
                   </OnInitialized>
                 </Control>
               </Controls>

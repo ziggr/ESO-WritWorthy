@@ -63,7 +63,7 @@ WritWorthyInventoryList.SORT_KEYS = {
 , ["ui_detail5"     ] = {tiebreaker="ui_is_queued"}
 , ["ui_is_queued"   ] = {tiebreaker="ui_use_mimic"}
 , ["ui_use_mimic"   ] = {tiebreaker="ui_can_queue"}
-                        -- Not a visible columns, but still affect sort.
+                        -- Not visible columns, but still affect sort.
 , ["ui_can_queue"   ] = {}
 , ["ui_station_sort"] = {tiebreaker="ui_voucher_ct"}
 }
