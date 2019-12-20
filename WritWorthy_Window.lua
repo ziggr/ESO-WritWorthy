@@ -159,6 +159,7 @@ end
 
 -- Wrapper function called by "Refresh" shark arrow button.
 function WritWorthyUI_RefreshUI()
+    Log.Debug("WritWorthyUI_RefreshUI")
     WritWorthyUI_Refresh()
 end
 
@@ -175,21 +176,7 @@ end
 -- queue up a request to update the entire UI soon, and then
 -- only do so if the user has stopped typing.
 function WritWorthyUI_RefreshSoon()
-    if not WritWorthy.refreshsoon_ms then
-        zo_callLater(WritWorthyUI_RefreshSoonPoll, 250)
-    end
-    WritWorthy.refreshsoon_ms = GetFrameTimeMilliseconds() + 400
-end
-
-function WritWorthyUI_RefreshSoonPoll()
-    if not WritWorthy.refreshsoon_ms then return end
-    local now = GetFrameTimeMilliseconds() or 0
-    if now <= WritWorthy.refreshsoon_ms then
-        WritWorthy.refreshsoon_ms = nil
-        WritWorthyUI_Refresh()
-    else
-        zo_callLater(WritWorthyUI_RefreshSoonPoll, 250)
-    end
+    Util.CallSoon("refreshsoon_ms", WritWorthyUI_Refresh)
 end
 
 function WritWorthyUI_MaxGPV_TextChanged(new_text)

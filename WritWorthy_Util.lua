@@ -219,6 +219,38 @@ function WritWorthy.Util.OnResizeStop( top_level_control
     end
 end
 
+-- Delayed refresh -----------------------------------------------------------
+--
+-- Don't hammer the CPU refreshing UI over and over while the user types
+-- into a filter field. Delays call to refres (or `func` here) until after
+-- 400ms or so have passed between keystrokes (or calls to `CallSoon()` here).
+function WritWorthy.Util.CallSoon(key, func)
+    Log.Debug("CallSoon     k:%s %d", key, WritWorthy[key] or -1)
+    if not WritWorthy[key] then
+        zo_callLater( function()
+                        WritWorthy.Util.CallSoonPoll(key, func)
+                      end
+                    , 250 )
+    end
+    WritWorthy[key] = GetFrameTimeMilliseconds() + 400
+end
+
+function WritWorthy.Util.CallSoonPoll(key, func)
+    Log.Debug("CallSoonPoll k:%s %d", key, WritWorthy[key] or -1)
+    if not WritWorthy[key] then return end
+    local now = GetFrameTimeMilliseconds() or 0
+    if now <= WritWorthy[key] then
+        Log.Debug("CallSoonPoll k:%s fire", key)
+        WritWorthy[key] = nil
+        func()
+    else
+        zo_callLater( function()
+                        WritWorthy.Util.CallSoonPoll(key, func)
+                      end
+                    , 250 )
+    end
+end
+
 function Util.MatHaveCt(item_link)
     local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
     return bag_ct + bank_ct + craft_bag_ct
