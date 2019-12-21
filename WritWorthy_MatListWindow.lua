@@ -122,7 +122,7 @@ end
 function WritWorthy.MatUI.HeaderInit(control, name, text, key)
     Log.Debug( "WWMUI_HeaderInit() c:%s n:%s t:%s k:%s"
              , tostring(control), name, text, key )
-    local l10n_text = WW.Str("header_"..text) or text
+    local l10n_text = WW.Str("header_"..name) or text
                         -- All our columns are numeric, align-right,
                         -- except for our leftmost column "Name"
     local align     = TEXT_ALIGN_RIGHT
