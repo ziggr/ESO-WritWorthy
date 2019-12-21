@@ -1,3 +1,8 @@
+[B]5.2.4 2019-12-20[/B]
+[LIST]
+[*] Bugfix: Avoid infinite loop of UI Refresh() due to my buggy "delayed refresh" code for the new "Max gold per voucher" edit field.
+[/LIST]
+
 [B]5.2.3 2019-11-07[/B]
 [LIST]
 [*] Bugfix: "Use LibPrice for mat prices" would default to "ON" in the settings window (yay) but erroneously still acted as "OFF" in the actual price-fetching code (boo). Fixed, now defaults to "ON" in both places.
