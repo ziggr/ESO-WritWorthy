@@ -241,6 +241,15 @@ end
 
 function WritWorthyUI_MaxGPV_TextChanged(new_text)
     local new_max = tonumber(new_text)
+    if new_max == WritWorthy.savedVariables.filter_max_gold_per_voucher then
+                        -- _TextChanged() called even if no change.
+                        -- Causes infinite-loop due to _Refresh()'s call to
+                        -- UpdateSummaryAndQButtons(), which unconditionally
+                        -- writes to the MaxGPV edit field, which causes
+                        -- _TextChanges() ...
+                        -- Avoid infinite loop by returning here.
+        return
+    end
     if new_max then
         WritWorthy.savedVariables.filter_max_gold_per_voucher = new_max
     else
