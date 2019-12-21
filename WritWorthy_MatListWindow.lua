@@ -9,7 +9,7 @@ WritWorthy.MatUI = ZO_SortFilterList:Subclass()
 local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
 local Log  = WritWorthy.Log
-
+local WW   = WritWorthy
                         -- savedVariables key for window position
 local WINDOW_POS_KEY = "mat_list_position"
 
@@ -46,19 +46,27 @@ WritWorthy.MatUI.SORT_KEYS = {
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
                         -- Useful when iterating through columns/cells.
-WritWorthy.MatUI.CELL_TYPE           = "Name"
+WritWorthy.MatUI.CELL_NAME           = "Name"
 WritWorthy.MatUI.CELL_REQUIRED_CT    = "RequiredCt"
 WritWorthy.MatUI.CELL_HAVE_CT        = "HaveCt"
 WritWorthy.MatUI.CELL_BUY_CT         = "BuyCt"
 WritWorthy.MatUI.CELL_PRICE_EA       = "PriceEa"
 WritWorthy.MatUI.CELL_BUY_SUBTOTAL   = "BuySubtotal"
 WritWorthy.MatUI.CELL_NAME_LIST = {
-  WritWorthy.MatUI.CELL_TYPE
+  WritWorthy.MatUI.CELL_NAME
 , WritWorthy.MatUI.CELL_REQUIRED_CT
 , WritWorthy.MatUI.CELL_HAVE_CT
 , WritWorthy.MatUI.CELL_BUY_CT
 , WritWorthy.MatUI.CELL_PRICE_EA
 , WritWorthy.MatUI.CELL_BUY_SUBTOTAL
+}
+WritWorthy.MatUI.HEADER_TOOLTIPS = {
+  [WritWorthy.MatUI.CELL_NAME        ] = WW.Str("header_tooltip_Name")
+, [WritWorthy.MatUI.CELL_REQUIRED_CT ] = WW.Str("header_tooltip_RequiredCt")
+, [WritWorthy.MatUI.CELL_HAVE_CT     ] = WW.Str("header_tooltip_HaveCt")
+, [WritWorthy.MatUI.CELL_BUY_CT      ] = WW.Str("header_tooltip_BuyCt")
+, [WritWorthy.MatUI.CELL_PRICE_EA    ] = WW.Str("header_tooltip_PriceEa")
+, [WritWorthy.MatUI.CELL_BUY_SUBTOTAL] = WW.Str("header_tooltip_BuySubtotal")
 }
 
 WritWorthy.MatUI.ROW_HEIGHT = 30
@@ -111,11 +119,42 @@ function WritWorthy.MatUI.RefreshUI()
     -- ###
 end
 
-
 function WritWorthy.MatUI.HeaderInit(control, name, text, key)
     Log.Debug( "WWMUI_HeaderInit() c:%s n:%s t:%s k:%s"
              , tostring(control), name, text, key )
-    -- ###
+    local l10n_text = WW.Str("header_"..text) or text
+                        -- All our columns are numeric, align-right,
+                        -- except for our leftmost column "Name"
+    local align     = TEXT_ALIGN_RIGHT
+    if key == "ui_name" then
+        align = TEXT_ALIGN_LEFT
+    end
+
+    ZO_SortHeader_Initialize( control                   -- control
+                            , l10n_text                 -- name
+                            , key or string.lower(text) -- key
+                            , ZO_SORT_ORDER_DOWN        -- initialDirection
+                            , align or TEXT_ALIGN_LEFT  -- alignment
+                            , "ZoFontWinT1"             -- font
+                            , nil                       -- highlightTemplate
+                            )
+
+                        -- Remember this control!
+                        --
+                        -- The header cell control that we get here, and which
+                        -- ZO_SortHeader_Initialize() fills in is NOT the same
+                        -- as the XML template control reachable from
+                        -- WritWorthyUIInventoryListHeaders:GetNamedChild().
+                        -- We need this actual header cell control, which has
+                        -- Text and alignment and live data, in addition to the
+                        -- XML template control (which has dynamic width,
+                        -- thanks to its two anchors).
+    WritWorthy.MatUI.list_header_controls[name] = control
+
+    local tooltip_text = WritWorthy.MatUI.HEADER_TOOLTIPS[name]
+    if tooltip_text then
+        ZO_SortHeader_SetTooltip(control, tooltip_text)
+    end
 end
 
 function WritWorthy.MatUI:UpdateAllCellWidths()
