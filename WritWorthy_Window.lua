@@ -165,7 +165,7 @@ end
 
 function WritWorthyUI_Refresh()
     WritWorthy.RequiredSkill.ResetCache()
-    list = WritWorthyInventoryList.singleton
+    local list = WritWorthyInventoryList.singleton
     list:BuildMasterlist()
     list:Refresh()
     list:UpdateSummaryAndQButtons()

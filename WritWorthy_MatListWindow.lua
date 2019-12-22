@@ -71,6 +71,9 @@ WritWorthy.MatUI.HEADER_TOOLTIPS = {
 
 WritWorthy.MatUI.ROW_HEIGHT = 30
 
+WritWorthy.MatUI.COLOR_TEXT_NEED_MORE    = "CC3333"
+WritWorthy.MatUI.COLOR_TEXT_HAVE_ENOUGH  = "FFFFFF"
+
 -- MatUI: The window around the material list --------------------------------
 function WritWorthy.MatUI:New()
     Log.Debug("WWML:New()")
@@ -116,7 +119,10 @@ end
 
 function WritWorthy.MatUI.RefreshUI()
     Log.Debug("WWMUI_RefreshUI()")
-    -- ###
+    local list = WritWorthy.MatUI.singleton
+    list:BuildMasterlist()
+    list:Refresh()
+    list:UpdateSummary()
 end
 
 function WritWorthy.MatUI.HeaderInit(control, name, text, key)
@@ -144,7 +150,7 @@ function WritWorthy.MatUI.HeaderInit(control, name, text, key)
                         -- The header cell control that we get here, and which
                         -- ZO_SortHeader_Initialize() fills in is NOT the same
                         -- as the XML template control reachable from
-                        -- WritWorthyUIInventoryListHeaders:GetNamedChild().
+                        -- WritWorthyMatUIListHeaders:GetNamedChild().
                         -- We need this actual header cell control, which has
                         -- Text and alignment and live data, in addition to the
                         -- XML template control (which has dynamic width,
@@ -157,7 +163,215 @@ function WritWorthy.MatUI.HeaderInit(control, name, text, key)
     end
 end
 
+-- After a resize, widen our "detail1" column and nudge the others to its right.
 function WritWorthy.MatUI:UpdateAllCellWidths()
     Log.Debug("WWML:UpdateAllCellWidths")
+    for _, row_control in ipairs(self.row_control_list) do
+        self:UpdateColumnWidths(row_control)
+    end
+end
+
+
+-- Change column width/offsets after a window resize. NOP if nothing changed.
+function WritWorthy.MatUI:UpdateColumnWidths(row_control)
+                        -- Do nothing if we have not yet fully initialized.
+    local hc = WritWorthyMatUIListHeadersName
+    if not hc then return end
+    local rel_to_left = WritWorthyMatUIListHeadersName:GetLeft()
+
+                        -- Cache header cell controls from which we'll
+                        -- gather column widths. We want the GetNamedChild()
+                        -- controls (they have anchors and dynamic width)
+                        -- not the ZO_SortHeader_Initialize() controls
+                        -- (which appear to never change widths).
+    local hcl = {}
+    for cell_name, _ in pairs(self.list_header_controls) do
+        hcl[cell_name] = WritWorthyMatUIListHeaders:GetNamedChild(cell_name)
+    end
+
+    for cell_name, _ in pairs(self.list_header_controls) do
+        local cell_control = row_control:GetNamedChild(cell_name)
+        local header_cell_control = hcl[cell_name]
+        if header_cell_control then
+            local offsetX = header_cell_control:GetLeft() - rel_to_left
+                        -- 1 bool    isValidAnchor
+                        -- 2 integer point
+                        -- 3 object  relativeTo
+                        -- 4 integer relativePoint
+                        -- 5 number  offsetX
+                        -- 6 number  offsetY
+                        -- 7 AnchorConstrains anchorConstrains
+            local a = { cell_control:GetAnchor(0) }
+            if a and a[1] then
+                cell_control:SetAnchor( LEFT                -- point
+                                      , row_control         -- relativeTo
+                                      , LEFT                -- relativePoint
+                                      , offsetX             -- offsetX
+                                      , a[6] )              -- offsetY
+            end
+            cell_control:SetWidth(header_cell_control:GetWidth())
+        end
+    end
+                        -- I don't always have a background, but when I do,
+                        -- I want it to stretch all the way across this row.
+    local background_control = GetControl(row_control, "BG")
+    if background_control then
+        background_control:SetWidth(row_control:GetWidth())
+    end
+end
+
+-- Called by ZO_SortFilterList during something er other
+function WritWorthy.MatUI:Initialize(control)
+    ZO_SortFilterList.Initialize(self, control)
+    self.mat_row_data_list = {}
+    self:SetEmptyText("no materials required")
+
+                        -- Tell ZO_ScrollList how it can ask us to
+                        -- create row controls.
+    ZO_ScrollList_AddDataType(
+          self.list             -- scroll list control
+        , DATA_TYPE_ID          -- row data type ID
+        , "WritWorthyMatUIRow"  -- template: virtual button defined in XML
+        , self.ROW_HEIGHT       -- row height
+                                -- setupCallback
+        , function(control, mat_row_data)
+             self:SetupRowControl(control, mat_row_data)
+         end
+        )
+
+                        -- How to order our table rows. Probably doesn't need
+                        -- to be a specific data member with a specific name,
+                        -- we just need to know how to find it and pass it to
+                        -- table.sort() from within FilterScrollList() below.
+                        --
+                        -- ### Need sort to work with nil values for
+                        -- ### GOLD_UNKNOWN ui_price_ea and ui_buy_subtotal
+    self.sortFunction
+        = function(row_a, row_b)
+            return ZO_TableOrderingFunction( row_a.data
+                                           , row_b.data
+                                           , self.currentSortKey
+                                           , WritWorthy.MatUI.SORT_KEYS
+                                           , self.currentSortOrder
+                                           )
+        end
+
+                        -- Set our initial sort key. Not sure this actually
+                        -- works. And if it does, wouldn't it be polite to
+                        -- save/restore the sort index in savedVariables?
+                        --
+                        -- After ZO_SortFilterList:Initialize() we  have a
+                        -- sortHeaderGroup. At least, that's how it works in
+                        -- ScrollListExample.
+    self.sortHeaderGroup:SelectHeaderByKey("name")
+    ZO_SortHeader_OnMouseExit(WritWorthyMatUIListHeadersName)
+    self:RefreshData()
+end
+
+-- Convert integer 987 to "1K"
+local function abbr_num(num)
+    return ZO_AbbreviateNumber( num
+                              , NUMBER_ABBREVIATION_PRECISION_LARGEST_UNIT
+                              , true
+                              )
+end
+
+-- ZO_ScrollFilterList will instantiate (or reuse!) a
+-- WritWorthyMatUIRow row_control to display some mat_row_data. But
+-- it's our job to fill in that control's nested labels with the appropriate
+-- bits of data.
+--
+-- Called as self.setupCallback from ZO_ScrollList_Commit()
+--
+-- mat_row_data is the instance passed to ZO_ScrollList_CreateDataEntry() by
+-- FilterScrollList(), is an element of master list
+-- WritWorthy.MatUI.mat_row_data_list.
+function WritWorthy.MatUI:SetupRowControl(row_control, mat_row_data)
+    Log.Debug("SetupRowControl row_control:%s", tostring(row_control))
+    row_control.mat_row_data = mat_row_data
+
+                        -- ZO_SortList reuses row_control instances, so there
+                        -- is a good chance we've already created these cell
+                        -- controls.
+    local already_created = row_control[self.CELL_NAME]
+    if not already_created then
+        local header_control = WritWorthyMatUIListHeaders
+        self:CreateRowControlCells(row_control, header_control)
+                        -- Retain pointers to our row_control instances so that
+                        -- we can update all their cell widths later upon
+                        -- window resize.
+        table.insert(self.row_control_list, row_control)
+    end
+
+    self:PopulateUIFields(mat_row_data)
+                        -- Refresh mutable state (aka queued/completed)
+
+                        -- For less typing.
+    local rc  = row_control
+    local r_d = mat_row_data
+
+                        -- Apply text color to entire row.
+    local fn = Util.color
+    local c  = self.COLOR_TEXT_HAVE_ENOUGH
+
+
+                        -- Allow each cell's OnMouseDown handler easy
+                        -- access to this row's data.
+    for _, name in ipairs(self.CELL_NAME_LIST) do
+        rc[name].mat_row_data = r_d
+    end
+                        -- Fill in the cells with data for this row.
+    rc[self.CELL_NAME        ]:SetText(fn(c,              r_d.ui_name         ))
+    rc[self.CELL_REQUIRED_CT ]:SetText(fn(c,     abbr_num(r_d.ui_required_ct )))
+    rc[self.CELL_HAVE_CT     ]:SetText(fn(c,     abbr_num(r_d.ui_have_ct     )))
+    rc[self.CELL_PRICE_EA    ]:SetText(fn(c, Util.ToMoney(r_d.ui_price_ea    )))
+    if 0 < r_d.ui_buy_ct then
+        rc[self.CELL_BUY_CT      ]:SetText(fn(c,     abbr_num(r_d.ui_buy_ct      )))
+        rc[self.CELL_BUY_SUBTOTAL]:SetText(fn(c, Util.ToMoney(r_d.ui_buy_subtotal)))
+    else
+        rc[self.CELL_BUY_CT      ]:SetText("")
+        rc[self.CELL_BUY_SUBTOTAL]:SetText("")
+    end
+end
+
+local function HaveCt(item_link)
+    local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
+    return bag_ct + bank_ct + craft_bag_ct
+end
+
+-- Fill in all mat_row_data.ui_xxx fields.
+function WritWorthy.MatUI:PopulateUIFields(mat_row_data)
+    local r_d = mat_row_data -- For less typing.
+    r_d.ui_name         = zo_strformat("<<t:1>>",GetItemLinkName(r_d.item_link))
+
+    r_d.ui_required_ct  = r_d.required_ct
+    r_d.ui_have_ct      = HaveCt(r_d.item_link)
+    r_d.ui_price_ea     = Util.MatPrice(r_d.item_link)
+    if r_d.ui_have_ct < r_d.ui_required_ct then
+        r_d.ui_buy_ct   = r_d.required_ct - r_d.have_ct
+        if r_d.ui_price_ea == WritWorthy.GOLD_UNKNOWN then
+            r_d.ui_buy_subtotal = WritWorthy.GOLD_UNKNOWN
+        else
+            r_d.ui_buy_subtotal = r_d.ui_buy_ct * r_d.ui_price_ea
+        end
+    else
+        r_d.ui_buy_ct       = 0
+        r_d.ui_buy_subtotal = 0
+    end
+end
+
+function WritWorthy.MatUI:BuildMasterlist()
+    self.mat_row_data_list = {}
     -- ###
 end
+
+function WritWorthy.MatUI:Refresh()
+    Log.Debug("WritWorthy.MatUI:Refresh")
+    self:RefreshData()
+end
+
+function WritWorthy.MatUI:UpdateSummary()
+    self.mat_row_data_list = {}
+    -- ###
+end
+

@@ -643,5 +643,15 @@
       </Controls>
     </TopLevelControl>
 
+    <!-- mat list rows - built by code, not xml ----------------------- -->
+    <Button name="WritWorthyMatUIRow"
+      virtual="true">
+      <Dimensions y="20" />
+      <Anchor point="RIGHT"
+        relativeTo="$(parent)"
+        />
+      <Controls>
+      </Controls>
+    </Button>
   </Controls>
 </GuiXml>

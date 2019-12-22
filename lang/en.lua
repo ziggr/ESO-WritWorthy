@@ -110,20 +110,17 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["header_Quality"                        ] = "Quality"
 ,   ["header_Type"                           ] = "Type"
 ,   ["header_V"                              ] = "V"
-
 ,   ["header_Name"                           ] = "Name"
 ,   ["header_RequiredCt"                     ] = "Req'd"
 ,   ["header_HaveCt"                         ] = "Have"
 ,   ["header_BuyCt"                          ] = "Buy"
 ,   ["header_PriceEa"                        ] = "Price"
 ,   ["header_BuySubtotal"                    ] = "Total"
-
 ,   ["header_tooltip_RequiredCt"             ] = "How many required for writs?"
 ,   ["header_tooltip_HaveCt"                 ] = "How many in inventory+bank+craft bag?"
 ,   ["header_tooltip_BuyCt"                  ] = "Don't have enough? How many more do you need? (=Req'd - Have)"
 ,   ["header_tooltip_PriceEa"                ] = "Price per material"
 ,   ["header_tooltip_BuySubtotal"            ] = "Total price (=Buy × Price)"
-
 ,   ["header_tooltip_Q"                      ] = "Enqueued for crafting"
 ,   ["header_tooltip_M"                      ] = "Use mimic stone?"
 ,   ["header_tooltip_V"                      ] = "Voucher count"
