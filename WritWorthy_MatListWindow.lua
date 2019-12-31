@@ -118,11 +118,17 @@ end
 
 
 function WritWorthy.MatUI.RefreshUI()
-    Log.Debug("WWMUI_RefreshUI()")
+    Log.Debug("WWMUI.RefreshUI()")
+    local list = WritWorthy.MatUI.singleton
+    list:Refresh()
+end
+
+function WritWorthy.MatUI:Refresh()
+    Log.Debug("WWUI:Refresh()")
     local list = WritWorthy.MatUI.singleton
     list:BuildMasterlist()
-    list:Refresh()
-    list:UpdateSummary()
+    list:RefreshData()
+    -- self:UpdateSummary() -- ### Why isn't this function entered in MatUI's table?
 end
 
 function WritWorthy.MatUI.HeaderInit(control, name, text, key)
@@ -361,17 +367,42 @@ function WritWorthy.MatUI:PopulateUIFields(mat_row_data)
 end
 
 function WritWorthy.MatUI:BuildMasterlist()
+    Log.Debug("WWMUI:BuildMasterlist()")
     self.mat_row_data_list = {}
+
     -- ###
+    local r_d = {}
+    r_d.item_link = WritWorthy.FindLink("ancestor silk")
+    r_d.required_ct = 1234
+    self:PopulateUIFields(r_d)
+    table.insert(self.mat_row_data_list, rd)
+
 end
 
-function WritWorthy.MatUI:Refresh()
-    Log.Debug("WritWorthy.MatUI:Refresh")
-    self:RefreshData()
+-- Populate the ScrollList's rows, using our data model as a source.
+    Log.Debug( "MMUI:SortScrollList() #mrdl:%d"
+             , self.mat_row_data_list and #self.mat_row_data_list )
+function WritWorthy.MatUI:SortScrollList()
+    local scroll_data = ZO_ScrollList_GetDataList(self.list)
+    ZO_ClearNumericallyIndexedTable(scroll_data)
+    for _, mat_row_data in ipairs(self.mat_row_data_list) do
+        table.insert( scroll_data
+                    , ZO_ScrollList_CreateDataEntry(DATA_TYPE_ID, mat_row_data))
+    end
+end
+
+function WritWorthy.MatUI:SortScrollList()
+    -- Original boilerplate SortScrollList() implementation that works
+    -- perfectly with the usual sortFunction
+    --
+    Log.Debug("MMUI:SortScrollList()")
+    local scroll_data = ZO_ScrollList_GetDataList(self.list)
+    table.sort(scroll_data, self.sortFunction)
 end
 
 function WritWorthy.MatUI:UpdateSummary()
     self.mat_row_data_list = {}
+    Log.Debug("MMUI:UpdateSummary()")
     -- ###
 end
 
