@@ -75,7 +75,7 @@ function MatRow.ListDump(mat_list)
         local row_total = row:Total()
         d(ToMoney(row_total) .. "g = "
          .. tostring(row.ct) .. "x "
-         .. ToMoney(row.mm) .. " "
+         .. ToMoney(row.mm) .. "g "
          .. tostring(row.link) )
     end
     local total = MatRow.ListTotal(mat_list)
