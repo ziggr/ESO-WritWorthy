@@ -16,7 +16,6 @@ WritWorthy.I18N['shorten']['en'] = {
 ,   ["Ancestor Silk Robe"          ] = "robe"
 ,   ["Ancestor Silk Sash"          ] = "sash"
 ,   ["Ancestor Silk Shoes"         ] = "shoes"
-,   ["Armor of the Seducer"        ] = "Seducer"
 ,   ["Enchanting"                  ] = "Enchant"
 ,   ["Night Mother's Gaze"         ] = "Night Mother's"
 ,   ["Pelinal's Aptitude"          ] = "Pelinal's"
