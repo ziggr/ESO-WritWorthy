@@ -1,3 +1,10 @@
+[B]5.3.1 2020-02-27[/B]
+[LIST]
+[*] Update 25/5.3.0/API 100030/Harrowstorm
+[*] Motif pages for Moongrave Fane, New Moon Priest, Shield of Senchal
+[*] Remove "Seducer" shortened name for "Armor of Seducer"
+[/LIST]
+
 [B]5.2.4 2019-12-20[/B]
 [LIST]
 [*] Bugfix: Avoid infinite loop of UI Refresh() due to my buggy "delayed refresh" code for the new "Max gold per voucher" edit field.
