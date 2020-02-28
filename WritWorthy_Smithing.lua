@@ -282,12 +282,12 @@ Smithing.MOTIF = {
 ,   [ 87 ] = nil                   -- Dragon Bone
 ,   [ 88 ] = { pages_id  =  2628 } -- Moongrave
 ,   [ 89 ] = { pages_id  =  2629 } -- Stags of Z'en
-,   [ 90 ] = nil                   -- Witches Festival 2019
-,   [ 91 ] = nil                   -- ?
+,   [ 90 ] = nil                   -- 2020-02-27 unused Witches Festival 2019
+,   [ 91 ] = nil                   -- 2020-02-27 unused ?
 ,   [ 92 ] = { pages_id  =  2630 } -- Dragonguard
-,   [ 93 ] = nil                   -- Moongrave Fane
-,   [ 94 ] = nil                   -- New Moon
-,   [ 95 ] = nil                   -- Shields of Senchal
+,   [ 93 ] = { pages_id  =  2628 } -- Moongrave Fane
+,   [ 94 ] = { pages_id  =  2748 } -- New Moon Priest
+,   [ 95 ] = { pages_id  =  2748 } -- Shield of Senchal
 
                         -- How to learn pages_id for new motifs:
                         -- 1. open the 'J' Quest screen
