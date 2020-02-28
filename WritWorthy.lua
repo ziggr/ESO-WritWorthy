@@ -5,7 +5,7 @@
 
 local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 local WW = WritWorthy
-local LAM2 = LibStub("LibAddonMenu-2.0")
+local LAM2 = LibAddonMenu2
 
 WritWorthy.name            = "WritWorthy"
 WritWorthy.version         = "5.3.1"
@@ -538,7 +538,7 @@ function WritWorthy.SlashCommand(arg1)
 end
 
 function WritWorthy.RegisterSlashCommands()
-    local lsc = LibStub:GetLibrary("LibSlashCommander", true)
+    local lsc = LibSlashCommander
     if lsc then
         local cmd = lsc:Register( "/writworthy"
                                 , function(arg) WritWorthy.SlashCommand(arg) end
