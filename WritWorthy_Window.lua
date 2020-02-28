@@ -1290,7 +1290,7 @@ function WritWorthyInventoryList:GetLLC()
                         -- Install our custom pre-crafting hooks.
                         -- These write "insufficient materials" errors to chat
                         -- when LLC cannot craft an item due to missing mats.
-    local llc_global = LibStub("LibLazyCrafting")
+    local llc_global = LibLazyCrafting
     if      llc_global
         and llc_global.craftInteractionTables then
         self.llc_orig_is_item_craftable = {}
@@ -1303,7 +1303,7 @@ function WritWorthyInventoryList:GetLLC()
         end
                         -- Promote LLC's internal function
                         -- GetCurrentSetInteractionIndex() so that we can
-                        -- reuse it later without going through LibStub()
+                        -- reuse it later without going through LLC's global.
         self.LibLazyCrafting.GetCurrentSetInteractionIndex
                 = llc_global.functionTable.GetCurrentSetInteractionIndex
     end

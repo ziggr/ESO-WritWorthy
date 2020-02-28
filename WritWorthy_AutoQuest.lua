@@ -14,7 +14,7 @@ local SLOT_ID_NONE = -1     -- slot_id when we KNOW that the bag holds no
                             -- and "0" is an actual valid slot ID.
 
 function WritWorthy:AQAddKeyBind()
-    local menu = LibStub("LibCustomMenu")
+    local menu = LibCustomMenu
     if not menu then return end
     if not WritWorthy.RequireLibCraftText() then return end
 
