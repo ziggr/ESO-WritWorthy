@@ -1,3 +1,9 @@
+[B]5.3.2 2020-??-??[/B]
+[LIST]
+[*] LibStub purge
+[*] Remove LibCustomTitles. That's the last of the embedded libraries for WritWorthy.
+[/LIST]
+
 [B]5.3.1 2020-02-27[/B]
 [LIST]
 [*] Update 25/5.3.0/API 100030/Harrowstorm

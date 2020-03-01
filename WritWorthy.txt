@@ -7,8 +7,8 @@
 ## Author: ziggr
 ## Contributors: Dolgubon
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibStub
-## OptionalDependsOn: LibCustomMenu LibCustomTitles AwesomeGuildStore LibSlashCommander LibDebugLogger
+## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets
+## OptionalDependsOn: LibCustomMenu AwesomeGuildStore LibSlashCommander LibDebugLogger
 
 # RU translation by ivann339 2019-09-06
 
@@ -38,12 +38,6 @@
             #       https://www.esoui.com/downloads/info2241-LibSets.html
             #       https://github.com/Baertram/LibSets
             #   Set names such as "Alessia's Bullwark" and their required trait counts.
-
-            # LibStub required
-            #   by Seerah, sirinsidiator
-            #       https://www.esoui.com/downloads/info44-LibStub.html
-            #       https://github.com/sirinsidiator/ESO-LibStub
-            #   Versioning library required by LibCustomTitles.
 
             # LibSlashCommander optional
             #   by sirinsidiator
@@ -76,8 +70,6 @@
             #       https://www.esoui.com/downloads/info2184-LibCraftText.html
             #       https://github.com/ziggr/ESO-LibCraftText
             #   Allows Accept/Rolis dialog automation in languages other than EN English.
-
-libs/LibCustomTitles/LibCustomTitles.lua
 
 WritWorthy_Define.lua
 
