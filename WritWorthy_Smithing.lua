@@ -287,7 +287,7 @@ Smithing.MOTIF = {
 ,   [ 92 ] = { pages_id  =  2630 } -- Dragonguard
 ,   [ 93 ] = { pages_id  =  2628 } -- Moongrave Fane
 ,   [ 94 ] = { pages_id  =  2748 } -- New Moon Priest
-,   [ 95 ] = { pages_id  =  2748 } -- Shield of Senchal
+,   [ 95 ] = { pages_id  =  2750 } -- Shield of Senchal
 
                         -- How to learn pages_id for new motifs:
                         -- 1. open the 'J' Quest screen
