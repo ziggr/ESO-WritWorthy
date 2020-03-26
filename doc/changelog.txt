@@ -1,7 +1,8 @@
-[B]5.3.2 2020-??-??[/B]
+[B]5.3.2 2020-03-26[/B]
 [LIST]
 [*] LibStub purge
 [*] Remove LibCustomTitles. That's the last of the embedded libraries for WritWorthy.
+[*] Shield of Senchal motif achievement number fixed. Thank you, Ganza-ESO!
 [/LIST]
 
 [B]5.3.1 2020-02-27[/B]
