@@ -288,6 +288,12 @@ Smithing.MOTIF = {
 ,   [ 93 ] = { pages_id  =  2628 } -- Moongrave Fane
 ,   [ 94 ] = { pages_id  =  2748 } -- New Moon Priest
 ,   [ 95 ] = { pages_id  =  2750 } -- Shield of Senchal
+,   [ 96 ] = { pages_id  =  2024 } -- Refabricated
+,   [ 97 ] = { pages_id  =  2757 } -- Blackreach
+,   [ 98 ] = { pages_id  =  2763 } -- Ancestral Nord
+,   [ 99 ] = { pages_id  =  2776 } -- Ancestral Orc
+,   [ 100 ] = { pages_id  =  2773 } -- Ancestral High Elf
+--,   [ 101 ] = { pages_id  =  questid } -- NewStyle
 
                         -- How to learn pages_id for new motifs:
                         -- 1. open the 'J' Quest screen
