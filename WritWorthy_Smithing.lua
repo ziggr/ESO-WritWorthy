@@ -255,6 +255,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_HOLIDAY_HOLLOWJACK       ] = { pages_id  =  1545 } -- Hollowjack
     -- Hollowjack/59 was the last named ITEMSTYLE_X constant.
     -- It's all numeric from here on out.
+,   [ 60 ] = { pages_id  =  2024 } -- Refabricated
 ,   [ 61 ] = { pages_id  =  2098 } -- Bloodforge
 ,   [ 62 ] = { pages_id  =  2097 } -- Dreadhorn
 ,   [ 65 ] = { pages_id  =  2044 } -- Apostle
@@ -288,11 +289,18 @@ Smithing.MOTIF = {
 ,   [ 93 ] = { pages_id  =  2628 } -- Moongrave Fane
 ,   [ 94 ] = { pages_id  =  2748 } -- New Moon Priest
 ,   [ 95 ] = { pages_id  =  2750 } -- Shield of Senchal
-,   [ 96 ] = { pages_id  =  2024 } -- Refabricated
-,   [ 97 ] = { pages_id  =  2757 } -- Blackreach
-,   [ 98 ] = { pages_id  =  2763 } -- Ancestral Nord
-,   [ 99 ] = { pages_id  =  2776 } -- Ancestral Orc
-,   [ 100 ] = { pages_id  =  2773 } -- Ancestral High Elf
+,   [ 96 ] = nil                   -- 2020-05-30 unused
+,   [ 97 ] = nil                   -- Icereach Coven
+,   [ 98 ] = nil                   -- Pyre Witch
+,   [ 99 ] = nil                   -- Sword Thane
+,   [ 100 ] = { pages_id  =  2757 } -- Blackreach Vanguard
+,   [ 101 ] = nil                   -- Greymoor
+,   [ 102 ] = nil                   -- Sea Giant
+,   [ 103 ] = { pages_id  =  2763 } -- Ancestral Nord
+,   [ 104 ] = { pages_id  =  2773 } -- Ancestral High Elf
+,   [ 105 ] = { pages_id  =  2776 } -- Ancestral Orc
+--    105 is GetHighestItemStyleId() as of 2020-05-30 Greymoor
+
 --,   [ 101 ] = { pages_id  =  questid } -- NewStyle
 
                         -- How to learn pages_id for new motifs:
@@ -1023,3 +1031,4 @@ function Parser.ToDolSetID(set_bonus)
 
     return set_bonus.set_id
 end
+
