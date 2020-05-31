@@ -229,7 +229,7 @@ Smithing.MOTIF = {
 ,   [ITEMSTYLE_AREA_AKAVIRI             ] = { pages_id  =  1318 } -- Akaviri
 ,   [ITEMSTYLE_RACIAL_IMPERIAL          ] = { is_simple =  true } -- Imperial
 ,   [ITEMSTYLE_AREA_YOKUDAN             ] = { pages_id  =  1713 } -- Yokudan
-,   [ITEMSTYLE_UNIVERSAL                ] = nil                   -- unused
+,   [ITEMSTYLE_UNIVERSAL                ] = nil                   -- Universal
 ,   [ITEMSTYLE_AREA_REACH_WINTER        ] = nil                   -- Reach Winter
 ,   [ITEMSTYLE_AREA_TSAESCI             ] = { crown_id  =132532 } -- Taesci
 ,   [ITEMSTYLE_ENEMY_MINOTAUR           ] = { pages_id  =  1662 } -- Minotaur
@@ -258,10 +258,12 @@ Smithing.MOTIF = {
 ,   [ 60 ] = { pages_id  =  2024 } -- Refabricated
 ,   [ 61 ] = { pages_id  =  2098 } -- Bloodforge
 ,   [ 62 ] = { pages_id  =  2097 } -- Dreadhorn
+,   [ 63 ] = nil                   -- ""
+,   [ 64 ] = nil                   -- ""
 ,   [ 65 ] = { pages_id  =  2044 } -- Apostle
 ,   [ 66 ] = { pages_id  =  2045 } -- Ebonshadow
-,   [ 67 ] = nil                   -- Undaunted 67
-,   [ 68 ] = nil                   -- Use Me
+,   [ 67 ] = nil                   -- Undaunted
+,   [ 68 ] = nil                   -- ""
 ,   [ 69 ] = { pages_id  =  2190 } -- Fang Lair
 ,   [ 70 ] = { pages_id  =  2189 } -- Scalecaller
 ,   [ 71 ] = { pages_id  =  2186 } -- Psijic Order
@@ -283,16 +285,16 @@ Smithing.MOTIF = {
 ,   [ 87 ] = nil                   -- Dragon Bone
 ,   [ 88 ] = { pages_id  =  2628 } -- Moongrave
 ,   [ 89 ] = { pages_id  =  2629 } -- Stags of Z'en
-,   [ 90 ] = nil                   -- 2020-02-27 unused Witches Festival 2019
-,   [ 91 ] = nil                   -- 2020-02-27 unused ?
+,   [ 90 ] = nil                   -- ""
+,   [ 91 ] = nil                   -- ""
 ,   [ 92 ] = { pages_id  =  2630 } -- Dragonguard
 ,   [ 93 ] = { pages_id  =  2628 } -- Moongrave Fane
 ,   [ 94 ] = { pages_id  =  2748 } -- New Moon Priest
 ,   [ 95 ] = { pages_id  =  2750 } -- Shield of Senchal
-,   [ 96 ] = nil                   -- 2020-05-30 unused
-,   [ 97 ] = nil                   -- Icereach Coven
-,   [ 98 ] = nil                   -- Pyre Witch
-,   [ 99 ] = nil                   -- Sword Thane
+,   [ 96 ] = nil                   -- ""
+,   [ 97 ] = { pages_id  =  2747 } -- Icereach Coven
+,   [ 98 ] = { pages_id  =  2749 } -- Pyre Witch
+,   [ 99 ] = nil                   -- Swordthane
 ,   [ 100 ] = { pages_id  =  2757 } -- Blackreach Vanguard
 ,   [ 101 ] = nil                   -- Greymoor
 ,   [ 102 ] = nil                   -- Sea Giant
@@ -301,15 +303,44 @@ Smithing.MOTIF = {
 ,   [ 105 ] = { pages_id  =  2776 } -- Ancestral Orc
 --    105 is GetHighestItemStyleId() as of 2020-05-30 Greymoor
 
---,   [ 101 ] = { pages_id  =  questid } -- NewStyle
+--,   [ 106 ] = { pages_id  =  questid } -- NewStyle
 
                         -- How to learn pages_id for new motifs:
-                        -- 1. open the 'J' Quest screen
-                        -- 2. select Achievements tab
-                        -- 3. right-click a "X Style Master" achievement
-                        -- 4. Link in chat
-                        -- 5. /breakitem the above
-                        -- The quest id, aka pages_id, is the first number.
+                        -- 1. Run this function to dump new/unknown motifs
+                        --    to chat/LibDebugLogger:
+                        --
+                        --  /script WritWorthy.Smithing.ScanMotifs()
+                        --
+                        -- 2. Read through the dumped info to search for new
+                        --    motifs.
+                        --        There are a bunch of unused motifs such
+                        --    as "Unique" and "Divine Prosecution" that are
+                        --    not craftable. Ignore those (unless they
+                        --    suddenly become craftable).
+                        --        The bottom of the list will show the
+                        --    pages_id number and "___ Style Master" name for
+                        --    craftable styles that are not yet in
+                        --    Smithing.MOTIF. FInd those and add those to
+                        --    the table.
+                        --
+                        --    - table index must be the motif_id number
+                        --      listed in "Missing motif_id:__"
+                        --    - pages_id  must be the achievement_id listed
+                        --      the last few lines of the dump.
+                        --
+                        -- 3. Optionally, edit WritWorthy_Link.lua to add
+                        --    the style material to the table of materials.
+                        --    But I think this is no longer required:
+                        --    WritWorthy uses GetItemStyleMaterialLink() to
+                        --    find style mats, even if they're not listed in
+                        --    WritWorthy_Link.lua
+                        --
+                        -- (Ideally, WritWorthy.Smithing.ScanMotifs() could
+                        --  populate Smithing.MOTIF automatically,  but writing
+                        --  string-matching code to find "___ Style Master" in
+                        --  EN DE FR JP RU and other languages is far more work
+                        --  than this chore deserves.)
+
 }
 
 -- Motif page numbers --------------------------------------------------------
@@ -1032,3 +1063,78 @@ function Parser.ToDolSetID(set_bonus)
     return set_bonus.set_id
 end
 
+
+function Smithing.ScanMotifs()
+                        -- Are there any new motifs that WritWorthy
+                        -- needs to have added to its tables?
+    local MAX_MOTIF_ID = GetHighestItemStyleId()
+    Log:StartNewEvent("Scanning style/achievement tables...")
+    for motif_id = 1,MAX_MOTIF_ID do
+                        -- We don't actually use motif name in WritWorthy.
+        local motif_name = GetItemStyleName(motif_id)
+
+                        -- But if ESO has a name for a motif, yet WritWorthy
+                        -- lacks a Smithing.MOTIF record for it, then this
+                        -- might be a newly released style that WritWorthy
+                        -- needs to learn about.
+        if motif_name and not Smithing.MOTIF[motif_id] then
+            Log.Warn("Missing motif_id:%d name:%s", motif_id, motif_name)
+        end
+    end
+
+
+                        -- Are there any new "___ Style Master" achievements
+                        -- to go with new motifs?
+                        -- US English string matching.
+
+                        -- First collect a table of all the achievements we
+                        -- already know. So that we can skip them later.
+    local achieve_known = {}
+    for motif_id, motif_t in pairs(Smithing.MOTIF) do
+        if motif_t and motif_t.pages_id then
+            achieve_known[motif_t.pages_id] = motif_id
+        end
+    end
+                        -- Skip these, too.
+    achieve_known[2230] = 0     -- True Style Master
+    achieve_known[1418] = 0     -- Soul Shriven Style Master
+    achieve_known[1043] = 0     -- Rare Style Master
+    achieve_known[1030] = 0     -- Alliance Style Master
+
+    local cat_ct = GetNumAchievementCategories()
+    for cat_i = 1,cat_ct do
+        local cat_info = { GetAchievementCategoryInfo(cat_i) }
+        local achieve_subcat0_ct = cat_info[3]
+        local subcat_ct  = cat_info[2]
+        local achieve_ct = 0
+        for subcat_i = 0,subcat_ct do
+            subcat_ii = subcat_i
+            if subcat_i == 0 then
+                achieve_ct = achieve_subcat0_ct
+                        -- GetAchievementId() requires nil, not 0, for
+                        -- "no subcatebory" in parameter 2.
+                subcat_ii = nil
+            else
+                local subcat_info = { GetAchievementSubCategoryInfo( cat_i
+                                                                   , subcat_i ) }
+                achieve_ct = subcat_info[2]
+            end
+
+            for achieve_i = 1,achieve_ct do
+                local achieve_id = GetAchievementId( cat_i
+                                                   , subcat_ii
+                                                   , achieve_i )
+                local achieve_info = { GetAchievementInfo(achieve_id) }
+                local achieve_name = achieve_info[1]
+
+                if achieve_known[achieve_id] then
+                        -- Already known, no point in reporting.
+                else
+                    if string.find(achieve_name:lower(), "style master") then
+                        Log.Warn("%d %s", achieve_id, achieve_name)
+                    end
+                end
+            end
+        end
+    end
+end
