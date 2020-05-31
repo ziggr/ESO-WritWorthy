@@ -1,3 +1,9 @@
+[B]6.0.3 2020-05-30[/B]
+[LIST]
+[*] Fixed Refabricated motif_id.
+[*] new function WritWorthy.Smithing.ScanMotifs() dumps info about motifs unknown to WritWorthy to help add new motifs to future versions.
+[/LIST]
+
 [B]6.0.2 2020-05-29[/B]
 [LIST]
 [*] Greymoor motifs. Thank you, Teva!
