@@ -1,3 +1,9 @@
+[B]6.0.4 2020-08-27[/B]
+[LIST]
+[*] French translations from JAKEZ31. Merci!
+[*] No code changes.
+[/LIST]
+
 [B]6.0.3 2020-05-30[/B]
 [LIST]
 [*] Fixed Refabricated motif_id.
