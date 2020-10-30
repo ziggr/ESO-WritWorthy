@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "6.0.4"
+WritWorthy.version         = "6.2.1"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
