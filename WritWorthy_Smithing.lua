@@ -297,13 +297,22 @@ Smithing.MOTIF = {
 ,   [ 99 ] = nil                   -- Swordthane
 ,   [ 100 ] = { pages_id  =  2757 } -- Blackreach Vanguard
 ,   [ 101 ] = nil                   -- Greymoor
-,   [ 102 ] = nil                   -- Sea Giant
+,   [ 102 ] = { pages_id  =  2762 } -- Sea Giant
 ,   [ 103 ] = { pages_id  =  2763 } -- Ancestral Nord
 ,   [ 104 ] = { pages_id  =  2773 } -- Ancestral High Elf
 ,   [ 105 ] = { pages_id  =  2776 } -- Ancestral Orc
---    105 is GetHighestItemStyleId() as of 2020-05-30 Greymoor
+,   [ 106 ] = { pages_id  =  2849 } -- Thorn Legion         2020-11-02 Update 28/Markarth
+,   [ 107 ] = { pages_id  =  2850 } -- Hazardous Alchemy     
+,   [ 108 ] = nil                   -- ""
+,   [ 109 ] = nil                   -- ""
+,   [ 110 ] = { pages_id  =  2905 } -- Ancestral Reach
+,   [ 111 ] = nil                   -- Nighthollow  
+,   [ 112 ] = { pages_id  =  2938 } -- Arkthzand Armory     
+,   [ 113 ] = nil                   -- Wayward Guardian 
 
---,   [ 106 ] = { pages_id  =  questid } -- NewStyle
+--    113 is GetHighestItemStyleId() as of 2020-11-02 Markarth
+
+--,   [ 114 ] = { pages_id  =  questid } -- NewStyle
 
                         -- How to learn pages_id for new motifs:
                         -- 1. Run this function to dump new/unknown motifs
