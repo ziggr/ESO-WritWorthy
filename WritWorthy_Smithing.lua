@@ -283,7 +283,7 @@ Smithing.MOTIF = {
 ,   [ 85 ] = { pages_id  =  2506 } -- Pellitine
 ,   [ 86 ] = { pages_id  =  2507 } -- Sunspire
 ,   [ 87 ] = nil                   -- Dragon Bone
-,   [ 88 ] = { pages_id  =  2628 } -- Moongrave
+,   [ 88 ] = nil                   -- ""
 ,   [ 89 ] = { pages_id  =  2629 } -- Stags of Z'en
 ,   [ 90 ] = nil                   -- ""
 ,   [ 91 ] = nil                   -- ""
@@ -296,7 +296,7 @@ Smithing.MOTIF = {
 ,   [ 98 ] = { pages_id  =  2749 } -- Pyre Witch
 ,   [ 99 ] = nil                   -- Swordthane
 ,   [ 100 ] = { pages_id  =  2757 } -- Blackreach Vanguard
-,   [ 101 ] = nil                   -- Greymoor
+,   [ 101 ] = { pages_id  =  2761 } -- Greymoor
 ,   [ 102 ] = { pages_id  =  2762 } -- Sea Giant
 ,   [ 103 ] = { pages_id  =  2763 } -- Ancestral Nord
 ,   [ 104 ] = { pages_id  =  2773 } -- Ancestral High Elf
