@@ -1,3 +1,8 @@
+[B]6.2.3 2020-11-11[/B]
+[LIST]
+[*] Motif ID 101 Greymoor. Remove erroneous duplicate Motif ID 88 for "Moongrave".
+[/LIST]
+
 [B]6.2.2 2020-11-05[/B]
 [LIST]
 [*] Motif IDs for Update 28/Markarth: Anxestral Reach, Arkthzand Armory, Hazardous Alchemy, Thorn Legion. Also Sea Giant from previous update now has an achievement pages_id.
