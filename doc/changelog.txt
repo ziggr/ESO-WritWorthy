@@ -1,3 +1,8 @@
+[B]6.2.5 2020-11-12[/B]
+[LIST]
+[*] Fix copy-and-paste bug in FR translation table that caused it to emit errors if missing a translation for a new EN string. DE RU translation were not affected by this error.
+[/LIST]
+
 [B]6.2.4 2020-11-11[/B]
 [LIST]
 [*] Add new error message: "LibLazyCrafting <version> requires update for set <set_id> <set_name>": prevent enqueuing of writs that call for brand new sets that LibLazyCrafting does not yet know how to craft.
