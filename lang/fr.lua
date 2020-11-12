@@ -52,7 +52,7 @@ WritWorthy.I18N['shorten']['fr'] = {
 }
 
 WritWorthy.I18N['static'] = WritWorthy.I18N['static'] or {}
-WritWorthy.I18N['static']['en'] = {
+WritWorthy.I18N['static']['fr'] = {
     ["ags_label"                             ] = "WritWorthy coût par assignats"
 ,   ["button_dequeue_all"                    ] = "Retirer de la file"
 ,   ["button_enqueue_all"                    ] = "Mettre en file"
