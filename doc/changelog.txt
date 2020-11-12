@@ -5,7 +5,7 @@
 
 [B]6.2.2 2020-11-05[/B]
 [LIST]
-[*] Motif IDs for Update 28/Markarth: Anxestral Reach, Arkthzand Armory, Hazardous Alchemy, Thorn Legion. Also Sea Giant from previous update now has an achievement pages_id.
+[*] Motif IDs for Update 28/Markarth: Ancestral Reach, Arkthzand Armory, Hazardous Alchemy, Thorn Legion. Also Sea Giant from previous update now has an achievement pages_id.
 [/LIST]
 
 [B]6.2.1 2020-10-29[/B]
