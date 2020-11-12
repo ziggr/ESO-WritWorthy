@@ -924,6 +924,22 @@ function Parser:ToKnowList()
         table.insert(r, Know:New({ name     = title
                                  , is_known = self.set_bonus.trait_ct <= known_trait_ct
                                  , lack_msg = msg }))
+
+                        -- Does Dolgubon's LibLazyCrafting know how to craft this set?
+        local llc = WritWorthyInventoryList:GetLLC()
+        if llc and self.set_bonus.set_id then
+            local t = llc.GetSetIndexes()
+            local llc_can_craft = self.set_bonus.set_id 
+                                  and t 
+                                  and (t[self.set_bonus.set_id] ~= nil)
+            local msg = string.format( WritWorthy.Str( "know_err_llc_too_old")
+                                                     , tostring(llc.version)
+                                                     , self.set_bonus.set_id
+                                                     , self.set_bonus.name )
+            table.insert(r, Know:New({ name     = "LibLazyCrafting"
+                                     , is_known = llc_can_craft
+                                     , lack_msg = msg }))
+        end
     end
                         -- Is this a Legendary request and do you have the
                         -- passive skill to minimize the gold tempers required?

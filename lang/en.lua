@@ -120,6 +120,7 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["know_err_skill_not_maxed"              ] = "Insufficient skill '%s': %d/%d"
 ,   ["know_err_trait"                        ] = "Trait %s %s not known"
 ,   ["know_err_trait_ct_too_low"             ] = "%d of %d traits required for set %s"
+,   ["know_err_llc_too_old"                  ] = "LibLazyCrafting %s requires update for set %d %s"
 ,   ["lam_banked_vouchers_desc"              ] = "Scan bank and include those writs in the list of writs available to automatically craft.\n|cFF3333BE CAREFUL if you craft on multiple characters! WritWorthy will not warn you if you craft the same banked writ on multiple characters.|r"
 ,   ["lam_banked_vouchers_title"             ] = "Include writs from bank in auto-crafting window"
 ,   ["lam_force_en_desc"                     ] = "Ignore client language setting and use EN English for all WritWorthy text."
