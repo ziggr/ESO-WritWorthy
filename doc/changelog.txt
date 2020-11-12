@@ -1,3 +1,8 @@
+[B]6.2.4 2020-11-11[/B]
+[LIST]
+[*] Add new error message: "LibLazyCrafting <version> requires update for set <set_id> <set_name>": prevent enqueuing of writs that call for brand new sets that LibLazyCrafting does not yet know how to craft.
+[/LIST]
+
 [B]6.2.3 2020-11-11[/B]
 [LIST]
 [*] Motif ID 101 Greymoor. Remove erroneous duplicate Motif ID 88 for "Moongrave".
