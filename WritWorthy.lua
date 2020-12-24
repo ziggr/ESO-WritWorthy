@@ -505,9 +505,8 @@ function WritWorthy:CreateSettingsWindow()
     if ConfirmMasterWrit then
         local o = 
         { type      = "checkbox"
-        , name      = "Show duplicate tooltips?"
-        , tooltip   = "If you prefer Marify's Confirm Master Writ tooltips,"
-                       .." turn this option off to hide WritWorthy's redundant warning tooltips."
+        , name      = WW.Str("lam_cmw_title")
+        , tooltip   = WW.Str("lam_cmw_desc")
         , getFunc   = function()
                         return self.savedVariables.show_confirm_master_writ_duplicates
                       end
