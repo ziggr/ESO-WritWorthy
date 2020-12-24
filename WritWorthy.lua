@@ -194,9 +194,16 @@ function WritWorthy.KnowTooltipText(know_list)
     if not know_list then return nil end
     local elements = {}
     for i, know in ipairs(know_list) do
-        local s = know:TooltipText()
-        if s then
-            table.insert(elements, s)
+                        -- Include lines that don't duplicate what 
+                        -- Marify's Confirm Master Writ already report.
+        if (   (not (know.how and know.how.cmw))
+                        -- Or include duplicates if no CMW loaded, or if
+                        -- user intentionally requested duplicates.
+            or WritWorthy.CanShowCMWDuplicates()) then
+            local s = know:TooltipText()
+            if s then
+                table.insert(elements, s)
+            end
         end
     end
     return table.concat(elements, "\n")
@@ -493,8 +500,36 @@ function WritWorthy:CreateSettingsWindow()
         , requiresReload = true
         },
     }
+                        -- Only show this checkbox if running Marify's
+                        -- Confirm Master Writ.
+    if ConfirmMasterWrit then
+        local o = 
+        { type      = "checkbox"
+        , name      = "Show duplicate tooltips?"
+        , tooltip   = "If you prefer Marify's Confirm Master Writ tooltips,"
+                       .." turn this option off to hide WritWorthy's redundant warning tooltips."
+        , getFunc   = function()
+                        return self.savedVariables.show_confirm_master_writ_duplicates
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.show_confirm_master_writ_duplicates = e and true
+                      end
+        }
+        table.insert(optionsData, o)
+    end
 
     LAM2:RegisterOptionControls(lam_addon_id, optionsData)
+end
+
+-- Should we show the "Recipe not known" and other tooltip errors that
+-- Marify's Confirm Master Writ also report?
+function WritWorthy.CanShowCMWDuplicates()
+                        -- If Confirm Master Writ isn't running, then
+                        -- we're not duplicate/redundant. Definitely show.
+    if not ConfirmMasterWrit then return true end
+
+                        -- If CMW is running, then honor the user's prefs.
+    return WritWorthy.savedVariables.show_confirm_master_writ_duplicates
 end
 
 -- SlashCommand --------------------------------------------------------------

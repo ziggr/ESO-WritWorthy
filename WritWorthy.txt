@@ -82,6 +82,7 @@ lang/en_forced.lua
 WritWorthy_Price.lua
 WritWorthy_Util.lua
 WritWorthy_Log.lua
+WritWorthy_Know.lua
 WritWorthy_RequiredSkill.lua
 WritWorthy_Smithing.lua
 WritWorthy_Alchemy.lua
@@ -89,7 +90,6 @@ WritWorthy_Enchanting.lua
 WritWorthy_Provisioning.lua
 WritWorthy_Link.lua
 WritWorthy_MatRow.lua
-WritWorthy_Know.lua
 WritWorthy_Window.lua
 WritWorthy_AGS.lua
 WritWorthy_I18N.lua

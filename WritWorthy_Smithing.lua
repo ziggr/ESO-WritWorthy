@@ -866,6 +866,7 @@ function Parser:ToKnowList()
         table.insert(r, Know:New({ name     = title
                                  , is_known = motif_known
                                  , lack_msg = msg
+                                 , how      = WritWorthy.Know.KNOW.MOTIF
                                  }))
     end
 
@@ -893,6 +894,7 @@ function Parser:ToKnowList()
     table.insert(r, Know:New({ name     = title
                              , is_known = trait_known
                              , lack_msg = msg
+                             , how      = WritWorthy.Know.KNOW.TRAIT
                              }))
 
                         -- Do you know enough traits to craft this set bonus?
@@ -923,7 +925,9 @@ function Parser:ToKnowList()
                                )
         table.insert(r, Know:New({ name     = title
                                  , is_known = self.set_bonus.trait_ct <= known_trait_ct
-                                 , lack_msg = msg }))
+                                 , lack_msg = msg
+                                 , how      = WritWorthy.Know.KNOW.TRAIT_CT_FOR_SET
+                                 }))
 
                         -- Does Dolgubon's LibLazyCrafting know how to craft this set?
         local llc = WritWorthyInventoryList:GetLLC()
@@ -938,7 +942,9 @@ function Parser:ToKnowList()
                                                      , self.set_bonus.name )
             table.insert(r, Know:New({ name     = "LibLazyCrafting"
                                      , is_known = llc_can_craft
-                                     , lack_msg = msg }))
+                                     , lack_msg = msg
+                                     , how      = WritWorthy.Know.KNOW.LIBLAZYCRAFTING
+                                     }))
         end
     end
                         -- Is this a Legendary request and do you have the

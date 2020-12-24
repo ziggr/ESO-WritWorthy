@@ -14,7 +14,7 @@ local function decaret(s)
     return zo_strformat(SI_TOOLTIP_ITEM_NAME, s) or " "
 end
 
-function RequiredSkill:New(function_name, skill_name_list)
+function RequiredSkill:New(function_name, skill_name_list, is_reduction)
     local o = {
         function_name   = function_name
     ,   skill_name_list = skill_name_list -- {en, es, fr, etc...}
@@ -25,6 +25,7 @@ function RequiredSkill:New(function_name, skill_name_list)
     ,   _is_maxxed      = nil
     ,   _have           = nil
     ,   _max            = nil
+    ,   _is_reduction   = is_reduction
     }
     setmetatable(o, self)
     self.__index = self
@@ -45,6 +46,10 @@ function RequiredSkill.ResetCache()
 end
 
 function RequiredSkill:ToKnow()
+    local how = WritWorthy.Know.KNOW.SKILL_REQUIRED
+    if self._is_reduction then
+        how = WritWorthy.Know.KNOW.SKILL_COST_REDUCTION
+    end
     if self.function_name == "IsMaxxed" then
         local known = self:IsKnown()
         local text  = string.format( WW.Str("know_err_skill_not_maxed")
@@ -56,6 +61,7 @@ function RequiredSkill:ToKnow()
             { name     = "Skill: "..self:Name()
             , is_known = known
             , lack_msg = text
+            , how      = how
             })
     else
         local known = self:IsKnown()
@@ -63,6 +69,7 @@ function RequiredSkill:ToKnow()
         return WritWorthy.Know:New({ name = "Skill: "..self:Name()
                                    , is_known = known
                                    , lack_msg = text
+                                   , how      = how
                                    })
     end
 end
@@ -211,15 +218,17 @@ end
 
 local R = WritWorthy.RequiredSkill  -- for less typing
 
-R.BS_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Temper Expertise"   , "Härterkenntnis"    , "Expertise de la trempe^f"    })
-R.CL_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Tannin Expertise"   , "Gerberkunde"       , "Expertise en tanins^f"       })
-R.WW_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Resin Expertise"    , "Harzkenntnis"      , "Expertise en résines^f"      })
-R.JW_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Platings Expertise"                                                       })
-R.EN_ASPECT_GOLD      = R:New("IsMaxxed"   , {"Aspect Improvement" , "Aspektverbesserung", "Amélioration d'aspect^f"     })
-R.PR_FOOD_4X          = R:New("IsMaxxed"   , {"Chef"               , "Kochkunst"         , "Chef^m"                      })
-R.PR_DRINK_4X         = R:New("IsMaxxed"   , {"Brewer"             , "Braukunst"         , "Brasserie^f"                 })
-R.AL_POTION_4X        = R:New("IsMaxxed"   , {"Chemistry"          , "Chemie"            , "Chimie"                      })
+R.BS_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Temper Expertise"   , "Härterkenntnis"    , "Expertise de la trempe^f"    }, true )
+R.CL_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Tannin Expertise"   , "Gerberkunde"       , "Expertise en tanins^f"       }, true )
+R.WW_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Resin Expertise"    , "Harzkenntnis"      , "Expertise en résines^f"      }, true )
+R.JW_TEMPER_EXPERTISE = R:New("IsMaxxed"   , {"Platings Expertise"                                                       }, true )
+R.EN_ASPECT_GOLD      = R:New("IsMaxxed"   , {"Aspect Improvement" , "Aspektverbesserung", "Amélioration d'aspect^f"     }       )
+R.PR_FOOD_4X          = R:New("IsMaxxed"   , {"Chef"               , "Kochkunst"         , "Chef^m"                      }, true )
+R.PR_DRINK_4X         = R:New("IsMaxxed"   , {"Brewer"             , "Braukunst"         , "Brasserie^f"                 }, true )
+R.AL_POTION_4X        = R:New("IsMaxxed"   , {"Chemistry"          , "Chemie"            , "Chimie"                      }, true )
 R.AL_LABORATORY_USE   = R:New("IsPurchased", {"Laboratory Use"     , "Laborkenntnis"     , "Utilisation du laboratoire^f"})
+
+R = nil
 
 -- ESO API lacks a constant for each skill. skill_index+ability_index varies
 -- from player to player. skill_id varies from character to character.

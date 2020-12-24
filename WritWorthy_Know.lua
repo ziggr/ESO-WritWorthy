@@ -5,6 +5,18 @@ WritWorthy.Know = {}
 local Know = WritWorthy.Know
 local Log  = WritWorthy.Log
 
+-- Which knowledge tooltips duplicate information that Marify also shows in
+-- Marify's Confirm Master Writ? We'll hide those tooltip lines if the user
+-- deselects WW settings checkbox for show_confirm_master_writ_duplicates.
+Know.KNOW = {
+    MOTIF                = { cmw = true  }
+,   RECIPE               = { cmw = true  }
+,   TRAIT                = { cmw = true  }
+,   TRAIT_CT_FOR_SET     = { cmw = true  }
+,   SKILL_COST_REDUCTION = { cmw = false }
+,   SKILL_REQUIRED       = { cmw = true  }
+,   LIBLAZYCRAFTING      = { cmw = false }
+}
 
 -- Know ====================================================================
 --
@@ -19,6 +31,7 @@ function Know:New(args)
                                     -- LibLazyCrafting.
 
     ,   lack_msg  = args.lack_msg   -- "Recipe not known"
+    ,   how       = args.how         -- WW.Know.KNOW.MOTIF
     }
     setmetatable(o, self)
     self.__index = self

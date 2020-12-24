@@ -1,5 +1,33 @@
+2020-12-23
+- Tooltip support for Marify's Master Writ Confirm
+    - Option to hide Tooltip additions and let Marify's tooltip stuff cover it.
+        - Marify covers motif, skills, and inventory
+        - Marify does not cover cost
+    - Option to SHOW mat counts in tooltip similar to how Marify does it
+
+    Current/New tooltip additions       Duplicates Marify?  K
+    - motif knowledge for piece         dup                 KNOW_MOTIF
+    - recipe knowledge                  dup                 KNOW_RECIPE
+    - trait knowledge for piece         dup                 KNOW_TRAIT
+    - trait ct knowledge for set        dup                 KNOW_TRAITS_FOR_SET
+    - mat reduction skill warn          ---                 KNOW_SKILL_COST_REDUCTION
+    - mat cost                          ---                 MAT_COST
+    - mat inventory need/have           soon!               MAT_LIST
+    - skill knowledge for recipe        not_ww              n/a
+
+    Make a table, probably under WritWorthy.Know.KNOW.{MOTIF,RECIPE....}
+        .duplicates_marify
+    Not sure I want to refactor out all the Know:New() calls to table references.
+    
+
+- AGS integration needs a repair, AGAIN
+
+- Finish the damn mat list window
+
+- Can I fix the auto-exit from station after last crafting, or is LLC still munged?
+
 2019-09-28
--- /writworthy auto: "Oopening writs..." show N/M how many in bag for progress
+-- /writworthy auto: "Opening writs..." show N/M how many in bag for progress
 -- Why no auto-disconnect from station after last crafting?
 -- Why 1st several stations no HSM indicator? Did I exceed some limit?
 -- Would like a writ count at bottom of WW window, along with other summary numbers

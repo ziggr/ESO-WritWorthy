@@ -698,6 +698,7 @@ function Parser:ToKnowList()
     local k = Know:New({ name = "recipe"
                        , is_known = self.recipe.is_known
                        , lack_msg = WritWorthy.Str("know_err_recipe")
+                       , how      = WritWorthy.Know.KNOW.RECIPE
                        })
     local r = { k }
     if self.recipe.fooddrink_item_type == ITEMTYPE_FOOD then
