@@ -1,3 +1,9 @@
+[B]6.2.6 2020-12-24[/B]
+[LIST]
+[*] Show missing materials in tooltip. Settings to optionally show [I]all[/I] materials, if you like ridiculously long tooltips, or none, if you dislike cluttered tooltips.
+[*] Hide WritWorthy's duplicate warnings if Marify's most excellent Confirm Master Writ is running. Many prefer Confirm Master Writ's tooltips, but still want WritWorthy for its crafting automation.
+[/LIST]
+
 [B]6.2.5 2020-11-12[/B]
 [LIST]
 [*] Fix copy-and-paste bug in FR translation table that caused it to emit errors if missing a translation for a new EN string. DE RU translation were not affected by this error.
