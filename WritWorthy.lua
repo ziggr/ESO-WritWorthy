@@ -209,25 +209,42 @@ function WritWorthy.KnowTooltipText(know_list)
     return table.concat(elements, "\n")
 end
 
+local function can_tooltip_mat(enable, mat_row)
+    if (enable == nil) or (enable == WW.Str("lam_mat_tooltip_all")) then
+        return true
+    end
+
+    if enable == WW.Str("lam_mat_tooltip_missing_only") then
+        return mat_row:HaveCt() < mat_row.ct 
+    end
+
+    return false
+end
+
 -- Return list of materials, with low/insufficient materials in orange/red.
 function WritWorthy.MatHaveCtTooltipText(mat_list)
     if not mat_list then return nil end
+    local enable = WritWorthy.savedVariables.enable_mat_list_tooltip
+    if enable == WW.Str("lam_mat_tooltip_off") then return nil end
+
     local elements = {}
     for i, mat_row in ipairs(mat_list) do
-        local name    = Util.decaret(GetItemLinkName(mat_row.link))
-        local need_ct = mat_row.ct or 1
-        local have_ct = mat_row:HaveCt() or 0
-        local color = Util.COLOR_WHITE
-        if have_ct < need_ct then
-            color = Util.COLOR_RED
+        if can_tooltip_mat(enable, mat_row) then
+            local name    = Util.decaret(GetItemLinkName(mat_row.link))
+            local need_ct = mat_row.ct or 1
+            local have_ct = mat_row:HaveCt() or 0
+            local color = Util.COLOR_WHITE
+            if have_ct < need_ct then
+                color = Util.COLOR_RED
+            end
+            local s = string.format( "|c%s%s  %d/%d|r"
+                                   , color
+                                   , name
+                                   , need_ct
+                                   , have_ct
+                                   )
+            table.insert(elements, s)
         end
-        local s = string.format( "|c%s%s  %d/%d|r"
-                               , color
-                               , name
-                               , need_ct
-                               , have_ct
-                               )
-        table.insert(elements, s)
     end
     return table.concat(elements, "\n")
 end
@@ -526,6 +543,22 @@ function WritWorthy:CreateSettingsWindow()
                       end
         , requiresReload = true
         },
+
+        { type      = "dropdown"
+        , name      = WW.Str("lam_mat_tooltip_title")
+        , tooltip   = WW.Str("lam_mat_tooltip_desc")
+        , choices   = { WW.Str("lam_mat_tooltip_off")
+                      , WW.Str("lam_mat_tooltip_all")
+                      , WW.Str("lam_mat_tooltip_missing_only")
+                      }
+        , getFunc   = function()
+                        return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_all")
+                      end
+        , setFunc   = function(e)
+                        self.savedVariables.enable_mat_list_tooltip = e
+                      end
+        },
+
     }
                         -- Only show this checkbox if running Marify's
                         -- Confirm Master Writ.
