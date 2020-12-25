@@ -112,6 +112,7 @@ WritWorthy.FALLBACK_PRICE = {
 ,   ["sea serpent hide"      ] =  300
 ,   ["desecrated grave soil" ] =  100
 ,   ["gryphon plume"         ] = 1000
+,   ["warrior's heart ashes" ] =  400
 
 ,   ["quartz"             ] =     5
 ,   ["diamond"            ] =     5
