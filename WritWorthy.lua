@@ -210,11 +210,11 @@ function WritWorthy.KnowTooltipText(know_list)
 end
 
 local function can_tooltip_mat(enable, mat_row)
-    if (enable == nil) or (enable == WW.Str("lam_mat_tooltip_all")) then
+    if enable == WW.Str("lam_mat_tooltip_all") then
         return true
     end
 
-    if enable == WW.Str("lam_mat_tooltip_missing_only") then
+    if (enable == nil) or (enable == WW.Str("lam_mat_tooltip_missing_only")) then
         return mat_row:HaveCt() < mat_row.ct 
     end
 
@@ -552,7 +552,7 @@ function WritWorthy:CreateSettingsWindow()
                       , WW.Str("lam_mat_tooltip_missing_only")
                       }
         , getFunc   = function()
-                        return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_all")
+                        return self.savedVariables.enable_mat_list_tooltip or WW.Str("lam_mat_tooltip_missing_only")
                       end
         , setFunc   = function(e)
                         self.savedVariables.enable_mat_list_tooltip = e
