@@ -223,6 +223,7 @@ end
 
 -- Return list of materials, with low/insufficient materials in orange/red.
 function WritWorthy.MatHaveCtTooltipText(mat_list)
+    if not WritWorthy.CanShowCMWDuplicates() then return nil end
     if not mat_list then return nil end
     local enable = WritWorthy.savedVariables.enable_mat_list_tooltip
     if enable == WW.Str("lam_mat_tooltip_off") then return nil end
