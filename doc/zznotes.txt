@@ -1,3 +1,13 @@
+2020-12-24
+- Mat tooltips
+    - Full text, one mat per line
+    - abbreviated with icons a la Marify? Nah.
+    - show only missing mats
+    - off
+    - Interaction with Show Duplicates:
+        - switch to SHOW DUPLICATES upon turning Mat tooltips to any ON
+        - switch mat tooltips to OFF upon turning off SHOW DUPLICATES
+        
 2020-12-23
 - Tooltip support for Marify's Master Writ Confirm
     - Option to hide Tooltip additions and let Marify's tooltip stuff cover it.
@@ -19,11 +29,8 @@
         .duplicates_marify
     Not sure I want to refactor out all the Know:New() calls to table references.
     
-
-- AGS integration needs a repair, AGAIN
-
 - Finish the damn mat list window
-
+- AGS integration needs a repair, AGAIN
 - Can I fix the auto-exit from station after last crafting, or is LLC still munged?
 
 2019-09-28

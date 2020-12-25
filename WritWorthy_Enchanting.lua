@@ -11,6 +11,7 @@ WritWorthy.Enchanting = {
 local Enchanting = WritWorthy.Enchanting
 local Util       = WritWorthy.Util
 local Fail       = WritWorthy.Util.Fail
+local Log        = WritWorthy.Log
 
 -- Runes
 Enchanting.REJERA   = { name="Rejera"  , item_id = 64509 }

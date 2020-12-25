@@ -19,6 +19,10 @@ function MatRow:New()
     ,   link    = nil   -- "|H0:item:64489:30:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
     ,   ct      = nil   -- 13
     ,   mm      = nil   -- 13.42315  Can be nil if MM not loaded, or lacks a price for this material.
+
+                        -- Intentionally NOT caching inventory count here.
+                        -- Inventory decreases as we craft, shop, trade, loot,
+                        -- and I don't want the cache invalidation complexity.
     }
     setmetatable(o, self)
     self.__index = self
@@ -64,6 +68,10 @@ function MatRow:Total()
     if not self.ct then return WritWorthy.GOLD_UNKNOWN end
     if not self.mm then return WritWorthy.GOLD_UNKNOWN end
     return self.ct * self.mm
+end
+
+function MatRow:HaveCt()
+    return WritWorthy.Util.MatHaveCt(self.link)
 end
 
 -- list functions ------------------------------------------------------------

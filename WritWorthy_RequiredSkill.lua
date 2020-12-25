@@ -5,14 +5,9 @@ local WW = WritWorthy
 
 WritWorthy.RequiredSkill = {}
 
-RequiredSkill = WritWorthy.RequiredSkill
-Log = WritWorthy.Log
-
--- clean up suffixes such as ^F or ^S
--- Code copied from Advanced Filters
-local function decaret(s)
-    return zo_strformat(SI_TOOLTIP_ITEM_NAME, s) or " "
-end
+local RequiredSkill = WritWorthy.RequiredSkill
+local Log  = WritWorthy.Log
+local Util = WritWorthy.Util
 
 function RequiredSkill:New(function_name, skill_name_list, is_reduction)
     local o = {
@@ -87,7 +82,7 @@ function RequiredSkill:Name()
     if self._name == nil then
         self:FetchInfo()
     end
-    return decaret(self._name) or "?"
+    return Util.decaret(self._name) or "?"
 end
 
 function RequiredSkill:IsPurchased()
@@ -158,7 +153,7 @@ function RequiredSkill:GetIndices()
     end
 
     for _,name in ipairs(self.skill_name_list) do
-        local r = RequiredSkill.name_to_indices[decaret(name)]
+        local r = RequiredSkill.name_to_indices[Util.decaret(name)]
         if r then
             self._skill_index   = r.skill_index
             self._ability_index = r.ability_index
@@ -204,11 +199,11 @@ function RequiredSkill.FindAllSkills()
                 .." purchased:"..tostring(info[6])
                 .." progression:"..tostring(info[7])
                 )
-            t[decaret(name)] = { id            = id
-                               , name          = info[1]
-                               , skill_index   = skill_index
-                               , ability_index = ability_index
-                               }
+            t[Util.decaret(name)] = { id            = id
+                                    , name          = info[1]
+                                    , skill_index   = skill_index
+                                    , ability_index = ability_index
+                                    }
         end
     end
     Log:EndEvent()

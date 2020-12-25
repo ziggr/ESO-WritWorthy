@@ -1347,8 +1347,7 @@ local function HaveMaterials(mat_list)
             item_link = getItemLinkFromItemId(mat.item_id)
         end
         if item_link then
-            local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
-            local have_ct = bag_ct + bank_ct + craft_bag_ct
+            local have_ct = Util.MatHaveCt(item_link)
             Log:Add("HaveMaterials: "..tostring(mat.required_ct)
                     .." <=? "..tostring(have_ct).."  "..tostring(item_link))
             if have_ct < mat.required_ct then
@@ -1403,8 +1402,7 @@ function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
     end
     local mat_list = inventory_data.parser:ToMatList()
     for _,mat_row in ipairs(mat_list) do
-        local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(mat_row.link)
-        local have_ct = bag_ct + bank_ct + craft_bag_ct
+        local have_ct = Util.MatHaveCt(mat_row.link)
         if have_ct < mat_row.ct then
             Log.Error( "Cannot craft %s: insufficient materials. %d/%d %s"
                      , inventory_data.item_link

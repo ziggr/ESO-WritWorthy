@@ -209,6 +209,29 @@ function WritWorthy.KnowTooltipText(know_list)
     return table.concat(elements, "\n")
 end
 
+-- Return list of materials, with low/insufficient materials in orange/red.
+function WritWorthy.MatHaveCtTooltipText(mat_list)
+    if not mat_list then return nil end
+    local elements = {}
+    for i, mat_row in ipairs(mat_list) do
+        local name    = Util.decaret(GetItemLinkName(mat_row.link))
+        local need_ct = mat_row.ct or 1
+        local have_ct = mat_row:HaveCt() or 0
+        local color = Util.COLOR_WHITE
+        if have_ct < need_ct then
+            color = Util.COLOR_RED
+        end
+        local s = string.format( "|c%s%s  %d/%d|r"
+                               , color
+                               , name
+                               , need_ct
+                               , have_ct
+                               )
+        table.insert(elements, s)
+    end
+    return table.concat(elements, "\n")
+end
+
 local function can_dump_matlist(enable, parser)
     if enable == WW.Str("lam_mat_list_all") then
         return true
@@ -244,6 +267,10 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     if can_dump_matlist(WritWorthy.savedVariables.enable_mat_list_chat, parser) then
         WritWorthy.MatRow.ListDump(mat_list)
         --WritWorthy.KnowDump(know_list)
+    end
+    local mat_have_text = WritWorthy.MatHaveCtTooltipText(mat_list)
+    if mat_have_text then
+        control:AddLine(mat_have_text)
     end
     local know_text = WritWorthy.KnowTooltipText(know_list)
     if know_text then

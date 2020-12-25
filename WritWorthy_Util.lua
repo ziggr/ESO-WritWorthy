@@ -67,6 +67,7 @@ end
 
 -- Chat Colors ---------------------------------------------------------------
 
+WritWorthy.Util.COLOR_WHITE  = "FFFFFF"
 WritWorthy.Util.COLOR_RED    = "FF3333"
 WritWorthy.Util.COLOR_GREEN  = "33AA33"
 WritWorthy.Util.COLOR_GREY   = "999999"
@@ -89,6 +90,12 @@ end
 function Util.round(f)
     if not f then return f end
     return math.floor(0.5+f)
+end
+
+-- clean up suffixes such as ^F or ^S
+-- Code copied from Advanced Filters
+function Util.decaret(s)
+    return zo_strformat(SI_TOOLTIP_ITEM_NAME, s) or " "
 end
 
 -- Number/String conversion --------------------------------------------------
@@ -141,4 +148,9 @@ function WritWorthy.LibSets()
         end
     end
     return WritWorthy.lib_sets
+end
+
+function Util.MatHaveCt(item_link)
+    local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
+    return bag_ct + bank_ct + craft_bag_ct
 end
