@@ -2,7 +2,7 @@
 ## Version: 6.2.7
 ## AddOnVersion: 060207
 ## Last Updated: 2021-01-05
-## APIVersion: 100032
+## APIVersion: 100033
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
 ## Contributors: Dolgubon
