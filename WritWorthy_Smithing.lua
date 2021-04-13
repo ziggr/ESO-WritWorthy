@@ -197,11 +197,11 @@ Smithing.MOTIF = {
     [  1] = { is_simple =  true } -- Breton
 ,   [  2] = { is_simple =  true } -- Redguard
 ,   [  3] = { is_simple =  true } -- Orc
-,   [  4] = { is_simple =  true } -- Dunmer
+,   [  4] = { is_simple =  true } -- Dark Elf
 ,   [  5] = { is_simple =  true } -- Nord
 ,   [  6] = { is_simple =  true } -- Argonian
-,   [  7] = { is_simple =  true } -- Altmer
-,   [  8] = { is_simple =  true } -- Bosmer
+,   [  7] = { is_simple =  true } -- High Elf
+,   [  8] = { is_simple =  true } -- Wood Elf
 ,   [  9] = { is_simple =  true } -- Khajiit
 ,   [ 10] = nil                   -- Unique
 ,   [ 11] = { pages_id  =  1423 } -- Thieves Guild
@@ -223,7 +223,7 @@ Smithing.MOTIF = {
 ,   [ 27] = { pages_id  =  1714 } -- Celestial
 ,   [ 28] = { pages_id  =  1319 } -- Glass
 ,   [ 29] = { pages_id  =  1181 } -- Xivkyn
-,   [ 30] = { is_simple =  true } -- Soul-Shriven
+,   [ 30] = { is_simple =  true } -- Soul Shriven
 ,   [ 31] = { pages_id  =  1715 } -- Draugr
 ,   [ 32] = nil                   -- Maormer
 ,   [ 33] = { pages_id  =  1318 } -- Akaviri
@@ -231,7 +231,7 @@ Smithing.MOTIF = {
 ,   [ 35] = { pages_id  =  1713 } -- Yokudan
 ,   [ 36] = nil                   -- Universal
 ,   [ 37] = nil                   -- Reach Winter
-,   [ 38] = { crown_id  =132532 } -- Taesci
+,   [ 38] = { crown_id  =132532 } -- Tsaesci
 ,   [ 39] = { pages_id  =  1662 } -- Minotaur
 ,   [ 40] = { pages_id  =  1798 } -- Ebony
 ,   [ 41] = { pages_id  =  1422 } -- Abah's Watch
@@ -246,7 +246,7 @@ Smithing.MOTIF = {
 ,   [ 50] = { pages_id  =  1935 } -- Militant Ordinator
 ,   [ 51] = { pages_id  =  2023 } -- Telvanni
 ,   [ 52] = { pages_id  =  1934 } -- Buoyant Armiger
-,   [ 53] = { crown_id  = 96954 } -- Stalhrim Frostcaster
+,   [ 53] = { crown_id  = 96954 } -- Frostcaster
 ,   [ 54] = { pages_id  =  1932 } -- Ashlander
 ,   [ 55] = { pages_id  =  2120 } -- Worm Cult
 ,   [ 56] = { pages_id  =  1796 } -- Silken Ring
@@ -291,7 +291,7 @@ Smithing.MOTIF = {
 ,   [ 95] = { pages_id  =  2750 } -- Shield of Senchal
 ,   [ 96] = nil                   --
 ,   [ 97] = { pages_id  =  2747 } -- Icereach Coven
-,   [ 98] = { pages_id  =  2749 } -- Pyre Witch
+,   [ 98] = { pages_id  =  2749 } -- Pyre Watch
 ,   [ 99] = nil                   -- Swordthane
 ,   [100] = { pages_id  =  2757 } -- Blackreach Vanguard
 ,   [101] = { pages_id  =  2761 } -- Greymoor
@@ -311,7 +311,6 @@ Smithing.MOTIF = {
 ,   [115] = nil                   --
 ,   [116] = nil                   -- True-Sworn
 ,   [117] = nil                   -- Waking Flame
-
 
 --    117 is GetHighestItemStyleId() as of 2021-04-13
 
