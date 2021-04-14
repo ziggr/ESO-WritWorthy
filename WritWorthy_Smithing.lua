@@ -181,179 +181,6 @@ Smithing.TRAITS_JEWELRY = {
 ,   [ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY] = { trait_num = ITEM_TRAIT_TYPE_JEWELRY_BLOODTHIRSTY , trait_index = 9 }
 }
 
--- Motifs --------------------------------------------------------------------
---
--- Table index is writ6
---
--- is_simple = motifs that only come in complete books, no separate pages.
--- crown_id  = motifs that only come in complete books from the Crown store.
---             Motifs that come only in complete books, the function
---             IsSmithingStyleKnown() accurately returns whether you've
---             learned the whole book.
--- pages_id  = The achievement ID that goes with learning a page of a motif.
---             IDs from CraftStore Fixed and Improved.
---
-Smithing.MOTIF = {
-    [  1] = { is_simple =  true } -- Breton
-,   [  2] = { is_simple =  true } -- Redguard
-,   [  3] = { is_simple =  true } -- Orc
-,   [  4] = { is_simple =  true } -- Dark Elf
-,   [  5] = { is_simple =  true } -- Nord
-,   [  6] = { is_simple =  true } -- Argonian
-,   [  7] = { is_simple =  true } -- High Elf
-,   [  8] = { is_simple =  true } -- Wood Elf
-,   [  9] = { is_simple =  true } -- Khajiit
-,   [ 10] = nil                   -- Unique
-,   [ 11] = { pages_id  =  1423 } -- Thieves Guild
-,   [ 12] = { pages_id  =  1661 } -- Dark Brotherhood
-,   [ 13] = { pages_id  =  1412 } -- Malacath
-,   [ 14] = { pages_id  =  1144 } -- Dwemer
-,   [ 15] = { is_simple =  true } -- Ancient Elf
-,   [ 16] = { pages_id  =  1660 } -- Order of the Hour
-,   [ 17] = { is_simple =  true } -- Barbaric
-,   [ 18] = nil                   -- Bandit
-,   [ 19] = { is_simple =  true } -- Primal
-,   [ 20] = { is_simple =  true } -- Daedric
-,   [ 21] = { pages_id  =  1411 } -- Trinimac
-,   [ 22] = { pages_id  =  1341 } -- Ancient Orc
-,   [ 23] = { pages_id  =  1416 } -- Daggerfall Covenant
-,   [ 24] = { pages_id  =  1414 } -- Ebonheart Pact
-,   [ 25] = { pages_id  =  1415 } -- Aldmeri Dominion
-,   [ 26] = { pages_id  =  1348 } -- Mercenary
-,   [ 27] = { pages_id  =  1714 } -- Celestial
-,   [ 28] = { pages_id  =  1319 } -- Glass
-,   [ 29] = { pages_id  =  1181 } -- Xivkyn
-,   [ 30] = { is_simple =  true } -- Soul Shriven
-,   [ 31] = { pages_id  =  1715 } -- Draugr
-,   [ 32] = nil                   -- Maormer
-,   [ 33] = { pages_id  =  1318 } -- Akaviri
-,   [ 34] = { is_simple =  true } -- Imperial
-,   [ 35] = { pages_id  =  1713 } -- Yokudan
-,   [ 36] = nil                   -- Universal
-,   [ 37] = nil                   -- Reach Winter
-,   [ 38] = { crown_id  =132532 } -- Tsaesci
-,   [ 39] = { pages_id  =  1662 } -- Minotaur
-,   [ 40] = { pages_id  =  1798 } -- Ebony
-,   [ 41] = { pages_id  =  1422 } -- Abah's Watch
-,   [ 42] = { pages_id  =  1676 } -- Skinchanger
-,   [ 43] = { pages_id  =  1933 } -- Morag Tong
-,   [ 44] = { pages_id  =  1797 } -- Ra Gada
-,   [ 45] = { pages_id  =  1659 } -- Dro-m'Athra
-,   [ 46] = { pages_id  =  1424 } -- Assassins League
-,   [ 47] = { pages_id  =  1417 } -- Outlaw
-,   [ 48] = { pages_id  =  2022 } -- Redoran
-,   [ 49] = { pages_id  =  2021 } -- Hlaalu
-,   [ 50] = { pages_id  =  1935 } -- Militant Ordinator
-,   [ 51] = { pages_id  =  2023 } -- Telvanni
-,   [ 52] = { pages_id  =  1934 } -- Buoyant Armiger
-,   [ 53] = { crown_id  = 96954 } -- Frostcaster
-,   [ 54] = { pages_id  =  1932 } -- Ashlander
-,   [ 55] = { pages_id  =  2120 } -- Worm Cult
-,   [ 56] = { pages_id  =  1796 } -- Silken Ring
-,   [ 57] = { pages_id  =  1795 } -- Mazzatun
-,   [ 58] = { crown_id  = 82039 } -- Grim Harlequin
-,   [ 59] = { pages_id  =  1545 } -- Hollowjack
-,   [ 60] = { pages_id  =  2024 } -- Refabricated
-,   [ 61] = { pages_id  =  2098 } -- Bloodforge
-,   [ 62] = { pages_id  =  2097 } -- Dreadhorn
-,   [ 63] = nil                   --
-,   [ 64] = nil                   --
-,   [ 65] = { pages_id  =  2044 } -- Apostle
-,   [ 66] = { pages_id  =  2045 } -- Ebonshadow
-,   [ 67] = nil                   -- Undaunted
-,   [ 68] = nil                   --
-,   [ 69] = { pages_id  =  2190 } -- Fang Lair
-,   [ 70] = { pages_id  =  2189 } -- Scalecaller
-,   [ 71] = { pages_id  =  2186 } -- Psijic Order
-,   [ 72] = { pages_id  =  2187 } -- Sapiarch
-,   [ 73] = { pages_id  =  2319 } -- Welkynar
-,   [ 74] = { pages_id  =  2188 } -- Dremora
-,   [ 75] = { pages_id  =  2285 } -- Pyandonean
-,   [ 76] = nil                   -- Divine Prosecution
-,   [ 77] = { pages_id  =  2317 } -- Huntsman
-,   [ 78] = { pages_id  =  2318 } -- Silver Dawn
-,   [ 79] = { pages_id  =  2360 } -- Dead-Water
-,   [ 80] = { pages_id  =  2359 } -- Honor Guard
-,   [ 81] = { pages_id  =  2361 } -- Elder Argonian
-,   [ 82] = { pages_id  =  2503 } -- Coldsnap
-,   [ 83] = { pages_id  =  2504 } -- Meridian
-,   [ 84] = { pages_id  =  2505 } -- Anequina
-,   [ 85] = { pages_id  =  2506 } -- Pellitine
-,   [ 86] = { pages_id  =  2507 } -- Sunspire
-,   [ 87] = nil                   -- Dragon Bone
-,   [ 88] = nil                   --
-,   [ 89] = { pages_id  =  2629 } -- Stags of Z'en
-,   [ 90] = nil                   --
-,   [ 91] = nil                   --
-,   [ 92] = { pages_id  =  2630 } -- Dragonguard
-,   [ 93] = { pages_id  =  2628 } -- Moongrave Fane
-,   [ 94] = { pages_id  =  2748 } -- New Moon Priest
-,   [ 95] = { pages_id  =  2750 } -- Shield of Senchal
-,   [ 96] = nil                   --
-,   [ 97] = { pages_id  =  2747 } -- Icereach Coven
-,   [ 98] = { pages_id  =  2749 } -- Pyre Watch
-,   [ 99] = nil                   -- Swordthane
-,   [100] = { pages_id  =  2757 } -- Blackreach Vanguard
-,   [101] = { pages_id  =  2761 } -- Greymoor
-,   [102] = { pages_id  =  2762 } -- Sea Giant
-,   [103] = { pages_id  =  2763 } -- Ancestral Nord
-,   [104] = { pages_id  =  2773 } -- Ancestral High Elf
-,   [105] = { pages_id  =  2776 } -- Ancestral Orc
-,   [106] = { pages_id  =  2849 } -- Thorn Legion
-,   [107] = { pages_id  =  2850 } -- Hazardous Alchemy
-,   [108] = nil                   --
-,   [109] = nil                   --
-,   [110] = { pages_id  =  2905 } -- Ancestral Reach
-,   [111] = nil                   -- Nighthollow
-,   [112] = { pages_id  =  2938 } -- Arkthzand Armory
-,   [113] = nil                   -- Wayward Guardian
-,   [114] = nil                   --
-,   [115] = nil                   --
-,   [116] = nil                   -- True-Sworn
-,   [117] = nil                   -- Waking Flame
-
---    117 is GetHighestItemStyleId() as of 2021-04-13
-
---,   [ 114 ] = { pages_id  =  questid } -- NewStyle
-
-                        -- How to learn pages_id for new motifs:
-                        -- 1. Run this function to dump new/unknown motifs
-                        --    to chat/LibDebugLogger:
-                        --
-                        --  /script WritWorthy.Smithing.ScanMotifs()
-                        --
-                        -- 2. Read through the dumped info to search for new
-                        --    motifs.
-                        --        There are a bunch of unused motifs such
-                        --    as "Unique" and "Divine Prosecution" that are
-                        --    not craftable. Ignore those (unless they
-                        --    suddenly become craftable).
-                        --        The bottom of the list will show the
-                        --    pages_id number and "___ Style Master" name for
-                        --    craftable styles that are not yet in
-                        --    Smithing.MOTIF. FInd those and add those to
-                        --    the table.
-                        --
-                        --    - table index must be the motif_id number
-                        --      listed in "Missing motif_id:__"
-                        --    - pages_id  must be the achievement_id listed
-                        --      the last few lines of the dump.
-                        --
-                        -- 3. Optionally, edit WritWorthy_Link.lua to add
-                        --    the style material to the table of materials.
-                        --    But I think this is no longer required:
-                        --    WritWorthy uses GetItemStyleMaterialLink() to
-                        --    find style mats, even if they're not listed in
-                        --    WritWorthy_Link.lua
-                        --
-                        -- (Ideally, WritWorthy.Smithing.ScanMotifs() could
-                        --  populate Smithing.MOTIF automatically,  but writing
-                        --  string-matching code to find "___ Style Master" in
-                        --  EN DE FR JP RU and other languages is far more work
-                        --  than this chore deserves.)
-
-}
-
 -- Motif page numbers --------------------------------------------------------
 --
 -- For checking whether we know the motif page for a requested item
@@ -755,13 +582,12 @@ function Parser:ParseItemLink(item_link)
     Log:Add("trait", self.trait)
 
     self.motif_num      = motif_num
-    self.motif          = Smithing.MOTIF[motif_num]
-    if self.motif then
+    self.motif          = nil
+    if LibMotif.DATA[motif_num] then
+        self.motif               = {}
         self.motif.motif_num     = motif_num
-        self.motif.motif_name    = self.motif.motif_name
-                                   or WritWorthy.Motif(motif_num)
-        self.motif.mat_item_link = self.motif.mat_item_link
-                                   or GetItemStyleMaterialLink(motif_num)
+        self.motif.motif_name    = WritWorthy.Motif(motif_num)
+        self.motif.mat_item_link = GetItemStyleMaterialLink(motif_num)
     end
     Log:Add("motif", self.motif)
 
@@ -833,35 +659,37 @@ function Parser:ToKnowList()
                         -- which have been seen to incorrectly return true when
                         -- you do NOT know the whole book
     if self.request_item.school.motif_required then
-        local motif_known = false
-        if self.motif.is_simple or self.motif.crown_id then
-            motif_known = IsSmithingStyleKnown(self.motif_num)
-            Log:Add("motif book IsSmithingStyleKnown("
-                ..tostring(self.motif_num)..") = "..tostring(motif_known))
-        end
-                        -- If the above check failed, and the motif has
-                        -- individual pages, check those. For some reason,
-                        -- the 2nd arg to IsSmithingStyleKnown() has no effect.
-                        -- So copy CraftStore and use achievement progress.
-        if (not motif_known) and self.motif.pages_id then
-            local _, completed_ct = GetAchievementCriterion(
-                                      self.motif.pages_id
-                                    , self.request_item.motif_page)
-            motif_known = 0 < completed_ct
-            Log:Add("motif page GetAchievementCriterion("
-                    .."pages_id="..tostring(self.motif.pages_id)
-                    ..", req.page="..tostring(self.request_item.motif_page)
-                    ..") = "..tostring(completed_ct))
-                        -- Debug dump all 14 pages of this motif
-            local pg_known = {}
-            for pg = 1,14 do
-                local _, completed_ct = GetAchievementCriterion(
-                                      self.motif.pages_id
-                                    , pg )
-                pg_known[pg] = completed_ct
-            end
-            Log:Add("pages known:"..table.concat(pg_known, " "))
-        end
+        local motif_known = LibMotif.IsKnown(self.motif_num
+                                , self.request_item.motif_page)
+
+        -- if self.motif.is_simple or self.motif.crown_id then
+        --     motif_known = IsSmithingStyleKnown(self.motif_num)
+        --     Log:Add("motif book IsSmithingStyleKnown("
+        --         ..tostring(self.motif_num)..") = "..tostring(motif_known))
+        -- end
+        --                 -- If the above check failed, and the motif has
+        --                 -- individual pages, check those. For some reason,
+        --                 -- the 2nd arg to IsSmithingStyleKnown() has no effect.
+        --                 -- So copy CraftStore and use achievement progress.
+        -- if (not motif_known) and self.motif.pages_id then
+        --     local _, completed_ct = GetAchievementCriterion(
+        --                               self.motif.pages_id
+        --                             , self.request_item.motif_page)
+        --     motif_known = 0 < completed_ct
+        --     Log:Add("motif page GetAchievementCriterion("
+        --             .."pages_id="..tostring(self.motif.pages_id)
+        --             ..", req.page="..tostring(self.request_item.motif_page)
+        --             ..") = "..tostring(completed_ct))
+        --                 -- Debug dump all 14 pages of this motif
+        --     local pg_known = {}
+        --     for pg = 1,14 do
+        --         local _, completed_ct = GetAchievementCriterion(
+        --                               self.motif.pages_id
+        --                             , pg )
+        --         pg_known[pg] = completed_ct
+        --     end
+        --     Log:Add("pages known:"..table.concat(pg_known, " "))
+        -- end
         local title = string.format("motif %s", self.motif.motif_name)
         local fmt = WritWorthy.Str("know_err_motif")
         local msg   = string.format(fmt, self.motif.motif_name)
@@ -1106,11 +934,11 @@ function Smithing.ScanMotifs()
                         -- We don't actually use motif name in WritWorthy.
         local motif_name = GetItemStyleName(motif_id)
 
-                        -- But if ESO has a name for a motif, yet WritWorthy
-                        -- lacks a Smithing.MOTIF record for it, then this
-                        -- might be a newly released style that WritWorthy
-                        -- needs to learn about.
-        if motif_name and not Smithing.MOTIF[motif_id] then
+                        -- But if ESO has a name for a motif, yet LibMotif
+                        -- lacks a record for it, then this might be a
+                        -- newly released style that WritWorthy needs to
+                        -- learn about.
+        if motif_name and not LibMotif.DATA[motif_id] then
             Log.Warn("Missing motif_id:%d name:%s", motif_id, motif_name)
         end
     end
