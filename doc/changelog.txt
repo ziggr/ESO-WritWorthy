@@ -1,3 +1,8 @@
+[B]6.3.1 2021-04-13[/B]
+[LIST]
+[*] LibMotif: move motif knowledge IDs out of WritWorthy to new library "LibMotif"
+[/LIST]
+
 [B]6.2.7 2021-01-05[/B]
 [LIST]
 [*] French translations from JAKEZ31. Merci!

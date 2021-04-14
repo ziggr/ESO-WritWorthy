@@ -8,7 +8,7 @@ local WW = WritWorthy
 local LAM2 = LibAddonMenu2
 
 WritWorthy.name            = "WritWorthy"
-WritWorthy.version         = "6.2.7"
+WritWorthy.version         = "6.3.1"
 WritWorthy.savedVarVersion = 1
 
 WritWorthy.default = {
@@ -194,7 +194,7 @@ function WritWorthy.KnowTooltipText(know_list)
     if not know_list then return nil end
     local elements = {}
     for i, know in ipairs(know_list) do
-                        -- Include lines that don't duplicate what 
+                        -- Include lines that don't duplicate what
                         -- Marify's Confirm Master Writ already report.
         if (   (not (know.how and know.how.cmw))
                         -- Or include duplicates if no CMW loaded, or if
@@ -215,7 +215,7 @@ local function can_tooltip_mat(enable, mat_row)
     end
 
     if (enable == nil) or (enable == WW.Str("lam_mat_tooltip_missing_only")) then
-        return mat_row:HaveCt() < mat_row.ct 
+        return mat_row:HaveCt() < mat_row.ct
     end
 
     return false
@@ -564,7 +564,7 @@ function WritWorthy:CreateSettingsWindow()
                         -- Only show this checkbox if running Marify's
                         -- Confirm Master Writ.
     if ConfirmMasterWrit then
-        local o = 
+        local o =
         { type      = "checkbox"
         , name      = WW.Str("lam_cmw_title")
         , tooltip   = WW.Str("lam_cmw_desc")

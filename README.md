@@ -3,6 +3,7 @@
 - <font color="red">Required, install separately:</font> [LibLazyCrafting](https://www.esoui.com/downloads/info1594-LibLazyCrafting.html)
 - <font color="red">Required, install separately:</font> [LibAddonMenu-2.0](https://www.esoui.com/downloads/info7-LibAddonMenu.html)
 - <font color="red">Required, install separately:</font> [LibPrice](https://www.esoui.com/downloads/info2204-LibPrice.html)
+- <font color="red">Required, install separately:</font> [LibMotif](https://www.esoui.com/downloads/info3036-LibMotif.html)   NEW REQUIREMENT 2021-04-13
 - <font color="red">Required, install separately:</font> [LibSets](https://www.esoui.com/downloads/info2241-LibSets.html)
 - (Optional) uses any of [Master Merchant](https://www.esoui.com/downloads/info928-MasterMerchant.html), [Arkadius' Trade Tools](https://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html), [Tamriel Trade Centre](https://www.esoui.com/downloads/info1245-TamrielTradeCentre.html) for material price data.
 - (Optional) [HomeStationMarker](https://www.esoui.com/downloads/info2396-HomeStationMarker.html) shows markers over the crafting stations for any enqueued writs.  <font color="Gold">New and experimental as of 2019-06-04.</font>
