@@ -425,8 +425,8 @@
       allowBringToTop="true"
       clampedToScreen="false"
       >
-      <Dimensions              x="620"       y="550" />
-      <DimensionConstraints minX="620"    minY="350"
+      <Dimensions              x="665"       y="550" />
+      <DimensionConstraints minX="665"    minY="350"
                             maxX="1805"   maxY="950" />
 
             <!-- Positive LT/Negative RB offsets allow sliding
@@ -542,7 +542,7 @@
                   <Anchor relativeTo="$(parent)"
                     relativePoint="TOPRIGHT"
                     point="TOPRIGHT"
-                    offsetX="-410" />
+                    offsetX="-455" />
                   <Dimensions x="200" y="20" />
                   <OnInitialized>
                     WritWorthy.MatUI.HeaderInit(self, "Name", "Name", "ui_name")
@@ -554,7 +554,7 @@
                   <Anchor relativeTo="$(parent)"
                     relativePoint="TOPRIGHT"
                     point="TOPRIGHT"
-                    offsetX="-330" />
+                    offsetX="-375" />
                   <Dimensions x="75" y="20" />
                   <OnInitialized>
                     WritWorthy.MatUI.HeaderInit(self, "RequiredCt", "Req'd", "ui_required_ct")
@@ -566,7 +566,7 @@
                   <Anchor relativeTo="$(parent)"
                     relativePoint="TOPRIGHT"
                     point="TOPRIGHT"
-                    offsetX="-250" />
+                    offsetX="-295" />
                   <Dimensions x="75" y="20" />
                   <OnInitialized>
                     WritWorthy.MatUI.HeaderInit(self, "HaveCt", "Have", "ui_have_ct")
@@ -578,7 +578,7 @@
                   <Anchor relativeTo="$(parent)"
                     relativePoint="TOPRIGHT"
                     point="TOPRIGHT"
-                    offsetX="-170" />
+                    offsetX="-225" />
                   <Dimensions x="75" y="20" />
                   <OnInitialized>
                     WritWorthy.MatUI.HeaderInit(self, "BuyCt", "Buy", "ui_buy_ct")
@@ -590,7 +590,7 @@
                   <Anchor relativeTo="$(parent)"
                     relativePoint="TOPRIGHT"
                     point="TOPRIGHT"
-                    offsetX="-90" />
+                    offsetX="-135" />
                   <Dimensions x="75" y="20" />
                   <OnInitialized>
                     WritWorthy.MatUI.HeaderInit(self, "PriceEa", "Price", "ui_price_ea")
@@ -602,8 +602,8 @@
                   <Anchor relativeTo="$(parent)"
                     relativePoint="TOPRIGHT"
                     point="TOPRIGHT"
-                    offsetX="-10" />
-                  <Dimensions x="75" y="20" />
+                    offsetX="-20" />
+                  <Dimensions x="120" y="20" />
                   <OnInitialized>
                     WritWorthy.MatUI.HeaderInit(self, "BuySubtotal", "Subtotal", "ui_buy_subtotal")
                   </OnInitialized>
@@ -628,7 +628,7 @@
         </Control>
 
         <Label  name="$(parent)MatListTitle"
-          text="Materials required for all available master writs"
+          text="Materials required for all queued master writs"
           font="ZoFontGame"
           color="FFFFFF"
           >
