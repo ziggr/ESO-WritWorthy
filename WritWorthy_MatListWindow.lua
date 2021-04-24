@@ -235,15 +235,21 @@ function WritWorthy.MatUI:CreateRowControlCells(row_control, header_control)
                         -- to the control we passed to
                         -- ZO_SortHeader_Initialize().
             local header_name_control = header_control:GetNamedChild("Name")
+if not header_name_control.GetHorizontalAlignment then
+    WritWorthy.Log.Debug("no horiz %d %-20s falling back", i, cell_name)
+    header_name_control = nil
+end
             if not header_name_control then
                 local hc2 = self.list_header_controls[cell_name]
                 if hc2 then
+WritWorthy.Log.Debug("no hnc, fallback to list_header_controls['%s']", cell_name)
                     header_name_control = hc2:GetNamedChild("Name")
                 end
             end
             local horiz_align = TEXT_ALIGN_LEFT
             if header_name_control then
 if not header_name_control.GetHorizontalAlignment then
+    WritWorthy.Log.Debug("no horiz %d %s", i, cell_name)
     WritWorthy.ZZ = header_name_control
 else
                 horiz_align = header_name_control:GetHorizontalAlignment()
