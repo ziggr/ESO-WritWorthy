@@ -169,6 +169,126 @@ function WritWorthy.MatUI.HeaderInit(control, name, text, key)
     end
 end
 
+-- First time through a row's SetupRowControl(), programmatically create the
+-- individual label controls that will hold cell text. Doing so
+-- programmatically here is less maintenance work than  trying to keep the XML
+-- "virtual" row in sync with the XML headers.
+--
+-- Do not fill labels with live text: that's SetupRowControl()'s job.
+function WritWorthy.MatUI:CreateRowControlCells(row_control, header_control)
+    for i, cell_name in ipairs(self.CELL_NAME_LIST) do
+        local header_cell_control = header_control:GetNamedChild(cell_name)
+        local control_name        = row_control:GetName() .. cell_name
+        local cell_control        = nil
+        local is_text             = true
+        local rel_to_left         = header_control:GetLeft()
+        -- if self.CELL_UNTEXT_LIST[cell_name] then
+        --                 -- Non-text cells (aka the "Enqueue" checkbox button
+        --                 -- are not created programmatically, they are already
+        --                 -- created for us via XML. Find and use the existing
+        --                 -- control.
+        --     cell_control = row_control:GetNamedChild(cell_name)
+        --     is_text      = false
+        -- else
+                        -- Text cells are programmatically created here, not
+                        -- created by XML. Create now.
+            cell_control = row_control:CreateControl(control_name, CT_LABEL)
+        -- end
+        row_control[cell_name]   = cell_control
+
+        local y_offset           = 0
+        -- if is_text then y_offset = 3 end
+
+        if i == 1 then
+                        -- Leftmost column is flush up against
+                        -- the left of the container
+            cell_control:SetAnchor( LEFT                -- point
+                                  , row_control         -- relativeTo
+                                  , LEFT                -- relativePoint
+                                  , 0                   -- offsetX
+                                  , y_offset )          -- offsetY
+        else
+            local offsetX = header_cell_control:GetLeft()
+                          - rel_to_left
+            cell_control:SetAnchor( LEFT                -- point
+                                  , row_control         -- relativeTo
+                                  , LEFT                -- relativePoint
+                                  , offsetX             -- offsetX
+                                  , y_offset )          -- offsetY
+        end
+        cell_control:SetHidden(false)
+
+        -- if not is_text then
+        --                 -- Lock our "Enqueue" checkbox to 20x20
+        --     cell_control:SetWidth(20)
+        --     cell_control:SetHeight(20)
+        -- else
+            cell_control:SetWidth(header_cell_control:GetWidth())
+            cell_control:SetHeight(self.ROW_HEIGHT - y_offset)
+
+            cell_control:SetFont("ZoFontGame")
+            cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
+
+                        -- Surprise! Headers:GetNamedChild() returns a control
+                        -- instance that lacks a "Name" sub-control, which we
+                        -- need if we want to match text alignment. Fall back
+                        -- to the control we passed to
+                        -- ZO_SortHeader_Initialize().
+            local header_name_control = header_control:GetNamedChild("Name")
+            if not header_name_control then
+                local hc2 = self.list_header_controls[cell_name]
+                if hc2 then
+                    header_name_control = hc2:GetNamedChild("Name")
+                end
+            end
+            local horiz_align = TEXT_ALIGN_LEFT
+            if header_name_control then
+if not header_name_control.GetHorizontalAlignment then
+    WritWorthy.ZZ = header_name_control
+else
+                horiz_align = header_name_control:GetHorizontalAlignment()
+end
+            end
+            cell_control:SetHorizontalAlignment(horiz_align)
+
+                            -- Align all cells to top so that long/multiline
+                            -- text still look acceptable. But hopefully we'll
+                            -- never need this because TEXT_WRAP_MODE_ELLIPSIS
+                            -- above should prevent multiline text.
+            cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
+
+            --                 -- Click to toggle item tooltip for row's
+            --                 -- Sealed Master Writ.
+            -- cell_control:SetMouseEnabled(true)
+            -- cell_control:SetHandler("OnMouseDown", WritWorthyInventoryList_Cell_OnMouseDown)
+        -- end
+    end
+
+    -- local cb = row_control:GetNamedChild(self.CELL_MIMIC)
+    -- if cb then
+    --     ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
+    --         WritWorthyInventoryList_MimicToggled(checkbox, is_checked)
+    --     end)
+    -- end
+
+    -- cb = row_control:GetNamedChild(self.CELL_ENQUEUE)
+    -- if cb then
+    --     ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
+    --         WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
+    --     end)
+    -- end
+    -- cb:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+    -- cb:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
+
+    --                         -- Not a cell control, but a mask that floats above
+    --                         -- one. Hook that up for fast access and tooltips.
+    -- local mask_control = row_control:GetNamedChild(self.CELL_ENQUEUE_MASK)
+    -- row_control[self.CELL_ENQUEUE_MASK] = mask_control
+    -- mask_control:SetHidden(false)
+    -- mask_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
+    -- mask_control:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
+end
+
 -- After a resize, widen our "detail1" column and nudge the others to its right.
 function WritWorthy.MatUI:UpdateAllCellWidths()
     Log.Debug("WWML:UpdateAllCellWidths")
@@ -241,6 +361,7 @@ function WritWorthy.MatUI:Initialize(control)
         , self.ROW_HEIGHT       -- row height
                                 -- setupCallback
         , function(control, mat_row_data)
+             WritWorthy.Log.Debug("WWMUI: row setupCallback")
              self:SetupRowControl(control, mat_row_data)
          end
         )
@@ -368,19 +489,23 @@ end
 
 function WritWorthy.MatUI:BuildMasterlist()
     Log.Debug("WWMUI:BuildMasterlist()")
-    self.mat_row_data_list = {}
+    u = {}
 
     -- ###
     local r_d = {}
     r_d.item_link = WritWorthy.FindLink("ancestor silk")
     r_d.required_ct = 1234
     self:PopulateUIFields(r_d)
-    table.insert(self.mat_row_data_list, rd)
+    table.insert(u, r_d)
 
+    self.mat_row_data_list = u
+    Log.Debug("WWMUI:BuildMasterlist() mrdl.ct:%d", #self.mat_row_data_list)
 end
 
 -- Populate the ScrollList's rows, using our data model as a source.
-function WritWorthy.MatUI:SortScrollList()
+function WritWorthy.MatUI:FilterScrollList()
+    Log.Debug("WWMUI:FilterScrollList() mrdl.ct:%d", #self.mat_row_data_list)
+
     local scroll_data = ZO_ScrollList_GetDataList(self.list)
     ZO_ClearNumericallyIndexedTable(scroll_data)
     for _, mat_row_data in ipairs(self.mat_row_data_list) do
@@ -399,7 +524,7 @@ function WritWorthy.MatUI:SortScrollList()
 end
 
 function WritWorthy.MatUI:UpdateSummary()
-    self.mat_row_data_list = {}
+    -- self.mat_row_data_list = {}
     Log.Debug("MMUI:UpdateSummary()")
     -- ###
 end
