@@ -380,8 +380,6 @@ function WritWorthy.MatUI:BuildMasterlist()
 end
 
 -- Populate the ScrollList's rows, using our data model as a source.
-    Log.Debug( "MMUI:SortScrollList() #mrdl:%d"
-             , self.mat_row_data_list and #self.mat_row_data_list )
 function WritWorthy.MatUI:SortScrollList()
     local scroll_data = ZO_ScrollList_GetDataList(self.list)
     ZO_ClearNumericallyIndexedTable(scroll_data)

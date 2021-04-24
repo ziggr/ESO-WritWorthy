@@ -160,7 +160,7 @@ function WritWorthy.Util.RestorePos(top_level_control, saved_var_key_name)
         pos = WritWorthy.savedVariables[saved_var_key_name]
     end
     if not pos then
-        Log.Debug( "RestorePos: no saved pos for key:'%s'"
+        WritWorthy.Log.Debug( "RestorePos: no saved pos for key:'%s'"
                  , saved_var_key_name )
         return
     end
@@ -225,7 +225,7 @@ end
 -- into a filter field. Delays call to refres (or `func` here) until after
 -- 400ms or so have passed between keystrokes (or calls to `CallSoon()` here).
 function WritWorthy.Util.CallSoon(key, func)
-    Log.Debug("CallSoon     k:%s %d", key, WritWorthy[key] or -1)
+    WritWorthy.Log.Debug("CallSoon     k:%s %d", key, WritWorthy[key] or -1)
     if not WritWorthy[key] then
         zo_callLater( function()
                         WritWorthy.Util.CallSoonPoll(key, func)
@@ -236,11 +236,11 @@ function WritWorthy.Util.CallSoon(key, func)
 end
 
 function WritWorthy.Util.CallSoonPoll(key, func)
-    Log.Debug("CallSoonPoll k:%s %d", key, WritWorthy[key] or -1)
+    WritWorthy.Log.Debug("CallSoonPoll k:%s %d", key, WritWorthy[key] or -1)
     if not WritWorthy[key] then return end
     local now = GetFrameTimeMilliseconds() or 0
     if now <= WritWorthy[key] then
-        Log.Debug("CallSoonPoll k:%s fire", key)
+        WritWorthy.Log.Debug("CallSoonPoll k:%s fire", key)
         WritWorthy[key] = nil
         func()
     else
