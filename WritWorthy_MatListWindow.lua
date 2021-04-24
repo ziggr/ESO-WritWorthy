@@ -41,7 +41,8 @@ WritWorthy.MatUI.SORT_KEYS = {
 , ["ui_required_ct" ] = { tiebreaker="ui_have_ct"     , isNumeric=true }
 , ["ui_have_ct"     ] = { tiebreaker="ui_buy_ct"      , isNumeric=true }
 , ["ui_buy_ct"      ] = { tiebreaker="ui_price_ea"    , isNumeric=true }
-, ["ui_price_ea"    ] = {                               isNumeric=true }
+, ["ui_price_ea"    ] = { tiebreaker="ui_buy_subtotal", isNumeric=true }
+, ["ui_buy_subtotal"] = {                               isNumeric=true }
 }
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
