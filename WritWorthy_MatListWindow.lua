@@ -218,56 +218,15 @@ function WritWorthy.MatUI:CreateRowControlCells(row_control, header_control)
         end
         cell_control:SetHidden(false)
 
-        -- if not is_text then
-        --                 -- Lock our "Enqueue" checkbox to 20x20
-        --     cell_control:SetWidth(20)
-        --     cell_control:SetHeight(20)
-        -- else
-            cell_control:SetWidth(header_cell_control:GetWidth())
-            cell_control:SetHeight(self.ROW_HEIGHT - y_offset)
+        cell_control:SetWidth(header_cell_control:GetWidth())
+        cell_control:SetHeight(self.ROW_HEIGHT - y_offset)
 
-            cell_control:SetFont("ZoFontGame")
-            cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
+        cell_control:SetFont("ZoFontGame")
+        cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
 
-                        -- Surprise! Headers:GetNamedChild() returns a control
-                        -- instance that lacks a "Name" sub-control, which we
-                        -- need if we want to match text alignment. Fall back
-                        -- to the control we passed to
-                        -- ZO_SortHeader_Initialize().
-            local header_name_control = header_control:GetNamedChild("Name")
-if not header_name_control.GetHorizontalAlignment then
-    WritWorthy.Log.Debug("no horiz %d %-20s falling back", i, cell_name)
-    header_name_control = nil
-end
-            if not header_name_control then
-                local hc2 = self.list_header_controls[cell_name]
-                if hc2 then
-WritWorthy.Log.Debug("no hnc, fallback to list_header_controls['%s']", cell_name)
-                    header_name_control = hc2:GetNamedChild("Name")
-                end
-            end
-            local horiz_align = TEXT_ALIGN_LEFT
-            if header_name_control then
-if not header_name_control.GetHorizontalAlignment then
-    WritWorthy.Log.Debug("no horiz %d %s", i, cell_name)
-    WritWorthy.ZZ = header_name_control
-else
-                horiz_align = header_name_control:GetHorizontalAlignment()
-end
-            end
-            cell_control:SetHorizontalAlignment(horiz_align)
-
-                            -- Align all cells to top so that long/multiline
-                            -- text still look acceptable. But hopefully we'll
-                            -- never need this because TEXT_WRAP_MODE_ELLIPSIS
-                            -- above should prevent multiline text.
-            cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
-
-            --                 -- Click to toggle item tooltip for row's
-            --                 -- Sealed Master Writ.
-            -- cell_control:SetMouseEnabled(true)
-            -- cell_control:SetHandler("OnMouseDown", WritWorthyInventoryList_Cell_OnMouseDown)
-        -- end
+        Util.SetCellToHeaderAlign( cell_control
+                                 , header_control
+                                 , self.list_header_controls[cell_name] )
     end
 
     -- local cb = row_control:GetNamedChild(self.CELL_MIMIC)

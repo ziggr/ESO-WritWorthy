@@ -255,3 +255,41 @@ function Util.MatHaveCt(item_link)
     local bag_ct, bank_ct, craft_bag_ct = GetItemLinkStacks(item_link)
     return bag_ct + bank_ct + craft_bag_ct
 end
+
+-- ZO_ScrollList -------------------------------------------------------------
+
+function Util.SetCellToHeaderAlign(
+          cell_control
+        , header_control
+        , fallback_header_control )
+    local header_name_control = header_control:GetNamedChild("Name")
+
+                        -- Surprise! Headers:GetNamedChild() returns a control
+                        -- instance that lacks a "Name" sub-control, or whose
+                        -- "Name" subcontrol is not a label with
+                        -- GetHorizontalAlignment(). We need that horizontal
+                        -- alignment. Fall back to the control we passed to
+                        -- ZO_SortHeader_Initialize().
+    if not ( header_name_control
+             and header_name_control.GetHorizontalAlignment ) then
+        -- WritWorthy.Log.Debug("no horiz %d %-20s falling back", i, cell_name)
+        header_name_control = nil
+    end
+    if (not header_name_control) and fallback_header_control then
+        -- WritWorthy.Log.Debug("no hnc, fallback to list_header_controls['%s']", cell_name)
+        header_name_control = fallback_header_control:GetNamedChild("Name")
+    end
+
+    local horiz_align = TEXT_ALIGN_LEFT
+    if header_name_control then
+        horiz_align = header_name_control:GetHorizontalAlignment()
+    end
+    cell_control:SetHorizontalAlignment(horiz_align)
+
+                    -- Align all cells to top so that long/multiline
+                    -- text still look acceptable. But hopefully we'll
+                    -- never need this because TEXT_WRAP_MODE_ELLIPSIS
+                    -- above should prevent multiline text.
+    cell_control:SetVerticalAlignment(TEXT_ALIGN_TOP)
+end
+
