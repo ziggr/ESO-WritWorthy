@@ -632,7 +632,7 @@
           font="ZoFontGame"
           color="FFFFFF"
           >
-          <Anchor relativeTo="$(parent)MatList"
+          <Anchor relativeTo="$(parent)List"
             relativePoint="TOPLEFT"
             point="BOTTOMLEFT"
             offsetX="0"
