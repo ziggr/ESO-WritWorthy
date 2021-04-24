@@ -588,12 +588,7 @@ function WritWorthyInventoryList:UpdateColumnWidths(row_control)
             end
         end
     end
-                        -- I don't always have a background, but when I do,
-                        -- I want it to stretch all the way across this row.
-    local background_control = GetControl(row_control, "BG")
-    if background_control then
-        background_control:SetWidth(row_control:GetWidth())
-    end
+    Util.StretchBGWidth(row_control)
 end
 
 -- Abbreviate strings so that they fit in narrow columns.

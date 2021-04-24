@@ -182,21 +182,10 @@ function WritWorthy.MatUI:CreateRowControlCells(row_control, header_control)
         local cell_control        = nil
         local is_text             = true
         local rel_to_left         = header_control:GetLeft()
-        -- if self.CELL_UNTEXT_LIST[cell_name] then
-        --                 -- Non-text cells (aka the "Enqueue" checkbox button
-        --                 -- are not created programmatically, they are already
-        --                 -- created for us via XML. Find and use the existing
-        --                 -- control.
-        --     cell_control = row_control:GetNamedChild(cell_name)
-        --     is_text      = false
-        -- else
-                        -- Text cells are programmatically created here, not
-                        -- created by XML. Create now.
-            cell_control = row_control:CreateControl(control_name, CT_LABEL)
-        -- end
-        row_control[cell_name]   = cell_control
+        local cell_control        = row_control:CreateControl(control_name, CT_LABEL)
+        row_control[cell_name]    = cell_control
 
-        local y_offset           = 0
+        local y_offset            = 0
         -- if is_text then y_offset = 3 end
 
         if i == 1 then
@@ -228,30 +217,6 @@ function WritWorthy.MatUI:CreateRowControlCells(row_control, header_control)
                                  , header_control
                                  , self.list_header_controls[cell_name] )
     end
-
-    -- local cb = row_control:GetNamedChild(self.CELL_MIMIC)
-    -- if cb then
-    --     ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
-    --         WritWorthyInventoryList_MimicToggled(checkbox, is_checked)
-    --     end)
-    -- end
-
-    -- cb = row_control:GetNamedChild(self.CELL_ENQUEUE)
-    -- if cb then
-    --     ZO_CheckButton_SetToggleFunction(cb, function(checkbox, is_checked)
-    --         WritWorthyInventoryList_EnqueueToggled(checkbox, is_checked)
-    --     end)
-    -- end
-    -- cb:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
-    -- cb:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
-
-    --                         -- Not a cell control, but a mask that floats above
-    --                         -- one. Hook that up for fast access and tooltips.
-    -- local mask_control = row_control:GetNamedChild(self.CELL_ENQUEUE_MASK)
-    -- row_control[self.CELL_ENQUEUE_MASK] = mask_control
-    -- mask_control:SetHidden(false)
-    -- mask_control:SetHandler("OnMouseEnter", WritWorthyInventoryList_Cell_OnMouseEnter)
-    -- mask_control:SetHandler("OnMouseExit",  WritWorthyInventoryList_Cell_OnMouseExit)
 end
 
 -- After a resize, widen our "detail1" column and nudge the others to its right.
@@ -303,12 +268,7 @@ function WritWorthy.MatUI:UpdateColumnWidths(row_control)
             cell_control:SetWidth(header_cell_control:GetWidth())
         end
     end
-                        -- I don't always have a background, but when I do,
-                        -- I want it to stretch all the way across this row.
-    local background_control = GetControl(row_control, "BG")
-    if background_control then
-        background_control:SetWidth(row_control:GetWidth())
-    end
+    Util.StretchBGWidth(row_control)
 end
 
 -- Called by ZO_SortFilterList during something er other
