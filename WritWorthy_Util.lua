@@ -301,3 +301,34 @@ function Util.StretchBGWidth(row_control)
         background_control:SetWidth(row_control:GetWidth())
     end
 end
+
+function Util.SetAnchorCellLeft(
+          row_control
+        , cell_control
+        , header_cell_control
+        , is_leftmost_cell
+        , y_offset
+        , rel_to_left )
+    if not y_offset then
+        y_offset = 0
+    end
+
+    if is_leftmost_cell then
+                    -- Leftmost column is flush up against
+                    -- the left of the container
+        cell_control:SetAnchor( LEFT                -- point
+                              , row_control         -- relativeTo
+                              , LEFT                -- relativePoint
+                              , 0                   -- offsetX
+                              , y_offset )          -- offsetY
+    else
+        local offsetX = header_cell_control:GetLeft()
+                      - rel_to_left
+        cell_control:SetAnchor( LEFT                -- point
+                              , row_control         -- relativeTo
+                              , LEFT                -- relativePoint
+                              , offsetX             -- offsetX
+                              , y_offset )          -- offsetY
+    end
+end
+

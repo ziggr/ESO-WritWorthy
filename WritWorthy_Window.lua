@@ -470,23 +470,12 @@ function WritWorthyInventoryList:CreateRowControlCells(row_control, header_contr
         local y_offset           = 0
         if is_text then y_offset = 3 end
 
-        if i == 1 then
-                        -- Leftmost column is flush up against
-                        -- the left of the container
-            cell_control:SetAnchor( LEFT                -- point
-                                  , row_control         -- relativeTo
-                                  , LEFT                -- relativePoint
-                                  , 0                   -- offsetX
-                                  , y_offset )          -- offsetY
-        else
-            local offsetX = header_cell_control:GetLeft()
-                          - rel_to_left
-            cell_control:SetAnchor( LEFT                -- point
-                                  , row_control         -- relativeTo
-                                  , LEFT                -- relativePoint
-                                  , offsetX             -- offsetX
-                                  , y_offset )          -- offsetY
-        end
+        Util.SetAnchorCellLeft( row_control
+                              , cell_control
+                              , header_cell_control
+                              , i == 1
+                              , y_offset
+                              , rel_to_left )
         cell_control:SetHidden(false)
 
         if not is_text then
