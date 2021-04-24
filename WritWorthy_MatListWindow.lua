@@ -382,34 +382,62 @@ end
 -- Fill in all mat_row_data.ui_xxx fields.
 function WritWorthy.MatUI:PopulateUIFields(mat_row_data)
     local r_d = mat_row_data -- For less typing.
-    r_d.ui_name         = zo_strformat("<<t:1>>",GetItemLinkName(r_d.item_link))
+    r_d.ui_name         = zo_strformat("<<t:1>>",GetItemLinkName(r_d.mat_row.link))
+    r_d.ui_required_ct  = r_d.mat_row.ct
+    r_d.ui_have_ct      = HaveCt(r_d.mat_row.link)
+    r_d.ui_price_ea     = r_d.mat_row.mm
+    r_d.ui_buy_ct       = 0
+    r_d.ui_buy_subtotal = 0
 
-    r_d.ui_required_ct  = r_d.required_ct
-    r_d.ui_have_ct      = HaveCt(r_d.item_link)
-    r_d.ui_price_ea     = Util.MatPrice(r_d.item_link)
+                        -- Only fill in buy cells if we need to buy some.
     if r_d.ui_have_ct < r_d.ui_required_ct then
-        r_d.ui_buy_ct   = r_d.required_ct - r_d.have_ct
+        r_d.ui_buy_ct   = r_d.ui_required_ct - r_d.ui_have_ct
         if r_d.ui_price_ea == WritWorthy.GOLD_UNKNOWN then
             r_d.ui_buy_subtotal = WritWorthy.GOLD_UNKNOWN
         else
             r_d.ui_buy_subtotal = r_d.ui_buy_ct * r_d.ui_price_ea
         end
-    else
-        r_d.ui_buy_ct       = 0
-        r_d.ui_buy_subtotal = 0
     end
 end
 
 function WritWorthy.MatUI:BuildMasterlist()
     Log.Debug("WWMUI:BuildMasterlist()")
-    u = {}
 
-    -- ###
-    local r_d = {}
-    r_d.item_link = WritWorthy.FindLink("ancestor silk")
-    r_d.required_ct = 1234
-    self:PopulateUIFields(r_d)
-    table.insert(u, r_d)
+                        -- Accumulate all queued writs' materials
+                        -- into a single, summed, table.
+    mat_table = {} -- index = mat item_link, value = summed MatRow
+    self.inventory_data_list = WritWorthy:ScanInventoryForMasterWrits()
+    for _, inventory_data in pairs(self.inventory_data_list) do
+        local is_queued    = WritWorthyInventoryList:IsQueued(inventory_data)
+        local is_completed = WritWorthyInventoryList:IsCompleted(inventory_data)
+        local is_use_mimic = WritWorthyInventoryList:IsUseMimic(inventory_data)
+        if is_queued and not is_completed then
+            local parser   = inventory_data.parser
+            local mat_list = parser:ToMatList()
+            for _, mat_row in ipairs(mat_list) do
+                local item_link = mat_row.link
+                local mr2       = mat_table[item_link]
+                if mr2 then
+                    mr2.ct = mr2.ct + mat_row.ct
+                else
+                    mr2 = WritWorthy.MatRow:FromLink(item_link, mat_row.ct)
+                    mat_table[item_link] = mr2
+                end
+            end
+        end
+    end
+    local u = {}
+    for _, mat_row in pairs(mat_table) do
+        local r_d = {}
+        r_d.mat_row = mat_row
+        table.insert(u, r_d)
+    end
+
+    -- local r_d = {}
+    -- r_d.mat_row.link = WritWorthy.FindLink("ancestor silk")
+    -- r_d.required_ct = 1234
+    -- self:PopulateUIFields(r_d)
+    -- table.insert(u, r_d)
 
     self.mat_row_data_list = u
     Log.Debug("WWMUI:BuildMasterlist() mrdl.ct:%d", #self.mat_row_data_list)
