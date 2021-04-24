@@ -39,10 +39,10 @@ WritWorthy.MatUI.row_control_list = {}
 WritWorthy.MatUI.SORT_KEYS = {
   ["ui_name"        ] = { tiebreaker="ui_required_ct"                  }
 , ["ui_required_ct" ] = { tiebreaker="ui_have_ct"     , isNumeric=true }
-, ["ui_have_ct"     ] = { tiebreaker="ui_buy_ct"      , isNumeric=true }
+, ["ui_have_ct"     ] = { tiebreaker="ui_buy_ct"        }
 , ["ui_buy_ct"      ] = { tiebreaker="ui_price_ea"    , isNumeric=true }
 , ["ui_price_ea"    ] = { tiebreaker="ui_buy_subtotal", isNumeric=true }
-, ["ui_buy_subtotal"] = {                               isNumeric=true }
+, ["ui_buy_subtotal"] = {                               }
 }
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
@@ -117,18 +117,18 @@ function WritWorthy.MatUI.ToggleUI()
     WritWorthyMatUI:SetHidden(not h)
 end
 
-
+-- Called by click on shark arrows button
 function WritWorthy.MatUI.RefreshUI()
     Log.Debug("WWMUI.RefreshUI()")
     local list = WritWorthy.MatUI.singleton
-    list:Refresh()
+    WritWorthy_MatUI_Refresh()
 end
 
-function WritWorthy.MatUI:Refresh()
+function WritWorthy_MatUI_Refresh()
     Log.Debug("WWUI:Refresh()")
     local list = WritWorthy.MatUI.singleton
     list:BuildMasterlist()
-    list:RefreshData()
+    list:Refresh()
     -- self:UpdateSummary() -- ### Why isn't this function entered in MatUI's table?
 end
 
@@ -275,7 +275,6 @@ function WritWorthy.MatUI:Initialize(control)
         , self.ROW_HEIGHT       -- row height
                                 -- setupCallback
         , function(control, mat_row_data)
-             WritWorthy.Log.Debug("WWMUI: row setupCallback")
              self:SetupRowControl(control, mat_row_data)
          end
         )
@@ -304,7 +303,7 @@ function WritWorthy.MatUI:Initialize(control)
                         -- After ZO_SortFilterList:Initialize() we  have a
                         -- sortHeaderGroup. At least, that's how it works in
                         -- ScrollListExample.
-    self.sortHeaderGroup:SelectHeaderByKey("name")
+    self.sortHeaderGroup:SelectHeaderByKey("required_ct")
     ZO_SortHeader_OnMouseExit(WritWorthyMatUIListHeadersName)
     self:RefreshData()
 end
@@ -460,9 +459,13 @@ function WritWorthy.MatUI:SortScrollList()
     -- Original boilerplate SortScrollList() implementation that works
     -- perfectly with the usual sortFunction
     --
-    Log.Debug("MMUI:SortScrollList()")
+    Log.Debug("WWMUI:SortScrollList()")
     local scroll_data = ZO_ScrollList_GetDataList(self.list)
     table.sort(scroll_data, self.sortFunction)
+end
+
+function WritWorthy.MatUI:Refresh()
+    self:RefreshData()
 end
 
 function WritWorthy.MatUI:UpdateSummary()
