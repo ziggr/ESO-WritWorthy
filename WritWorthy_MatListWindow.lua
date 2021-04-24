@@ -34,15 +34,14 @@ WritWorthy.MatUI.data_list = {}
 WritWorthy.MatUI.row_control_list = {}
 
                         -- How to break ties when sorting by any
-                        -- specific column. Recurses down the line.
-                        -- Avoid cycles! Break at ui_buy_total_cost.
+                        -- specific column. Avoid cycles!`
 WritWorthy.MatUI.SORT_KEYS = {
-  ["ui_name"        ] = { tiebreaker="ui_required_ct"                  }
-, ["ui_required_ct" ] = { tiebreaker="ui_have_ct"     , isNumeric=true }
-, ["ui_have_ct"     ] = { tiebreaker="ui_buy_ct"        }
-, ["ui_buy_ct"      ] = { tiebreaker="ui_price_ea"    , isNumeric=true }
-, ["ui_price_ea"    ] = { tiebreaker="ui_buy_subtotal", isNumeric=true }
-, ["ui_buy_subtotal"] = {                               }
+  ["ui_name"        ] = {                                       }
+, ["ui_required_ct" ] = { tiebreaker="ui_name" , isNumeric=true }
+, ["ui_have_ct"     ] = { tiebreaker="ui_name"                  }
+, ["ui_buy_ct"      ] = { tiebreaker="ui_name" , isNumeric=true }
+, ["ui_price_ea"    ] = { tiebreaker="ui_name" , isNumeric=true }
+, ["ui_buy_subtotal"] = {                                       }
 }
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
@@ -117,9 +116,8 @@ function WritWorthy.MatUI.ToggleUI()
     WritWorthyMatUI:SetHidden(not h)
 end
 
--- Called by click on shark arrows button
+-- Wrapper function called by "Refresh" shark arrow button.
 function WritWorthy.MatUI.RefreshUI()
-    Log.Debug("WWMUI.RefreshUI()")
     local list = WritWorthy.MatUI.singleton
     WritWorthy_MatUI_Refresh()
 end
@@ -445,8 +443,6 @@ end
 
 -- Populate the ScrollList's rows, using our data model as a source.
 function WritWorthy.MatUI:FilterScrollList()
-    Log.Debug("WWMUI:FilterScrollList() mrdl.ct:%d", #self.mat_row_data_list)
-
     local scroll_data = ZO_ScrollList_GetDataList(self.list)
     ZO_ClearNumericallyIndexedTable(scroll_data)
     for _, mat_row_data in ipairs(self.mat_row_data_list) do
@@ -459,7 +455,6 @@ function WritWorthy.MatUI:SortScrollList()
     -- Original boilerplate SortScrollList() implementation that works
     -- perfectly with the usual sortFunction
     --
-    Log.Debug("WWMUI:SortScrollList()")
     local scroll_data = ZO_ScrollList_GetDataList(self.list)
     table.sort(scroll_data, self.sortFunction)
 end

@@ -2,13 +2,15 @@
 - basics functioning, good enough for my own use (barely)
 
 Want:
+- Initial sort, sort after refresh, is QUITE broken
+- would also like to numeric-sort abbreviated/gold/nillable columns
+
 - UI to show/hide "sufficient rows" so that I can just focus on "what's missing?"
     - show "all materials" / "missing materials" [ / "missing motif pages"]
 - click to toggle material's item tooltip
 - auto-refresh soon after queue/dequeue writ
 - HONOR MIMIC STONES: teach smithing how to honor 'em and omit from matlist?
     - how to plumb a line from UI to Smithing parser :ToMatList()
-- Why does sort not re-apply after refresh button click?
 - UI to toggle matlist window from main WW list window
 
 
