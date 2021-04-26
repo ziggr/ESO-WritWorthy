@@ -26,7 +26,7 @@ end
 function Log:EndEvent()
     local s = table.concat(self.log_event, "\n.  ")
     self.log_event = nil
-    Log.Debug(s)
+    Log.Verbose(s)
 end
 
 -- Append one value to the current event.
@@ -90,6 +90,7 @@ end
 -- that. If not, return a NOP replacement.
 
 local NOP = {}
+function NOP:Verbose(...) end
 function NOP:Debug(...) end
 function NOP:Info(...) end
 function NOP:Warn(...) end
@@ -122,6 +123,11 @@ function WritWorthy.LogOneWarnError(color, ...)
     if WritWorthy.log_to_chat or WritWorthy.log_to_chat_warn_error then
         d("|c"..color..WritWorthy.name..": "..string.format(...).."|r")
     end
+end
+
+function Log.Verbose(...)
+    WritWorthy.LogOne("444444",...)
+    WritWorthy.Logger():Verbose(...)
 end
 
 function Log.Debug(...)
