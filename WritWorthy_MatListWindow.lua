@@ -109,7 +109,6 @@ function WritWorthy.MatUI:LazyInit()
 
                         -- Replace label with combo box.
     local container = WritWorthyMatWindowComboBoxPlaceholder
-    -- local cb = ZO_ComboBox:New(container)
     local cb_name = nil
     local cb = WINDOW_MANAGER:CreateControlFromVirtual(
                       cb_name
@@ -132,26 +131,8 @@ function WritWorthy.MatUI:LazyInit()
         cb.m_comboBox:AddItem(e, ZO_COMBOBOX_SUPPRESS_UPDATE)
         cb_items[filter_name] = e
     end
+    WritWorthy.MatUI.SelectFilterComboBox(WritWorthy.MatUI.FILTER_NAME_ALL_MATS)
     cb:SetHidden(false)
-
-                        -- ### correct sort of , but not appearing and u
-                        -- ww.xxx() not affecting UI
-    function WritWorthy.XX()
-        local initial_filter_name = WritWorthy.MatUI.FILTER_NAME_ALL_MATS
-        local initial_item_text = WW.Str(initial_filter_name)
-        local cb = WritWorthy.MatUI.combo_box.m_comboBox
-        for index, item in ipairs(cb.m_sortedItems) do
-            if item.filter_name == initial_filter_name then
-                cb.SelectItem(item)
-                d("Selected", item.filter_name)
-                break
-            end
-            d("Nope:", initial_filter_name, item.filter_name)
-        end
-    end
-    WritWorthy.XX()
-                        -- ### Move to prefs
-    --cb.m_comboBox.SelectItem(WritWorthy.MatUI.FILTER_NAMES.QUEUED_ALL_MATS)
 end
 
 function WritWorthy.MatUI.RestorePos()
@@ -469,6 +450,8 @@ end
 function WritWorthy.MatUI:BuildMasterlist()
     Log.Debug("WWMUI:BuildMasterlist()")
 
+    local filter_name = self.GetFilterName() or WritWorthy.MatUI.FILTER_NAME_ALL_MATS
+
                         -- Accumulate all queued writs' materials
                         -- into a single, summed, table.
     mat_table = {} -- index = mat item_link, value = summed MatRow
@@ -492,18 +475,24 @@ function WritWorthy.MatUI:BuildMasterlist()
             end
         end
     end
-    local u = {}
-    for _, mat_row in pairs(mat_table) do
-        local r_d = {}
-        r_d.mat_row = mat_row
-        table.insert(u, r_d)
+                        -- Filter: pass all, or pass only missing
+    local function filter_pass(mat_row, filter_name)
+        if filter_name == WritWorthy.MatUI.FILTER_NAME_ALL_MATS then
+            return true
+        elseif filter_name == WritWorthy.MatUI.FILTER_NAME_MISSING_MATS then
+            return mat_row:HaveCt() < mat_row.ct
+        end
+        return false
     end
 
-    -- local r_d = {}
-    -- r_d.mat_row.link = WritWorthy.FindLink("ancestor silk")
-    -- r_d.required_ct = 1234
-    -- self:PopulateUIFields(r_d)
-    -- table.insert(u, r_d)
+    local u = {}
+    for _, mat_row in pairs(mat_table) do
+        if filter_pass(mat_row, filter_name) then
+            local r_d = {}
+            r_d.mat_row = mat_row
+            table.insert(u, r_d)
+        end
+    end
 
     self.mat_row_data_list = u
     Log.Debug("WWMUI:BuildMasterlist() mrdl.ct:%d", #self.mat_row_data_list)
@@ -537,3 +526,21 @@ function WritWorthy.MatUI:UpdateSummary()
     -- ###
 end
 
+-- Switch the combo box to the requested filter.
+--
+-- ignore_callback is optional, if passed nil/false, callbacks fire.
+-- If true, suppresses callbacks.
+function WritWorthy.MatUI.SelectFilterComboBox(filter_name, ignore_callback)
+    local cb = WritWorthy.MatUI.combo_box.m_comboBox
+    for index, item in ipairs(cb.m_sortedItems) do
+        if item.filter_name == filter_name then
+            cb:SelectItem(item, ignore_callback)
+            return
+        end
+    end
+end
+
+function WritWorthy.MatUI.GetFilterName()
+    local entry = WritWorthy.MatUI.combo_box.m_comboBox:GetSelectedItemData()
+    return entry.filter_name
+end
