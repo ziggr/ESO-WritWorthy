@@ -515,20 +515,16 @@
           </OnClicked>
         </Button>
 
-        <Label name = "$(parent)ComboBoxPlaceholder"
-          text="Materials required for all queued master writs"
-          font="ZoFontGame"
-          color="CFDCBD"
-          verticalAlignment="TOP">
+        <Control name = "$(parent)ComboBoxPlaceholder" >
           <Anchor relativeTo="$(parent)"
             relativePoint="TOPLEFT"
             point="TOPLEFT"
             offsetX="5"
             offsetY="50" />
           <Dimensions
-            y="20" />
-        </Label>
-
+            x="500"
+            y="32" />
+        </Control>
 
                           <!-- WritWorthyMatUIListContainer -->
         <Control name="WritWorthyMatUIListContainer"

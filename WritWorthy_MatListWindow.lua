@@ -74,6 +74,16 @@ WritWorthy.MatUI.ROW_HEIGHT = 30
 WritWorthy.MatUI.COLOR_TEXT_NEED_MORE    = "CC3333"
 WritWorthy.MatUI.COLOR_TEXT_HAVE_ENOUGH  = "FFFFFF"
 
+WritWorthy.MatUI.FILTER_NAMES = {
+    ["QUEUED_ALL_MATS"        ] = "Show all materials required for all queued master writs"
+,   ["QUEUED_MISSING_MATS"    ] = "Show missing materials required for all queued master writs"
+,   ["UNQUEUED_MISSING_MOTIFS"] = "Show motif pages missing for unqueued master writs"
+}
+WritWorthy.MatUI.FILTER_NAMES_LIST = {
+    WritWorthy.MatUI.FILTER_NAMES.QUEUED_ALL_MATS
+,   WritWorthy.MatUI.FILTER_NAMES.QUEUED_MISSING_MATS
+,   WritWorthy.MatUI.FILTER_NAMES.UNQUEUED_MISSING_MOTIFS
+}
 -- REMOVE ME -- debugging check to learn that the parameter "self" in XML-hosted
 --              code is indeed the XML control.
 function WritWorthy.MatUI.OnInitialized(top_level_control)
@@ -110,15 +120,13 @@ function WritWorthy.MatUI:LazyInit()
     cb:SetAnchor(TOPLEFT,     container, TOPLEFT,     0, 0)
     cb:SetAnchor(BOTTOMRIGHT, container, BOTTOMRIGHT, 0, 0)
     cb.m_comboBox:SetSortsItems(false)
-    local function fn()
-
+    local function fn(control, choice_text, choice_entry)
+        Log.Debug("Filter choice_text:"..choice_text)
     end
-    local e1 = cb.m_comboBox:CreateItemEntry("one", fn)
-    local e2 = cb.m_comboBox:CreateItemEntry("two", fn)
-    local e3 = cb.m_comboBox:CreateItemEntry("three", fn)
-    cb.m_comboBox:AddItem(e1, ZO_COMBOBOX_SUPPRESS_UPDATE)
-    cb.m_comboBox:AddItem(e2, ZO_COMBOBOX_SUPPRESS_UPDATE)
-    cb.m_comboBox:AddItem(e3, ZO_COMBOBOX_SUPPRESS_UPDATE)
+    for _, filter_name in ipairs(WritWorthy.MatUI.FILTER_NAMES_LIST) do
+        local e = cb.m_comboBox:CreateItemEntry(filter_name, fn)
+        cb.m_comboBox:AddItem(e, ZO_COMBOBOX_SUPPRESS_UPDATE)
+    end
     cb:SetHidden(false)
 end
 
