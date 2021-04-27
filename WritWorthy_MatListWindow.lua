@@ -74,6 +74,17 @@ WritWorthy.MatUI.ROW_HEIGHT = 30
 WritWorthy.MatUI.COLOR_TEXT_NEED_MORE    = "CC3333"
 WritWorthy.MatUI.COLOR_TEXT_HAVE_ENOUGH  = "FFFFFF"
 
+function WritWorthy.MatUI.OnInitialized(top_level_control)
+    Log.Debug("WWMUI.OnInitialized() top_level_control:"..tostring(top_level_control))
+    Log.Debug("WWMUI.OnInitialized() WritWorthyMatUI  :"..tostring(WritWorthyMatUI))
+
+
+    d("WWMUI.OnInitialized() top_level_control:"..tostring(top_level_control))
+    d("WWMUI.OnInitialized() WritWorthyMatUI  :"..tostring(WritWorthyMatUI))
+end
+
+
+
 -- MatUI: The window around the material list --------------------------------
 function WritWorthy.MatUI:New()
     Log.Debug("WWML:New()")

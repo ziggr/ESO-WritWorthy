@@ -440,6 +440,15 @@
       <OnMoveStop>WritWorthy.MatUI.OnMoveStop()</OnMoveStop>
       <OnResizeStop>WritWorthy.MatUI.OnResizeStop()</OnResizeStop>
 
+                        <!-- OnInitialized(this control)
+
+                             Called EARLY during UI load, at add-on
+                             initialization time. Try to do as little as
+                             possible here, since the player might not even
+                             open this window on this load.
+                        -->
+      <OnInitialized>WritWorthy.MatUI.OnInitialized(self)</OnInitialized>
+
       <Controls>
         <Backdrop name="$(parent)BG"
         inherits="ZO_DefaultBackdrop"
