@@ -446,6 +446,9 @@
                              initialization time. Try to do as little as
                              possible here, since the player might not even
                              open this window on this load.
+
+                             REMOVE ME ok to remove once the debugging fink
+                             WritWorthy.MatUI.OnInitialized(self) is gone.
                         -->
       <OnInitialized>WritWorthy.MatUI.OnInitialized(self)</OnInitialized>
 
@@ -453,7 +456,7 @@
         <Backdrop name="$(parent)BG"
         inherits="ZO_DefaultBackdrop"
         />
-        <Label  name="$(parent)WindowTitle"
+        <Label
           text="WritWorthy Materials"
           font="ZoFontWindowTitle"
           color="CFDCBD"
@@ -511,6 +514,21 @@
             WritWorthy.MatUI.RefreshUI()
           </OnClicked>
         </Button>
+
+        <Label
+          text="Materials required for all queued master writs"
+          font="ZoFontGame"
+          color="CFDCBD"
+          verticalAlignment="TOP">
+          <Anchor relativeTo="$(parent)"
+            relativePoint="TOPLEFT"
+            point="TOPLEFT"
+            offsetX="5"
+            offsetY="50" />
+          <Dimensions
+            y="20" />
+        </Label>
+
 
                           <!-- WritWorthyMatUIList -->
         <Control name="WritWorthyMatUIList"
@@ -635,19 +653,6 @@
             </Control>
           </Controls>
         </Control>
-
-        <Label  name="$(parent)MatListTitle"
-          text="Materials required for all queued master writs"
-          font="ZoFontGame"
-          color="FFFFFF"
-          >
-          <Anchor relativeTo="$(parent)List"
-            relativePoint="TOPLEFT"
-            point="BOTTOMLEFT"
-            offsetX="0"
-            offsetY="-10" />
-          <Dimensions x="500" y="20" />
-        </Label>
 
       </Controls>
     </TopLevelControl>
