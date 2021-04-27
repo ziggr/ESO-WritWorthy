@@ -515,7 +515,7 @@
           </OnClicked>
         </Button>
 
-        <Label
+        <Label name = "$(parent)ComboBoxPlaceholder"
           text="Materials required for all queued master writs"
           font="ZoFontGame"
           color="CFDCBD"

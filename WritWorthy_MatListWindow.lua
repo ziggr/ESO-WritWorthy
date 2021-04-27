@@ -96,7 +96,19 @@ function WritWorthy.MatUI:LazyInit()
                         --
     local o = ZO_SortFilterList.New(self, WritWorthyMatUIListContainer)
     WritWorthy.MatUI.scroll_filter_list = o
-    return o
+
+                        -- Replace label with combo box.
+    local container = WritWorthyMatWindowComboBoxPlaceholder
+    -- local cb = ZO_ComboBox:New(container)
+    local cb_name = nil
+    local cb = WINDOW_MANAGER:CreateControlFromVirtual(
+                      cb_name
+                    , container
+                    , "ZO_ComboBox"
+                    )
+    cb:SetAnchor(TOPLEFT,     container, TOPLEFT,     0, 0)
+    cb:SetAnchor(BOTTOMRIGHT, container, BOTTOMRIGHT, 0, 0)
+    cb:SetHidden(false)
 end
 
 function WritWorthy.MatUI.RestorePos()
