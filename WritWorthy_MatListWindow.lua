@@ -74,16 +74,16 @@ WritWorthy.MatUI.ROW_HEIGHT = 30
 WritWorthy.MatUI.COLOR_TEXT_NEED_MORE    = "CC3333"
 WritWorthy.MatUI.COLOR_TEXT_HAVE_ENOUGH  = "FFFFFF"
 
-WritWorthy.MatUI.FILTER_NAMES = {
-    ["QUEUED_ALL_MATS"        ] = "Show all materials required for all queued master writs"
-,   ["QUEUED_MISSING_MATS"    ] = "Show missing materials required for all queued master writs"
-,   ["UNQUEUED_MISSING_MOTIFS"] = "Show motif pages missing for unqueued master writs"
-}
+WritWorthy.MatUI.FILTER_NAME_ALL_MATS       = "mat_ui_filter_all_mats"
+WritWorthy.MatUI.FILTER_NAME_MISSING_MATS   = "mat_ui_filter_missing_mats"
+WritWorthy.MatUI.FILTER_NAME_MISSING_MOTIFS = "mat_ui_filter_missing_motifs"
 WritWorthy.MatUI.FILTER_NAMES_LIST = {
-    WritWorthy.MatUI.FILTER_NAMES.QUEUED_ALL_MATS
-,   WritWorthy.MatUI.FILTER_NAMES.QUEUED_MISSING_MATS
-,   WritWorthy.MatUI.FILTER_NAMES.UNQUEUED_MISSING_MOTIFS
+     WritWorthy.MatUI.FILTER_NAME_ALL_MATS
+,    WritWorthy.MatUI.FILTER_NAME_MISSING_MATS
+,    WritWorthy.MatUI.FILTER_NAME_MISSING_MOTIFS
 }
+
+
 -- REMOVE ME -- debugging check to learn that the parameter "self" in XML-hosted
 --              code is indeed the XML control.
 function WritWorthy.MatUI.OnInitialized(top_level_control)
@@ -122,12 +122,36 @@ function WritWorthy.MatUI:LazyInit()
     cb.m_comboBox:SetSortsItems(false)
     local function fn(control, choice_text, choice_entry)
         Log.Debug("Filter choice_text:"..choice_text)
+        Log.Debug("Filter filter_name:"..choice_entry.filter_name)
     end
+    local cb_items = {}
     for _, filter_name in ipairs(WritWorthy.MatUI.FILTER_NAMES_LIST) do
-        local e = cb.m_comboBox:CreateItemEntry(filter_name, fn)
+        local text = WW.Str(filter_name)
+        local e = cb.m_comboBox:CreateItemEntry(text, fn)
+        e.filter_name = filter_name
         cb.m_comboBox:AddItem(e, ZO_COMBOBOX_SUPPRESS_UPDATE)
+        cb_items[filter_name] = e
     end
     cb:SetHidden(false)
+
+                        -- ### correct sort of , but not appearing and u
+                        -- ww.xxx() not affecting UI
+    function WritWorthy.XX()
+        local initial_filter_name = WritWorthy.MatUI.FILTER_NAME_ALL_MATS
+        local initial_item_text = WW.Str(initial_filter_name)
+        local cb = WritWorthy.MatUI.combo_box.m_comboBox
+        for index, item in ipairs(cb.m_sortedItems) do
+            if item.filter_name == initial_filter_name then
+                cb.SelectItem(item)
+                d("Selected", item.filter_name)
+                break
+            end
+            d("Nope:", initial_filter_name, item.filter_name)
+        end
+    end
+    WritWorthy.XX()
+                        -- ### Move to prefs
+    --cb.m_comboBox.SelectItem(WritWorthy.MatUI.FILTER_NAMES.QUEUED_ALL_MATS)
 end
 
 function WritWorthy.MatUI.RestorePos()
