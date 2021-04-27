@@ -629,8 +629,9 @@ function WritWorthy.SlashCommand(arg1)
         end
     elseif arg1:lower() == WW.Str("slash_mat") then
                         -- Lazy init of list window
-        if not WritWorthy.mat_ui then
-            WritWorthy.mat_ui = WritWorthy.MatUI:New()
+        if not WritWorthy.mat_ui_inited then
+            WritWorthy.MatUI:LazyInit()
+            WritWorthy.mat_ui_inited = true
             WritWorthy.MatUI.RestorePos()
         end
 
@@ -745,15 +746,10 @@ function WritWorthy:Initialize()
         WritWorthy:AQAddKeyBind()
     end
 
-                        -- If WritWorthy_MatListWindow is un-commented-out
-                        -- in WritWorthy.txt, install the material list window.
-    -- if WritWorthy.MatUI then
-    --     WritWorthy.mat_ui = WritWorthy.MatUI:New()
-    --     -- build list
-    --     -- refresh?
-    --     WritWorthy.MatUI.RestorePos()
-    -- end
-    --EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
+                        -- Intentionally NOT initializing MatUI here. Only
+                        -- init it if the player actually summons it.
+                        -- You're doing too much in here at loading screen
+                        -- time!
 end
 
 -- Postamble -----------------------------------------------------------------

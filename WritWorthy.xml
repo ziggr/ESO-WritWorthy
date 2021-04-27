@@ -530,8 +530,8 @@
         </Label>
 
 
-                          <!-- WritWorthyMatUIList -->
-        <Control name="WritWorthyMatUIList"
+                          <!-- WritWorthyMatUIListContainer -->
+        <Control name="WritWorthyMatUIListContainer"
           inheritAlpha="true"
           >
           <Anchor relativeTo="$(parent)"
@@ -549,7 +549,7 @@
           <Dimensions x="990" y="700" />
           -->
           <Controls>
-                                            <!-- WritWorthyMatUIListHeaders -->
+                                   <!-- WritWorthyMatUIListContainerHeaders -->
             <Control name="$(parent)Headers">
               <Anchor relativeTo="$(parent)"
                 relativePoint="TOPLEFT"

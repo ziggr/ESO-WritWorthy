@@ -83,10 +83,18 @@ end
 -- end REMOVE ME
 
 -- MatUI: The window around the material list --------------------------------
-function WritWorthy.MatUI:New()
-    Log.Debug("WWML:New()")
-    local xml_control = WritWorthyMatUIList
-    local o = ZO_SortFilterList.New(self, xml_control)
+function WritWorthy.MatUI:LazyInit()
+    Log.Debug("WWML:LazyInit()")
+                        -- Create a ZO controller for our list UI. The
+                        -- controller connects the XML-defined "...List"
+                        -- container element with its "...ListHeaders" and
+                        -- "...ListList" element. Will call back into us
+                        --
+                        -- Pass ourself WW.MatUI as the delegate for
+                        -- calls :Initialize(), :CreateRowControlCells(),
+                        -- and many, many more.
+                        --
+    local o = ZO_SortFilterList.New(self, WritWorthyMatUIListContainer)
     WritWorthy.MatUI.scroll_filter_list = o
     return o
 end
@@ -163,7 +171,7 @@ function WritWorthy.MatUI.HeaderInit(control, name, text, key)
                         -- The header cell control that we get here, and which
                         -- ZO_SortHeader_Initialize() fills in is NOT the same
                         -- as the XML template control reachable from
-                        -- WritWorthyMatUIListHeaders:GetNamedChild().
+                        -- WritWorthyMatUIListContainerHeaders:GetNamedChild().
                         -- We need this actual header cell control, which has
                         -- Text and alignment and live data, in addition to the
                         -- XML template control (which has dynamic width,
@@ -182,13 +190,13 @@ end
 -- "virtual" row in sync with the XML headers.
 --
 -- Do not fill labels with live text: that's SetupRowControl()'s job.
-function WritWorthy.MatUI:CreateRowControlCells(row_control, header_control)
+function WritWorthy.MatUI:CreateRowControlCells(row_control, header_container)
     for i, cell_name in ipairs(self.CELL_NAME_LIST) do
-        local header_cell_control = header_control:GetNamedChild(cell_name)
+        local header_cell_control = header_container:GetNamedChild(cell_name)
         local control_name        = row_control:GetName() .. cell_name
         local cell_control        = nil
         local is_text             = true
-        local rel_to_left         = header_control:GetLeft()
+        local rel_to_left         = header_container:GetLeft()
         local cell_control        = row_control:CreateControl(control_name, CT_LABEL)
         row_control[cell_name]    = cell_control
         local y_offset            = 0
@@ -209,7 +217,7 @@ function WritWorthy.MatUI:CreateRowControlCells(row_control, header_control)
         cell_control:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
 
         Util.SetCellToHeaderAlign( cell_control
-                                 , header_control
+                                 , header_container
                                  , self.list_header_controls[cell_name] )
     end
 end
@@ -226,9 +234,14 @@ end
 -- Change column width/offsets after a window resize. NOP if nothing changed.
 function WritWorthy.MatUI:UpdateColumnWidths(row_control)
                         -- Do nothing if we have not yet fully initialized.
-    local hc = WritWorthyMatUIListHeadersName
-    if not hc then return end
-    local rel_to_left = WritWorthyMatUIListHeadersName:GetLeft()
+    local container = WritWorthyMatUIListContainer
+    if not container then return end
+    local header_container = container:GetNamedChild("Headers")
+    if not header_container then return end
+
+    local header_control = header_container:GetNamedChild("Name")
+    if not header_control then return end
+    local rel_to_left = header_control:GetLeft()
 
                         -- Cache header cell controls from which we'll
                         -- gather column widths. We want the GetNamedChild()
@@ -237,7 +250,7 @@ function WritWorthy.MatUI:UpdateColumnWidths(row_control)
                         -- (which appear to never change widths).
     local hcl = {}
     for cell_name, _ in pairs(self.list_header_controls) do
-        hcl[cell_name] = WritWorthyMatUIListHeaders:GetNamedChild(cell_name)
+        hcl[cell_name] = header_container:GetNamedChild(cell_name)
     end
 
     for cell_name, _ in pairs(self.list_header_controls) do
@@ -266,7 +279,7 @@ function WritWorthy.MatUI:UpdateColumnWidths(row_control)
     Util.StretchBGWidth(row_control)
 end
 
--- Called by ZO_SortFilterList during something er other
+-- Called by ZO_SortFilterList:New()
 function WritWorthy.MatUI:Initialize(control)
     ZO_SortFilterList.Initialize(self, control)
     self.mat_row_data_list = {}
@@ -302,15 +315,6 @@ function WritWorthy.MatUI:Initialize(control)
                                            )
         end
 
-                        -- Set our initial sort key. Not sure this actually
-                        -- works. And if it does, wouldn't it be polite to
-                        -- save/restore the sort index in savedVariables?
-                        --
-                        -- After ZO_SortFilterList:Initialize() we  have a
-                        -- sortHeaderGroup. At least, that's how it works in
-                        -- ScrollListExample.
-    self.sortHeaderGroup:SelectHeaderByKey("required_ct")
-    ZO_SortHeader_OnMouseExit(WritWorthyMatUIListHeadersName)
     self:RefreshData()
 end
 
@@ -341,8 +345,9 @@ function WritWorthy.MatUI:SetupRowControl(row_control, mat_row_data)
                         -- controls.
     local already_created = row_control[self.CELL_NAME]
     if not already_created then
-        local header_control = WritWorthyMatUIListHeaders
-        self:CreateRowControlCells(row_control, header_control)
+        local list_container   = WritWorthyMatUIListContainer
+        local header_container = list_container:GetNamedChild("Headers")
+        self:CreateRowControlCells(row_control, header_container)
                         -- Retain pointers to our row_control instances so that
                         -- we can update all their cell widths later upon
                         -- window resize.
