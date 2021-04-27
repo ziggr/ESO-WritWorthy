@@ -74,16 +74,13 @@ WritWorthy.MatUI.ROW_HEIGHT = 30
 WritWorthy.MatUI.COLOR_TEXT_NEED_MORE    = "CC3333"
 WritWorthy.MatUI.COLOR_TEXT_HAVE_ENOUGH  = "FFFFFF"
 
+-- REMOVE ME -- debugging check to learn that the parameter "self" in XML-hosted
+--              code is indeed the XML control.
 function WritWorthy.MatUI.OnInitialized(top_level_control)
-    Log.Debug("WWMUI.OnInitialized() top_level_control:"..tostring(top_level_control))
-    Log.Debug("WWMUI.OnInitialized() WritWorthyMatUI  :"..tostring(WritWorthyMatUI))
-
-
-    d("WWMUI.OnInitialized() top_level_control:"..tostring(top_level_control))
-    d("WWMUI.OnInitialized() WritWorthyMatUI  :"..tostring(WritWorthyMatUI))
+    d("WWMUI.OnInitialized() top_level_control    :"..tostring(top_level_control))
+    d("WWMUI.OnInitialized() WritWorthyMatWindow  :"..tostring(WritWorthyMatWindow))
 end
-
-
+-- end REMOVE ME
 
 -- MatUI: The window around the material list --------------------------------
 function WritWorthy.MatUI:New()
@@ -96,17 +93,17 @@ end
 
 function WritWorthy.MatUI.RestorePos()
     Log.Debug("WWMUI_RestorePos()")
-    Util.RestorePos(WritWorthyMatUI, WINDOW_POS_KEY)
+    Util.RestorePos(WritWorthyMatWindow, WINDOW_POS_KEY)
 end
 
 function WritWorthy.MatUI.OnMoveStop()
     Log.Debug("WWMUI_OnMoveStop()")
-    Util.OnMoveStop(WritWorthyMatUI, WINDOW_POS_KEY)
+    Util.OnMoveStop(WritWorthyMatWindow, WINDOW_POS_KEY)
 end
 
 function WritWorthy.MatUI.OnResizeStop()
     Log.Debug("WWMUI_OnResizeStop()")
-    Util.OnResizeStop( WritWorthyMatUI
+    Util.OnResizeStop( WritWorthyMatWindow
                      , WritWorthy.MatUI
                      , WritWorthy.MatUI.singleton
                      , WINDOW_POS_KEY )
@@ -114,17 +111,17 @@ end
 
 function WritWorthy.MatUI.ToggleUI()
     Log.Debug("WWMUI_ToggleUI()")
-    if not WritWorthyMatUI then
-        Log.Error("WritWorthyMatUI missing")
+    if not WritWorthyMatWindow then
+        Log.Error("WritWorthyMatWindow missing")
         return
     end
-    local h = WritWorthyMatUI:IsHidden()
+    local h = WritWorthyMatWindow:IsHidden()
     if h then
         WritWorthy.MatUI.RestorePos()
         WritWorthy.MatUI.RefreshUI()
         WritWorthy.MatUI:UpdateAllCellWidths()
     end
-    WritWorthyMatUI:SetHidden(not h)
+    WritWorthyMatWindow:SetHidden(not h)
 end
 
 -- Wrapper function called by "Refresh" shark arrow button.

@@ -417,7 +417,7 @@
 
 
     <!-- mat list window ------------------------------------------------ -->
-    <TopLevelControl name="WritWorthyMatUI"
+    <TopLevelControl name="WritWorthyMatWindow"
       hidden="true"
       movable="true"
       mouseEnabled="true"
@@ -513,7 +513,7 @@
         </Button>
 
                           <!-- WritWorthyMatUIList -->
-        <Control name="$(parent)List"
+        <Control name="WritWorthyMatUIList"
           inheritAlpha="true"
           >
           <Anchor relativeTo="$(parent)"
