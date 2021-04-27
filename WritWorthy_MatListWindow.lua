@@ -122,6 +122,7 @@ function WritWorthy.MatUI:LazyInit()
     local function fn(control, choice_text, choice_entry)
         Log.Debug("Filter choice_text:"..choice_text)
         Log.Debug("Filter filter_name:"..choice_entry.filter_name)
+        WritWorthy.MatUI.RefreshSoon()
     end
     local cb_items = {}
     for _, filter_name in ipairs(WritWorthy.MatUI.FILTER_NAMES_LIST) do
@@ -131,7 +132,7 @@ function WritWorthy.MatUI:LazyInit()
         cb.m_comboBox:AddItem(e, ZO_COMBOBOX_SUPPRESS_UPDATE)
         cb_items[filter_name] = e
     end
-    WritWorthy.MatUI.SelectFilterComboBox(WritWorthy.MatUI.FILTER_NAME_ALL_MATS)
+    WritWorthy.MatUI.SelectFilterComboBox(WritWorthy.MatUI.FILTER_NAME_ALL_MATS, true)
     cb:SetHidden(false)
 end
 
@@ -181,6 +182,15 @@ function WritWorthy_MatUI_Refresh()
     list:Refresh()
     -- self:UpdateSummary() -- ### Why isn't this function entered in MatUI's table?
 end
+
+-- Rather than waste CPU time re-calculating window display state
+-- every time the user types a keystroke in a filter edit box,
+-- queue up a request to update the entire UI soon, and then
+-- only do so if the user has stopped typing.
+function WritWorthy.MatUI.RefreshSoon()
+    Util.CallSoon("wwmui.refreshsoon_ms", WritWorthy_MatUI_Refresh)
+end
+
 
 function WritWorthy.MatUI.HeaderInit(control, name, text, key)
     Log.Debug( "WWMUI_HeaderInit() c:%s n:%s t:%s k:%s"
