@@ -106,8 +106,19 @@ function WritWorthy.MatUI:LazyInit()
                     , container
                     , "ZO_ComboBox"
                     )
+    WritWorthy.MatUI.combo_box = cb
     cb:SetAnchor(TOPLEFT,     container, TOPLEFT,     0, 0)
     cb:SetAnchor(BOTTOMRIGHT, container, BOTTOMRIGHT, 0, 0)
+    cb.m_comboBox:SetSortsItems(false)
+    local function fn()
+
+    end
+    local e1 = cb.m_comboBox:CreateItemEntry("one", fn)
+    local e2 = cb.m_comboBox:CreateItemEntry("two", fn)
+    local e3 = cb.m_comboBox:CreateItemEntry("three", fn)
+    cb.m_comboBox:AddItem(e1, ZO_COMBOBOX_SUPPRESS_UPDATE)
+    cb.m_comboBox:AddItem(e2, ZO_COMBOBOX_SUPPRESS_UPDATE)
+    cb.m_comboBox:AddItem(e3, ZO_COMBOBOX_SUPPRESS_UPDATE)
     cb:SetHidden(false)
 end
 
