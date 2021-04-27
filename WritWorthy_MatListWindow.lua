@@ -4,7 +4,7 @@ local WritWorthy = _G['WritWorthy'] -- defined in WritWorthy_Define.lua
 WritWorthy.MatUI = ZO_SortFilterList:Subclass()
 -- Inherits field "self.list" which is the scroll list control.
 -- "WritWorthy.MatUI" is NOT the actual list control that has useful
--- "data members. Use WritWorthy.MatUI.singleton for that.
+-- "data members. Use WritWorthy.MatUI.scroll_filter_list for that.
 
 local Util = WritWorthy.Util
 local Fail = WritWorthy.Util.Fail
@@ -87,7 +87,7 @@ function WritWorthy.MatUI:New()
     Log.Debug("WWML:New()")
     local xml_control = WritWorthyMatUIList
     local o = ZO_SortFilterList.New(self, xml_control)
-    WritWorthy.MatUI.singleton = o
+    WritWorthy.MatUI.scroll_filter_list = o
     return o
 end
 
@@ -105,7 +105,7 @@ function WritWorthy.MatUI.OnResizeStop()
     Log.Debug("WWMUI_OnResizeStop()")
     Util.OnResizeStop( WritWorthyMatWindow
                      , WritWorthy.MatUI
-                     , WritWorthy.MatUI.singleton
+                     , WritWorthy.MatUI.scroll_filter_list
                      , WINDOW_POS_KEY )
 end
 
@@ -126,13 +126,13 @@ end
 
 -- Wrapper function called by "Refresh" shark arrow button.
 function WritWorthy.MatUI.RefreshUI()
-    local list = WritWorthy.MatUI.singleton
+    local list = WritWorthy.MatUI.scroll_filter_list
     WritWorthy_MatUI_Refresh()
 end
 
 function WritWorthy_MatUI_Refresh()
     Log.Debug("WWUI:Refresh()")
-    local list = WritWorthy.MatUI.singleton
+    local list = WritWorthy.MatUI.scroll_filter_list
     list:BuildMasterlist()
     list:Refresh()
     -- self:UpdateSummary() -- ### Why isn't this function entered in MatUI's table?
