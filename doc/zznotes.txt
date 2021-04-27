@@ -1,3 +1,16 @@
+2021-04-27 MatList
+Still Broken:
+- Save filter to prefs
+- Initial sort, sort after refresh, is QUITE broken
+- would also like to numeric-sort abbreviated/gold/nillable columns
+- click to toggle material's item tooltip
+- show items as colored text itemlink (no brackets, no icon)
+- auto-refresh soon after queue/dequeue writ
+- HONOR MIMIC STONES: teach smithing how to honor 'em and omit from matlist?
+    - how to plumb a line from UI to Smithing parser :ToMatList()
+- UI to toggle matlist window from main WW list window
+
+
 2021-04-24 MatList
 - basics functioning, good enough for my own use (barely)
 
