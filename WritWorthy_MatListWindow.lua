@@ -394,11 +394,16 @@ function WritWorthy.MatUI:SetupRowControl(row_control, mat_row_data)
     local rc  = row_control
     local r_d = mat_row_data
 
+                        -- Replace item_link color with red if missing.
+    local name = r_d.mat_row.link
+
                         -- Apply text color to entire row.
     local fn = Util.color
     local c  = self.COLOR_TEXT_HAVE_ENOUGH
-    if r_d.ui_have_ct < r_d.ui_required_ct then
+    local is_missing = r_d.ui_have_ct < r_d.ui_required_ct
+    if is_missing then
         c = self.COLOR_TEXT_NEED_MORE
+        name = r_d.ui_name
     end
 
                         -- Allow each cell's OnMouseDown handler easy
@@ -407,7 +412,7 @@ function WritWorthy.MatUI:SetupRowControl(row_control, mat_row_data)
         rc[name].mat_row_data = r_d
     end
                         -- Fill in the cells with data for this row.
-    rc[self.CELL_NAME        ]:SetText(fn(c,              r_d.mat_row.link    ))
+    rc[self.CELL_NAME        ]:SetText(fn(c,              name                ))
     rc[self.CELL_REQUIRED_CT ]:SetText(fn(c,     abbr_num(r_d.ui_required_ct )))
     rc[self.CELL_HAVE_CT     ]:SetText(fn(c,     abbr_num(r_d.ui_have_ct     )))
     rc[self.CELL_PRICE_EA    ]:SetText(fn(c, Util.ToMoney(r_d.ui_price_ea    )))
