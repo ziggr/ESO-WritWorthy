@@ -1,3 +1,9 @@
+[B]7.0.1 2021-04-27[/B]
+[LIST]
+[*] Update 30/ESO 7.0.0/API 100035/Blackwood
+[*] new and experimental: /writworthy mat: display a list of required (or just missing) materials
+[/LIST]
+
 [B]6.3.1 2021-04-13[/B]
 [LIST]
 [*] LibMotif: move motif knowledge IDs out of WritWorthy to new library "LibMotif"
