@@ -619,7 +619,9 @@ function Parser:ToMatList()
                                     , self.request_item.base_mat_ct ))
     table.insert(ml, MatRow:FromLink( self.trait.mat_link ))
     if self.motif and self.motif.mat_item_link then
-        table.insert(ml, MatRow:FromLink( self.motif.mat_item_link ))
+        local mat_row = MatRow:FromLink( self.motif.mat_item_link )
+        mat_row.can_mimic = true
+        table.insert(ml, mat_row)
     -- elseif self.motif and self.motif.mat_name then
     --     table.insert(ml, MatRow:FromName( self.motif.mat_name ))
     end
