@@ -370,7 +370,7 @@ end
 -- FilterScrollList(), is an element of master list
 -- WritWorthy.MatUI.mat_row_data_list.
 function WritWorthy.MatUI:SetupRowControl(row_control, mat_row_data)
-    Log.Debug("SetupRowControl row_control:%s", tostring(row_control))
+    Log.Verbose("SetupRowControl row_control:%s", tostring(row_control))
     row_control.mat_row_data = mat_row_data
 
                         -- ZO_SortList reuses row_control instances, so there
@@ -489,6 +489,11 @@ function WritWorthy.MatUI:BuildMasterlist()
         if filter_pass(mat_row, filter_name) then
             local r_d = {}
             r_d.mat_row = mat_row
+                        -- Must populate ui fields NOW so that sort will work.
+                        -- Lazy-populating ui fields for rows not yet scrolled
+                        -- into view will cause them to sort using nil ui cell
+                        -- values, and that's not going to work.
+            self:PopulateUIFields(r_d)
             table.insert(u, r_d)
         end
     end
