@@ -95,6 +95,11 @@ end
 -- MatUI: The window around the material list --------------------------------
 function WritWorthy.MatUI:LazyInit()
     Log.Debug("WWML:LazyInit()")
+
+                        -- Bring our portion of saved variables into existence
+                        -- if necessary.
+    WritWorthy.savedVariables.mat_ui = WritWorthy.savedVariables.mat_ui or {}
+
                         -- Create a ZO controller for our list UI. The
                         -- controller connects the XML-defined "...List"
                         -- container element with its "...ListHeaders" and
@@ -122,6 +127,7 @@ function WritWorthy.MatUI:LazyInit()
     local function fn(control, choice_text, choice_entry)
         Log.Debug("Filter choice_text:"..choice_text)
         Log.Debug("Filter filter_name:"..choice_entry.filter_name)
+        WritWorthy.savedVariables.mat_ui.filter_name = choice_entry.filter_name
         WritWorthy.MatUI.RefreshSoon()
     end
     local cb_items = {}
@@ -132,7 +138,9 @@ function WritWorthy.MatUI:LazyInit()
         cb.m_comboBox:AddItem(e, ZO_COMBOBOX_SUPPRESS_UPDATE)
         cb_items[filter_name] = e
     end
-    WritWorthy.MatUI.SelectFilterComboBox(WritWorthy.MatUI.FILTER_NAME_ALL_MATS, true)
+    local initial_filter = WritWorthy.savedVariables.mat_ui.filter_name
+                        or WritWorthy.MatUI.FILTER_NAME_ALL_MATS
+    WritWorthy.MatUI.SelectFilterComboBox(initial_filter, true)
     cb:SetHidden(false)
 end
 

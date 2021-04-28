@@ -1,7 +1,5 @@
 2021-04-27 MatList
 Still Broken:
-- Save filter to prefs
-- Initial sort, sort after refresh, is QUITE broken
 - auto-refresh soon after queue/dequeue writ
 - HONOR MIMIC STONES: teach smithing how to honor 'em and omit from matlist?
     - how to plumb a line from UI to Smithing parser :ToMatList()
