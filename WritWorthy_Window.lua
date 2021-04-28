@@ -1112,6 +1112,7 @@ function WritWorthyInventoryList_LLCCompleted(event, station, llc_result)
     if inventory_data then
         self:UpdateUISoon(inventory_data)
         self:HSMDeleteMark(inventory_data)
+        self.EmitQueueChanged()
     end
 end
 
@@ -1417,8 +1418,7 @@ function WritWorthyInventoryList:Enqueue(inventory_data)
               unique_id
             , WritWorthyInventoryList.STATE_QUEUED)
 
-    -- nur zum Testen
-    -- self.LogLLCQueue(self:GetLLC().personalQueue)
+    self.EmitQueueChanged()
 end
 
 -- The LazyLibCrafting-only portion of enqueing a request, no list UI work
@@ -1500,6 +1500,7 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     self.SaveChariableState(unique_id, nil)
 
     self:HSMDeleteMark(inventory_data)
+    self.EmitQueueChanged()
 end
 
 -- Reload the LibLazyCrafting queue from savedChariables
@@ -1550,6 +1551,15 @@ function WritWorthyInventoryList.LogLLCQueue(queue)
             end
         end
     end
+end
+
+-- Tell "all who are interested" that our list of enequeued writs has changed.
+-- For now, the only interested party is MatUI, so I don't need a
+-- general-purpose broadcaster/listener machine here.
+--
+function WritWorthyInventoryList.EmitQueueChanged()
+    if not WritWorthy.MatUI then return end
+    WritWorthy.MatUI.OnWWQueueChanged()
 end
 
 -- O(n) scan to collect a hash of unique item ids of items actually

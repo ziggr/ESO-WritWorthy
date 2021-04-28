@@ -642,3 +642,8 @@ function WritWorthy.MatUI.OnInventoryChanged(event_code)
     Log.Debug(string.format("WWMUI.OnInventoryChanged() %s",ev))
     WritWorthy.MatUI.RefreshSoon()
 end
+
+function WritWorthy.MatUI.OnWWQueueChanged()
+    Log.Debug("WWMUI.OnWWQueueChanged()")
+    WritWorthy.MatUI.RefreshSoon()
+end
