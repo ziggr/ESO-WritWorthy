@@ -80,7 +80,7 @@ WritWorthy.MatUI.FILTER_NAME_MISSING_MOTIFS = "mat_ui_filter_missing_motifs"
 WritWorthy.MatUI.FILTER_NAMES_LIST = {
      WritWorthy.MatUI.FILTER_NAME_ALL_MATS
 ,    WritWorthy.MatUI.FILTER_NAME_MISSING_MATS
-,    WritWorthy.MatUI.FILTER_NAME_MISSING_MOTIFS
+-- ,    WritWorthy.MatUI.FILTER_NAME_MISSING_MOTIFS
 }
 
 
