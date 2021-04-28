@@ -265,6 +265,10 @@ function WritWorthy.MatUI:CreateRowControlCells(row_control, header_container)
         Util.SetCellToHeaderAlign( cell_control
                                  , header_container
                                  , self.list_header_controls[cell_name] )
+
+                            -- Click to toggle item tooltip for row's mat/motif
+        cell_control:SetMouseEnabled(true)
+        cell_control:SetHandler("OnMouseDown", WritWorthy.MatUI.Cell_OnMouseDown)
     end
 end
 
@@ -555,4 +559,15 @@ end
 function WritWorthy.MatUI.GetFilterName()
     local entry = WritWorthy.MatUI.combo_box.m_comboBox:GetSelectedItemData()
     return entry.filter_name
+end
+
+function WritWorthy.MatUI.Cell_OnMouseDown(cell_control)
+    WritWorthy.X = cell_control
+    if not (    cell_control
+            and cell_control.mat_row_data
+            and cell_control.mat_row_data.mat_row
+            and cell_control.mat_row_data.mat_row.link) then
+        return
+    end
+    ZO_PopupTooltip_SetLink(cell_control.mat_row_data.mat_row.link)
 end
