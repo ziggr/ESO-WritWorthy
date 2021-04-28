@@ -174,6 +174,7 @@ function WritWorthy.MatUI.ToggleUI()
         WritWorthy.MatUI.RefreshUI()
         WritWorthy.MatUI:UpdateAllCellWidths()
         WritWorthy.MatUI:RegisterListeners()
+        WritWorthy.MatUI.RefreshSoon()
     else
         WritWorthy.MatUI:UnregisterListeners()
     end
@@ -188,6 +189,11 @@ end
 
 function WritWorthy_MatUI_Refresh()
     Log.Debug("WWUI:Refresh()")
+                        -- Ignore refreshes that come in before ever showing
+                        -- our window, or while our window is closed.
+    if WritWorthyMatWindow:IsHidden() then
+        return
+    end
     local list = WritWorthy.MatUI.scroll_filter_list
     list:BuildMasterlist()
     list:Refresh()
