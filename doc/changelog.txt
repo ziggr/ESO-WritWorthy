@@ -1,3 +1,8 @@
+[B]7.0.2 2021-04-27[/B]
+[LIST]
+[*] Fix error if matlist window hidden while enqueuing/dequeuing writ.
+[/LIST]
+
 [B]7.0.1 2021-04-27[/B]
 [LIST]
 [*] Update 30/ESO 7.0.0/API 100035/Blackwood

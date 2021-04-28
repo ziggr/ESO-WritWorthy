@@ -1,6 +1,6 @@
-## Title: WritWorthy 7.0.1
-## Version: 7.0.1
-## AddOnVersion: 070001
+## Title: WritWorthy 7.0.2
+## Version: 7.0.2
+## AddOnVersion: 070002
 ## Last Updated: 2021-04-27
 ## APIVersion: 100034 100035
 ## Description: Master Writs: calculate material costs and automate crafting.
