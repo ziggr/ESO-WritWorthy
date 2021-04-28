@@ -539,7 +539,7 @@
             relativePoint="BOTTOMRIGHT"
             point="BOTTOMRIGHT"
             offsetX="0"
-            offsetY="-105" />
+            offsetY="-5" />
           <!-- Pointless to set dimensions when the two anchors
                completely and dynamically define our size
           <Dimensions x="990" y="700" />
