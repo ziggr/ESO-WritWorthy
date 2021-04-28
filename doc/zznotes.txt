@@ -1,6 +1,6 @@
 2021-04-27 MatList
 Still Broken:
-- auto-refresh soon after queue/dequeue writ
+- auto-refresh soon after queue/dequeue writ, inventory/bank/craft bag change.
 - HONOR MIMIC STONES: teach smithing how to honor 'em and omit from matlist?
     - how to plumb a line from UI to Smithing parser :ToMatList()
 - UI to toggle matlist window from main WW list window

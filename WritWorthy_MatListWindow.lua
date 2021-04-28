@@ -173,6 +173,9 @@ function WritWorthy.MatUI.ToggleUI()
         WritWorthy.MatUI.RestorePos()
         WritWorthy.MatUI.RefreshUI()
         WritWorthy.MatUI:UpdateAllCellWidths()
+        WritWorthy.MatUI:RegisterListeners()
+    else
+        WritWorthy.MatUI:UnregisterListeners()
     end
     WritWorthyMatWindow:SetHidden(not h)
 end
@@ -590,4 +593,50 @@ function WritWorthy.MatUI.Cell_OnMouseDown(cell_control)
         return
     end
     ZO_PopupTooltip_SetLink(cell_control.mat_row_data.mat_row.link)
+end
+
+-- Intentory Listeners -------------------------------------------------------
+--
+-- Listen for inventory changes while our window is visible, so that we can
+-- update with new "have/buy" counts.
+--
+-- EVENT_INVENTORY_SINGLE_SLOT_UPDATE is probably all we need, but I'm casting
+-- a ridiculously wide net here to reduce the number of times in the next year
+-- that I have to add yet another event to this list because "window didn't
+-- update after I X'ed" for some as yet unknown "X'ed"
+--
+WritWorthy.MatUI.INVENTORY_EVENTS = {
+  [EVENT_CLOSE_BANK                   ] = "EVENT_CLOSE_BANK"
+, [EVENT_CRAFT_COMPLETED              ] = "EVENT_CRAFT_COMPLETED"
+, [EVENT_END_CRAFTING_STATION_INTERACT] = "EVENT_END_CRAFTING_STATION_INTERACT"
+, [EVENT_INVENTORY_FULL_UPDATE        ] = "EVENT_INVENTORY_FULL_UPDATE"
+, [EVENT_INVENTORY_ITEM_DESTROYED     ] = "EVENT_INVENTORY_ITEM_DESTROYED"
+, [EVENT_INVENTORY_SINGLE_SLOT_UPDATE ] = "EVENT_INVENTORY_SINGLE_SLOT_UPDATE"
+, [EVENT_ITEM_SLOT_CHANGED            ] = "EVENT_ITEM_SLOT_CHANGED"
+, [EVENT_LOOT_RECEIVED                ] = "EVENT_LOOT_RECEIVED"
+}
+
+function WritWorthy.MatUI.RegisterListeners()
+    Log.Debug("WWMUI.RegisterListeners")
+    for event_code, debug_name in pairs(WritWorthy.MatUI.INVENTORY_EVENTS) do
+        EVENT_MANAGER:RegisterForEvent(WritWorthy.name, event_code, WritWorthy.MatUI.OnInventoryChanged)
+    end
+
+    -- EVENT_MANAGER:AddFilterForEvent( WritWorthy.name
+    --                                , EVENT_INVENTORY_SINGLE_SLOT_UPDATE
+    --                                , REGISTER_FILTER_INVENTORY_UPDATE_REASON
+    --                                , INVENTORY_UPDATE_REASON_DEFAULT )
+end
+
+function WritWorthy.MatUI.UnregisterListeners()
+    Log.Debug("WWMUI.UnregisterListeners")
+    for event_code, debug_name in pairs(WritWorthy.MatUI.INVENTORY_EVENTS) do
+        EVENT_MANAGER:UnregisterForEvent(WritWorthy.name, event_code)
+    end
+end
+
+function WritWorthy.MatUI.OnInventoryChanged(event_code)
+    local ev = WritWorthy.MatUI.INVENTORY_EVENTS[event_code or 0] or tostring(event_code)
+    Log.Debug(string.format("WWMUI.OnInventoryChanged() %s",ev))
+    WritWorthy.MatUI.RefreshSoon()
 end
