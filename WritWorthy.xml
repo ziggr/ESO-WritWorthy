@@ -450,7 +450,7 @@
                              REMOVE ME ok to remove once the debugging fink
                              WritWorthy.MatUI.OnInitialized(self) is gone.
                         -->
-      <OnInitialized>WritWorthy.MatUI.OnInitialized(self)</OnInitialized>
+      <!-- <OnInitialized>WritWorthy.MatUI.OnInitialized(self)</OnInitialized> -->
 
       <Controls>
         <Backdrop name="$(parent)BG"

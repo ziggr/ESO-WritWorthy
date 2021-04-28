@@ -86,10 +86,10 @@ WritWorthy.MatUI.FILTER_NAMES_LIST = {
 
 -- REMOVE ME -- debugging check to learn that the parameter "self" in XML-hosted
 --              code is indeed the XML control.
-function WritWorthy.MatUI.OnInitialized(top_level_control)
-    d("WWMUI.OnInitialized() top_level_control    :"..tostring(top_level_control))
-    d("WWMUI.OnInitialized() WritWorthyMatWindow  :"..tostring(WritWorthyMatWindow))
-end
+-- function WritWorthy.MatUI.OnInitialized(top_level_control)
+--     d("WWMUI.OnInitialized() top_level_control    :"..tostring(top_level_control))
+--     d("WWMUI.OnInitialized() WritWorthyMatWindow  :"..tostring(WritWorthyMatWindow))
+-- end
 -- end REMOVE ME
 
 -- MatUI: The window around the material list --------------------------------
