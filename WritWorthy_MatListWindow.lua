@@ -348,23 +348,6 @@ function WritWorthy.MatUI:Initialize(control)
          end
         )
 
-                        -- How to order our table rows. Probably doesn't need
-                        -- to be a specific data member with a specific name,
-                        -- we just need to know how to find it and pass it to
-                        -- table.sort() from within FilterScrollList() below.
-                        --
-                        -- ### Need sort to work with nil values for
-                        -- ### GOLD_UNKNOWN ui_price_ea and ui_buy_subtotal
-    self.sortFunction
-        = function(row_a, row_b)
-            return ZO_TableOrderingFunction( row_a.data
-                                           , row_b.data
-                                           , self.currentSortKey
-                                           , WritWorthy.MatUI.SORT_KEYS
-                                           , self.currentSortOrder
-                                           )
-        end
-
     self:RefreshData()
 end
 
@@ -525,11 +508,30 @@ function WritWorthy.MatUI:FilterScrollList()
 end
 
 function WritWorthy.MatUI:SortScrollList()
-    -- Original boilerplate SortScrollList() implementation that works
-    -- perfectly with the usual sortFunction
-    --
+                        -- How to order our table rows. Probably doesn't need
+                        -- to be a specific data member with a specific name,
+                        -- we just need to know how to find it and pass it to
+                        -- table.sort() from within FilterScrollList() below.
+    Log.Debug(string.format( "WWMUI:SortScrollList() key=%s order=%s"
+                           , tostring(self.currentSortKey)
+                           , tostring(self.currentSortOrder)
+                           ))
+
+    local sort_function = function(row_a, row_b)
+        local key   = self.currentSortKey or "ui_name"
+        local order = self.currentSortOrder
+        if order == nil then
+            order = ZO_SORT_ORDER_UP
+        end
+        return ZO_TableOrderingFunction( row_a.data
+                                       , row_b.data
+                                       , key
+                                       , WritWorthy.MatUI.SORT_KEYS
+                                       , order
+                                       )
+    end
     local scroll_data = ZO_ScrollList_GetDataList(self.list)
-    table.sort(scroll_data, self.sortFunction)
+    table.sort(scroll_data, sort_function)
 end
 
 function WritWorthy.MatUI:Refresh()
