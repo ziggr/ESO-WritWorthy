@@ -38,10 +38,10 @@ WritWorthy.MatUI.row_control_list = {}
 WritWorthy.MatUI.SORT_KEYS = {
   ["ui_name"        ] = {                                       }
 , ["ui_required_ct" ] = { tiebreaker="ui_name" , isNumeric=true }
-, ["ui_have_ct"     ] = { tiebreaker="ui_name"                  }
+, ["ui_have_ct"     ] = { tiebreaker="ui_name" , isNumeric=true }
 , ["ui_buy_ct"      ] = { tiebreaker="ui_name" , isNumeric=true }
 , ["ui_price_ea"    ] = { tiebreaker="ui_name" , isNumeric=true }
-, ["ui_buy_subtotal"] = {                                       }
+, ["ui_buy_subtotal"] = { tiebreaker="ui_name" , isNumeric=true }
 }
                         -- The XML name suffixes for each of our columns.
                         -- NOT used for UI display (although they often match).
@@ -410,7 +410,9 @@ function WritWorthy.MatUI:SetupRowControl(row_control, mat_row_data)
                         -- Apply text color to entire row.
     local fn = Util.color
     local c  = self.COLOR_TEXT_HAVE_ENOUGH
-
+    if r_d.ui_have_ct < r_d.ui_required_ct then
+        c = self.COLOR_TEXT_NEED_MORE
+    end
 
                         -- Allow each cell's OnMouseDown handler easy
                         -- access to this row's data.
@@ -418,7 +420,7 @@ function WritWorthy.MatUI:SetupRowControl(row_control, mat_row_data)
         rc[name].mat_row_data = r_d
     end
                         -- Fill in the cells with data for this row.
-    rc[self.CELL_NAME        ]:SetText(fn(c,              r_d.ui_name         ))
+    rc[self.CELL_NAME        ]:SetText(fn(c,              r_d.mat_row.link    ))
     rc[self.CELL_REQUIRED_CT ]:SetText(fn(c,     abbr_num(r_d.ui_required_ct )))
     rc[self.CELL_HAVE_CT     ]:SetText(fn(c,     abbr_num(r_d.ui_have_ct     )))
     rc[self.CELL_PRICE_EA    ]:SetText(fn(c, Util.ToMoney(r_d.ui_price_ea    )))
@@ -442,7 +444,7 @@ function WritWorthy.MatUI:PopulateUIFields(mat_row_data)
     r_d.ui_name         = zo_strformat("<<t:1>>",GetItemLinkName(r_d.mat_row.link))
     r_d.ui_required_ct  = r_d.mat_row.ct
     r_d.ui_have_ct      = HaveCt(r_d.mat_row.link)
-    r_d.ui_price_ea     = r_d.mat_row.mm
+    r_d.ui_price_ea     = r_d.mat_row.mm or -1
     r_d.ui_buy_ct       = 0
     r_d.ui_buy_subtotal = 0
 
@@ -450,7 +452,7 @@ function WritWorthy.MatUI:PopulateUIFields(mat_row_data)
     if r_d.ui_have_ct < r_d.ui_required_ct then
         r_d.ui_buy_ct   = r_d.ui_required_ct - r_d.ui_have_ct
         if r_d.ui_price_ea == WritWorthy.GOLD_UNKNOWN then
-            r_d.ui_buy_subtotal = WritWorthy.GOLD_UNKNOWN
+            r_d.ui_buy_subtotal = -1 -- WritWorthy.GOLD_UNKNOWN
         else
             r_d.ui_buy_subtotal = r_d.ui_buy_ct * r_d.ui_price_ea
         end
