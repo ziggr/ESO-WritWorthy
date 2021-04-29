@@ -102,7 +102,7 @@ end
 
 -- Return commafied integer number "123,456", or "?" if nil.
 function Util.ToMoney(x)
-    if not x then return "?" end
+    if (not x) or x == -1 then return "?" end
     return ZO_CurrencyControl_FormatCurrency(Util.round(x), false)
 end
 
