@@ -1,3 +1,8 @@
+[B]7.0.3 2021-05-30[/B]
+[LIST]
+[*] /writworthy mat : displays a list of materials for all queued writs.
+[/LIST]
+
 [B]7.0.2 2021-04-27[/B]
 [LIST]
 [*] Fix error if matlist window hidden while enqueuing/dequeuing writ.
