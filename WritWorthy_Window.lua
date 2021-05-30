@@ -1518,6 +1518,7 @@ function WritWorthyInventoryList.RestoreFromSavedChariables()
         local sav       = savedChariables.writ_unique_id[unique_id]
         if sav and sav.state == WritWorthyInventoryList.STATE_QUEUED then
             WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
+            WritWorthyInventoryList:HSMRestoreMark(inventory_data)
         end
     end
 end
@@ -1704,6 +1705,20 @@ function WritWorthyInventoryList:HSMDeleteMark(inventory_data)
     local set_id, station_id = self:InventoryDataToHSMTuple(inventory_data)
     if not station_id then return end
     HomeStationMarker.DeleteMarker(set_id, station_id)
+end
+
+-- Re-add a mark that was lost during a /reloadui.
+--
+-- Older versions of HomeStationMarker would retain their refcount table in
+-- saved variables, which meant that WritWorthy did not need to re-add marks
+-- after every load. But as of HomeStationMarker 7.0.2 2021-05-30,
+-- HomeStationMarker stopped doing that to make it easier for Dolgubon's
+-- LibLazyCrafting. LLC can now unconditionally call AddMarker() after load.
+--
+function WritWorthyInventoryList:HSMRestoreMark(inventory_data)
+    if not HomeStationMarker then return end
+    if not HomeStationMarker.is_ref_counts_forgotten then return end
+    WritWorthyInventoryList:HSMAddMark(inventory_data)
 end
 
 function WritWorthyInventoryList:InventoryDataToHSMTuple(inventory_data)

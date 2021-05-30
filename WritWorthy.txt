@@ -8,7 +8,7 @@
 ## Contributors: Dolgubon
 ## SavedVariables: WritWorthyVars
 ## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibMotif
-## OptionalDependsOn: LibCustomMenu AwesomeGuildStore LibSlashCommander LibDebugLogger
+## OptionalDependsOn: LibCustomMenu AwesomeGuildStore LibSlashCommander LibDebugLogger HomeStationMarker
 
 # DE translation by Baertram 2019-04-30
 # RU translation by ivann339 2019-09-06 2020-10-16
