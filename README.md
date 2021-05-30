@@ -1,17 +1,18 @@
 # System Requirements:
 
-- <font color="red">Required, install separately:</font> [LibLazyCrafting](https://www.esoui.com/downloads/info1594-LibLazyCrafting.html)
-- <font color="red">Required, install separately:</font> [LibAddonMenu-2.0](https://www.esoui.com/downloads/info7-LibAddonMenu.html)
-- <font color="red">Required, install separately:</font> [LibPrice](https://www.esoui.com/downloads/info2204-LibPrice.html)
-- <font color="red">Required, install separately:</font> [LibMotif](https://www.esoui.com/downloads/info3036-LibMotif.html)   NEW REQUIREMENT 2021-04-13
-- <font color="red">Required, install separately:</font> [LibSets](https://www.esoui.com/downloads/info2241-LibSets.html)
+- [LibLazyCrafting](https://www.esoui.com/downloads/info1594-LibLazyCrafting.html)
+- [LibAddonMenu-2.0](https://www.esoui.com/downloads/info7-LibAddonMenu.html)
+- [LibPrice](https://www.esoui.com/downloads/info2204-LibPrice.html)
+- [LibMotif](https://www.esoui.com/downloads/info3036-LibMotif.html)
+- [LibSets](https://www.esoui.com/downloads/info2241-LibSets.html)
 - (Optional) uses any of [Master Merchant](https://www.esoui.com/downloads/info928-MasterMerchant.html), [Arkadius' Trade Tools](https://www.esoui.com/downloads/info1752-ArkadiusTradeTools.html), [Tamriel Trade Centre](https://www.esoui.com/downloads/info1245-TamrielTradeCentre.html) for material price data.
 - (Optional) [HomeStationMarker](https://www.esoui.com/downloads/info2396-HomeStationMarker.html) shows markers over the crafting stations for any enqueued writs.
 
 # Why WritWorthy?
 
 - Is a master writ worth doing?
-- Does this character have the skills to do so?
+- Does this character have the required skills?
+- Have enough required materials?
 - Want to craft it automatically?
 
 ## Is this master writ worth doing?
@@ -23,8 +24,6 @@ Shopping guild stores for Master Writs? What is the per-voucher cost of a writ, 
 
 This add-on adds text to each Master Writ's tooltip, showing the total material cost, purchase price (if any), and the cost per writ voucher reward.
 
-It also optionally dumps a complete material list to chat. Surprisingly useful when filling Alchemy writs.
-
 ### Awesome Guild Store search filter
 
 Shopping guild stores for master writs?
@@ -33,7 +32,7 @@ WritWorthy adds a filter to [sirinsidiator's AwesomeGuildStore](https://esoui.co
 
 ![WritWorthy + Awesome Guild Store integration](doc/img/ww_ags.jpg)
 
-## Does this character have the skills to do so?
+## Does this character have the required skills?
 
 ![WritWorthy tooltips with skill warnings](doc/img/ww_warn.jpg)
 
@@ -46,6 +45,20 @@ It also shows orange warnings for missing skills that are not required, but whic
 ![WritWorthy tooltips with orange skill warnings](doc/img/warning-temper-expertise.jpg)
 
 (No, WritWorthy does not check inventory for required materials, or space to hold the the crafted item. I assume a master crafter can handle their own inventory management.)
+
+## Have enough required materials?
+
+![writ tooltip with material list](doc/img/mat_tooltip_all_bs.jpg)
+WritWorthy adds a material list to a writ's tooltip, showing any missing materials in red.
+
+There is an option to show only missing materials if you don't want to waste half of the tooltip box listing materials you already have.
+
+### /writworthy mat   NEW FOR WRITWORTHY 7
+
+![WritWorthy Mats window](doc/img/mats_list_missing.jpg)
+![WritWorthy Mats window](doc/img/mats_list_all.jpg)
+
+Type `/writworthy mat` to show a list of materials required to craft all queued writs. Show all required materials, or just the few that you lack and need to acquire.
 
 ## Want to craft it automatically?
 
