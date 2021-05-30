@@ -603,6 +603,36 @@ function WritWorthy.Forget()
     WritWorthy.savedChariables.writ_unique_id = {}
 end
 
+function WritWorthy.ServerName()
+    local self = WritWorthy
+    if not self.server_name then
+        self.server_name = "NA"
+        local plat = GetCVar("LastPlatform") -- ""
+        if (plat == "Live-EU") then
+            self.server_name = "EU"
+        end
+    end
+    return self.server_name
+end
+
+function WritWorthy.Port()
+    local owner    = "@ziggr"
+    local house_id = 62     -- Grand Psijic Villa
+    if WritWorthy.ServerName() == "NA" then
+
+    else
+        Log.Error("No public crafting house for EU server. If you have one to volunteer, contact @ziggr on ESOUI.com .")
+    end
+
+                        -- Must use different function for jumping to your own house
+                        -- vs. jumping to another player's house.
+    if owner == GetDisplayName() then
+        RequestJumpToHouse(house_id)
+    else
+        JumpToSpecificHouse(owner, house_id)
+    end
+end
+
 function WritWorthy.SlashCommand(arg1)
     if arg1:lower() == WW.Str("slash_discover") then
         d("|c999999WritWorthy: ".. WW.Str("status_discover").."|r")
@@ -611,6 +641,8 @@ function WritWorthy.SlashCommand(arg1)
     elseif arg1:lower() == WW.Str("slash_forget") then
         d("|c999999WritWorthy: "..WW.Str("status_forget") .."|r")
         WritWorthy.Forget()
+    elseif arg1:lower() == WW.Str("slash_port") then
+        WritWorthy.Port()
     elseif arg1:lower() == WW.Str("slash_count") then
         local mwlist = WritWorthy:ScanInventoryForMasterWrits()
         local mw_ct = #mwlist
@@ -659,6 +691,11 @@ function WritWorthy.RegisterSlashCommands()
         sub_count:AddAlias(WW.Str("slash_count"))
         sub_count:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_count")) end)
         sub_count:SetDescription(WW.Str("slash_count_desc"))
+
+        local sub_port = cmd:RegisterSubCommand()
+        sub_port:AddAlias(WW.Str("slash_port"))
+        sub_port:SetCallback(function() WritWorthy.SlashCommand(WW.Str("slash_port")) end)
+        sub_port:SetDescription(WW.Str("slash_port_desc"))
 
         if (GetDisplayName() == "@ziggr") then
             local sub_discover = cmd:RegisterSubCommand()
