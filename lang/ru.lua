@@ -1,6 +1,7 @@
 local WritWorthy = _G['WritWorthy'] or {} -- defined in WritWorthy_Define.lua
 
 
+
 WritWorthy.I18N = WritWorthy.I18N or {}
 
 WritWorthy.I18N['shorten'] = WritWorthy.I18N['shorten'] or {}
@@ -16,6 +17,7 @@ WritWorthy.I18N['shorten']['ru'] = {
 ,   ["Ancestor Silk Sash"          ] = "пояс"
 ,   ["Ancestor Silk Shoes"         ] = "обувь"
 ,   ["Enchanting"                  ] = "Зачарование"
+
 ,   ["Night Mother's Gaze"         ] = "Матери Ночи"
 ,   ["Pelinal's Aptitude"          ] = "Пелинала"
 ,   ["Provisioning"                ] = "Снабжение"
@@ -109,6 +111,17 @@ WritWorthy.I18N['static']['ru'] = {
 ,   ["header_Quality"                        ] = "Качество"
 ,   ["header_Type"                           ] = "Тип"
 ,   ["header_V"                              ] = "V"
+,   ["header_Name"                           ] = "Name"
+,   ["header_RequiredCt"                     ] = "Req'd"
+,   ["header_HaveCt"                         ] = "Have"
+,   ["header_BuyCt"                          ] = "Buy"
+,   ["header_PriceEa"                        ] = "Price"
+,   ["header_BuySubtotal"                    ] = "Total"
+,   ["header_tooltip_RequiredCt"             ] = "How many required for writs?"
+,   ["header_tooltip_HaveCt"                 ] = "How many in inventory+bank+craft bag?"
+,   ["header_tooltip_BuyCt"                  ] = "Don't have enough? How many more do you need? (=Req'd - Have)"
+,   ["header_tooltip_PriceEa"                ] = "Price per material"
+,   ["header_tooltip_BuySubtotal"            ] = "Total price (=Buy × Price)"
 ,   ["header_tooltip_Q"                      ] = "Поставлен в очередь для создания"
 ,   ["header_tooltip_M"                      ] = "Использовать повторяющий (мимический) камень?"
 ,   ["header_tooltip_V"                      ] = "Количество ваучеров"
@@ -119,6 +132,7 @@ WritWorthy.I18N['static']['ru'] = {
 ,   ["know_err_skill_not_maxed"              ] = "Недостающий навык '%s': %d/%d"
 ,   ["know_err_trait"                        ] = "Трейт %s %s не изучен"
 ,   ["know_err_trait_ct_too_low"             ] = "%d из %d изученно для сета %s"
+,   ["know_err_llc_too_old"                  ] = "LibLazyCrafting %s requires update for set %d %s"
 ,   ["lam_banked_vouchers_desc"              ] = "Просканируйте банк и включите эту функцию для автоматического создания..\n|cFF3333 ОСТОРОЖНО, если вы создаёте на нескольких персонажах! WritWorthy не предупредит вас, если вы создадите один и тот же заказ мастера из банка на нескольких персонажах.|r"
 ,   ["lam_banked_vouchers_title"             ] = "Создавать по рецептам находящимся в банке"
 ,   ["lam_force_en_desc"                     ] = "Игнорировать настройку языка клиента и использовать Английский для всего текста WritWorthy."
@@ -132,10 +146,20 @@ WritWorthy.I18N['static']['ru'] = {
 ,   ["lam_mat_price_tt_title"                ] = "Показывать цену материала во всплывающей подсказке"
 ,   ["lam_mm_fallback_desc"                  ] = "Если М.М. не имеет средней цены на некоторые материалы:\n* используеется 15з для основных материалов, таких как Молибден\n* используется 5з для обычных материалов, таких как Кварц."
 ,   ["lam_mm_fallback_title"                 ] = "Возврат к жестко установленным ценам, если нет данных LibPrice"
-,   ["lam_station_colors_desc"               ] = "Использовать разные цвета для кузнечного дела, одежды и изделий из дерева, в окне WritWorthy."
-,   ["lam_lib_price_title"                   ] = "Использовать LibPrice для сравнения цен"
 ,   ["lam_lib_price_desc"                    ] = "Проверять с MM/ATT/TTC цены материалов. Требуется LibPrice."
+,   ["lam_lib_price_title"                   ] = "Использовать LibPrice для сравнения цен"
+,   ["lam_station_colors_desc"               ] = "Использовать разные цвета для кузнечного дела, одежды и изделий из дерева, в окне WritWorthy."
 ,   ["lam_station_colors_title"              ] = "Цвет станка в окне"
+,   ["lam_cmw_desc"                          ] = "If you prefer Marify's Confirm Master Writ tooltips turn this option off to hide WritWorthy's redundant warning tooltips."
+,   ["lam_cmw_title"                         ] = "Show duplicate tooltips"
+,   ["lam_mat_tooltip_title"                 ] = "Show materials in tooltip"
+,   ["lam_mat_tooltip_desc"                  ] = "Show material list in tooltip"
+,   ["lam_mat_tooltip_off"                   ] = "Off"
+,   ["lam_mat_tooltip_all"                   ] = "All"
+,   ["lam_mat_tooltip_missing_only"          ] = "Missing Only"
+,   ["mat_ui_filter_all_mats"                ] = "Show all materials for all queued master writs"
+,   ["mat_ui_filter_missing_mats"            ] = "Show missing materials for all queued master writs"
+,   ["mat_ui_filter_missing_motifs"          ] = "Show missing motifs for unqueued master writs"
 ,   ["max_gold_per_voucher"                  ] = "Макс. количество золота на ваучер:"
 ,   ["slash_auto"                            ] = "автоматически"
 ,   ["slash_auto_desc"                       ] = "Автоматически принимать заказы из инвентаря."
@@ -145,6 +169,10 @@ WritWorthy.I18N['static']['ru'] = {
 ,   ["slash_discover_desc"                   ] = "Дамп записи полей item_link таблицы в журнале"
 ,   ["slash_forget"                          ] = "забыть"
 ,   ["slash_forget_desc"                     ] = "Забыть для этого персонажа создавать мастерские заказы"
+,   ["slash_port"                            ] = "port"
+,   ["slash_port_desc"                       ] = "Teleport to a crafting house"
+,   ["slash_mat"                             ] = "mat"
+,   ["slash_mat_desc"                        ] = "Show/hide material list window."
 ,   ["slash_writworthy_desc"                 ] = "Показать/скрыть окно WritWorthy"
 ,   ["status_discover"                       ] = "сканирование полей заказа..."
 ,   ["status_forget"                         ] = "забыть обо всём, что этот персонаж уже создавал..."
@@ -167,4 +195,3 @@ WritWorthy.I18N['static']['ru'] = {
 ,   ["tooltip_sell_for"                      ] = "Продать за %s з"
 ,   ["tooltip_sell_for_cannot"               ] = "Не может продать за %s з"
 }
-

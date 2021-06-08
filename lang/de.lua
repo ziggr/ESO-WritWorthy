@@ -20,6 +20,38 @@ WritWorthy.I18N['shorten']['de'] = {
 ,   ["verringerten physischen schadens"      ] = "- phys. Schaden"
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 WritWorthy.I18N['static'] = WritWorthy.I18N['static'] or {}
 WritWorthy.I18N['static']['de'] = {
     ["ags_label"                             ] = "WritWorthy Kosten pro Schriebschein"
@@ -79,6 +111,17 @@ WritWorthy.I18N['static']['de'] = {
 ,   ["header_Quality"                        ] = "Qualität"
 ,   ["header_Type"                           ] = "Art"
 ,   ["header_V"                              ] = "V"
+,   ["header_Name"                           ] = "Name"
+,   ["header_RequiredCt"                     ] = "Req'd"
+,   ["header_HaveCt"                         ] = "Have"
+,   ["header_BuyCt"                          ] = "Buy"
+,   ["header_PriceEa"                        ] = "Price"
+,   ["header_BuySubtotal"                    ] = "Total"
+,   ["header_tooltip_RequiredCt"             ] = "How many required for writs?"
+,   ["header_tooltip_HaveCt"                 ] = "How many in inventory+bank+craft bag?"
+,   ["header_tooltip_BuyCt"                  ] = "Don't have enough? How many more do you need? (=Req'd - Have)"
+,   ["header_tooltip_PriceEa"                ] = "Price per material"
+,   ["header_tooltip_BuySubtotal"            ] = "Total price (=Buy × Price)"
 ,   ["header_tooltip_Q"                      ] = "Zum Herstellen der Warteschlange hinzugefügt"
 ,   ["header_tooltip_M"                      ] = "Use mimic stone?"
 ,   ["header_tooltip_V"                      ] = "Anzahl Schriebscheine"
@@ -89,6 +132,7 @@ WritWorthy.I18N['static']['de'] = {
 ,   ["know_err_skill_not_maxed"              ] = "Unzureichende Fähigkeit '%s': %d/%d"
 ,   ["know_err_trait"                        ] = "Eigenschaft %s %s nicht bekannt"
 ,   ["know_err_trait_ct_too_low"             ] = "%d/%d Eigenschaften erforderlich für Set %s"
+,   ["know_err_llc_too_old"                  ] = "LibLazyCrafting %s requires update for set %d %s"
 ,   ["lam_banked_vouchers_desc"              ] = "Bank scannen und die Schriebe der Liste der automatisch herstellbaren Schriebe hinzufügen.\n|cFF3333ACHTUNG Wenn du Schriebe mit mehreren Charakteren herstellst! WritWorthy warnt nicht, wenn derselbe Schrieb mit unterschiedlichen Charakteren hergestellt wird.|r"
 ,   ["lam_banked_vouchers_title"             ] = "Schriebe aus der Bank im Auto-Herstellen WritWorthy-Fenster berücksichtigen"
 ,   ["lam_force_en_desc"                     ] = "Ignorieren die Client-Spracheinstellung und verwende EN English für den gesamten WritWorthy-Text."
@@ -102,8 +146,21 @@ WritWorthy.I18N['static']['de'] = {
 ,   ["lam_mat_price_tt_title"                ] = "Materialpreis in Tooltip anzeigen"
 ,   ["lam_mm_fallback_desc"                  ] = "Wenn MM keine Durchschnittspreise für Materialien hat:\n* Nutze 15g für Basis Stil Materialien wie z.B. Molybdän\n* nutze 5g für gemeine Eingenschafts Materialien wie z.B. Quartz."
 ,   ["lam_mm_fallback_title"                 ] = "MM Fallback: Feste Preise nutzen"
+,   ["lam_lib_price_desc"                    ] = "Check with MM/ATT/TTC for material prices. Requires LibPrice."
+,   ["lam_lib_price_title"                   ] = "Use LibPrice for mat prices"
 ,   ["lam_station_colors_desc"               ] = "Verwende verschiedene Farben für Schmiedekunst, Kleidung und Holzbearbeitung im WritWorthy-Fenster."
 ,   ["lam_station_colors_title"              ] = "Stationsfarben im Fenster"
+,   ["lam_cmw_desc"                          ] = "If you prefer Marify's Confirm Master Writ tooltips turn this option off to hide WritWorthy's redundant warning tooltips."
+,   ["lam_cmw_title"                         ] = "Show duplicate tooltips"
+,   ["lam_mat_tooltip_title"                 ] = "Show materials in tooltip"
+,   ["lam_mat_tooltip_desc"                  ] = "Show material list in tooltip"
+,   ["lam_mat_tooltip_off"                   ] = "Off"
+,   ["lam_mat_tooltip_all"                   ] = "All"
+,   ["lam_mat_tooltip_missing_only"          ] = "Missing Only"
+,   ["mat_ui_filter_all_mats"                ] = "Show all materials for all queued master writs"
+,   ["mat_ui_filter_missing_mats"            ] = "Show missing materials for all queued master writs"
+,   ["mat_ui_filter_missing_motifs"          ] = "Show missing motifs for unqueued master writs"
+,   ["max_gold_per_voucher"                  ] = "Max gold per voucher:"
 ,   ["slash_auto"                            ] = "Auto"
 ,   ["slash_auto_desc"                       ] = "Automatisch Quests aus dem Inventar annehmen"
 ,   ["slash_count"                           ] = "Anzahl"
@@ -112,6 +169,10 @@ WritWorthy.I18N['static']['de'] = {
 ,   ["slash_discover_desc"                   ] = "item_link Schriebfelder in den Log schreiben"
 ,   ["slash_forget"                          ] = "Forget"
 ,   ["slash_forget_desc"                     ] = "Vergesse die handwerklichen Meisterschriebe dieses Charakters"
+,   ["slash_port"                            ] = "port"
+,   ["slash_port_desc"                       ] = "Teleport to a crafting house"
+,   ["slash_mat"                             ] = "mat"
+,   ["slash_mat_desc"                        ] = "Show/hide material list window."
 ,   ["slash_writworthy_desc"                 ] = "WritWorthy-Fenster ein- / ausblenden"
 ,   ["status_discover"                       ] = "scanne Schriebfelder..."
 ,   ["status_forget"                         ] = "Vergesse alles, was dieser Charakter schon hergestellt hat ..."

@@ -17,6 +17,7 @@ WritWorthy.I18N['shorten']['en'] = {
 ,   ["Ancestor Silk Sash"          ] = "sash"
 ,   ["Ancestor Silk Shoes"         ] = "shoes"
 ,   ["Enchanting"                  ] = "Enchant"
+
 ,   ["Night Mother's Gaze"         ] = "Night Mother's"
 ,   ["Pelinal's Aptitude"          ] = "Pelinal's"
 ,   ["Provisioning"                ] = "Provis"
@@ -194,4 +195,3 @@ WritWorthy.I18N['static']['en'] = {
 ,   ["tooltip_sell_for"                      ] = "Sell for %s g"
 ,   ["tooltip_sell_for_cannot"               ] = "Cannot sell for %s g"
 }
-
