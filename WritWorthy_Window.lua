@@ -593,7 +593,7 @@ function WritWorthyInventoryList.Shorten(text)
 end
 
 function WritWorthyInventoryList:IsQueued(inventory_data)
-    local LLC = self:GetLLC()
+    local LLC = WritWorthyInventoryList:GetLLC()
     local x = LLC:findItemByReference(inventory_data.unique_id)
     if 0 < #x then
         return true
@@ -844,7 +844,7 @@ function WritWorthyInventoryList_EnqueueToggled(cell_control, checked)
     else
         self:Dequeue(cell_control.inventory_data)
     end
-    -- self.LogLLCQueue(self:GetLLC().personalQueue)
+    -- self.LogLLCQueue(WritWorthyInventoryList:GetLLC().personalQueue)
     self:UpdateUISoon(cell_control.inventory_data)
 end
 
@@ -1131,7 +1131,7 @@ end
 function WritWorthyInventoryList:UpdateUISoon(inventory_data)
     Log:Add("WritWorthyInventoryList:UpdateUISoon  unique_id:"
             ..tostring(inventory_data.unique_id))
-    self.LogLLCQueue(self:GetLLC().personalQueue)
+    self.LogLLCQueue(WritWorthyInventoryList:GetLLC().personalQueue)
     self:UpdateSummaryAndQButtons()
     self:Refresh()
 end
@@ -1293,7 +1293,7 @@ function WritWorthy_LLC_IsItemCraftable(self, station_crafting_type, request)
     end
                         -- Is this a set bonus request but at the wrong
                         -- set bonus station?
-    local llc = self:GetLLC()
+    local llc = WritWorthyInventoryList:GetLLC()
     if request.setIndex and 1 < request.setIndex
             and request.setIndex ~= llc.GetCurrentSetInteractionIndex() then
         return orig_can_craft
@@ -1445,7 +1445,7 @@ function WritWorthyInventoryList.EnqueueLLC(unique_id, inventory_data)
                         -- supports the required API. We might get stuck
                         -- with some other add-on's older version.
     local i_d = inventory_data
-    local LLC = self:GetLLC()
+    local LLC = WritWorthyInventoryList:GetLLC()
     if not LLC[i_d.llc_func] then
         self:LLC_Missing(i_d.llc_func)
         return
@@ -1467,7 +1467,7 @@ end
 -- A required LibLazyCrafting function is missing?
 -- Maybe due to some old or incombatible LLC version?
 function WritWorthyInventoryList:LLC_Missing(llc_func)
-    local LLC = self:GetLLC()
+    local LLC = WritWorthyInventoryList:GetLLC()
     d("WritWorthy: LibLazyCrafting function missing:"..tostring(llc_func))
     grey("WritWorthy version:"..WritWorthy.version)
     grey("LibLazyCrafting version:"..tostring(LLC.version))
@@ -1493,7 +1493,7 @@ function WritWorthyInventoryList:Dequeue(inventory_data)
     local unique_id = inventory_data.unique_id
     Log:Add("Dequeue "..tostring(unique_id))
 
-    local LLC = self:GetLLC()
+    local LLC = WritWorthyInventoryList:GetLLC()
     LLC:cancelItemByReference(inventory_data.unique_id)
                         -- Remove from savedChariables so that we do not
                         -- re-queue this row upon /reloadui.
@@ -1567,7 +1567,8 @@ end
 -- in LibLazyCrafting's queue.
 function WritWorthyInventoryList:QueuedReferenceList()
     local queued_ids = {}
-    for station, queued in ipairs(self:GetLLC().personalQueue) do
+    local llc = WritWorthyInventoryList:GetLLC()
+    for station, queued in ipairs(llc.personalQueue) do
         if type(queued) == "table" then
             for i, request in ipairs(queued) do
                 if request.reference then
