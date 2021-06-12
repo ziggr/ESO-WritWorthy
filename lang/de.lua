@@ -161,6 +161,7 @@ WritWorthy.I18N['static']['de'] = {
 ,   ["mat_ui_filter_missing_mats"            ] = "Show missing materials for all queued master writs"
 ,   ["mat_ui_filter_missing_motifs"          ] = "Show missing motifs for unqueued master writs"
 ,   ["max_gold_per_voucher"                  ] = "Max gold per voucher:"
+,   ["msg_port_house"                        ] = "Porting to owner:%s  house:%s"
 ,   ["slash_auto"                            ] = "Auto"
 ,   ["slash_auto_desc"                       ] = "Automatisch Quests aus dem Inventar annehmen"
 ,   ["slash_count"                           ] = "Anzahl"

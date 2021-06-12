@@ -621,8 +621,17 @@ function WritWorthy.Port()
     if WritWorthy.ServerName() == "NA" then
 
     else
-        Log.Error("No public crafting house for EU server. If you have one to volunteer, contact @ziggr on ESOUI.com .")
+        owner    = "@PhnxZ"
+        house_id =  80      -- Stillwaters Retreat
     end
+
+                        -- Don't send the player in blind:
+                        -- tell them where they're goind.
+    local house_collectible_id  = GetCollectibleIdForHouse(house_id)
+    local house_name            = GetCollectibleName(house_collectible_id)
+    local fmt                   = WW.Str("msg_port_house")
+    -- local msg                   = string.format(msg, owner, house_id)
+    Log.Info(fmt, owner, house_id)
 
                         -- Must use different function for jumping to your own house
                         -- vs. jumping to another player's house.

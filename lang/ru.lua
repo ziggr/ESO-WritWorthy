@@ -161,6 +161,7 @@ WritWorthy.I18N['static']['ru'] = {
 ,   ["mat_ui_filter_missing_mats"            ] = "Show missing materials for all queued master writs"
 ,   ["mat_ui_filter_missing_motifs"          ] = "Show missing motifs for unqueued master writs"
 ,   ["max_gold_per_voucher"                  ] = "Макс. количество золота на ваучер:"
+,   ["msg_port_house"                        ] = "Porting to owner:%s  house:%s"
 ,   ["slash_auto"                            ] = "автоматически"
 ,   ["slash_auto_desc"                       ] = "Автоматически принимать заказы из инвентаря."
 ,   ["slash_count"                           ] = "Количество"
