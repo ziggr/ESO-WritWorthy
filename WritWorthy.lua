@@ -269,7 +269,7 @@ end
 --                Include this cost in the gold-per-voucher calculation.
 --                (optional, nil ok)
 --
-function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, unique_id)
+function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, unique_id, style)
     -- Only fire for master writs.
     if ITEMTYPE_MASTER_WRIT ~= GetItemLinkItemType(item_link) then return end
 
@@ -279,7 +279,7 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     local mat_text = WritWorthy.MatTooltipText(mat_list, purchase_gold, voucher_ct)
     if not mat_text then return end
     if WritWorthy.savedVariables.enable_mat_price_tooltip ~= false then
-        control:AddLine(mat_text)
+        control:AddLine(mat_text, style)
     end
 
     if can_dump_matlist(WritWorthy.savedVariables.enable_mat_list_chat, parser) then
@@ -288,15 +288,15 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
     end
     local mat_have_text = WritWorthy.MatHaveCtTooltipText(mat_list)
     if mat_have_text then
-        control:AddLine(mat_have_text)
+        control:AddLine(mat_have_text, style)
     end
     local know_text = WritWorthy.KnowTooltipText(know_list)
     if know_text then
-        control:AddLine(know_text)
+        control:AddLine(know_text, style)
     end
     local warning_text = parser.WarningText and parser:WarningText()
     if warning_text then
-        control:AddLine(warning_text)
+        control:AddLine(warning_text, style)
     end
                         -- Can we append WritWorthy queued/completed status?
                         -- We can if this writ is in our backpack and thus
@@ -322,7 +322,7 @@ function WritWorthy.TooltipInsertOurText(control, item_link, purchase_gold, uniq
                 color = WritWorthyInventoryList.COLOR_TEXT_COMPLETED
             end
             if color and text then
-                control:AddLine(Util.color(color, text))
+                control:AddLine(Util.color(color, text), style)
             end
         end
     end
@@ -442,6 +442,17 @@ function WritWorthy.TooltipInterceptInstall()
     else
         SetupTradingHouseItemTooltipHook()
     end
+
+    local function SetupGamepadTooltip()
+        local leftGamepadTooltip = GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP)
+        ZO_PostHook(leftGamepadTooltip, "LayoutMasterWritItem", function (self, itemLink)
+            local section = self:AcquireSection(self:GetStyle("bodySection"))
+            WritWorthy.TooltipInsertOurText(section, itemLink, nil, nil, self:GetStyle("bodyDescription"))
+            self:AddSection(section)
+        end)
+    end
+
+    SetupGamepadTooltip()
 end
 
 -- UI ------------------------------------------------------------------------
