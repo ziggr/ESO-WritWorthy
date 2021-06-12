@@ -5,10 +5,12 @@
 ## APIVersion: 100035
 ## Description: Master Writs: calculate material costs and automate crafting.
 ## Author: ziggr
-## Contributors: Dolgubon
+## Contributors: Dolgubon Friday-The13-rus
 ## SavedVariables: WritWorthyVars
 ## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibMotif
 ## OptionalDependsOn: LibCustomMenu AwesomeGuildStore LibSlashCommander LibDebugLogger HomeStationMarker
+
+# Gamepad UI tooltip hook added by Friday-The13-rus
 
 # DE translation by Baertram 2019-04-30
 # RU translation by ivann339 2019-09-06 2020-10-16
