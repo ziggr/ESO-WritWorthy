@@ -151,7 +151,7 @@ function WritWorthy:AcceptFirstAcceptableWrit()
     if IsProtectedFunction("UseItem") then
         CallSecureProtected("UseItem", BAG_BACKPACK, slot_id)
     else
-        UseItem(slot_id)
+        UseItem(BAG_BACKPACK, slot_id)
     end
 end
 
