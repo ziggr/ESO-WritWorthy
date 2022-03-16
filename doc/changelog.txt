@@ -1,3 +1,7 @@
+[B]7.3.2 2022-03-15[/B]
+[LIST]
+[*] Oops fix API version in WritWorthy.txt manifest.
+[/LIST]
 
 [B]7.3.1 2022-03-15[/B]
 [LIST]
