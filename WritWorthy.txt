@@ -7,7 +7,7 @@
 ## Author: ziggr
 ## Contributors: Dolgubon Friday-The13-rus
 ## SavedVariables: WritWorthyVars
-## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibMotif
+## DependsOn: LibAddonMenu-2.0 LibPrice LibLazyCrafting LibSets LibCharacterKnowledge
 ## OptionalDependsOn: LibCustomMenu AwesomeGuildStore LibSlashCommander LibDebugLogger HomeStationMarker
 
 # Gamepad UI tooltip hook added by Friday-The13-rus
@@ -43,10 +43,9 @@
             #       https://github.com/Baertram/LibSets
             #   Set names such as "Alessia's Bullwark" and their required trait counts.
 
-            # LibMotif required
-            #   by ziggr
-            #       https://somewhere
-            #       https://github.com/ziggr/ESO-LibMotif
+            # LibCharacterKnowledge required
+            #   by code65536
+            #       https://www.esoui.com/downloads/info3317-LibCharacterKnowledge.html
             #  Motif knowledge: do you know Ashlander Bows?
 
             # LibSlashCommander optional

@@ -186,20 +186,20 @@ Smithing.TRAITS_JEWELRY = {
 -- For checking whether we know the motif page for a requested item
 --
 Smithing.MOTIF_PAGE = {
-    AXES       =  1
-,   BELTS      =  2
-,   BOOTS      =  3
-,   BOWS       =  4
-,   CHESTS     =  5
-,   DAGGERS    =  6
-,   GLOVES     =  7
-,   HELMETS    =  8
-,   LEGS       =  9
-,   MACES      = 10
-,   SHIELDS    = 11
-,   SHOULDERS  = 12
-,   STAVES     = 13
-,   SWORDS     = 14
+    AXES       = ITEM_STYLE_CHAPTER_AXES      -- 10
+,   BELTS      = ITEM_STYLE_CHAPTER_BELTS     --  6
+,   BOOTS      = ITEM_STYLE_CHAPTER_BOOTS     --  3
+,   BOWS       = ITEM_STYLE_CHAPTER_BOWS      -- 14
+,   CHESTS     = ITEM_STYLE_CHAPTER_CHESTS    --  5
+,   DAGGERS    = ITEM_STYLE_CHAPTER_DAGGERS   -- 11
+,   GLOVES     = ITEM_STYLE_CHAPTER_GLOVES    --  2
+,   HELMETS    = ITEM_STYLE_CHAPTER_HELMETS   --  1
+,   LEGS       = ITEM_STYLE_CHAPTER_LEGS      --  4
+,   MACES      = ITEM_STYLE_CHAPTER_MACES     --  9
+,   SHIELDS    = ITEM_STYLE_CHAPTER_SHIELDS   -- 13
+,   SHOULDERS  = ITEM_STYLE_CHAPTER_SHOULDERS --  7
+,   STAVES     = ITEM_STYLE_CHAPTER_STAVES    -- 12
+,   SWORDS     = ITEM_STYLE_CHAPTER_SWORDS    --  8
 }
 
 -- Requestable items ---------------------------------------------------------
@@ -583,7 +583,7 @@ function Parser:ParseItemLink(item_link)
 
     self.motif_num      = motif_num
     self.motif          = nil
-    if LibMotif.DATA[motif_num] then
+    if motif_num and 0 < motif_num then
         self.motif               = {}
         self.motif.motif_num     = motif_num
         self.motif.motif_name    = WritWorthy.Motif(motif_num)
@@ -661,37 +661,12 @@ function Parser:ToKnowList()
                         -- which have been seen to incorrectly return true when
                         -- you do NOT know the whole book
     if self.request_item.school.motif_required then
-        local motif_known = LibMotif.IsKnown(self.motif_num
+        local LCK = LibCharacterKnowledge
+        local rr = LCK.GetMotifKnowledgeForCharacter(
+                                  self.motif_num
                                 , self.request_item.motif_page)
+        local motif_known = rr == LCK.KNOWLEDGE_KNOWN
 
-        -- if self.motif.is_simple or self.motif.crown_id then
-        --     motif_known = IsSmithingStyleKnown(self.motif_num)
-        --     Log:Add("motif book IsSmithingStyleKnown("
-        --         ..tostring(self.motif_num)..") = "..tostring(motif_known))
-        -- end
-        --                 -- If the above check failed, and the motif has
-        --                 -- individual pages, check those. For some reason,
-        --                 -- the 2nd arg to IsSmithingStyleKnown() has no effect.
-        --                 -- So copy CraftStore and use achievement progress.
-        -- if (not motif_known) and self.motif.pages_id then
-        --     local _, completed_ct = GetAchievementCriterion(
-        --                               self.motif.pages_id
-        --                             , self.request_item.motif_page)
-        --     motif_known = 0 < completed_ct
-        --     Log:Add("motif page GetAchievementCriterion("
-        --             .."pages_id="..tostring(self.motif.pages_id)
-        --             ..", req.page="..tostring(self.request_item.motif_page)
-        --             ..") = "..tostring(completed_ct))
-        --                 -- Debug dump all 14 pages of this motif
-        --     local pg_known = {}
-        --     for pg = 1,14 do
-        --         local _, completed_ct = GetAchievementCriterion(
-        --                               self.motif.pages_id
-        --                             , pg )
-        --         pg_known[pg] = completed_ct
-        --     end
-        --     Log:Add("pages known:"..table.concat(pg_known, " "))
-        -- end
         local title = string.format("motif %s", self.motif.motif_name)
         local fmt = WritWorthy.Str("know_err_motif")
         local msg   = string.format(fmt, self.motif.motif_name)
@@ -928,24 +903,6 @@ end
 
 
 function Smithing.ScanMotifs()
-                        -- Are there any new motifs that WritWorthy
-                        -- needs to have added to its tables?
-    local MAX_MOTIF_ID = GetHighestItemStyleId()
-    Log:StartNewEvent("Scanning style/achievement tables...")
-    for motif_id = 1,MAX_MOTIF_ID do
-                        -- We don't actually use motif name in WritWorthy.
-        local motif_name = GetItemStyleName(motif_id)
-
-                        -- But if ESO has a name for a motif, yet LibMotif
-                        -- lacks a record for it, then this might be a
-                        -- newly released style that WritWorthy needs to
-                        -- learn about.
-        if motif_name and not LibMotif.DATA[motif_id] then
-            Log.Warn("Missing motif_id:%d name:%s", motif_id, motif_name)
-        end
-    end
-
-
                         -- Are there any new "___ Style Master" achievements
                         -- to go with new motifs?
                         -- US English string matching.
