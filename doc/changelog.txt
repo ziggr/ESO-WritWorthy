@@ -1,3 +1,13 @@
+
+[B]7.3.1 2022-03-15[/B]
+[LIST]
+[*] Update 33/ESO 7.3.0/API 101032/Ascending Tide
+[*] Replace LibMotif with LibCharacterKnowledge
+[*] French translations from JAKEZ31. Merci!
+[*] /writworthy port EU → @PhnxZ's Stillwater Retreat
+[*] Gamepad UI additions from Friday-The13-rus
+[/LIST]
+
 [B]7.0.4 2021-06-07[/B]
 [LIST]
 [*] /writworthy port: jump to @ziggr's crafting house
